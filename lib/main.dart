@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:school_journal/features/teacher_profile/Presentation/pages/group_list_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,8 +11,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
+    return MaterialApp.router(
+      routerConfig: GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (context, state) => const MyHomePage(),
+            routes: [
+              GoRoute(
+                path: 'second',
+                builder: (context, state) => const GroupListPage(),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -116,12 +131,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ),
+
                       // SizedBox(
                       //   child: TextFormField(),
                       // ),
                     ],
                   ),
-                )
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.go('/second');
+                  },
+                  child: const Text('Следующая страница'),
+                ),
               ],
             ),
           ),

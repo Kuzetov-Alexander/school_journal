@@ -1,6 +1,5 @@
 class Data {
   final String name;
-  Data({
-    required this.name,
-  });
+
+  Data({required this.name});
 }
