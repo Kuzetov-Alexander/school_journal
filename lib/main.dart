@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(fontFamily: 'SF-Pro'),
       routerConfig: GoRouter(
         routes: [
           GoRoute(

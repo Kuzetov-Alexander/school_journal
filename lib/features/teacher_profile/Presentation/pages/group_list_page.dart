@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
+import '../widgets/widgets.dart';
+
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
 
@@ -25,6 +27,7 @@ class GroupListPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
+                      splashRadius: 1,
                       onPressed: () {},
                       icon: const Image(
                         width: 30,
@@ -33,6 +36,8 @@ class GroupListPage extends StatelessWidget {
                       
                     ),
                     IconButton(
+                       splashRadius: 1,
+                       
                       onPressed: () {},
                       icon: const Icon(Icons.add),
                       iconSize: 40,
@@ -67,21 +72,9 @@ class GroupListPage extends StatelessWidget {
                     height: heightScreen * 0.02,
                   );
                 },
-                itemCount: 15,
+                itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: const Color.fromRGBO(243, 243, 243, 1)),
-                        height: heightScreen * 0.15,
-                        width: widthScreen * 0.9,
-                      ),
-
-                      // color: Colors.red,),
-                    ],
-                  );
+                  return GroupInfoWidget(heightScreen: heightScreen, widthScreen: widthScreen);
                 }),
           ),
         ],
@@ -89,3 +82,5 @@ class GroupListPage extends StatelessWidget {
     );
   }
 }
+
+
