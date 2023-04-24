@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:school_journal/common/color.dart';
->>>>>>> d03ddb63cb769ebbb5ee3e6f63bf01e6a332fd96
 
 class GroupInfoWidget extends StatelessWidget {
   const GroupInfoWidget({
@@ -65,7 +62,7 @@ class GroupInfoWidget extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0),
                   child: Row(
                     children: const [
                       Image(image: AssetImage('assets/images/mini_person.png')),

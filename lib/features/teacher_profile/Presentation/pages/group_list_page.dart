@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:school_journal/common/color.dart';
-
 import '../widgets/widgets.dart';
->>>>>>> d03ddb63cb769ebbb5ee3e6f63bf01e6a332fd96
+
 
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
@@ -88,8 +83,3 @@ class GroupListPage extends StatelessWidget {
     );
   }
 }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> d03ddb63cb769ebbb5ee3e6f63bf01e6a332fd96
