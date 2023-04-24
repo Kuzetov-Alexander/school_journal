@@ -1,4 +1,8 @@
 
 
 /// Сделать!
-class Entity {}
+class Entity {
+
+
+  
+}
