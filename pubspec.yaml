@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   go_router: ^6.5.7
+  flutter_bloc: ^8.1.2
+  firebase_core: ^1.10.6
+  firebase_auth: ^3.3.4
 
 dev_dependencies:
   flutter_test:
