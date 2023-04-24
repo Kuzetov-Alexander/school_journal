@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:school_journal/common/color.dart';
 
 import '../widgets/widgets.dart';
 
@@ -20,7 +21,7 @@ class GroupListPage extends StatelessWidget {
           Container(
             height: heightScreen * 0.15,
             width: widthScreen,
-            color: const Color.fromRGBO(243, 243, 243, 1),
+            color: AppColors.greyLight,
             child: Column(
               children: [
                 Row(
@@ -62,9 +63,11 @@ class GroupListPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: heightScreen * 0.01,
+          Container(
+            color: Colors.grey,
+            height: heightScreen * 0.001,
           ),
+          SizedBox(height: heightScreen*0.04,),
           Expanded(
             child: ListView.separated(
                 separatorBuilder: (context, index) {
@@ -72,7 +75,7 @@ class GroupListPage extends StatelessWidget {
                     height: heightScreen * 0.02,
                   );
                 },
-                itemCount: 5,
+                itemCount: 2,
                 itemBuilder: (BuildContext context, int index) {
                   return GroupInfoWidget(heightScreen: heightScreen, widthScreen: widthScreen);
                 }),
