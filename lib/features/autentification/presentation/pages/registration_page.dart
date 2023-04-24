@@ -237,11 +237,9 @@ InputDecoration decoration(String hintText, String labelText) {
       borderSide: BorderSide(color: Colors.white),
     ),
     hintText: hintText,
-    // 'Введите почту'
     hintStyle: const TextStyle(
         color: Color(0xffB6B6B6), fontWeight: FontWeight.w600, fontSize: 14),
     labelText: labelText,
-    // 'Почта'
     labelStyle: const TextStyle(
         color: Color(0xffB6B6B6), fontWeight: FontWeight.w600, fontSize: 14),
   );
