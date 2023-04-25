@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
-import 'package:school_journal/features/autentification/presentation/pages/registration_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/firebase_options.dart';
 
@@ -33,11 +35,19 @@ class MyApp extends StatelessWidget {
             routes: [
               GoRoute(
                 path: '/',
-                builder: (context, state) => const RegistrationPage(),
+                builder: (context, state) => const SignUpPage(),
                 routes: [
                   GoRoute(
-                    path: 'second',
+                    path: 'Groups',
                     builder: (context, state) => const GroupListPage(),
+                  ),
+                  GoRoute(
+                    path: 'SignIn',
+                    builder: (context, state) => const SignInPage(),
+                  ),
+                  GoRoute(
+                    path: 'RecoverPassword',
+                    builder: (context, state) => const RecoverPasswordPage(),
                   ),
                 ],
               ),

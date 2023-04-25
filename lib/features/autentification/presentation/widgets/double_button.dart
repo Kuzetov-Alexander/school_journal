@@ -54,7 +54,10 @@ class Button extends StatelessWidget {
           nameButton,
           textAlign: TextAlign.center,
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 13),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+              letterSpacing: -0.078),
         ),
       ),
     );

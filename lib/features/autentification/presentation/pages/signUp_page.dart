@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool _isHiddenPassword = true;
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -99,6 +99,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+ double widthScreen = MediaQuery.of(context).size.width;
+    double heightScreen = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: BlocListener<AuthBloc, BlocAuthState>(
         listener: (context, state) {
@@ -130,7 +133,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                   child: Container(
-                    color: Colors.white,
+                    // color: Colors.white,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -138,10 +141,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
+                          children:  [
                             Text(
                               'Регистрация',
                               textAlign: TextAlign.start,
+                              style: TextStyle(fontWeight: FontWeight.w700,fontSize:heightScreen*0.024,letterSpacing: 1.4 ),
                             ),
                           ],
                         ),
@@ -224,10 +228,42 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   ),
                                   onPressed: () {
                                     //  _authenticateWithEmailAndPassword(context);
-                                    _authenticateWithEmailAndPassword(context);
+                                    // _authenticateWithEmailAndPassword(context);
                                   },
                                   child: const Text(
                                     'Зарегистрироваться',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: heightScreen*0.015,),
+                               SizedBox(
+                                height: 56,
+                                width: double.infinity,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        const MaterialStatePropertyAll<Color>(
+                                     Colors.green,
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    //  _authenticateWithEmailAndPassword(context);
+                                    context.go('/SignIn');
+                                  },
+                                  child: const Text(
+                                    'Войти',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -241,7 +277,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.go('/second');
+                            context.go('/Groups');
                           },
                           child: const Text('Следующая страница'),
                         ),

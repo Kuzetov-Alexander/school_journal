@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 import '../widgets/widgets.dart';
-
 
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
@@ -25,18 +25,20 @@ class GroupListPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    IconButton(onPressed: () {
+                        context.go('/');
+                    }, icon: const Icon(Icons.arrow_left),iconSize: 35,),
                     IconButton(
                       splashRadius: 1,
                       onPressed: () {},
                       icon: const Image(
                         width: 30,
-                        image: AssetImage('assets/images/profile_icon.png'), // вставляется с фоном , надо что-то придумать
+                        image: AssetImage(
+                            'assets/images/profile_icon.png'), // вставляется с фоном , надо что-то придумать
                       ),
-                      
                     ),
                     IconButton(
-                       splashRadius: 1,
-                       
+                      splashRadius: 1,
                       onPressed: () {},
                       icon: const Icon(Icons.add),
                       iconSize: 40,
@@ -65,7 +67,9 @@ class GroupListPage extends StatelessWidget {
             color: Colors.grey,
             height: heightScreen * 0.001,
           ),
-          SizedBox(height: heightScreen*0.04,),
+          SizedBox(
+            height: heightScreen * 0.04,
+          ),
           Expanded(
             child: ListView.separated(
                 separatorBuilder: (context, index) {
@@ -75,7 +79,8 @@ class GroupListPage extends StatelessWidget {
                 },
                 itemCount: 2,
                 itemBuilder: (BuildContext context, int index) {
-                  return GroupInfoWidget(heightScreen: heightScreen, widthScreen: widthScreen);
+                  return GroupInfoWidget(
+                      heightScreen: heightScreen, widthScreen: widthScreen);
                 }),
           ),
         ],
