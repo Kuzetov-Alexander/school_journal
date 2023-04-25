@@ -70,33 +70,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     });
   }
 
-  // Future<void> _submitForm() async {
-  //   if (formKey.currentState!.validate()) {
-  //     // formKey.currentState!.save();
-
-  //     debugPrint('---------------Number email: ${emailController.text}');
-  //     debugPrint('---------------Number password: ${passwordController.text}');
-  //     debugPrint(
-  //         '---------------Confirm password: ${confirmPasswordController.text}');
-  //   }
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: emailController.text.trim(),
-  //         password: passwordController.text.trim());
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'email-already-in-use') {
-  //       SnackBarService.showSnackBar(
-  //           context, 'Такой Email уже используется', true);
-  //       return;
-  //     } else {
-  //       SnackBarService.showSnackBar(context, 'Неизвестная ошибка', true);
-  //     }
-  //     debugPrint(e.code);
-  //   } catch (e) {
-  //     debugPrint('----------$e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +95,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             }
             if (state is UnAuthenticated) {
               // Showing the sign in form if the user is not authenticated
-              return Center(child: Text('Юзер не авторизован'));
+              return const Center(child: Text('Юзер не авторизован'));
             }
             return SafeArea(
               child: SingleChildScrollView(
