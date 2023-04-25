@@ -227,8 +227,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    //  _authenticateWithEmailAndPassword(context);
+                                    
                                     // _authenticateWithEmailAndPassword(context);
+                                    context.go('/Groups');
                                   },
                                   child: const Text(
                                     'Зарегистрироваться',
@@ -240,40 +241,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: heightScreen*0.015,),
-                               SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        const MaterialStatePropertyAll<Color>(
-                                     Colors.green,
-                                    ),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    //  _authenticateWithEmailAndPassword(context);
-                                    context.go('/SignIn');
-                                  },
-                                  child: const Text(
-                                    'Войти',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                           
                             ],
                           ),
+                        ),
+                         TextButton(
+                          onPressed: () {
+                            context.go('/SignIn');
+                          },
+                          child: const Text('Войти'),
                         ),
                         TextButton(
                           onPressed: () {

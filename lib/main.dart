@@ -7,6 +7,7 @@ import 'package:school_journal/features/autentification/presentation/bloc/bloc/b
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/firebase_options.dart';
 
@@ -35,11 +36,11 @@ class MyApp extends StatelessWidget {
             routes: [
               GoRoute(
                 path: '/',
-                builder: (context, state) => const SignUpPage(),
+                builder: (context, state) => const WelcomePage(),
                 routes: [
                   GoRoute(
-                    path: 'Groups',
-                    builder: (context, state) => const GroupListPage(),
+                    path: 'SignUp',
+                    builder: (context, state) => const SignUpPage(),
                   ),
                   GoRoute(
                     path: 'SignIn',
@@ -48,6 +49,10 @@ class MyApp extends StatelessWidget {
                   GoRoute(
                     path: 'RecoverPassword',
                     builder: (context, state) => const RecoverPasswordPage(),
+                  ),
+                  GoRoute(
+                    path: 'Groups',
+                    builder: (context, state) => const GroupListPage(),
                   ),
                 ],
               ),

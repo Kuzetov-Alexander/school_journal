@@ -10,7 +10,7 @@ class DoubleButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         color: const Color.fromRGBO(118, 118, 128, 0.12),
       ),
-      padding: const EdgeInsets.all(21),
+      padding: const EdgeInsets.all(2),
       // height: 32,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

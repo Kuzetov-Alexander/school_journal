@@ -38,7 +38,6 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-
   void _authenticateWithEmailAndPassword(context) {
     if (formKey.currentState!.validate()) {
       // If email is valid adding new event [SignUpRequested].
@@ -92,7 +91,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
- double widthScreen = MediaQuery.of(context).size.width;
+    double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -118,7 +117,7 @@ class _SignInPageState extends State<SignInPage> {
             }
             if (state is UnAuthenticated) {
               // Showing the sign in form if the user is not authenticated
-              return Center(child: Text('Юзер не авторизован'));
+              return const Center(child: Text('Юзер не авторизован'));
             }
             return SafeArea(
               child: SingleChildScrollView(
@@ -134,11 +133,14 @@ class _SignInPageState extends State<SignInPage> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children:  [
+                          children: [
                             Text(
                               'Вход',
                               textAlign: TextAlign.start,
-                              style: TextStyle(fontWeight: FontWeight.w700,fontSize:heightScreen*0.024,letterSpacing: 1.4 ),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: heightScreen * 0.024,
+                                  letterSpacing: 1.4),
                             ),
                           ],
                         ),
@@ -179,7 +181,6 @@ class _SignInPageState extends State<SignInPage> {
                                 decoration:
                                     decoration('Введите пароль', 'Пароль'),
                               ),
-                             
                               const SizedBox(height: 16),
                               SizedBox(
                                 height: 56,
@@ -188,8 +189,7 @@ class _SignInPageState extends State<SignInPage> {
                                   style: ButtonStyle(
                                     backgroundColor:
                                         const MaterialStatePropertyAll<Color>(
-                                      Color(0xff56138E),
-                                    ),
+                                            Colors.green),
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     shape: MaterialStateProperty.all(
@@ -199,7 +199,6 @@ class _SignInPageState extends State<SignInPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    //  _authenticateWithEmailAndPassword(context);
                                     _authenticateWithEmailAndPassword(context);
                                   },
                                   child: const Text(
@@ -212,12 +211,35 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                height: heightScreen * 0.01,
+                              ),
+                              Row(mainAxisAlignment: MainAxisAlignment.center,
+                                children:  [
+                                  TextButton(
+                                     onPressed: () {
+                                      context.go("/RecoverPassword");
+                                    },
+                                    child: const Text('Восстановить пароль',
+                                    style: TextStyle(color: Colors.blue),),
+                                    
+                                   
+                                  )
+                                ],
+                              )
                             ],
                           ),
                         ),
+                        
                         TextButton(
                           onPressed: () {
-                            context.go('/second');
+                            context.go('/SignUp');
+                          },
+                          child: const Text('Регистрация'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.go('/Groups');
                           },
                           child: const Text('Следующая страница'),
                         ),
