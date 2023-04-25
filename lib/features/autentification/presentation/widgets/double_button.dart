@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 
 class DoubleButton extends StatelessWidget {
   const DoubleButton({super.key});
@@ -14,15 +16,17 @@ class DoubleButton extends StatelessWidget {
       // height: 32,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
+        children:  [
           Button(
+            onPressed: () => context.read<Providerbool>().changedTypePerson(true),
             nameButton: 'Учитель',
-            color: Colors.white,
+            color: context.watch<Providerbool>().teacher  ? Colors.white: Colors.transparent,
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Button(
+            onPressed: () => context.read<Providerbool>().changedTypePerson(false),
             nameButton: 'Ученик',
-            color: Colors.transparent,
+            color:  !context.watch<Providerbool>().teacher ? Colors.white: Colors.transparent,
           ),
         ],
       ),
@@ -33,8 +37,9 @@ class DoubleButton extends StatelessWidget {
 class Button extends StatelessWidget {
   final String nameButton;
   final Color color;
+  final void Function() onPressed;
 
-  const Button({super.key, required this.nameButton, required this.color});
+  const Button({super.key, required this.nameButton, required this.color, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +54,7 @@ class Button extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Text(
           nameButton,
           textAlign: TextAlign.center,

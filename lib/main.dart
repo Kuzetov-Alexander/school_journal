@@ -3,11 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
+import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/firebase_options.dart';
 
@@ -16,7 +18,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp( ChangeNotifierProvider(create: (_) =>Providerbool(), 
+  child:  const MyApp()),);
+    
+    
+   
 }
 
 class MyApp extends StatelessWidget {

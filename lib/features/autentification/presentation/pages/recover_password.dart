@@ -12,7 +12,6 @@ class RecoverPasswordPage extends StatefulWidget {
 }
 
 class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
-  bool _isHiddenPassword = true;
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -47,11 +46,7 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  void _passwordView() {
-    setState(() {
-      _isHiddenPassword = !_isHiddenPassword;
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

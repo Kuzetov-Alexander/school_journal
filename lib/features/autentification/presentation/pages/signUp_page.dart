@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -13,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool _isHiddenPassword = true;
+  
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -69,6 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _isHiddenPassword = !_isHiddenPassword;
     });
   }
+  
 
   // Future<void> _submitForm() async {
   //   if (formKey.currentState!.validate()) {
@@ -101,6 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
  double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+  
 
     return Scaffold(
       body: BlocListener<AuthBloc, BlocAuthState>(
@@ -157,6 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const DoubleButton(),
                         const SizedBox(height: 24),
+                        context.watch<Providerbool>().teacher ? 
                         Form(
                           key: formKey,
                           child: Column(
@@ -244,7 +249,97 @@ class _SignUpPageState extends State<SignUpPage> {
                            
                             ],
                           ),
-                        ),
+                        ) :Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                onFieldSubmitted: (_) {
+                                  _fieldFocusChange(
+                                      context, _fullNameFocus, _emailFocus);
+                                },
+                                focusNode: _fullNameFocus,
+                                keyboardType: TextInputType.name,
+                                autocorrect: false,
+                                controller: fullNameController,
+                                decoration:
+                                    decoration('Ccылка на группу', 'Введите ссылку'),
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                onFieldSubmitted: (_) {
+                                  _fieldFocusChange(
+                                      context, _emailFocus, _passwordFocus);
+                                },
+                                focusNode: _emailFocus,
+                                keyboardType: TextInputType.emailAddress,
+                                autocorrect: false,
+                                controller: emailController,
+                                decoration:
+                                    decoration('Введите почту', 'Почта'),
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                onFieldSubmitted: (_) {
+                                  _fieldFocusChange(context, _passwordFocus,
+                                      _confirmPasswordFocus);
+                                },
+                                focusNode: _passwordFocus,
+                                keyboardType: TextInputType.visiblePassword,
+                                autocorrect: false,
+                                controller: passwordController,
+                                decoration:
+                                    decoration('Введите пароль', 'Пароль'),
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                focusNode: _confirmPasswordFocus,
+                                keyboardType: TextInputType.visiblePassword,
+                                autocorrect: false,
+                                controller: confirmPasswordController,
+                                decoration: decoration(
+                                    'Повторите пароль', 'Подтверждение пароля'),
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: 56,
+                                width: double.infinity,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        const MaterialStatePropertyAll<Color>(
+                                      Color(0xff56138E),
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    
+                                    // _authenticateWithEmailAndPassword(context);
+                                    context.go('/Groups');
+                                  },
+                                  child: const Text(
+                                    'Зарегистрироваться',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                           
+                            ],
+                          ),
+                        )
+
+                        
+                        ,
                          TextButton(
                           onPressed: () {
                             context.go('/SignIn');
