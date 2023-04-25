@@ -2,14 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 /// Контракт для инициализации, входа, выхода, регистрации в firebase
 abstract class RemoteDataSource {
-  Future<void> signUp(
-      {required String email, required String password}) async {}
-
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {}
-
+  Future<void> signUp({required String email, required String password});
+  Future<void> signIn({required String email, required String password});
   Future<void> signOut() async {}
 }
 

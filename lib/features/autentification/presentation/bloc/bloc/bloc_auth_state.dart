@@ -1,11 +1,9 @@
 part of 'bloc_auth_bloc.dart';
 
-
-
 abstract class BlocAuthState extends Equatable {}
 
 // When the user presses the signin or signup button the state is changed to loading first and then to Authenticated.
-class Loading extends BlocAuthState {
+class AuthLoading extends BlocAuthState {
   @override
   List<Object?> get props => [];
 }

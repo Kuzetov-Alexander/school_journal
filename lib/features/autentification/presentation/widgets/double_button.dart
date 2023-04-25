@@ -16,17 +16,23 @@ class DoubleButton extends StatelessWidget {
       // height: 32,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children:  [
+        children: [
           Button(
-            onPressed: () => context.read<Providerbool>().changedTypePerson(true),
+            onPressed: () =>
+                context.read<Providerbool>().changedTypePerson(true),
             nameButton: 'Учитель',
-            color: context.watch<Providerbool>().teacher  ? Colors.white: Colors.transparent,
+            color: context.watch<Providerbool>().teacher
+                ? Colors.white
+                : Colors.transparent,
           ),
           const SizedBox(width: 2),
           Button(
-            onPressed: () => context.read<Providerbool>().changedTypePerson(false),
+            onPressed: () =>
+                context.read<Providerbool>().changedTypePerson(false),
             nameButton: 'Ученик',
-            color:  !context.watch<Providerbool>().teacher ? Colors.white: Colors.transparent,
+            color: !context.watch<Providerbool>().teacher
+                ? Colors.white
+                : Colors.transparent,
           ),
         ],
       ),
@@ -39,7 +45,11 @@ class Button extends StatelessWidget {
   final Color color;
   final void Function() onPressed;
 
-  const Button({super.key, required this.nameButton, required this.color, required this.onPressed});
+  const Button(
+      {super.key,
+      required this.nameButton,
+      required this.color,
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

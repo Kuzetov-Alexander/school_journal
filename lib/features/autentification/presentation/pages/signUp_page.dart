@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -11,6 +12,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AuthWrapper ( Widgets auth, Unauth, )
       body: BlocConsumer<AuthBloc, BlocAuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
@@ -22,15 +24,12 @@ class SignUpPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is Loading) {
+          if (state is AuthLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state is UnAuthenticated) {
-            return const SignUpWidget();
-          }
-          return Container();
+          return const SignUpWidget();
         },
       ),
     );
@@ -136,7 +135,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.name,
                             autocorrect: false,
                             controller: fullNameController,
-                            decoration: decoration('Введите полное имя', 'ФИО'),
+                            decoration: DecorationClass()
+                                .decoration('Введите полное имя', 'ФИО'),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
@@ -148,7 +148,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
                             controller: emailController,
-                            decoration: decoration('Введите почту', 'Почта'),
+                            decoration: DecorationClass()
+                                .decoration('Введите почту', 'Почта'),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
@@ -160,7 +161,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.visiblePassword,
                             autocorrect: false,
                             controller: passwordController,
-                            decoration: decoration('Введите пароль', 'Пароль'),
+                            decoration: DecorationClass()
+                                .decoration('Введите пароль', 'Пароль'),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
@@ -168,7 +170,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.visiblePassword,
                             autocorrect: false,
                             controller: confirmPasswordController,
-                            decoration: decoration(
+                            decoration: DecorationClass().decoration(
                                 'Повторите пароль', 'Подтверждение пароля'),
                           ),
                           const SizedBox(height: 16),
@@ -217,7 +219,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.name,
                             autocorrect: false,
                             controller: fullNameController,
-                            decoration: decoration(
+                            decoration: DecorationClass().decoration(
                                 'Ccылка на группу', 'Введите ссылку'),
                           ),
                           const SizedBox(height: 16),
@@ -230,7 +232,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
                             controller: emailController,
-                            decoration: decoration('Введите почту', 'Почта'),
+                            decoration: DecorationClass()
+                                .decoration('Введите почту', 'Почта'),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
@@ -242,7 +245,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.visiblePassword,
                             autocorrect: false,
                             controller: passwordController,
-                            decoration: decoration('Введите пароль', 'Пароль'),
+                            decoration: DecorationClass()
+                                .decoration('Введите пароль', 'Пароль'),
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
@@ -250,7 +254,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             keyboardType: TextInputType.visiblePassword,
                             autocorrect: false,
                             controller: confirmPasswordController,
-                            decoration: decoration(
+                            decoration: DecorationClass().decoration(
                                 'Повторите пароль', 'Подтверждение пароля'),
                           ),
                           const SizedBox(height: 16),
@@ -271,10 +275,15 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                 ),
                               ),
                               onPressed: () {
-                                // Кузетов Александр Олегович
-                                // akuzetovip@gmail.com
-                                // Qwerty123
-
+                                String name = 'Кузетов Александр Олегович';
+                                String email = 'akuzetovip@gmail.com';
+                                String password = 'Qwerty123_';
+                                String confirmpassword = 'Qwerty123_';
+                                fullNameController.text = name;
+                                emailController.text = email;
+                                passwordController.text = password;
+                                confirmPasswordController.text =
+                                    confirmpassword;
                                 _authenticateWithEmailAndPassword(context);
                               },
                               child: const Text(
@@ -309,64 +318,3 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     );
   }
 }
-
-InputDecoration decoration(String hintText, String labelText) {
-  return InputDecoration(
-    filled: true,
-    fillColor: const Color(0xffF3F3F3),
-    border: const OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-    ),
-    focusedBorder: const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(12),
-      ),
-      borderSide: BorderSide(
-        color: Color(0xffF3F3F3),
-      ),
-    ),
-    enabledBorder: const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(12),
-      ),
-      borderSide: BorderSide(color: Colors.white),
-    ),
-    hintText: hintText,
-    hintStyle: const TextStyle(
-        color: Color(0xffB6B6B6), fontWeight: FontWeight.w600, fontSize: 14),
-    labelText: labelText,
-    labelStyle: const TextStyle(
-        color: Color(0xffB6B6B6), fontWeight: FontWeight.w600, fontSize: 14),
-  );
-}
-
-
-//  BlocConsumer<AuthBloc, AuthState>(
-//         listener: (context, state) {
-//           if (state is Authenticated) {
-//             // Navigating to the dashboard screen if the user is authenticated
-//             Navigator.of(context).pushReplacement(
-//               MaterialPageRoute(
-//                 builder: (context) => const Dashboard(),
-//               ),
-//             );
-//           }
-//           if (state is AuthError) {
-//             // Displaying the error message if the user is not authenticated
-//             ScaffoldMessenger.of(context)
-//                 .showSnackBar(SnackBar(content: Text(state.error)));
-//           }
-//         },
-//         builder: (context, state) {
-//           if (state is Loading) {
-//             // Displaying the loading indicator while the user is signing up
-//             return const Center(child: CircularProgressIndicator());
-//           }
-//           if (state is UnAuthenticated) {
-//             // Displaying the sign up form if the user is not authenticated
-//             return Center(child: //..)
-//           }
-//           return Container();
-//         },
-//       ),
-//     );

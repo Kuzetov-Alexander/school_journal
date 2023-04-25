@@ -4,3 +4,7 @@ import 'package:school_journal/core/error/failure.dart';
 abstract class UseCase<Type, Params> {
   Future<Either<Failure, Type>> call(Params params);
 }
+
+abstract class UseCaseEmpty<Type> {
+  Future<Either<Failure, Type>> call();
+}

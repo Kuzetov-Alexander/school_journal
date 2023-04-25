@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 
 class RecoverPasswordPage extends StatefulWidget {
   const RecoverPasswordPage({super.key});
@@ -61,7 +62,7 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
           }
         },
         builder: (context, state) {
-          if (state is Loading) {
+          if (state is AuthLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -108,7 +109,8 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
                             controller: emailController,
-                            decoration: decoration('Введите почту', 'Почта'),
+                            decoration: DecorationClass()
+                                .decoration('Введите почту', 'Почта'),
                           ),
                           SizedBox(height: heightScreen * 0.1),
                           SizedBox(
@@ -156,34 +158,4 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
       ),
     );
   }
-}
-
-InputDecoration decoration(String hintText, String labelText) {
-  return InputDecoration(
-    filled: true,
-    fillColor: const Color(0xffF3F3F3),
-    border: const OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-    ),
-    focusedBorder: const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(12),
-      ),
-      borderSide: BorderSide(
-        color: Color(0xffF3F3F3),
-      ),
-    ),
-    enabledBorder: const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(12),
-      ),
-      borderSide: BorderSide(color: Colors.white),
-    ),
-    hintText: hintText,
-    hintStyle: const TextStyle(
-        color: Color(0xffB6B6B6), fontWeight: FontWeight.w600, fontSize: 14),
-    labelText: labelText,
-    labelStyle: const TextStyle(
-        color: Color(0xffB6B6B6), fontWeight: FontWeight.w600, fontSize: 14),
-  );
 }

@@ -9,5 +9,4 @@ abstract class Failure extends Equatable {
 /// Дополнительная обработка ошибок
 class ServerFailure extends Failure {}
 
-/// Дополнительная обработка ошибок
-class CacheFailure extends Failure {}
+

@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
+import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
+import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
-import 'package:school_journal/features/teacher_profile/Presentation/pages/group_list_page.dart';
+import 'package:school_journal/features/teacher_profile/presentation/pages/group_list_page.dart';
 import 'package:school_journal/firebase_options.dart';
 
 Future<void> main() async {
@@ -27,11 +30,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AuthRepository(),
+    return RepositoryProvider<UserRepository>(
+      lazy: false,
+      create: (context) => UserRepositoryImpl(
+        remoteDataSource: RemoteDataSourceImpl(),
+      ),
       child: BlocProvider<AuthBloc>(
+        lazy: false,
         create: (context) => AuthBloc(
-          authRepository: RepositoryProvider.of<AuthRepository>(context),
+          authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
           theme: ThemeData(fontFamily: 'SF-Pro'),
