@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -64,11 +63,9 @@ class _SignInPageState extends State<SignInPage> {
       body: BlocListener<AuthBloc, BlocAuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            // Navigating to the dashboard screen if the user is authenticated
             context.go('/second');
           }
           if (state is AuthError) {
-            // Showing the error message if the user has entered invalid credentials
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.error)));
           }
@@ -76,13 +73,11 @@ class _SignInPageState extends State<SignInPage> {
         child: BlocBuilder<AuthBloc, BlocAuthState>(
           builder: (context, state) {
             if (state is Loading) {
-              // Showing the loading indicator while the user is signing in
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
             if (state is UnAuthenticated) {
-              // Showing the sign in form if the user is not authenticated
               return const Center(child: Text('Юзер не авторизован'));
             }
             return SafeArea(

@@ -11,8 +11,6 @@ class GroupListPage extends StatelessWidget {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
-      // appBar: AppBar(title: const Text('Мои группы', style: TextStyle(fontSize: 41,color: Colors.black
-      // ),),),
       body: SafeArea(
           child: Column(
         children: [
@@ -25,9 +23,13 @@ class GroupListPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(onPressed: () {
+                    IconButton(
+                      onPressed: () {
                         context.go('/');
-                    }, icon: const Icon(Icons.arrow_left),iconSize: 35,),
+                      },
+                      icon: const Icon(Icons.arrow_left),
+                      iconSize: 35,
+                    ),
                     IconButton(
                       splashRadius: 1,
                       onPressed: () {},

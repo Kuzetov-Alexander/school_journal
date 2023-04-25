@@ -7,7 +7,7 @@ part 'bloc_auth_state.dart';
 
 class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
   final AuthRepository authRepository;
-  AuthBloc({required this.authRepository}) : super(Authenticated()) {
+  AuthBloc({required this.authRepository}) : super(UnAuthenticated()) {
     // When User Presses the SignIn Button, we will send the SignInRequested Event to the AuthBloc to handle it and emit the Authenticated State if the user is authenticated
     on<SignInRequested>(
       (event, emit) async {
@@ -30,6 +30,7 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
         try {
           await authRepository.signUp(
               email: event.email, password: event.password);
+          await authRepository.sendVerificationEmail();
           emit(Authenticated());
         } catch (e) {
           emit(AuthError(e.toString()));
@@ -89,6 +90,17 @@ class AuthRepository {
       } else if (e.code == 'wrong-password') {
         throw Exception('Wrong password provided for that user.');
       }
+    }
+  }
+
+  Future<void> sendVerificationEmail() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
+
+      // await Future.delayed(const Duration(seconds: 5));
+    } catch (e) {
+      print('$e');
     }
   }
 }
