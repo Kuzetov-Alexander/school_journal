@@ -14,7 +14,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool _isHiddenPassword = true;
-  
+
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -71,40 +71,11 @@ class _SignUpPageState extends State<SignUpPage> {
       _isHiddenPassword = !_isHiddenPassword;
     });
   }
-  
-
-  // Future<void> _submitForm() async {
-  //   if (formKey.currentState!.validate()) {
-  //     // formKey.currentState!.save();
-
-  //     debugPrint('---------------Number email: ${emailController.text}');
-  //     debugPrint('---------------Number password: ${passwordController.text}');
-  //     debugPrint(
-  //         '---------------Confirm password: ${confirmPasswordController.text}');
-  //   }
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: emailController.text.trim(),
-  //         password: passwordController.text.trim());
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'email-already-in-use') {
-  //       SnackBarService.showSnackBar(
-  //           context, 'Такой Email уже используется', true);
-  //       return;
-  //     } else {
-  //       SnackBarService.showSnackBar(context, 'Неизвестная ошибка', true);
-  //     }
-  //     debugPrint(e.code);
-  //   } catch (e) {
-  //     debugPrint('----------$e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
- double widthScreen = MediaQuery.of(context).size.width;
+    double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-  
 
     return Scaffold(
       body: BlocListener<AuthBloc, BlocAuthState>(
@@ -129,231 +100,237 @@ class _SignUpPageState extends State<SignUpPage> {
             }
             if (state is UnAuthenticated) {
               // Showing the sign in form if the user is not authenticated
-              return Center(child: Text('Юзер не авторизован'));
+              return const Center(child: Text('Юзер не авторизован'));
             }
             return SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: Container(
-                    // color: Colors.white,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children:  [
-                            Text(
-                              'Регистрация',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(fontWeight: FontWeight.w700,fontSize:heightScreen*0.024,letterSpacing: 1.4 ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Регистрация',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: heightScreen * 0.024,
+                                letterSpacing: 1.4),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      const SizedBox(
+                        child: Image(
+                          image: AssetImage('assets/images/book.png'),
+                        ),
+                      ),
+                      const DoubleButton(),
+                      const SizedBox(height: 24),
+                      context.watch<Providerbool>().teacher
+                          ? Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      _fieldFocusChange(context,
+                                          _fullNameFocus, _emailFocus);
+                                    },
+                                    focusNode: _fullNameFocus,
+                                    keyboardType: TextInputType.name,
+                                    autocorrect: false,
+                                    controller: fullNameController,
+                                    decoration: decoration(
+                                        'Введите полное имя', 'ФИО'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      _fieldFocusChange(context, _emailFocus,
+                                          _passwordFocus);
+                                    },
+                                    focusNode: _emailFocus,
+                                    keyboardType: TextInputType.emailAddress,
+                                    autocorrect: false,
+                                    controller: emailController,
+                                    decoration:
+                                        decoration('Введите почту', 'Почта'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      _fieldFocusChange(
+                                          context,
+                                          _passwordFocus,
+                                          _confirmPasswordFocus);
+                                    },
+                                    focusNode: _passwordFocus,
+                                    keyboardType:
+                                        TextInputType.visiblePassword,
+                                    autocorrect: false,
+                                    controller: passwordController,
+                                    decoration: decoration(
+                                        'Введите пароль', 'Пароль'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextFormField(
+                                    focusNode: _confirmPasswordFocus,
+                                    keyboardType:
+                                        TextInputType.visiblePassword,
+                                    autocorrect: false,
+                                    controller: confirmPasswordController,
+                                    decoration: decoration('Повторите пароль',
+                                        'Подтверждение пароля'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  SizedBox(
+                                    height: 56,
+                                    width: double.infinity,
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll<
+                                                Color>(
+                                          Color(0xff56138E),
+                                        ),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        // _authenticateWithEmailAndPassword(context);
+                                        context.go('/Groups');
+                                      },
+                                      child: const Text(
+                                        'Зарегистрироваться',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      _fieldFocusChange(context,
+                                          _fullNameFocus, _emailFocus);
+                                    },
+                                    focusNode: _fullNameFocus,
+                                    keyboardType: TextInputType.name,
+                                    autocorrect: false,
+                                    controller: fullNameController,
+                                    decoration: decoration(
+                                        'Ccылка на группу', 'Введите ссылку'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      _fieldFocusChange(context, _emailFocus,
+                                          _passwordFocus);
+                                    },
+                                    focusNode: _emailFocus,
+                                    keyboardType: TextInputType.emailAddress,
+                                    autocorrect: false,
+                                    controller: emailController,
+                                    decoration:
+                                        decoration('Введите почту', 'Почта'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      _fieldFocusChange(
+                                          context,
+                                          _passwordFocus,
+                                          _confirmPasswordFocus);
+                                    },
+                                    focusNode: _passwordFocus,
+                                    keyboardType:
+                                        TextInputType.visiblePassword,
+                                    autocorrect: false,
+                                    controller: passwordController,
+                                    decoration: decoration(
+                                        'Введите пароль', 'Пароль'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextFormField(
+                                    focusNode: _confirmPasswordFocus,
+                                    keyboardType:
+                                        TextInputType.visiblePassword,
+                                    autocorrect: false,
+                                    controller: confirmPasswordController,
+                                    decoration: decoration('Повторите пароль',
+                                        'Подтверждение пароля'),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  SizedBox(
+                                    height: 56,
+                                    width: double.infinity,
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            const MaterialStatePropertyAll<
+                                                Color>(
+                                          Color(0xff56138E),
+                                        ),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        // _authenticateWithEmailAndPassword(context);
+                                        context.go('/Groups');
+                                      },
+                                      child: const Text(
+                                        'Зарегистрироваться',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        const SizedBox(
-                          child: Image(
-                            image: AssetImage('assets/images/book.png'),
-                          ),
-                        ),
-                        const DoubleButton(),
-                        const SizedBox(height: 24),
-                        context.watch<Providerbool>().teacher ? 
-                        Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(
-                                      context, _fullNameFocus, _emailFocus);
-                                },
-                                focusNode: _fullNameFocus,
-                                keyboardType: TextInputType.name,
-                                autocorrect: false,
-                                controller: fullNameController,
-                                decoration:
-                                    decoration('Введите полное имя', 'ФИО'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(
-                                      context, _emailFocus, _passwordFocus);
-                                },
-                                focusNode: _emailFocus,
-                                keyboardType: TextInputType.emailAddress,
-                                autocorrect: false,
-                                controller: emailController,
-                                decoration:
-                                    decoration('Введите почту', 'Почта'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(context, _passwordFocus,
-                                      _confirmPasswordFocus);
-                                },
-                                focusNode: _passwordFocus,
-                                keyboardType: TextInputType.visiblePassword,
-                                autocorrect: false,
-                                controller: passwordController,
-                                decoration:
-                                    decoration('Введите пароль', 'Пароль'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                focusNode: _confirmPasswordFocus,
-                                keyboardType: TextInputType.visiblePassword,
-                                autocorrect: false,
-                                controller: confirmPasswordController,
-                                decoration: decoration(
-                                    'Повторите пароль', 'Подтверждение пароля'),
-                              ),
-                              const SizedBox(height: 16),
-                              SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        const MaterialStatePropertyAll<Color>(
-                                      Color(0xff56138E),
-                                    ),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    
-                                    // _authenticateWithEmailAndPassword(context);
-                                    context.go('/Groups');
-                                  },
-                                  child: const Text(
-                                    'Зарегистрироваться',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                           
-                            ],
-                          ),
-                        ) :Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(
-                                      context, _fullNameFocus, _emailFocus);
-                                },
-                                focusNode: _fullNameFocus,
-                                keyboardType: TextInputType.name,
-                                autocorrect: false,
-                                controller: fullNameController,
-                                decoration:
-                                    decoration('Ccылка на группу', 'Введите ссылку'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(
-                                      context, _emailFocus, _passwordFocus);
-                                },
-                                focusNode: _emailFocus,
-                                keyboardType: TextInputType.emailAddress,
-                                autocorrect: false,
-                                controller: emailController,
-                                decoration:
-                                    decoration('Введите почту', 'Почта'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(context, _passwordFocus,
-                                      _confirmPasswordFocus);
-                                },
-                                focusNode: _passwordFocus,
-                                keyboardType: TextInputType.visiblePassword,
-                                autocorrect: false,
-                                controller: passwordController,
-                                decoration:
-                                    decoration('Введите пароль', 'Пароль'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                focusNode: _confirmPasswordFocus,
-                                keyboardType: TextInputType.visiblePassword,
-                                autocorrect: false,
-                                controller: confirmPasswordController,
-                                decoration: decoration(
-                                    'Повторите пароль', 'Подтверждение пароля'),
-                              ),
-                              const SizedBox(height: 16),
-                              SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        const MaterialStatePropertyAll<Color>(
-                                      Color(0xff56138E),
-                                    ),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    
-                                    // _authenticateWithEmailAndPassword(context);
-                                    context.go('/Groups');
-                                  },
-                                  child: const Text(
-                                    'Зарегистрироваться',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                           
-                            ],
-                          ),
-                        )
-
-                        
-                        ,
-                         TextButton(
-                          onPressed: () {
-                            context.go('/SignIn');
-                          },
-                          child: const Text('Войти'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            context.go('/Groups');
-                          },
-                          child: const Text('Следующая страница'),
-                        ),
-                      ],
-                    ),
+                      TextButton(
+                        onPressed: () {
+                          context.go('/SignIn');
+                        },
+                        child: const Text('Войти'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.go('/Groups');
+                        },
+                        child: const Text('Следующая страница'),
+                      ),
+                    ],
                   ),
                 ),
               ),

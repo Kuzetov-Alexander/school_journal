@@ -97,127 +97,124 @@ class _SignInPageState extends State<SignInPage> {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: Container(
-                    // color: Colors.white,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Вход',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: heightScreen * 0.024,
-                                  letterSpacing: 1.4),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        const SizedBox(
-                          child: Image(
-                            image: AssetImage('assets/images/book.png'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Вход',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: heightScreen * 0.024,
+                                letterSpacing: 1.4),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      const SizedBox(
+                        child: Image(
+                          image: AssetImage('assets/images/book.png'),
                         ),
-                        const DoubleButton(),
-                        const SizedBox(height: 24),
-                        Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(
-                                      context, _emailFocus, _passwordFocus);
-                                },
-                                focusNode: _emailFocus,
-                                keyboardType: TextInputType.emailAddress,
-                                autocorrect: false,
-                                controller: emailController,
-                                decoration:
-                                    decoration('Введите почту', 'Почта'),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                onFieldSubmitted: (_) {
-                                  _fieldFocusChange(context, _passwordFocus,
-                                      _confirmPasswordFocus);
-                                },
-                                focusNode: _passwordFocus,
-                                keyboardType: TextInputType.visiblePassword,
-                                autocorrect: false,
-                                controller: passwordController,
-                                decoration:
-                                    decoration('Введите пароль', 'Пароль'),
-                              ),
-                              const SizedBox(height: 16),
-                              SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        const MaterialStatePropertyAll<Color>(
-                                            Colors.green),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    _authenticateWithEmailAndPassword(context);
-                                  },
-                                  child: const Text(
-                                    'Войти',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
+                      ),
+                      const DoubleButton(),
+                      const SizedBox(height: 24),
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              onFieldSubmitted: (_) {
+                                _fieldFocusChange(
+                                    context, _emailFocus, _passwordFocus);
+                              },
+                              focusNode: _emailFocus,
+                              keyboardType: TextInputType.emailAddress,
+                              autocorrect: false,
+                              controller: emailController,
+                              decoration:
+                                  decoration('Введите почту', 'Почта'),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              onFieldSubmitted: (_) {
+                                _fieldFocusChange(context, _passwordFocus,
+                                    _confirmPasswordFocus);
+                              },
+                              focusNode: _passwordFocus,
+                              keyboardType: TextInputType.visiblePassword,
+                              autocorrect: false,
+                              controller: passwordController,
+                              decoration:
+                                  decoration('Введите пароль', 'Пароль'),
+                            ),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              height: 56,
+                              width: double.infinity,
+                              child: TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      const MaterialStatePropertyAll<Color>(
+                                          Colors.green),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
                                     ),
                                   ),
                                 ),
+                                onPressed: () {
+                                  _authenticateWithEmailAndPassword(context);
+                                },
+                                child: const Text(
+                                  'Войти',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                              SizedBox(
-                                height: heightScreen * 0.01,
-                              ),
-                              Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children:  [
-                                  TextButton(
-                                     onPressed: () {
-                                      context.go("/RecoverPassword");
-                                    },
-                                    child: const Text('Восстановить пароль',
-                                    style: TextStyle(color: Colors.blue),),
-                                    
-                                   
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.01,
+                            ),
+                            Row(mainAxisAlignment: MainAxisAlignment.center,
+                              children:  [
+                                TextButton(
+                                   onPressed: () {
+                                    context.go("/RecoverPassword");
+                                  },
+                                  child: const Text('Восстановить пароль',
+                                  style: TextStyle(color: Colors.blue),),
+                                  
+                                 
+                                )
+                              ],
+                            )
+                          ],
                         ),
-                        
-                        TextButton(
-                          onPressed: () {
-                            context.go('/SignUp');
-                          },
-                          child: const Text('Регистрация'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            context.go('/Groups');
-                          },
-                          child: const Text('Следующая страница'),
-                        ),
-                      ],
-                    ),
+                      ),
+                      
+                      TextButton(
+                        onPressed: () {
+                          context.go('/SignUp');
+                        },
+                        child: const Text('Регистрация'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.go('/Groups');
+                        },
+                        child: const Text('Следующая страница'),
+                      ),
+                    ],
                   ),
                 ),
               ),

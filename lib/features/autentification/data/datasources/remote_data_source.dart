@@ -22,8 +22,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<void> signUp({required String email, required String password}) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception('The password provided is too weak.');
@@ -42,8 +42,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email, password: password);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
