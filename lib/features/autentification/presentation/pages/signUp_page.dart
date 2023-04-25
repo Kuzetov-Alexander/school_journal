@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool _isHiddenPassword = true;
+  
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -69,9 +71,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
       _isHiddenPassword = !_isHiddenPassword;
     });
   }
+  
+
+  // Future<void> _submitForm() async {
+  //   if (formKey.currentState!.validate()) {
+  //     // formKey.currentState!.save();
+
+  //     debugPrint('---------------Number email: ${emailController.text}');
+  //     debugPrint('---------------Number password: ${passwordController.text}');
+  //     debugPrint(
+  //         '---------------Confirm password: ${confirmPasswordController.text}');
+  //   }
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //         email: emailController.text.trim(),
+  //         password: passwordController.text.trim());
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'email-already-in-use') {
+  //       SnackBarService.showSnackBar(
+  //           context, 'Такой Email уже используется', true);
+  //       return;
+  //     } else {
+  //       SnackBarService.showSnackBar(context, 'Неизвестная ошибка', true);
+  //     }
+  //     debugPrint(e.code);
+  //   } catch (e) {
+  //     debugPrint('----------$e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+ double widthScreen = MediaQuery.of(context).size.width;
+    double heightScreen = MediaQuery.of(context).size.height;
+  
+
     return Scaffold(
       body: BlocListener<AuthBloc, BlocAuthState>(
         listener: (context, state) {
@@ -95,7 +129,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             }
             if (state is UnAuthenticated) {
               // Showing the sign in form if the user is not authenticated
-              return const Center(child: Text('Юзер не авторизован'));
+              return Center(child: Text('Юзер не авторизован'));
             }
             return SafeArea(
               child: SingleChildScrollView(
@@ -103,7 +137,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                   child: Container(
-                    color: Colors.white,
+                    // color: Colors.white,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -111,10 +145,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
+                          children:  [
                             Text(
                               'Регистрация',
                               textAlign: TextAlign.start,
+                              style: TextStyle(fontWeight: FontWeight.w700,fontSize:heightScreen*0.024,letterSpacing: 1.4 ),
                             ),
                           ],
                         ),
@@ -126,6 +161,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         const DoubleButton(),
                         const SizedBox(height: 24),
+                        context.watch<Providerbool>().teacher ? 
                         Form(
                           key: formKey,
                           child: Column(
@@ -196,8 +232,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    //  _authenticateWithEmailAndPassword(context);
-                                    _authenticateWithEmailAndPassword(context);
+                                    
+                                    // _authenticateWithEmailAndPassword(context);
+                                    context.go('/Groups');
                                   },
                                   child: const Text(
                                     'Зарегистрироваться',
@@ -209,12 +246,109 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   ),
                                 ),
                               ),
+                           
                             ],
                           ),
+                        ) :Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                onFieldSubmitted: (_) {
+                                  _fieldFocusChange(
+                                      context, _fullNameFocus, _emailFocus);
+                                },
+                                focusNode: _fullNameFocus,
+                                keyboardType: TextInputType.name,
+                                autocorrect: false,
+                                controller: fullNameController,
+                                decoration:
+                                    decoration('Ccылка на группу', 'Введите ссылку'),
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                onFieldSubmitted: (_) {
+                                  _fieldFocusChange(
+                                      context, _emailFocus, _passwordFocus);
+                                },
+                                focusNode: _emailFocus,
+                                keyboardType: TextInputType.emailAddress,
+                                autocorrect: false,
+                                controller: emailController,
+                                decoration:
+                                    decoration('Введите почту', 'Почта'),
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                onFieldSubmitted: (_) {
+                                  _fieldFocusChange(context, _passwordFocus,
+                                      _confirmPasswordFocus);
+                                },
+                                focusNode: _passwordFocus,
+                                keyboardType: TextInputType.visiblePassword,
+                                autocorrect: false,
+                                controller: passwordController,
+                                decoration:
+                                    decoration('Введите пароль', 'Пароль'),
+                              ),
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                focusNode: _confirmPasswordFocus,
+                                keyboardType: TextInputType.visiblePassword,
+                                autocorrect: false,
+                                controller: confirmPasswordController,
+                                decoration: decoration(
+                                    'Повторите пароль', 'Подтверждение пароля'),
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: 56,
+                                width: double.infinity,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        const MaterialStatePropertyAll<Color>(
+                                      Color(0xff56138E),
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    
+                                    // _authenticateWithEmailAndPassword(context);
+                                    context.go('/Groups');
+                                  },
+                                  child: const Text(
+                                    'Зарегистрироваться',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                           
+                            ],
+                          ),
+                        )
+
+                        
+                        ,
+                         TextButton(
+                          onPressed: () {
+                            context.go('/SignIn');
+                          },
+                          child: const Text('Войти'),
                         ),
                         TextButton(
                           onPressed: () {
-                            context.go('/second');
+                            context.go('/Groups');
                           },
                           child: const Text('Следующая страница'),
                         ),

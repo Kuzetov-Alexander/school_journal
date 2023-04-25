@@ -7,7 +7,7 @@ part 'bloc_auth_state.dart';
 
 class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
   final AuthRepository authRepository;
-  AuthBloc({required this.authRepository}) : super(UnAuthenticated()) {
+  AuthBloc({required this.authRepository}) : super(Authenticated()) {
     // When User Presses the SignIn Button, we will send the SignInRequested Event to the AuthBloc to handle it and emit the Authenticated State if the user is authenticated
     on<SignInRequested>(
       (event, emit) async {
