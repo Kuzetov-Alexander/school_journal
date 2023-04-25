@@ -13,7 +13,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool _isHiddenPassword = true;
+  // bool _isHiddenPassword = true;
 
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -48,14 +48,14 @@ class _SignUpPageState extends State<SignUpPage> {
 //     );
 //   }
 // }
-  void _authenticateWithEmailAndPassword(context) {
-    if (formKey.currentState!.validate()) {
-      // If email is valid adding new event [SignUpRequested].
-      BlocProvider.of<AuthBloc>(context).add(
-        SignUpRequested(emailController.text, passwordController.text),
-      );
-    }
-  }
+  // void _authenticateWithEmailAndPassword(context) {
+  //   if (formKey.currentState!.validate()) {
+  //     // If email is valid adding new event [SignUpRequested].
+  //     BlocProvider.of<AuthBloc>(context).add(
+  //       SignUpRequested(emailController.text, passwordController.text),
+  //     );
+  //   }
+  // }
 
   void _fieldFocusChange(
     BuildContext context,
@@ -66,15 +66,11 @@ class _SignUpPageState extends State<SignUpPage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  void _passwordView() {
-    setState(() {
-      _isHiddenPassword = !_isHiddenPassword;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.of(context).size.width;
+
     double heightScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(

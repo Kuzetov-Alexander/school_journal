@@ -17,11 +17,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp( ChangeNotifierProvider(create: (_) =>Providerbool(), 
-  child:  const MyApp()),);
-    
-    
-   
+  runApp(
+    ChangeNotifierProvider(create: (_) => Providerbool(), child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {

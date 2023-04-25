@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +13,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  bool _isHiddenPassword = true;
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -56,15 +56,8 @@ class _SignInPageState extends State<SignInPage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  void _passwordView() {
-    setState(() {
-      _isHiddenPassword = !_isHiddenPassword;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -136,8 +129,7 @@ class _SignInPageState extends State<SignInPage> {
                               keyboardType: TextInputType.emailAddress,
                               autocorrect: false,
                               controller: emailController,
-                              decoration:
-                                  decoration('Введите почту', 'Почта'),
+                              decoration: decoration('Введите почту', 'Почта'),
                             ),
                             const SizedBox(height: 16),
                             TextFormField(
@@ -185,23 +177,23 @@ class _SignInPageState extends State<SignInPage> {
                             SizedBox(
                               height: heightScreen * 0.01,
                             ),
-                            Row(mainAxisAlignment: MainAxisAlignment.center,
-                              children:  [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
                                 TextButton(
-                                   onPressed: () {
+                                  onPressed: () {
                                     context.go("/RecoverPassword");
                                   },
-                                  child: const Text('Восстановить пароль',
-                                  style: TextStyle(color: Colors.blue),),
-                                  
-                                 
+                                  child: const Text(
+                                    'Восстановить пароль',
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
                                 )
                               ],
                             )
                           ],
                         ),
                       ),
-                      
                       TextButton(
                         onPressed: () {
                           context.go('/SignUp');
