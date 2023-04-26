@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
-import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<UserRepository>(
+    return RepositoryProvider<UserRepositoryImpl>(
       lazy: false,
       create: (context) => UserRepositoryImpl(
         remoteDataSource: RemoteDataSourceImpl(),
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
       child: BlocProvider<AuthBloc>(
         lazy: false,
         create: (context) => AuthBloc(
-          authRepository: RepositoryProvider.of<UserRepository>(context),
+          authRepository: RepositoryProvider.of<UserRepositoryImpl>(context),
         ),
         child: MaterialApp.router(
           theme: ThemeData(fontFamily: 'SF-Pro'),
@@ -76,4 +75,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
- 

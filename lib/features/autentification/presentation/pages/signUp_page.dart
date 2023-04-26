@@ -5,6 +5,7 @@ import 'package:school_journal/features/autentification/presentation/bloc/bloc/b
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -45,10 +46,11 @@ class SignUpWidget extends StatefulWidget {
 class _SignUpWidgetState extends State<SignUpWidget> {
   // bool _isHiddenPassword = true;
 
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final _fullNameFocus = FocusNode();
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
@@ -59,10 +61,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   @override
   void dispose() {
-    fullNameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _fullNameFocus.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
@@ -82,7 +84,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   void _authenticateWithEmailAndPassword(context) {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        SignUpRequested(emailController.text, passwordController.text),
+        SignUpRequested(_emailController.text, _passwordController.text),
       );
     }
   }
@@ -133,9 +135,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             focusNode: _fullNameFocus,
                             keyboardType: TextInputType.name,
                             autocorrect: false,
-                            controller: fullNameController,
+                            controller: _fullNameController,
                             decoration: DecorationClass()
                                 .decoration('Введите полное имя', 'ФИО'),
+                            validator: ((_) => Validator().validateName(
+                                  _fullNameController.text.trim(),
+                                )),
                           )
                         : TextFormField(
                             onFieldSubmitted: (_) {
@@ -145,7 +150,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             focusNode: _fullNameFocus,
                             keyboardType: TextInputType.name,
                             autocorrect: false,
-                            controller: fullNameController,
+                            controller: _fullNameController,
                             decoration: DecorationClass().decoration(
                                 'Ccылка на группу', 'Введите ссылку'),
                           ),
@@ -157,7 +162,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       focusNode: _emailFocus,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
-                      controller: emailController,
+                      controller: _emailController,
                       decoration: DecorationClass()
                           .decoration('Введите почту', 'Почта'),
                     ),
@@ -170,18 +175,22 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       focusNode: _passwordFocus,
                       keyboardType: TextInputType.visiblePassword,
                       autocorrect: false,
-                      controller: passwordController,
+                      controller: _passwordController,
                       decoration: DecorationClass()
                           .decoration('Введите пароль', 'Пароль'),
+                      validator: (value) =>
+                          Validator().validateEmail(_passwordController.text),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       focusNode: _confirmPasswordFocus,
                       keyboardType: TextInputType.visiblePassword,
                       autocorrect: false,
-                      controller: confirmPasswordController,
+                      controller: _confirmPasswordController,
                       decoration: DecorationClass().decoration(
                           'Повторите пароль', 'Подтверждение пароля'),
+                      validator: (value) => Validator()
+                          .validatePassword(_confirmPasswordController.text),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
