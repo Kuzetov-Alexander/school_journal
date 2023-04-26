@@ -153,6 +153,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             controller: _fullNameController,
                             decoration: DecorationClass().decoration(
                                 'Ccылка на группу', 'Введите ссылку'),
+                            validator: (value) => Validator()
+                                .validateName(_fullNameController.text),
                           ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -165,6 +167,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       controller: _emailController,
                       decoration: DecorationClass()
                           .decoration('Введите почту', 'Почта'),
+                      validator: (value) =>
+                          Validator().validateEmail(_emailController.text),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(

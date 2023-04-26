@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -140,6 +139,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                       controller: _emailController,
                       decoration: DecorationClass()
                           .decoration('Введите почту', 'Почта'),
+                      validator: (value) =>
+                          Validator().validateEmail(_emailController.text),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -150,7 +151,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                       decoration: DecorationClass()
                           .decoration('Введите пароль', 'Пароль'),
                       validator: (value) => Validator()
-                          .validatePassword(_fullNameController.text),
+                          .validatePassword(_passwordController.text),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
@@ -169,20 +170,20 @@ class _SignInWidgetState extends State<SignInWidget> {
                           ),
                         ),
                         onPressed: () async {
-                          //
-                          try {
-                            await FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              throw Exception('No user found for that email.');
-                            } else if (e.code == 'wrong-password') {
-                              throw Exception(
-                                  'Wrong password provided for that user.');
-                            }
-                          }
+                          _authenticateWithEmailAndPassword(context);
+                          // try {
+                          //   await FirebaseAuth.instance
+                          //       .signInWithEmailAndPassword(
+                          //           email: _emailController.text,
+                          //           password: _passwordController.text);
+                          // } on FirebaseAuthException catch (e) {
+                          //   if (e.code == 'user-not-found') {
+                          //     throw Exception('No user found for that email.');
+                          //   } else if (e.code == 'wrong-password') {
+                          //     throw Exception(
+                          //         'Wrong password provided for that user.');
+                          //   }
+                          // }
                         },
                         child: const Text(
                           'Войти',

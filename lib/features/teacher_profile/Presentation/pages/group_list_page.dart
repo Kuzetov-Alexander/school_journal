@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
-import '../widgets/widgets.dart';
+import 'package:school_journal/features/teacher_profile/presentation/widgets/widgets.dart';
 
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
@@ -13,8 +10,8 @@ class GroupListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final user = FirebaseAuth.instance.currentUser;
-    
+ 
+
     return Scaffold(
       body: SafeArea(
           child: Column(

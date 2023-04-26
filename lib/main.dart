@@ -7,8 +7,8 @@ import 'package:school_journal/features/autentification/data/datasources/remote_
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/sign_in_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/sign_up_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/teacher_profile/presentation/pages/group_list_page.dart';
@@ -18,9 +18,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-    
   );
-  
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => Providerbool(),

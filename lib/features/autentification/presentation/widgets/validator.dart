@@ -35,9 +35,9 @@ class Validator {
   String? validatePassword(String input) {
     final passwordExp = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
     if (input.isEmpty) {
-      return 'Заполните поле почта';
+      return 'Заполните поле пароль';
     } else if (!passwordExp.hasMatch(input)) {
-      return 'Введите коррекную почту';
+      return 'Введите коррекный пароль';
     } else {
       return null;
     }
