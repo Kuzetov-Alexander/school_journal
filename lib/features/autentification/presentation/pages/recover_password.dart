@@ -24,7 +24,7 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
 
   @override
   void initState()  {
-    initBlocDirection(unAuthenticationWidget: const RecoverPasswordPage());
+    initBlocDirection( context: context ,unAuthenticationWidget: const RecoverPasswordPage());
     super.initState();
   }
 

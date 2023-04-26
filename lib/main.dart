@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
-import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/bloc/bloc_auth_bloc.dart';
+
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/sign_in_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/sign_up_page.dart';

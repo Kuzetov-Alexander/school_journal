@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/bloc/bloc_auth_bloc.dart';
 
-Widget initBlocDirection({required Widget unAuthenticationWidget}) {
+
+Widget initBlocDirection({required context , required Widget unAuthenticationWidget}) {
   return BlocConsumer<AuthBloc, BlocAuthState>(
     listener: (context, state) {
       if (state is Authenticated) {

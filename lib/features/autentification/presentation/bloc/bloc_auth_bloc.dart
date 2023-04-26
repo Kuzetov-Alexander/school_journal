@@ -16,34 +16,35 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     on<SignInRequested>(
       (event, emit) async {
         emit(AuthLoading());
-        try {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: event.email, password: event.password);
-          print('d');
+         try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email:event.email
+          , password: event.password);
+            print('d');
           emit(Authenticated());
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'user-not-found') {
-            print('user-not-found');
-            throw Exception('No user found for that email.');
-          } else if (e.code == 'wrong-password') {
-            print('пароль неверен');
-            throw Exception('Wrong password provided for that user.');
-          }
-          emit(UnAuthenticated());
-        }
-
-        //     try {
-        //       await authRepository.signIn(
-        //           email: event.email, password: event.password);
-        //       emit(Authenticated());
-        //     } catch (e) {
-        //       emit(
-        //         AuthError(
-        //           e.toString(),
-        //         ),
-        //       );
-        //       emit(UnAuthenticated());
-        //     }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('user-not-found');
+        throw Exception('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('пароль неверен');
+        throw Exception('Wrong password provided for that user.');
+        
+      }
+       emit(UnAuthenticated());}
+       
+    //     try {
+    //       await authRepository.signIn(
+    //           email: event.email, password: event.password);
+    //       emit(Authenticated());
+    //     } catch (e) {
+    //       emit(
+    //         AuthError(
+    //           e.toString(),
+    //         ),
+    //       );
+    //       emit(UnAuthenticated());
+    //     }
       },
     );
 
