@@ -47,11 +47,11 @@ class SignInWidget extends StatefulWidget {
 }
 
 class _SignInWidgetState extends State<SignInWidget> {
-  TextEditingController fullNameController = TextEditingController();
+  
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  final _fullNameFocus = FocusNode();
+
+  
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
 
@@ -59,11 +59,11 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   @override
   void dispose() {
-    fullNameController.dispose();
+    
     emailController.dispose();
     passwordController.dispose();
-    confirmPasswordController.dispose();
-    _fullNameFocus.dispose();
+    
+ 
     _emailFocus.dispose();
     _passwordFocus.dispose();
 
@@ -77,8 +77,9 @@ class _SignInWidgetState extends State<SignInWidget> {
     if (isValid) {
       BlocProvider.of<AuthBloc>(context).add(
         SignInRequested(
-          emailController.text.trim(),
-          passwordController.text.trim(),
+          'dela737@mail.ru', '123anna123'
+          // emailController.text.trim(),
+          // passwordController.text.trim(),
         ),
       );
     } else {

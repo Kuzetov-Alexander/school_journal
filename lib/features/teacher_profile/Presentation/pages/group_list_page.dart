@@ -35,7 +35,9 @@ class GroupListPage extends StatelessWidget {
                     ),
                     IconButton(
                       splashRadius: 1,
-                      onPressed: () {},
+                      onPressed: () {
+                         context.go('/Profile');
+                      },
                       icon: const Image(
                         width: 30,
                         image: AssetImage(

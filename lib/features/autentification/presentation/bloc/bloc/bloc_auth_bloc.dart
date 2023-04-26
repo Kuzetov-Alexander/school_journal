@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
-import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
+
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 
 part 'bloc_auth_event.dart';
@@ -77,7 +76,13 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     // чтобы обработать его и передать состоянию
     on<SignOutRequested>((event, emit) async {
       emit(AuthLoading());
-      await authRepository.signOut();
+      try {
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      throw Exception(e);
+    }
+  
+      // await authRepository.signOut();
       emit(UnAuthenticated());
     });
   }

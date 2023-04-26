@@ -6,8 +6,8 @@ import 'package:school_journal/features/autentification/presentation/provider.da
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SignUpPageBloc extends StatelessWidget {
+  const SignUpPageBloc({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -19,6 +19,6 @@ class SignUpRequested extends BlocAuthEvent {
   SignUpRequested(this.email, this.password);
 }
 
-class GoogleSignInRequested extends BlocAuthEvent {}
+
 
 class SignOutRequested extends BlocAuthEvent {}

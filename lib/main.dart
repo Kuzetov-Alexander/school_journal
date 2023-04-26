@@ -9,9 +9,11 @@ import 'package:school_journal/features/autentification/domain/repositories/user
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
+
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
 import 'package:school_journal/features/teacher_profile/presentation/pages/group_list_page.dart';
 import 'package:school_journal/firebase_options.dart';
 
@@ -55,7 +57,7 @@ class MyApp extends StatelessWidget {
                 routes: [
                   GoRoute(
                     path: 'SignUp',
-                    builder: (context, state) => const SignUpPage(),
+                    builder: (context, state) => const SignUpPageBloc(),
                   ),
                   GoRoute(
                     path: 'SignIn',
@@ -68,6 +70,10 @@ class MyApp extends StatelessWidget {
                   GoRoute(
                     path: 'Groups',
                     builder: (context, state) => const GroupListPage(),
+                  ),
+                   GoRoute(
+                    path: 'Profile',
+                    builder: (context, state) => const ProfilePage(),
                   ),
                 ],
               ),
