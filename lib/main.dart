@@ -5,11 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
-import 'package:school_journal/features/autentification/presentation/bloc/bloc_auth_bloc.dart';
-
+import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
+import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
-import 'package:school_journal/features/autentification/presentation/pages/sign_in_page.dart';
-import 'package:school_journal/features/autentification/presentation/pages/sign_up_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/teacher_profile/presentation/pages/group_list_page.dart';
@@ -19,8 +19,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+    
   );
-
+  
   runApp(
     ChangeNotifierProvider(
       create: (_) => Providerbool(),
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<UserRepositoryImpl>(
+    return RepositoryProvider<UserRepository>(
       lazy: false,
       create: (context) => UserRepositoryImpl(
         remoteDataSource: RemoteDataSourceImpl(),
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       child: BlocProvider<AuthBloc>(
         lazy: false,
         create: (context) => AuthBloc(
-          authRepository: RepositoryProvider.of<UserRepositoryImpl>(context),
+          authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
           theme: ThemeData(fontFamily: 'SF-Pro'),
@@ -77,3 +78,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+ 
