@@ -5,48 +5,17 @@ import 'package:school_journal/features/autentification/presentation/bloc/bloc/b
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/init_bloc_direction.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthBloc, BlocAuthState>(
-        listener: (context, state) {
-          if (state is Authenticated) {
-            context.go('/Groups');
-          }
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return const SignInWidget();
-        },
-      ),
-    );
-  }
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class SignInWidget extends StatefulWidget {
-  const SignInWidget({super.key});
-
-  @override
-  State<SignInWidget> createState() => _SignInWidgetState();
-}
-
-class _SignInWidgetState extends State<SignInWidget> {
+class _SignInPageState extends State<SignInPage> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -56,6 +25,12 @@ class _SignInWidgetState extends State<SignInWidget> {
   final _passwordFocus = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    initBlocDirection(unAuthenticationWidget: const SignInPage());
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -218,12 +193,6 @@ class _SignInWidgetState extends State<SignInWidget> {
                   context.go('/SignUp');
                 },
                 child: const Text('Регистрация'),
-              ),
-              TextButton(
-                onPressed: () {
-                  context.go('/Groups');
-                },
-                child: const Text('Следующая страница'),
               ),
             ],
           ),

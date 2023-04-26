@@ -5,47 +5,18 @@ import 'package:school_journal/features/autentification/presentation/bloc/bloc/b
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/init_bloc_direction.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthBloc, BlocAuthState>(
-        listener: (context, state) {
-          if (state is Authenticated) {
-            context.go('/Groups');
-          }
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
-          }
-        },
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return const SignUpWidget();
-        },
-      ),
-    );
-  }
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class SignUpWidget extends StatefulWidget {
-  const SignUpWidget({super.key});
-
-  @override
-  State<SignUpWidget> createState() => _SignUpWidgetState();
-}
-
-class _SignUpWidgetState extends State<SignUpWidget> {
-  // bool _isHiddenPassword = true;
-
+class _SignUpPageState extends State<SignUpPage> {
+  //
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -57,7 +28,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   final _confirmPasswordFocus = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
-  // String _password = '';
+
+  @override
+  void initState() {
+    initBlocDirection(unAuthenticationWidget: const SignUpPage());
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -237,12 +213,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   context.go('/SignIn');
                 },
                 child: const Text('Войти'),
-              ),
-              TextButton(
-                onPressed: () {
-                  context.go('/Groups');
-                },
-                child: const Text('Следующая страница'),
               ),
             ],
           ),
