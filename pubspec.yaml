@@ -41,7 +41,7 @@ dependencies:
   firebase_auth: ^4.4.2
   dartz: ^0.10.1
   provider: ^6.0.5
-
+  email_validator: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

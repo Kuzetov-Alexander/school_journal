@@ -74,7 +74,6 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   void _authenticateWithEmailAndPassword(context) {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
       print('балбесы');
       BlocProvider.of<AuthBloc>(context).add(
         SignInRequested(
