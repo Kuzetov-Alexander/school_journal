@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import '../widgets/widgets.dart';
 
 class GroupListPage extends StatelessWidget {
@@ -56,8 +58,7 @@ class GroupListPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 14.0, bottom: 11, top: 18),
-                      child: Text( 
-                        // '${user?.email} ${user?.displayName}' 
+                      child: Text(
                         'Мои группы',
                         style: TextStyle(
                             fontSize: heightScreen * 0.04,

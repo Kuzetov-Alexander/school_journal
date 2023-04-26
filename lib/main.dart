@@ -8,8 +8,8 @@ import 'package:school_journal/features/autentification/data/repositories/user_r
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signIn_page.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signUp_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/teacher_profile/presentation/pages/group_list_page.dart';
