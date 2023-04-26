@@ -21,7 +21,10 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(create: (_) => Providerbool(), child: const MyApp()),
+    ChangeNotifierProvider(
+      create: (_) => Providerbool(),
+      child: const MyApp(),
+    ),
   );
 }
 
@@ -73,3 +76,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+ 

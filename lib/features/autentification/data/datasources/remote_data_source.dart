@@ -5,6 +5,7 @@ abstract class RemoteDataSource {
   Future<void> signUp({required String email, required String password});
   Future<void> signIn({required String email, required String password});
   Future<void> signOut() async {}
+  Future<void> sendEmailVerification();
 }
 
 /// Класс с реализованными методами инициализации, входа, выхода, регистрации в firebase
@@ -38,6 +39,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw Exception('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        throw Exception('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');

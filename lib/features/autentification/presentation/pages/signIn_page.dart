@@ -54,7 +54,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
 
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -70,10 +70,16 @@ class _SignInWidgetState extends State<SignInWidget> {
   }
 
   void _authenticateWithEmailAndPassword(context) {
-    if (formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
+      print('балбесы');
       BlocProvider.of<AuthBloc>(context).add(
-        SignInRequested(emailController.text, passwordController.text),
+        SignInRequested(
+          emailController.text.trim(),
+          passwordController.text.trim(),
+        ),
       );
+    } else {
+      print('Не правильный логин');
     }
   }
 
@@ -120,7 +126,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               const DoubleButton(),
               const SizedBox(height: 24),
               Form(
-                key: formKey,
+                key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
@@ -180,7 +186,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            context.go("/RecoverPassword");
+                            context.go('/RecoverPassword');
                           },
                           child: const Text(
                             'Восстановить пароль',

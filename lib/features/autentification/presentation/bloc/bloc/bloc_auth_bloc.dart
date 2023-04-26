@@ -20,7 +20,11 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
               email: event.email, password: event.password);
           emit(Authenticated());
         } catch (e) {
-          emit(AuthError(e.toString()));
+          emit(
+            AuthError(
+              e.toString(),
+            ),
+          );
           emit(UnAuthenticated());
         }
       },
@@ -33,10 +37,13 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
       (event, emit) async {
         emit(AuthLoading());
         try {
-          await authRepository.signUp(
-              email: event.email, password: event.password);
-              // TODO(KUZ): экземпляр класса репозитория объявить
-          // await authRepository.sendVerificationEmail();
+          await authRepository
+              .signUp(email: event.email, password: event.password)
+              .then(
+            (_) {
+              authRepository.sendEmailVerification();
+            },
+          );
           emit(Authenticated());
         } catch (e) {
           emit(AuthError(e.toString()));
@@ -55,60 +62,3 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     });
   }
 }
-
-// class AuthRepository {
-//   final _firebaseAuth = FirebaseAuth.instance;
-
-//   /// Зарегистрироваться
-//   Future<void> signUp({required String email, required String password}) async {
-//     try {
-//       await FirebaseAuth.instance
-//           .createUserWithEmailAndPassword(email: email, password: password);
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'weak-password') {
-//         throw Exception('The password provided is too weak.');
-//       } else if (e.code == 'email-already-in-use') {
-//         throw Exception('The account already exists for that email.');
-//       }
-//     } catch (e) {
-//       throw Exception(e.toString());
-//     }
-//   }
-
-//   /// Выйти
-//   Future<void> signOut() async {
-//     try {
-//       await _firebaseAuth.signOut();
-//     } catch (e) {
-//       throw Exception(e);
-//     }
-//   }
-
-//   /// Войти
-//   Future<void> signIn({
-//     required String email,
-//     required String password,
-//   }) async {
-//     try {
-//       await FirebaseAuth.instance
-//           .signInWithEmailAndPassword(email: email, password: password);
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'user-not-found') {
-//         throw Exception('No user found for that email.');
-//       } else if (e.code == 'wrong-password') {
-//         throw Exception('Wrong password provided for that user.');
-//       }
-//     }
-//   }
-
-//   Future<void> sendVerificationEmail() async {
-//     try {
-//       final user = FirebaseAuth.instance.currentUser!;
-//       await user.sendEmailVerification();
-
-//       // await Future.delayed(const Duration(seconds: 5));
-//     } catch (e) {
-//       print('$e');
-//     }
-//   }
-// }

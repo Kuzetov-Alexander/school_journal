@@ -1,53 +1,64 @@
-import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-import 'package:school_journal/core/error/failure.dart';
-import 'package:school_journal/core/usecases/usecase.dart';
-import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
+// import 'package:dartz/dartz.dart';
+// import 'package:equatable/equatable.dart';
+// import 'package:school_journal/core/error/failure.dart';
+// import 'package:school_journal/core/usecases/usecase.dart';
+// import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 
-class SignUp extends UseCase<void, DataForAuth> {
-  final UserRepository userRepository;
+// class SignUp extends UseCase<void, DataForAuth> {
+//   final UserRepository userRepository;
 
-  SignUp({required this.userRepository});
+//   SignUp({required this.userRepository});
 
-  @override
-  Future<Either<Failure, void>> call(DataForAuth params) {
-    return userRepository.signUp(
-        email: params.email, password: params.password);
-  }
-}
+//   @override
+//   Future<Either<Failure, void>> call(DataForAuth params) {
+//     return userRepository.signUp(
+//         email: params.email, password: params.password);
+//   }
+// }
 
-class SignIn extends UseCase<void, DataForAuth> {
-  final UserRepository userRepository;
+// class SignIn extends UseCase<void, DataForAuth> {
+//   final UserRepository userRepository;
 
-  SignIn({required this.userRepository});
+//   SignIn({required this.userRepository});
 
-  @override
-  Future<Either<Failure, void>> call(DataForAuth params) {
-    return userRepository.signIn(
-        email: params.email, password: params.password);
-  }
-}
+//   @override
+//   Future<Either<Failure, void>> call(DataForAuth params) {
+//     return userRepository.signIn(
+//         email: params.email, password: params.password);
+//   }
+// }
 
-class SignOut extends UseCaseEmpty<void> {
-  final UserRepository userRepository;
+// class SendVerificationEmail extends UseCase<void, DataForAuth> {
+//   final UserRepository userRepository;
 
-  SignOut({required this.userRepository});
+//   SendVerificationEmail({required this.userRepository});
 
-  @override
-  Future<Either<Failure, void>> call() {
-    return userRepository.signOut();
-  }
-}
+//   @override
+//   Future<Either<Failure, void>> call(DataForAuth params) {
+//     return userRepository.sendEmailVerification();
+//   }
+// }
 
-class DataForAuth extends Equatable {
-  final String email;
-  final String password;
+// class SignOut extends UseCaseEmpty<void> {
+//   final UserRepository userRepository;
 
-  const DataForAuth({
-    required this.email,
-    required this.password,
-  });
+//   SignOut({required this.userRepository});
 
-  @override
-  List<Object?> get props => [email, password];
-}
+//   @override
+//   Future<Either<Failure, void>> call() {
+//     return userRepository.signOut();
+//   }
+// }
+
+// class DataForAuth extends Equatable {
+//   final String email;
+//   final String password;
+
+//   const DataForAuth({
+//     required this.email,
+//     required this.password,
+//   });
+
+//   @override
+//   List<Object?> get props => [email, password];
+// }

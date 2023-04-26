@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
+
 import 'package:school_journal/core/error/failure.dart';
 
 /// Уровень хранилища представляет собой оболочку вокруг одного или
@@ -14,11 +16,13 @@ import 'package:school_journal/core/error/failure.dart';
 ///
 /// Для вызова в репозитории
 abstract class UserRepository {
+
   Future<Either<Failure, void>> signUp(
       {required String email, required String password});
 
   Future<Either<Failure, void>> signIn(
       {required String email, required String password});
 
+  Future<Either<Failure, void>> sendEmailVerification();
   Future<Either<Failure, void>> signOut();
 }
