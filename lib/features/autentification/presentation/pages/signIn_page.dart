@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -70,8 +71,10 @@ class _SignInWidgetState extends State<SignInWidget> {
   }
 
   void _authenticateWithEmailAndPassword(context) {
-    if (_formKey.currentState!.validate()) {
-      print('балбесы');
+     final isValid = _formKey.currentState!.validate();
+    if (!isValid) return;
+
+    if (isValid) {
       BlocProvider.of<AuthBloc>(context).add(
         SignInRequested(
           emailController.text.trim(),
@@ -165,8 +168,25 @@ class _SignInWidgetState extends State<SignInWidget> {
                             ),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async{
                           _authenticateWithEmailAndPassword(context);
+                        
+
+    // try {
+    //   await FirebaseAuth.instance
+    //       .signInWithEmailAndPassword(email: emailController.text.trim()
+    //       , password: passwordController.text.trim(),);
+          
+          
+    // } on FirebaseAuthException catch (e) {
+    //   if (e.code == 'user-not-found') {
+    //     print('user-not-found');
+    //     throw Exception('No user found for that email.');
+    //   } else if (e.code == 'wrong-password') {
+    //     print('пароль неверен');
+    //     throw Exception('Wrong password provided for that user.');
+    //   }}
+   
                         },
                         child: const Text(
                           'Войти',

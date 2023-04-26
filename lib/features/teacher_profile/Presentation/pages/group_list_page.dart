@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
@@ -10,6 +11,8 @@ class GroupListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+    final user = FirebaseAuth.instance.currentUser;
+    
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -53,7 +56,8 @@ class GroupListPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 14.0, bottom: 11, top: 18),
-                      child: Text(
+                      child: Text( 
+                        // '${user?.email} ${user?.displayName}' 
                         'Мои группы',
                         style: TextStyle(
                             fontSize: heightScreen * 0.04,

@@ -37,16 +37,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String password,
   }) async {
     try {
+      print(email);
+      print(password);
+      
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password).then((_) => print('sds')) ;
+         
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        print('not found');
         throw Exception('No user found for that email.');
       } else if (e.code == 'wrong-password') {
+        print('password is wrong');
         throw Exception('Wrong password provided for that user.');
       }
     }
   }
+
+
+  
 
   @override
   Future<void> sendEmailVerification() async {
