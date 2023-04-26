@@ -50,8 +50,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+
   final _fullNameFocus = FocusNode();
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
@@ -63,7 +62,6 @@ class _SignInWidgetState extends State<SignInWidget> {
     _fullNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     _fullNameFocus.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
@@ -151,7 +149,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                       decoration: DecorationClass()
                           .decoration('Введите пароль', 'Пароль'),
                       validator: (value) => Validator()
-                          .validatePassword(_passwordController.text),
+                          .validatePassword(password: _passwordController),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(

@@ -182,8 +182,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       controller: _passwordController,
                       decoration: DecorationClass()
                           .decoration('Введите пароль', 'Пароль'),
-                      validator: (value) =>
-                          Validator().validateEmail(_passwordController.text),
+                      validator: (value) => Validator().validatePassword(
+                          password: _passwordController,
+                          confirmPassword: _confirmPasswordController),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -193,8 +194,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       controller: _confirmPasswordController,
                       decoration: DecorationClass().decoration(
                           'Повторите пароль', 'Подтверждение пароля'),
-                      validator: (value) => Validator()
-                          .validatePassword(_confirmPasswordController.text),
+                      validator: (value) => Validator().validatePassword(
+                        password: _confirmPasswordController,
+                        confirmPassword: _passwordController,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(

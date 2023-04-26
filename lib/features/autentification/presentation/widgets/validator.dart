@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Validator {
   String? validateName(String input) {
     final nameExp = RegExp(r'[A-zА-Яa-zа-я]+$');
@@ -32,14 +34,18 @@ class Validator {
     }
   }
 
-  String? validatePassword(String input) {
+  String? validatePassword(
+      {required TextEditingController password,
+      TextEditingController? confirmPassword}) {
     final passwordExp = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
-    if (input.isEmpty) {
+    if (password.text.isEmpty) {
       return 'Заполните поле пароль';
-    } else if (!passwordExp.hasMatch(input)) {
+    } else if (!passwordExp.hasMatch(password.text)) {
       return 'Введите коррекный пароль';
-    } else {
-      return null;
+    } else if (confirmPassword != null &&
+        password.text != confirmPassword.text) {
+      return 'Пароли не совпадают';
     }
+    return null;
   }
 }
