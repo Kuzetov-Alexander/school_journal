@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class DecorationClass extends InputDecoration {
   InputDecoration decoration(String hintText, String labelText) {
     return InputDecoration(
+      // counterText: '',
       filled: true,
       fillColor: const Color(0xffF3F3F3),
       border: const OutlineInputBorder(

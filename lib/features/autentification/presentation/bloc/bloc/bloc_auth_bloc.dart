@@ -17,23 +17,25 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     on<SignInRequested>(
       (event, emit) async {
         emit(AuthLoading());
-         try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email:event.email
-          , password: event.password);
-            print('d');
+        try {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: event.email, password: event.password);
+          print('------------Метод входа пользователья выполнен');
           emit(Authenticated());
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('user-not-found');
-        throw Exception('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('пароль неверен');
-        throw Exception('Wrong password provided for that user.');
-        
-      }
-       emit(UnAuthenticated());}
-       
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'user-not-found') {
+            print('------------Пользователь не найден');
+            throw Exception('No user found for that email.');
+          } else if (e.code == 'wrong-password') {
+            print('------------Пароль неверен');
+            throw Exception('Wrong password provided for that user.');
+          }
+          emit(AuthError(e.toString()));
+          emit(UnAuthenticated());
+        }
+      },
+    );
+
     //     try {
     //       await authRepository.signIn(
     //           email: event.email, password: event.password);
@@ -46,8 +48,6 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     //       );
     //       emit(UnAuthenticated());
     //     }
-      },
-    );
 
     // Когда пользователь нажмет кнопку регистрации,
     // отправится событие SignIрRequested в bloc,
@@ -60,7 +60,9 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
               .signUp(email: event.email, password: event.password)
               .then(
             (_) {
+              print('------------Регистрация');
               authRepository.sendEmailVerification();
+              print('------------Письмо отправлено на почту');
             },
           );
           emit(Authenticated());
@@ -77,12 +79,10 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     on<SignOutRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      throw Exception(e);
-    }
-  
-      // await authRepository.signOut();
+        await FirebaseAuth.instance.signOut();
+      } catch (e) {
+        throw Exception(e);
+      }
       emit(UnAuthenticated());
     });
   }

@@ -28,7 +28,7 @@ class ProfilePageBloc extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          
+
           return const ProfilePage();
         },
       ),
@@ -61,8 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  final _formKey = GlobalKey<FormState>();
-  // String _password = '';
+  // final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -77,18 +76,18 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
+  void _signOut(context) {
+    BlocProvider.of<AuthBloc>(context).add(
+      SignOutRequested(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    void _SignOut(context) {
-      BlocProvider.of<AuthBloc>(context).add(
-        SignOutRequested(),
-      );
-    }
-
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
         appBar: AppBar(
-          title: Text('Профиль'),
+          title: const Text('Профиль'),
         ),
         body: SafeArea(
             child: Padding(
@@ -96,15 +95,16 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             children: [
               TextFormField(
-                  onFieldSubmitted: (_) {
-                    _fieldFocusChange(context, _fullNameFocus, _emailFocus);
-                  },
-                  focusNode: _fullNameFocus,
-                  keyboardType: TextInputType.name,
-                  autocorrect: false,
-                  controller: fullNameController,
-                  decoration:
-                      DecorationClass().decoration('', '${user?.displayName}')),
+                onFieldSubmitted: (_) {
+                  _fieldFocusChange(context, _fullNameFocus, _emailFocus);
+                },
+                focusNode: _fullNameFocus,
+                keyboardType: TextInputType.name,
+                autocorrect: false,
+                controller: fullNameController ,
+                decoration:
+                    DecorationClass().decoration('', '${user?.displayName}'),
+              ),
               const SizedBox(height: 16),
               TextFormField(
                 onFieldSubmitted: (_) {
@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Material(
                 child: InkWell(
                   onTap: () {
-                    _SignOut(context);
+                    _signOut(context);
                   },
                   child: Container(
                     height: 30,
@@ -129,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(16),
                       color: Colors.transparent,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Выйти',
                       style: TextStyle(color: Colors.red, fontSize: 20),
                     ),

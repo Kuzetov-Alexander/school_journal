@@ -11,7 +11,7 @@ abstract class RemoteDataSource {
 /// Класс с реализованными методами инициализации, входа, выхода, регистрации в firebase
 class RemoteDataSourceImpl implements RemoteDataSource {
   /// Запускаем firebase
-  final _firebaseAuth = FirebaseAuth.instance;
+  // final _firebaseAuth = FirebaseAuth.instance;
 
   /// Зарегистрироваться
   @override
@@ -37,24 +37,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String password,
   }) async {
     try {
-      
-      
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password).then((_) => print('sds')) ;
-         
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((_) => print('---------------Вход выполнен'));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('not found');
+        print('---------------Не найден пользователь');
         throw Exception('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('password is wrong');
+        print('---------------Слишком простой пароль');
         throw Exception('Wrong password provided for that user.');
       }
     }
   }
-
-
-  
 
   @override
   Future<void> sendEmailVerification() async {

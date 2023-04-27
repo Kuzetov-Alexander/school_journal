@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
 class RecoverPasswordPage extends StatefulWidget {
   const RecoverPasswordPage({super.key});
@@ -12,38 +13,15 @@ class RecoverPasswordPage extends StatefulWidget {
 }
 
 class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  final _fullNameFocus = FocusNode();
+  final TextEditingController _emailController = TextEditingController();
   final _emailFocus = FocusNode();
-  final _passwordFocus = FocusNode();
-  final _confirmPasswordFocus = FocusNode();
-
-  final formKey = GlobalKey<FormState>();
-  // String _password = '';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    fullNameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    _fullNameFocus.dispose();
+    _emailController.dispose();
     _emailFocus.dispose();
-    _passwordFocus.dispose();
-    _confirmPasswordFocus.dispose();
     super.dispose();
-  }
-
-  void _fieldFocusChange(
-    BuildContext context,
-    FocusNode currentfocus,
-    FocusNode nextFocus,
-  ) {
-    currentfocus.unfocus();
-    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
@@ -97,20 +75,24 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
                     ),
                     SizedBox(height: heightScreen * 0.3),
                     Form(
-                      key: formKey,
+                      key: _formKey,
                       child: Column(
                         children: [
                           TextFormField(
-                            onFieldSubmitted: (_) {
-                              _fieldFocusChange(
-                                  context, _emailFocus, _passwordFocus);
-                            },
                             focusNode: _emailFocus,
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
-                            controller: emailController,
+                            buildCounter: (BuildContext context,
+                                    {int? currentLength,
+                                    required bool isFocused,
+                                    int? maxLength}) =>
+                                null,
+                            maxLength: 40,
+                            controller: _emailController,
                             decoration: DecorationClass()
                                 .decoration('Введите почту', 'Почта'),
+                            validator: (value) =>
+                                Validator().validateEmail(_emailController),
                           ),
                           SizedBox(height: heightScreen * 0.1),
                           SizedBox(

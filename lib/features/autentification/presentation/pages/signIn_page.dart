@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
-
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -47,11 +46,9 @@ class SignInWidget extends StatefulWidget {
 }
 
 class _SignInWidgetState extends State<SignInWidget> {
-  
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
 
@@ -59,28 +56,23 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   @override
   void dispose() {
-    
-    emailController.dispose();
-    passwordController.dispose();
-    
- 
+    _emailController.dispose();
+    _passwordController.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
-
     super.dispose();
   }
 
   void _authenticateWithEmailAndPassword(context) {
-     final isValid = _formKey.currentState!.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
 
     if (isValid) {
       BlocProvider.of<AuthBloc>(context).add(
-        SignInRequested(
-          'dela737@mail.ru', '123anna123'
-          // emailController.text.trim(),
-          // passwordController.text.trim(),
-        ),
+        SignInRequested('dela737@mail.ru', '123anna123'
+            // emailController.text.trim(),
+            // passwordController.text.trim(),
+            ),
       );
     } else {
       print('Не правильный логин');
@@ -140,18 +132,34 @@ class _SignInWidgetState extends State<SignInWidget> {
                       focusNode: _emailFocus,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
-                      controller: emailController,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 40,
+                      controller: _emailController,
                       decoration: DecorationClass()
                           .decoration('Введите почту', 'Почта'),
+                      validator: (value) =>
+                          Validator().validateEmail(_emailController),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       focusNode: _passwordFocus,
                       keyboardType: TextInputType.visiblePassword,
                       autocorrect: false,
-                      controller: passwordController,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 20,
+                      controller: _passwordController,
                       decoration: DecorationClass()
                           .decoration('Введите пароль', 'Пароль'),
+                      validator: (value) => Validator()
+                          .validatePassword(password: _passwordController),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
@@ -169,25 +177,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                             ),
                           ),
                         ),
-                        onPressed: () async{
+                        onPressed: () async {
                           _authenticateWithEmailAndPassword(context);
-                        
-
-    // try {
-    //   await FirebaseAuth.instance
-    //       .signInWithEmailAndPassword(email: emailController.text.trim()
-    //       , password: passwordController.text.trim(),);
-          
-          
-    // } on FirebaseAuthException catch (e) {
-    //   if (e.code == 'user-not-found') {
-    //     print('user-not-found');
-    //     throw Exception('No user found for that email.');
-    //   } else if (e.code == 'wrong-password') {
-    //     print('пароль неверен');
-    //     throw Exception('Wrong password provided for that user.');
-    //   }}
-   
                         },
                         child: const Text(
                           'Войти',
