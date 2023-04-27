@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 
 class GroupInfoWidget extends StatelessWidget {
@@ -19,7 +20,9 @@ class GroupInfoWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           color: AppColors.greyLight,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              context.goNamed('TeacherGroup');
+            },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),

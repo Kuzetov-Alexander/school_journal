@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
@@ -85,7 +86,7 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
-            theme: ThemeData(fontFamily: 'SF-Pro'), routerConfig: _router),
+            theme: ThemeData(fontFamily: 'SF-Pro',appBarTheme: AppBarTheme(color: AppColors.greyLight)), routerConfig: _router),
       ),
     );
   }
