@@ -10,12 +10,11 @@ import 'package:school_journal/features/autentification/presentation/bloc/bloc/b
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
-
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
-
 
 import 'package:school_journal/firebase_options.dart';
 
@@ -23,20 +22,56 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-    
   );
-  
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => Providerbool(),
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
+  final GoRouter _router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const WelcomePage(),
+        routes: [
+          GoRoute(
+            path: 'SignUp',
+            builder: (context, state) => const SignUpPageBloc(),
+          ),
+          GoRoute(
+            path: 'SignIn',
+            builder: (context, state) => const SignInPage(),
+          ),
+          GoRoute(
+            path: 'RecoverPassword',
+            builder: (context, state) => const RecoverPasswordPage(),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/Groups',
+        builder: (context, state) => const GroupListPage(),
+        routes: [
+          GoRoute(
+            path: 'TeacherGroup',
+            name: 'TeacherGroup',
+            builder: (context, state) => const TeacherGroupPage(),
+          ),
+          GoRoute(
+            path: 'Profile',
+            name: 'Profile',
+            builder: (context, state) => const ProfilePage(),
+          ),
+        ],
+      ),
+    ],
+  );
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider<UserRepository>(
@@ -50,52 +85,8 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
-          theme: ThemeData(fontFamily: 'SF-Pro'),
-          routerConfig: GoRouter(
-            routes: [
-              GoRoute(
-                path: '/',
-                builder: (context, state) => const WelcomePage(),
-                routes: [
-                  GoRoute(
-                    path: 'SignUp',
-                    builder: (context, state) => const SignUpPageBloc(),
-                  ),
-                  GoRoute(
-                    path: 'SignIn',
-                    builder: (context, state) => const SignInPage(),
-                  ),
-                  GoRoute(
-                    path: 'RecoverPassword',
-                    builder: (context, state) => const RecoverPasswordPage(),
-                  ),
-                  
-                  
-                ],
-              ),
-               GoRoute(
-                path: '/Groups',
-                builder: (context, state) => const GroupListPage(),
-                routes: [
-                  GoRoute(
-                    path: 'TeacherGroup',
-
-                    builder: (context, state) => const TeacherGroupPage(),
-                  ),
-                   GoRoute(
-                    path: 'Profile',
-                    name: 'Profile',
-                    builder: (context, state) => const ProfilePage(),
-                  ),
-                 
-                 
-                ],
-              ),
-            ],
-          ),
-        ),
+            theme: ThemeData(fontFamily: 'SF-Pro'), routerConfig: _router),
       ),
     );
   }
 }
- 
