@@ -139,11 +139,14 @@ class TeacherGroupPage extends StatelessWidget {
                           itemCount: 15,
                           itemBuilder: (BuildContext context, index) {
                             return Container(
-                              decoration: BoxDecoration(border: Border.all(width: 2,color: AppColors.purple.withOpacity(0.4),)),
+                              decoration: BoxDecoration( 
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                                border: Border.all(width: 2,color: Colors.purple.withOpacity(0.4),)),
                               height: heightScreen * 0.02,
                              
-                              width: widthScreen * 0.1,
-                            
+                              width: widthScreen * 0.13,
+                             
                               margin: EdgeInsets.symmetric(
                                   horizontal: widthScreen * 0.03),
                             );
@@ -178,6 +181,9 @@ class TeacherGroupPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Row(children: [
+                      
+                    ],)
                   ],
                 ),
               ),
