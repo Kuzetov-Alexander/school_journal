@@ -13,8 +13,10 @@ import 'package:school_journal/features/autentification/presentation/pages/signu
 
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
-import 'package:school_journal/features/teacher_profile/presentation/pages/group_list_page.dart';
+
+
 import 'package:school_journal/firebase_options.dart';
 
 Future<void> main() async {
@@ -67,14 +69,26 @@ class MyApp extends StatelessWidget {
                     path: 'RecoverPassword',
                     builder: (context, state) => const RecoverPasswordPage(),
                   ),
+                  
+                  
+                ],
+              ),
+               GoRoute(
+                path: '/Groups',
+                builder: (context, state) => const GroupListPage(),
+                routes: [
                   GoRoute(
-                    path: 'Groups',
-                    builder: (context, state) => const GroupListPage(),
+                    path: 'TeacherGroup',
+
+                    builder: (context, state) => const TeacherGroupPage(),
                   ),
                    GoRoute(
                     path: 'Profile',
+                    name: 'Profile',
                     builder: (context, state) => const ProfilePage(),
                   ),
+                 
+                 
                 ],
               ),
             ],

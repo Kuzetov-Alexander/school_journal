@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
-import '../widgets/widgets.dart';
+import 'package:school_journal/features/teacher_profile/presentation/widgets/widgets.dart';
+
 
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
@@ -35,7 +36,7 @@ class GroupListPage extends StatelessWidget {
                     IconButton(
                       splashRadius: 1,
                       onPressed: () {
-                        context.go('/Profile');
+                        context.go('//Groups/Profile');
                       },
                       icon: const Image(
                         width: 30,
