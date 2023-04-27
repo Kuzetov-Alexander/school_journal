@@ -13,6 +13,7 @@ class TeacherGroupPage extends StatelessWidget {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final provider = context.watch<Provider_group_bool>().isSelected;
+    final dayofweek = DateFormat('EEEE', 'ru').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -168,7 +169,8 @@ class TeacherGroupPage extends StatelessWidget {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      DateFormat('EEEE').format(DateTime.now()),
+                                      DateFormat('E', 'ru')
+                                          .format(DateTime.now()),
                                       maxLines: 1,
                                       style: TextStyle(
                                           color: !provider
@@ -178,14 +180,16 @@ class TeacherGroupPage extends StatelessWidget {
                                     Text(
                                       DateFormat('d').format(DateTime.now()),
                                       maxLines: 1,
-                                       style: TextStyle(
+                                      style: TextStyle(
                                           color: !provider
                                               ? Colors.white
                                               : Colors.black),
                                     ),
                                     Icon(
                                       Icons.circle_rounded,
-                                      color:!provider? Colors.white: AppColors.purple,
+                                      color: !provider
+                                          ? Colors.white
+                                          : AppColors.purple,
                                       size: 5,
                                     )
                                   ],
@@ -224,10 +228,79 @@ class TeacherGroupPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Row(
-                      children: const [],
-                    )
                   ],
+                ),
+              ),
+            ),
+            SizedBox(height: heightScreen * 0.015),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${dayofweek.capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: heightScreen * 0.024,
+                      // letterSpacing: 1,
+                      color: AppColors.black212525),
+                ),
+                IconButton(
+                    splashRadius: 20,
+                    onPressed: () {},
+                    icon: const Image(
+                        image: AssetImage('assets/images/plus.png')))
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  'Время',
+                  style: TextStyle(
+                      color: AppColors.greybcc1cd,
+                      fontSize: heightScreen * 0.02,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  width: widthScreen*0.05,
+                ),
+                 Text(
+                  'Урок',
+                  style: TextStyle(
+                      color: AppColors.greybcc1cd,
+                      fontSize: heightScreen * 0.02,
+                      fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            SizedBox(height: heightScreen*0.015,),
+            SizedBox(
+              child: Expanded(
+                child: ListView.separated(
+
+                  shrinkWrap: true,
+                  
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      children: [
+                        Column( mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                          Text('9:00'),
+                          Text('10:30')
+                        ],),
+                         SizedBox(width: 30,),
+                        Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: AppColors.greyLight,),
+                              height: heightScreen*0.15,
+                              width: widthScreen*0.72,
+                              ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }, separatorBuilder: (BuildContext context, int index) { return SizedBox(height: heightScreen*0.05,); },
                 ),
               ),
             ),
@@ -235,5 +308,11 @@ class TeacherGroupPage extends StatelessWidget {
         ),
       ))),
     );
+  }
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
   }
 }
