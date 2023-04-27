@@ -122,7 +122,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    context.watch<Providerbool>().teacher
+                    context.watch<Provider_Login_bool>().teacher
                         ? TextFormField(
                             onFieldSubmitted: (_) {
                               _fieldFocusChange(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherGroupPage extends StatelessWidget {
   const TeacherGroupPage({super.key});
@@ -9,6 +12,7 @@ class TeacherGroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+    final provider = context.watch<Provider_group_bool>().isSelected;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -105,51 +109,88 @@ class TeacherGroupPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            splashRadius: 1,
-                            onPressed: () {},
-                            icon: const Image(
-                                image: AssetImage(
-                                    'assets/images/arrow_left_white.png'))),
-                        Text(
-                          'Апрель',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: heightScreen * 0.024,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        IconButton(
-                            splashRadius: 1,
-                            onPressed: () {},
-                            icon: const Image(
-                                image: AssetImage(
-                                    'assets/images/arrow_right_white.png')))
-                      ],
-                    ),
-                    SizedBox(
-                      height: heightScreen * 0.03,
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: heightScreen * 0.018),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              splashRadius: 1,
+                              onPressed: () {},
+                              icon: const Image(
+                                  image: AssetImage(
+                                      'assets/images/arrow_left_white.png'))),
+                          Text(
+                            'Апрель',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: heightScreen * 0.024,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          IconButton(
+                              splashRadius: 1,
+                              onPressed: () {},
+                              icon: const Image(
+                                  image: AssetImage(
+                                      'assets/images/arrow_right_white.png')))
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount: 15,
+                          itemCount: 30,
                           itemBuilder: (BuildContext context, index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    width: 2,
-                                    color: Colors.purple.withOpacity(0.4),
-                                  )),
-                              height: heightScreen * 0.02,
-                              width: widthScreen * 0.13,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: widthScreen * 0.03),
+                            return InkWell(
+                              onTap: () {
+                                context
+                                    .read<Provider_group_bool>()
+                                    .changeColor();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: provider
+                                        ? Colors.white
+                                        : AppColors.purple,
+                                    border: Border.all(
+                                      width: 2,
+                                      color: Colors.purple.withOpacity(0.4),
+                                    )),
+                                height: heightScreen * 0.02,
+                                width: widthScreen * 0.13,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: widthScreen * 0.015),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      DateFormat('EEEE').format(DateTime.now()),
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          color: !provider
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                    Text(
+                                      DateFormat('d').format(DateTime.now()),
+                                      maxLines: 1,
+                                       style: TextStyle(
+                                          color: !provider
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                    Icon(
+                                      Icons.circle_rounded,
+                                      color:!provider? Colors.white: AppColors.purple,
+                                      size: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
                             );
                           }),
                     ),
