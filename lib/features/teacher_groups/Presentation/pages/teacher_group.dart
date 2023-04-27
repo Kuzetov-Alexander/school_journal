@@ -273,36 +273,32 @@ class TeacherGroupPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: heightScreen*0.015,),
-            SizedBox(
-              child: Expanded(
-                child: ListView.separated(
-
-                  shrinkWrap: true,
-                  
-                  itemCount: 4,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Row(
+            ListView.separated(
+            scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              
+              itemCount: 4,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column( crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column( mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                          Text('9:00'),
-                          Text('10:30')
-                        ],),
-                         SizedBox(width: 30,),
-                        Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: AppColors.greyLight,),
-                              height: heightScreen*0.15,
-                              width: widthScreen*0.72,
-                              ),
-                          ],
-                        ),
+                      Text('9:00'),
+                      Text('10:30')
+                    ],),
+                     SizedBox(width: 30,),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: AppColors.greyLight,),
+                          height: heightScreen*0.15,
+                          width: widthScreen*0.72,
+                          ),
                       ],
-                    );
-                  }, separatorBuilder: (BuildContext context, int index) { return SizedBox(height: heightScreen*0.05,); },
-                ),
-              ),
+                    ),
+                  ],
+                );
+              }, separatorBuilder: (BuildContext context, int index) { return SizedBox(height: heightScreen*0.05,); },
             ),
           ],
         ),
