@@ -12,6 +12,7 @@ import 'package:school_journal/features/autentification/presentation/pages/signi
 import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
@@ -67,6 +68,11 @@ class MyApp extends StatelessWidget {
             path: 'Profile',
             name: 'Profile',
             builder: (context, state) => const ProfilePage(),
+          ),
+          GoRoute(
+            path: 'StudentScores',
+            name: 'StudentScores',
+            builder: (context, state) => const StudentScores(),
           ),
         ],
       ),
