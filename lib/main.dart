@@ -24,7 +24,7 @@ import 'package:school_journal/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await initializeDateFormatting('ru_RU');
+  await initializeDateFormatting('ru_RU');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -102,11 +102,27 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
+            debugShowCheckedModeBanner: true,
+            scrollBehavior: MyBehaviorAndroid(),
             theme: ThemeData(
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),
       ),
     );
+  }
+}
+
+/// физика скролла для ios
+// class MyScrollBehavior extends ScrollBehavior {
+//   const MyScrollBehavior();
+//   @override
+//   ScrollPhysics getScrollPhysics(BuildContext context) => const BouncingScrollPhysics();
+// }
+class MyBehaviorAndroid extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }
