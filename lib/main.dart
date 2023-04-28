@@ -19,6 +19,7 @@ import 'package:school_journal/features/teacher_groups/Presentation/pages/group_
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
+import 'dart:io' show Platform;
 
 import 'package:school_journal/firebase_options.dart';
 
@@ -103,7 +104,7 @@ class MyApp extends StatelessWidget {
         ),
         child: MaterialApp.router(
             debugShowCheckedModeBanner: true,
-            scrollBehavior: MyBehaviorAndroid(),
+            scrollBehavior: Platform.isAndroid ? MyBehaviorAndroid():const MyBehaviorIOS() ,
             theme: ThemeData(
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
@@ -114,11 +115,11 @@ class MyApp extends StatelessWidget {
 }
 
 /// физика скролла для ios
-// class MyScrollBehavior extends ScrollBehavior {
-//   const MyScrollBehavior();
-//   @override
-//   ScrollPhysics getScrollPhysics(BuildContext context) => const BouncingScrollPhysics();
-// }
+class MyBehaviorIOS extends ScrollBehavior {
+  const MyBehaviorIOS();
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) => const BouncingScrollPhysics();
+}
 class MyBehaviorAndroid extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
