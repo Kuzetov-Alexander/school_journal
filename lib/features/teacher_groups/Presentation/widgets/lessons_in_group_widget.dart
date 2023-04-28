@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 
 class LessonsInGroup extends StatelessWidget {
@@ -42,103 +44,130 @@ class LessonsInGroup extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppColors.greyLight,
-                    ),
-                    height: heightScreen * 0.15,
-                    width: widthScreen * 0.7,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Математика',
-                                style: TextStyle(
-                                  fontSize: heightScreen * 0.02,
-                                  color: AppColors.black212525,
-                                  fontWeight: FontWeight.w600,
+                  InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () {
+                      // context.go('/Groups');
+      //                 showCupertinoDialog(context: context,
+      // builder: (BuildContext context) => CupertinoAlertDialog(
+      //   title: new Text("Dialog Title"),
+      //   content: new Text("This is my content"),
+      //   actions: <Widget>[
+      //     CupertinoDialogAction(
+      //       isDefaultAction: true,
+      //       child: Text('sdsdsd'),
+      //     ),
+      //     CupertinoDialogAction(
+      //       child: Text("No"),
+      //     )
+      //   ],
+      // ));
+     
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.greyLight,
+                      ),
+                      height: heightScreen * 0.15,
+                      width: widthScreen * 0.7,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Математика',
+                                  style: TextStyle(
+                                    fontSize: heightScreen * 0.02,
+                                    color: AppColors.black212525,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                              IconButton(
-                                  splashRadius: 20,
-                                  onPressed: () {},
-                                  icon: const Image(
+                                IconButton(
+                                    splashRadius: 20,
+                                    onPressed: () {
+                                      context.go('/Groups');
+                                    },
+                                    icon: const Image(
+                                        image: AssetImage(
+                                            'assets/images/settings_icon.png')))
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Image(
                                       image: AssetImage(
-                                          'assets/images/settings_icon.png')))
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: const Image(
-                                    image: AssetImage(
-                                        'assets/images/point_icon.png')),
-                              ),
-                              SizedBox(
-                                width: widthScreen * 0.025,
-                              ),
-                              Text(
-                                'Комната 2-136',
-                                style: TextStyle(
-                                  fontSize: heightScreen * 0.015,
-                                  color: AppColors.black212525,
-                                  fontWeight: FontWeight.w400,
+                                          'assets/images/point_icon.png')),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: heightScreen*0.01,),
-                          Row(
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: const Image(
-                                    image: AssetImage(
-                                        'assets/images/user_icon.png')),
-                              ),
-                              SizedBox(
-                                width: widthScreen * 0.025,
-                              ),
-                              Text(
-                                'Отметить присутсвующих',
-                                style: TextStyle(
-                                  fontSize: heightScreen * 0.015,
-                                  color: AppColors.black212525,
-                                  fontWeight: FontWeight.w600,
+                                SizedBox(
+                                  width: widthScreen * 0.025,
                                 ),
-                              ),
-                            ],
-                          ),
-                           SizedBox(height: heightScreen*0.01,),
-                          Row(
-                            children: [
-                             InkWell(
-                                onTap: () {},
-                                child: const Image(
-                                    image: AssetImage(
-                                        'assets/images/home_icon.png')),
-                              ),
-                              SizedBox(
-                                width: widthScreen * 0.025,
-                              ),
-                              Text(
-                                'Отметить присутсвующих',
-                                style: TextStyle(
-                                  fontSize: heightScreen * 0.015,
-                                  color: AppColors.black212525,
-                                  fontWeight: FontWeight.w600,
+                                Text(
+                                  'Комната 2-136',
+                                  style: TextStyle(
+                                    fontSize: heightScreen * 0.015,
+                                    color: AppColors.black212525,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )
-                        ],
+                              ],
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.01,
+                            ),
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Image(
+                                      image: AssetImage(
+                                          'assets/images/user_icon.png')),
+                                ),
+                                SizedBox(
+                                  width: widthScreen * 0.025,
+                                ),
+                                Text(
+                                  'Отметить присутсвующих',
+                                  style: TextStyle(
+                                    fontSize: heightScreen * 0.015,
+                                    color: AppColors.black212525,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.01,
+                            ),
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Image(
+                                      image: AssetImage(
+                                          'assets/images/home_icon.png')),
+                                ),
+                                SizedBox(
+                                  width: widthScreen * 0.025,
+                                ),
+                                Text(
+                                  'Задать домашнее задание',
+                                  style: TextStyle(
+                                    fontSize: heightScreen * 0.015,
+                                    color: AppColors.black212525,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -156,19 +185,3 @@ class LessonsInGroup extends StatelessWidget {
     );
   }
 }
-
-// class Icon_Custom_Button extends StatelessWidget {
-  
-// final Image image;
-
-//   const Icon_Custom_Button({super.key, required this.image}); 
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: () {},
-//       child: image,
-//     );
-//   }
-// }
-
-// const Image(image: AssetImage('assets/images/point_icon.png'))
