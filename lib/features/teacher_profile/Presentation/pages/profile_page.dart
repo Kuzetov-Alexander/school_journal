@@ -31,7 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  // final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {

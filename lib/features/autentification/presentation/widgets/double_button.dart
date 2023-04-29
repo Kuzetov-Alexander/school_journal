@@ -19,18 +19,18 @@ class DoubleButton extends StatelessWidget {
         children: [
           Button(
             onPressed: () =>
-                context.read<Provider_Login_bool>().changedTypePerson(true),
+                context.read<ProviderLoginBool>().changedTypePerson(true),
             nameButton: 'Учитель',
-            color: context.watch<Provider_Login_bool>().teacher
+            color: context.watch<ProviderLoginBool>().teacher
                 ? Colors.white
                 : Colors.transparent,
           ),
           const SizedBox(width: 2),
           Button(
             onPressed: () =>
-                context.read<Provider_Login_bool>().changedTypePerson(false),
+                context.read<ProviderLoginBool>().changedTypePerson(false),
             nameButton: 'Ученик',
-            color: !context.watch<Provider_Login_bool>().teacher
+            color: !context.watch<ProviderLoginBool>().teacher
                 ? Colors.white
                 : Colors.transparent,
           ),

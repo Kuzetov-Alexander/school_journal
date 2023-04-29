@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Provider_group_bool extends ChangeNotifier {
+class ProviderGroupBool extends ChangeNotifier {
   bool isSelected =false;
    void changeColor () {
     

@@ -35,11 +35,11 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<Provider_Login_bool>(
-          create: (context) => Provider_Login_bool(),
+        ChangeNotifierProvider<ProviderLoginBool>(
+          create: (context) => ProviderLoginBool(),
         ),
-        ChangeNotifierProvider<Provider_group_bool>(
-          create: (context) => Provider_group_bool(),
+        ChangeNotifierProvider<ProviderGroupBool>(
+          create: (context) => ProviderGroupBool(),
         )
       ],
       child: MyApp(),
@@ -110,7 +110,9 @@ class MyApp extends StatelessWidget {
         ),
         child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            scrollBehavior: Platform.isAndroid ? MyBehaviorAndroid():const MyBehaviorIOS(),
+            scrollBehavior: Platform.isAndroid
+                ? MyBehaviorAndroid()
+                : const MyBehaviorIOS(),
             theme: ThemeData(
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
@@ -119,5 +121,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

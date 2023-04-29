@@ -42,7 +42,13 @@ class _SignInPageState extends State<SignInPage> {
         ),
       );
     } else {
-      print('Не правильный логин');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Не правильный логин'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -85,28 +86,89 @@ class _SignUpPageState extends State<SignUpPage> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: Column(
                 children: [
-                  context.watch<Provider_Login_bool>().teacher
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Регистрация',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: heightScreen * 0.024,
+                            letterSpacing: 1.4),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const SizedBox(
+                    child: Image(
+                      image: AssetImage('assets/images/book.png'),
+                    ),
+                  ),
+                  const DoubleButton(),
+                  const SizedBox(height: 24),
+                  context.watch<ProviderLoginBool>().teacher
                       ? TextFormField(
                           onFieldSubmitted: (_) {
                             _fieldFocusChange(
-                                context, _emailFocus, _passwordFocus);
+                                context, _fullNameFocus, _emailFocus);
                           },
-                          focusNode: _emailFocus,
-                          keyboardType: TextInputType.emailAddress,
+                          focusNode: _fullNameFocus,
+                          keyboardType: TextInputType.name,
                           autocorrect: false,
                           buildCounter: (BuildContext context,
                                   {int? currentLength,
                                   required bool isFocused,
                                   int? maxLength}) =>
                               null,
-                          maxLength: 40,
-                          controller: _emailController,
+                          maxLength: 20,
+                          controller: _fullNameController,
                           decoration: DecorationClass()
-                              .decoration('Введите почту', 'Почта'),
+                              .decoration('Введите ФИО', 'ФИО'),
                           validator: (value) =>
-                              Validator().validateEmail(_emailController),
+                              Validator().validateName(_fullNameController),
                         )
-                      : const SizedBox(height: 16),
+                      : TextFormField(
+                          onFieldSubmitted: (_) {
+                            _fieldFocusChange(
+                                context, _fullNameFocus, _emailFocus);
+                          },
+                          focusNode: _fullNameFocus,
+                          keyboardType: TextInputType.name,
+                          autocorrect: false,
+                          buildCounter: (BuildContext context,
+                                  {int? currentLength,
+                                  required bool isFocused,
+                                  int? maxLength}) =>
+                              null,
+                          maxLength: 20,
+                          controller: _fullNameController,
+                          decoration: DecorationClass()
+                              .decoration('Введите ссылку', 'Ссылка'),
+                          validator: (value) =>
+                              Validator().validateName(_fullNameController),
+                        ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    onFieldSubmitted: (_) {
+                      _fieldFocusChange(context, _emailFocus, _passwordFocus);
+                    },
+                    focusNode: _emailFocus,
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    buildCounter: (BuildContext context,
+                            {int? currentLength,
+                            required bool isFocused,
+                            int? maxLength}) =>
+                        null,
+                    maxLength: 40,
+                    controller: _emailController,
+                    decoration:
+                        DecorationClass().decoration('Введите почту', 'Почта'),
+                    validator: (value) =>
+                        Validator().validateEmail(_emailController),
+                  ),
+                  const SizedBox(height: 16),
                   TextFormField(
                     onFieldSubmitted: (_) {
                       _fieldFocusChange(
