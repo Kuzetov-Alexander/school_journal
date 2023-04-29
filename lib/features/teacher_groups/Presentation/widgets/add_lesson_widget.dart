@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'dart:io' show Platform;
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -61,14 +61,15 @@ class BottomSheetModal extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         color: AppColors.greyLight,
                       ),
-                      height: heightScreen * 0.25,
+                      height: heightScreen * 0.28,
                       width: widthScreen * 0.88,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal:16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical:19.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 19.0),
                               child: Row(
                                 children: [
                                   Text(
@@ -81,7 +82,38 @@ class BottomSheetModal extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
+                            Container(
+                              height: heightScreen * 0.08,
+                              width: widthScreen,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: AppColors.greyLightSecond,
+                              ),
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.03,
+                            ),
+                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Начало',
+                                  style: TextStyle(
+                                      fontSize: heightScreen * 0.02,
+                                      fontWeight: FontWeight.w400,color: AppColors.black212525),
+                                    
+                                ),
+                                  Container(color: AppColors.graygrye)
+                              ],
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.03,
+                            ),
+                            Row(
+                              children: [Text('Конец',style: TextStyle(
+                                      fontSize: heightScreen * 0.02,
+                                      fontWeight: FontWeight.w400,color: AppColors.black212525),)],
+                            ),
                           ],
                         ),
                       ),
@@ -96,27 +128,33 @@ class BottomSheetModal extends StatelessWidget {
                     width: widthScreen * 0.88,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Добавить в расписание',
-                            style: TextStyle(
-                                fontSize: heightScreen * 0.018,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          CupertinoSwitch(
-                            value: context
-                                .watch<ProviderGroupBool>()
-                                .newLessonAdded,
-                            onChanged: (value) {
-                              context
-                                  .read<ProviderGroupBool>()
-                                  .addNewLesson(value);
-                            },
-                          )
-                        ],
-                      ),
+                      child:Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      'Добавить в расписание',
+      style: TextStyle(
+        fontSize: heightScreen * 0.018,
+        fontWeight: FontWeight.w600
+      ),
+    ),
+    Platform.isIOS
+      ? CupertinoSwitch(
+          activeColor: AppColors.purple,
+          value: context.watch<ProviderGroupBool>().newLessonAdded,
+          onChanged: (value) {
+            context.read<ProviderGroupBool>().addNewLesson(value);
+          },
+        )
+      : Switch(
+      
+          value: context.watch<ProviderGroupBool>().newLessonAdded,
+          onChanged: (value) {
+            context.read<ProviderGroupBool>().addNewLesson(value);
+          },
+        ),
+  ],
+),
                     ),
                   ),
                   SizedBox(
