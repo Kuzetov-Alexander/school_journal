@@ -35,19 +35,17 @@ class _RecoverPasswordPageState extends State<RecoverPasswordPage> {
             context.go('/Groups');
           }
           if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
           }
         },
         builder: (context, state) {
           if (state is AuthLoading) {
             return const Center(
               child: CircularProgressIndicator(),
-            );
-          }
-          if (state is UnAuthenticated) {
-            return const Center(
-              child: Text('Юзер не зарегистрирован'),
             );
           }
           return SafeArea(

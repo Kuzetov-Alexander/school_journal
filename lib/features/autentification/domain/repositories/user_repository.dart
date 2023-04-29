@@ -16,9 +16,11 @@ import 'package:school_journal/core/error/failure.dart';
 ///
 /// Для вызова в репозитории
 abstract class UserRepository {
-
-  Future<Either<Failure, void>> signUp(
-      {required String email, required String password});
+  Future<Either<Failure, void>> signUp({
+    required String email,
+    required String password,
+    required String fullName,
+  });
 
   Future<Either<Failure, void>> signIn(
       {required String email, required String password});

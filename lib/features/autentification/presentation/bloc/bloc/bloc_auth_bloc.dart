@@ -1,14 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
-
 part 'bloc_auth_event.dart';
 part 'bloc_auth_state.dart';
 
 class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
   final UserRepository authRepository;
+
   AuthBloc({required this.authRepository}) : super(UnAuthenticated()) {
     // Когда пользователь нажмет кнопку входа,
     // отправится событие SignInRequested в bloc,
@@ -17,57 +15,33 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     on<SignInRequested>(
       (event, emit) async {
         emit(AuthLoading());
-        try {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: event.email, password: event.password);
-          print('------------Метод входа пользователья выполнен');
+        final authMethod = await authRepository.signIn(
+            email: event.email, password: event.password);
+        if (authMethod.isRight()) {
           emit(Authenticated());
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'user-not-found') {
-            print('------------Пользователь не найден');
-            throw Exception('No user found for that email.');
-          } else if (e.code == 'wrong-password') {
-            print('------------Пароль неверен');
-            throw Exception('Wrong password provided for that user.');
-          }
-          emit(AuthError(e.toString()));
+        } else {
+          emit(AuthError('Произошла ошибка при авторизации'));
           emit(UnAuthenticated());
         }
       },
     );
-
-    //     try {
-    //       await authRepository.signIn(
-    //           email: event.email, password: event.password);
-    //       emit(Authenticated());
-    //     } catch (e) {
-    //       emit(
-    //         AuthError(
-    //           e.toString(),
-    //         ),
-    //       );
-    //       emit(UnAuthenticated());
-    //     }
-
     // Когда пользователь нажмет кнопку регистрации,
-    // отправится событие SignIрRequested в bloc,
+    // отправится событие SignUрRequested в bloc,
     // чтобы обработать его и передать состоянию, если регистрация выполнена успешно
     on<SignUpRequested>(
       (event, emit) async {
         emit(AuthLoading());
-        try {
-          await authRepository
-              .signUp(email: event.email, password: event.password)
-              .then(
-            (_) {
-              print('------------Регистрация');
-              authRepository.sendEmailVerification();
-              print('------------Письмо отправлено на почту');
-            },
-          );
+        final authMethod = await authRepository.signUp(
+            email: event.email,
+            password: event.password,
+            fullName: event.fullName);
+
+        if (authMethod.isRight()) {
+          await authRepository.sendEmailVerification();
+          // emit(UnEmailVerification());
           emit(Authenticated());
-        } catch (e) {
-          emit(AuthError(e.toString()));
+        } else {
+          emit(AuthError('Произошла ошибка при регистрации'));
           emit(UnAuthenticated());
         }
       },
@@ -76,14 +50,17 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     // Когда пользователь нажмет кнопку выйти,
     // отправится событие SignOutRequested в bloc,
     // чтобы обработать его и передать состоянию
-    on<SignOutRequested>((event, emit) async {
-      emit(AuthLoading());
-      try {
-        await FirebaseAuth.instance.signOut();
-      } catch (e) {
-        throw Exception(e);
-      }
-      emit(UnAuthenticated());
-    });
+    on<SignOutRequested>(
+      (event, emit) async {
+        emit(AuthLoading());
+        final authMethod = await authRepository.signOut();
+        if (authMethod.isRight()) {
+          emit(UnEmailVerification());
+        } else {
+          emit(AuthError('Произошла ошибка при выходе из аккаунта'));
+          emit(UnEmailVerification());
+        }
+      },
+    );
   }
 }

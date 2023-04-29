@@ -9,14 +9,15 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, void>> signUp(
-      {required String email, required String password}) async {
+  Future<Either<Failure, void>> signUp({
+    required String email,
+    required String password,
+    required String fullName,
+  }) async {
     try {
       return await remoteDataSource
-          .signUp(email: email, password: password)
-          .then(
-            (value) => Right(value),
-          );
+          .signUp(email: email, password: password, fullName: fullName)
+          .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(ServerFailure());
     }
@@ -25,9 +26,9 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<Failure, void>> sendEmailVerification() async {
     try {
-      return await remoteDataSource.sendEmailVerification().then(
-            (value) => Right(value),
-          );
+      return await remoteDataSource
+          .sendEmailVerification()
+          .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(ServerFailure());
     }
@@ -39,9 +40,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       return await remoteDataSource
           .signIn(email: email, password: password)
-          .then(
-            (value) => Right(value),
-          );
+          .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(ServerFailure());
     }
