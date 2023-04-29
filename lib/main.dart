@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
@@ -17,19 +18,29 @@ import 'package:school_journal/features/autentification/presentation/provider.da
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
+import 'dart:io' show Platform;
 
 import 'package:school_journal/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('ru_RU');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => Providerbool(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Provider_Login_bool>(
+          create: (context) => Provider_Login_bool(),
+        ),
+        ChangeNotifierProvider<Provider_group_bool>(
+          create: (context) => Provider_group_bool(),
+        )
+      ],
       child: MyApp(),
     ),
   );
@@ -97,11 +108,28 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            scrollBehavior: Platform.isAndroid ? MyBehaviorAndroid():const MyBehaviorIOS() ,
             theme: ThemeData(
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),
       ),
     );
+  }
+}
+
+/// физика скролла для ios
+class MyBehaviorIOS extends ScrollBehavior {
+  const MyBehaviorIOS();
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) => const BouncingScrollPhysics();
+}
+/// физика скролла для Android
+class MyBehaviorAndroid extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

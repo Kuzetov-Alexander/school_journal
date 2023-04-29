@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/widgets.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
+
 
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});

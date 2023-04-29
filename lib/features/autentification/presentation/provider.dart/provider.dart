@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Providerbool extends ChangeNotifier {
+class Provider_Login_bool extends ChangeNotifier {
   bool teacher =true;
    void changedTypePerson (bool answer) {
     
