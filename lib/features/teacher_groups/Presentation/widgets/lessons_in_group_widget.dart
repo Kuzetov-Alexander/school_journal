@@ -48,6 +48,7 @@ class LessonsInGroup extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
                       // context.go('/Groups');
+                      
       //                 showCupertinoDialog(context: context,
       // builder: (BuildContext context) => CupertinoAlertDialog(
       //   title: new Text("Dialog Title"),

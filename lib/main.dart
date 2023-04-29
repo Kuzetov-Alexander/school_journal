@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/core/scroll/my_scroll.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
@@ -104,7 +105,7 @@ class MyApp extends StatelessWidget {
         ),
         child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            scrollBehavior: Platform.isAndroid ? MyBehaviorAndroid():const MyBehaviorIOS() ,
+            scrollBehavior: Platform.isAndroid ? MyBehaviorAndroid():const MyBehaviorIOS(),
             theme: ThemeData(
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
@@ -114,17 +115,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// физика скролла для ios
-class MyBehaviorIOS extends ScrollBehavior {
-  const MyBehaviorIOS();
-  @override
-  ScrollPhysics getScrollPhysics(BuildContext context) => const BouncingScrollPhysics();
-}
-/// физика скролла для Android
-class MyBehaviorAndroid extends ScrollBehavior {
-  @override
-  Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
-    return child;
-  }
-}
+
