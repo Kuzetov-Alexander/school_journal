@@ -59,24 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('Профиль'),
       ),
-      body: BlocConsumer<AuthBloc, BlocAuthState>(
-        listener: (context, state) {
-          if (state is UnEmailVerification) {
-            context.go('/');
-          }
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
-          }
-        },
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return SafeArea(
+      body:  SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
@@ -127,9 +110,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-          );
-        },
-      ),
-    );
+          ));
+        
+    
+    
   }
 }
