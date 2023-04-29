@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
-            debugShowCheckedModeBanner: true,
+            debugShowCheckedModeBanner: false,
             scrollBehavior: Platform.isAndroid ? MyBehaviorAndroid():const MyBehaviorIOS() ,
             theme: ThemeData(
                 fontFamily: 'SF-Pro',
@@ -120,6 +120,7 @@ class MyBehaviorIOS extends ScrollBehavior {
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) => const BouncingScrollPhysics();
 }
+/// физика скролла для Android
 class MyBehaviorAndroid extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
