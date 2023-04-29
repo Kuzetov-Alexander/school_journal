@@ -10,9 +10,10 @@ import 'package:school_journal/features/autentification/data/datasources/remote_
 import 'package:school_journal/features/autentification/data/repositories/user_repository_impl.dart';
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/pages/email_verification_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
         routes: [
           GoRoute(
             path: 'SignUp',
-            builder: (context, state) => const SignUpPageBloc(),
+            builder: (context, state) => const SignUpPage(),
           ),
           GoRoute(
             path: 'SignIn',
@@ -65,6 +66,10 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'RecoverPassword',
             builder: (context, state) => const RecoverPasswordPage(),
+          ),
+          GoRoute(
+            path: 'EmailVerification',
+            builder: (context, state) => const EmailVerificationPage(),
           ),
         ],
       ),

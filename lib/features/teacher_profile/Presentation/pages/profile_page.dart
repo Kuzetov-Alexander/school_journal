@@ -6,36 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 
-class ProfilePageBloc extends StatelessWidget {
-  const ProfilePageBloc({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthBloc, BlocAuthState>(
-        listener: (context, state) {
-          if (state is UnAuthenticated) {
-            context.go('/');
-          }
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
-          }
-        },
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return const ProfilePage();
-        },
-      ),
-    );
-  }
-}
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -86,58 +56,80 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Профиль'),
-        ),
-        body: SafeArea(
+      appBar: AppBar(
+        title: const Text('Профиль'),
+      ),
+      body: BlocConsumer<AuthBloc, BlocAuthState>(
+        listener: (context, state) {
+          if (state is UnEmailVerification) {
+            context.go('/');
+          }
+          if (state is AuthError) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              TextFormField(
-                onFieldSubmitted: (_) {
-                  _fieldFocusChange(context, _fullNameFocus, _emailFocus);
-                },
-                focusNode: _fullNameFocus,
-                keyboardType: TextInputType.name,
-                autocorrect: false,
-                controller: fullNameController ,
-                decoration:
-                    DecorationClass().decoration('', '${user?.displayName}'),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                onFieldSubmitted: (_) {
-                  _fieldFocusChange(context, _emailFocus, _passwordFocus);
-                },
-                focusNode: _emailFocus,
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                controller: emailController,
-                decoration: DecorationClass().decoration('', '${user?.email}'),
-              ),
-              const SizedBox(height: 16),
-              Material(
-                child: InkWell(
-                  onTap: () {
-                    _signOut(context);
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 250,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Colors.transparent,
-                    ),
-                    child: const Text(
-                      'Выйти',
-                      style: TextStyle(color: Colors.red, fontSize: 20),
-                    ),
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  TextFormField(
+                    onFieldSubmitted: (_) {
+                      _fieldFocusChange(context, _fullNameFocus, _emailFocus);
+                    },
+                    focusNode: _fullNameFocus,
+                    keyboardType: TextInputType.name,
+                    autocorrect: false,
+                    controller: fullNameController,
+                    decoration: DecorationClass()
+                        .decoration('', '${user?.displayName}'),
                   ),
-                ),
-              )
-            ],
-          ),
-        )));
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    onFieldSubmitted: (_) {
+                      _fieldFocusChange(context, _emailFocus, _passwordFocus);
+                    },
+                    focusNode: _emailFocus,
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    controller: emailController,
+                    decoration:
+                        DecorationClass().decoration('', '${user?.email}'),
+                  ),
+                  const SizedBox(height: 16),
+                  Material(
+                    child: InkWell(
+                      onTap: () {
+                        _signOut(context);
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 250,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.transparent,
+                        ),
+                        child: const Text(
+                          'Выйти',
+                          style: TextStyle(color: Colors.red, fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

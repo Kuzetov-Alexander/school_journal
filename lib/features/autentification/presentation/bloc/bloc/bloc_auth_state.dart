@@ -17,6 +17,11 @@ class UnAuthenticated extends BlocAuthState {
   List<Object?> get props => [];
 }
 
+class UnEmailVerification extends BlocAuthState {
+  @override
+  List<Object?> get props => [];
+}
+
 class AuthError extends BlocAuthState {
   final String error;
 

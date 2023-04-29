@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/student_scores/domain/entities/student_entity.dart';
 
 class StudentScores extends StatefulWidget {
@@ -15,10 +16,20 @@ class _StudentScoresState extends State<StudentScores> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ученики'),
+        title: const Text(
+          'Ученики',
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
-        elevation: 20, //тень
-        // flexibleSpace: const Text('data'), // кнопка слева-сверху
+        leading: IconButton(
+          onPressed: () {
+            context.go('/Groups');
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Row(
@@ -36,9 +47,10 @@ class _StudentScoresState extends State<StudentScores> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _buildRows(count: 30),
-                ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ..._buildRows(count: 30),
+                    ]),
               ),
             ),
             Column(
@@ -99,17 +111,15 @@ class _StudentScoresState extends State<StudentScores> {
             ),
     );
   }
-
+// Table
+// GridView
   /// Генерирует скролящиеся по горизонтали колонки
   List<Widget> _buildRows({required int count}) {
     return List.generate(
       count,
       (index) => Row(children: [
         ..._buildStaticColumn(
-            count: count - (count - 1),
-            titleColumn: '---',
-            text: '',
-            titleWight: 20),
+            count: 1, titleColumn: '---', text: '', titleWight: 20),
         ..._buildStaticColumn(
             count: count - 1, titleColumn: '[xxx]', text: '', titleWight: 20)
       ]),

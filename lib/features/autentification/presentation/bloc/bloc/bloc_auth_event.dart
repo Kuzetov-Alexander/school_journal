@@ -15,10 +15,13 @@ class SignInRequested extends BlocAuthEvent {
 class SignUpRequested extends BlocAuthEvent {
   final String email;
   final String password;
+  final String fullName;
 
-  SignUpRequested(this.email, this.password);
+  SignUpRequested({
+    required this.email,
+    required this.password,
+    required this.fullName,
+  });
 }
-
-
 
 class SignOutRequested extends BlocAuthEvent {}

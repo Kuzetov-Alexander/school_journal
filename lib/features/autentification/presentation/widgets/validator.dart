@@ -31,10 +31,6 @@ class Validator {
       return 'Заполните поле пароль';
     } else if (!passwordExp.hasMatch(password.text)) {
       return 'Введите коррекный пароль';
-    } else if (password.text.length < 8) {
-      return 'Введите пароль, содержащий не менее 8 символов';
-    } else if (password.text.length > 20) {
-      return 'Слишком длинный пароль';
     } else if (confirmPassword != null &&
         password.text != confirmPassword.text) {
       return 'Пароли не совпадают';
