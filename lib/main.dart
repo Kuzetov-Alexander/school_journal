@@ -12,8 +12,8 @@ import 'package:school_journal/features/autentification/domain/repositories/user
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/pages/email_verification_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/recover_password.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
-import 'package:school_journal/features/autentification/presentation/pages/signin_page.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signinpage.dart';
+import 'package:school_journal/features/autentification/presentation/pages/signuppage.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
