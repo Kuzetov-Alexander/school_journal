@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
@@ -253,7 +254,17 @@ class TeacherGroupPage extends StatelessWidget {
                         ),
                         IconButton(
                             splashRadius: 20,
-                            onPressed: () {},
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20))),
+                                  context: context,
+                                  builder: (context) =>
+                                      const BottomSheetModal());
+                            },
                             icon: const Image(
                                 image: AssetImage('assets/images/plus.png')))
                       ],

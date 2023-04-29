@@ -109,11 +109,13 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
+          
             debugShowCheckedModeBanner: false,
             scrollBehavior: Platform.isAndroid
                 ? MyBehaviorAndroid()
                 : const MyBehaviorIOS(),
             theme: ThemeData(
+              // useMaterial3: true, // при добавлении обновляет размеры элементов, интересно почему?
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),
