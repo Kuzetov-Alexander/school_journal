@@ -253,20 +253,24 @@ class TeacherGroupPage extends StatelessWidget {
                               color: AppColors.black212525),
                         ),
                         IconButton(
-                            splashRadius: 20,
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20))),
-                                  context: context,
-                                  builder: (context) =>
-                                      const BottomSheetModal());
-                            },
-                            icon: const Image(
-                                image: AssetImage('assets/images/plus.png')))
+                          splashRadius: 20,
+                          onPressed: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              context: context,
+                              builder: (context) => const BottomSheetModal(),
+                            );
+                          },
+                          icon: const Image(
+                            image: AssetImage('assets/images/plus.png'),
+                          ),
+                        )
                       ],
                     ),
                     Row(

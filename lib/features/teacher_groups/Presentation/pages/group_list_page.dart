@@ -21,7 +21,7 @@ class GroupListPage extends StatelessWidget {
               height: heightScreen * 0.15,
               width: widthScreen,
               color: AppColors.greyLight,
-              child: Column(
+              child:  Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

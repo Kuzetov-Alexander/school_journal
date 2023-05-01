@@ -35,7 +35,6 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
             email: event.email,
             password: event.password,
             fullName: event.fullName);
-
         if (authMethod.isRight()) {
           await authRepository.sendEmailVerification();
           // emit(UnEmailVerification());

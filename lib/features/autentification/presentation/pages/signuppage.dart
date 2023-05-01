@@ -49,7 +49,9 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _authenticateWithEmailAndPassword(context) {
-    if (_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    } else {
       BlocProvider.of<AuthBloc>(context).add(
         SignUpRequested(
             email: _emailController.text.trim(),
@@ -74,193 +76,197 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           );
         }
-      }, builder: (context, state) {
         if (state is AuthLoading) {
-          return const Center(
+         
+          const Center(
             child: CircularProgressIndicator(),
           );
         }
+      }, builder: (context, state) {
         return SafeArea(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Регистрация',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: heightScreen * 0.024,
-                            letterSpacing: 1.4),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  const SizedBox(
-                    child: Image(
-                      image: AssetImage('assets/images/book.png'),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Регистрация',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: heightScreen * 0.024,
+                              letterSpacing: 1.4),
+                        ),
+                      ],
                     ),
-                  ),
-                  const DoubleButton(),
-                  const SizedBox(height: 24),
-                  context.watch<ProviderLoginBool>().teacher
-                      ? TextFormField(
-                          onFieldSubmitted: (_) {
-                            _fieldFocusChange(
-                                context, _fullNameFocus, _emailFocus);
-                          },
-                          focusNode: _fullNameFocus,
-                          keyboardType: TextInputType.name,
-                          autocorrect: false,
-                          buildCounter: (BuildContext context,
-                                  {int? currentLength,
-                                  required bool isFocused,
-                                  int? maxLength}) =>
-                              null,
-                          maxLength: 20,
-                          controller: _fullNameController,
-                          decoration: DecorationClass()
-                              .decoration('Введите ФИО', 'ФИО'),
-                          validator: (value) =>
-                              Validator().validateName(_fullNameController),
-                        )
-                      : TextFormField(
-                          onFieldSubmitted: (_) {
-                            _fieldFocusChange(
-                                context, _fullNameFocus, _emailFocus);
-                          },
-                          focusNode: _fullNameFocus,
-                          keyboardType: TextInputType.name,
-                          autocorrect: false,
-                          buildCounter: (BuildContext context,
-                                  {int? currentLength,
-                                  required bool isFocused,
-                                  int? maxLength}) =>
-                              null,
-                          maxLength: 20,
-                          controller: _fullNameController,
-                          decoration: DecorationClass()
-                              .decoration('Введите ссылку', 'Ссылка'),
-                          validator: (value) =>
-                              Validator().validateName(_fullNameController),
+                    const SizedBox(height: 24),
+                    const SizedBox(
+                      child: Image(
+                        image: AssetImage('assets/images/book.png'),
+                      ),
+                    ),
+                    const DoubleButton(),
+                    const SizedBox(height: 24),
+                    context.watch<ProviderLoginBool>().teacher
+                        ? TextFormField(
+                            onFieldSubmitted: (_) {
+                              _fieldFocusChange(
+                                  context, _fullNameFocus, _emailFocus);
+                            },
+                            focusNode: _fullNameFocus,
+                            keyboardType: TextInputType.name,
+                            autocorrect: false,
+                            buildCounter: (BuildContext context,
+                                    {int? currentLength,
+                                    required bool isFocused,
+                                    int? maxLength}) =>
+                                null,
+                            maxLength: 20,
+                            controller: _fullNameController,
+                            decoration: DecorationClass()
+                                .decoration('Введите ФИО', 'ФИО'),
+                            validator: (value) =>
+                                Validator().validateName(_fullNameController),
+                          )
+                        : TextFormField(
+                            onFieldSubmitted: (_) {
+                              _fieldFocusChange(
+                                  context, _fullNameFocus, _emailFocus);
+                            },
+                            focusNode: _fullNameFocus,
+                            keyboardType: TextInputType.name,
+                            autocorrect: false,
+                            buildCounter: (BuildContext context,
+                                    {int? currentLength,
+                                    required bool isFocused,
+                                    int? maxLength}) =>
+                                null,
+                            maxLength: 20,
+                            controller: _fullNameController,
+                            decoration: DecorationClass()
+                                .decoration('Введите ссылку', 'Ссылка'),
+                            validator: (value) =>
+                                Validator().validateName(_fullNameController),
+                          ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      onFieldSubmitted: (_) {
+                        _fieldFocusChange(context, _emailFocus, _passwordFocus);
+                      },
+                      focusNode: _emailFocus,
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 40,
+                      controller: _emailController,
+                      decoration: DecorationClass()
+                          .decoration('Введите почту', 'Почта'),
+                      validator: (value) =>
+                          Validator().validateEmail(_emailController),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      onFieldSubmitted: (_) {
+                        _fieldFocusChange(
+                            context, _passwordFocus, _confirmPasswordFocus);
+                      },
+                      focusNode: _passwordFocus,
+                      keyboardType: TextInputType.visiblePassword,
+                      autocorrect: false,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 20,
+                      controller: _passwordController,
+                      decoration: DecorationClass()
+                          .decoration('Введите пароль', 'Пароль'),
+                      validator: (value) => Validator().validatePassword(
+                          password: _passwordController,
+                          confirmPassword: _confirmPasswordController),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      focusNode: _confirmPasswordFocus,
+                      keyboardType: TextInputType.visiblePassword,
+                      autocorrect: false,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 20,
+                      controller: _confirmPasswordController,
+                      decoration: DecorationClass().decoration(
+                          'Повторите пароль', 'Подтверждение пароля'),
+                      validator: (value) => Validator().validatePassword(
+                          password: _confirmPasswordController,
+                          confirmPassword: _passwordController),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 56,
+                      width: double.infinity,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              const MaterialStatePropertyAll<Color>(
+                            Color(0xff56138E),
+                          ),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
                         ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    onFieldSubmitted: (_) {
-                      _fieldFocusChange(context, _emailFocus, _passwordFocus);
-                    },
-                    focusNode: _emailFocus,
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    buildCounter: (BuildContext context,
-                            {int? currentLength,
-                            required bool isFocused,
-                            int? maxLength}) =>
-                        null,
-                    maxLength: 40,
-                    controller: _emailController,
-                    decoration:
-                        DecorationClass().decoration('Введите почту', 'Почта'),
-                    validator: (value) =>
-                        Validator().validateEmail(_emailController),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    onFieldSubmitted: (_) {
-                      _fieldFocusChange(
-                          context, _passwordFocus, _confirmPasswordFocus);
-                    },
-                    focusNode: _passwordFocus,
-                    keyboardType: TextInputType.visiblePassword,
-                    autocorrect: false,
-                    buildCounter: (BuildContext context,
-                            {int? currentLength,
-                            required bool isFocused,
-                            int? maxLength}) =>
-                        null,
-                    maxLength: 20,
-                    controller: _passwordController,
-                    decoration: DecorationClass()
-                        .decoration('Введите пароль', 'Пароль'),
-                    validator: (value) => Validator().validatePassword(
-                        password: _passwordController,
-                        confirmPassword: _confirmPasswordController),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    focusNode: _confirmPasswordFocus,
-                    keyboardType: TextInputType.visiblePassword,
-                    autocorrect: false,
-                    buildCounter: (BuildContext context,
-                            {int? currentLength,
-                            required bool isFocused,
-                            int? maxLength}) =>
-                        null,
-                    maxLength: 20,
-                    controller: _confirmPasswordController,
-                    decoration: DecorationClass()
-                        .decoration('Повторите пароль', 'Подтверждение пароля'),
-                    validator: (value) => Validator().validatePassword(
-                        password: _confirmPasswordController,
-                        confirmPassword: _passwordController),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    height: 56,
-                    width: double.infinity,
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: const MaterialStatePropertyAll<Color>(
-                          Color(0xff56138E),
-                        ),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
+                        onPressed: () {
+                          // _fullNameController.text = 'Sashok';
+                          // _emailController.text = 'akuzetovip@gmail.com';
+                          // _passwordController.text = '123qwe123';
+                          // _confirmPasswordController.text = '123qwe123';
+                          _authenticateWithEmailAndPassword(context);
+                        },
+                        child: const Text(
+                          'Зарегистрироваться',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                      onPressed: () {
-                        _fullNameController.text = 'Sashok';
-                        _emailController.text = 'akuzetovip@gmail.com';
-                        _passwordController.text = '123qwe123';
-                        _confirmPasswordController.text = '123qwe123';
-
-                        _authenticateWithEmailAndPassword(context);
-                      },
-                      child: const Text(
-                        'Зарегистрироваться',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.go('/SignIn');
-                    },
-                    child: const Text('Войти'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.go('/Groups');
-                    },
-                    child: const Text('Следующая страница'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.go('/EmailVerification');
-                    },
-                    child: const Text('Cтраница Верификации'),
-                  ),
-                ],
+                    TextButton(
+                      onPressed: () {
+                        context.go('/SignIn');
+                      },
+                      child: const Text('Войти'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.go('/Groups');
+                      },
+                      child: const Text('Следующая страница'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.go('/EmailVerification');
+                      },
+                      child: const Text('Cтраница Верификации'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

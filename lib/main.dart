@@ -16,7 +16,7 @@ import 'package:school_journal/features/autentification/presentation/pages/signi
 import 'package:school_journal/features/autentification/presentation/pages/signuppage.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
-import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
+import 'package:school_journal/features/student_scores/presentation/pages/page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'StudentScores',
             name: 'StudentScores',
-            builder: (context, state) => const StudentScores(),
+            builder: (context, state) => const ScoresPage(),
           ),
         ],
       ),
@@ -109,13 +109,13 @@ class MyApp extends StatelessWidget {
           authRepository: RepositoryProvider.of<UserRepository>(context),
         ),
         child: MaterialApp.router(
-          
             debugShowCheckedModeBanner: false,
             scrollBehavior: Platform.isAndroid
                 ? MyBehaviorAndroid()
                 : const MyBehaviorIOS(),
             theme: ThemeData(
-              useMaterial3: true, // при добавлении обновляет размеры элементов, интересно почему?
+                useMaterial3:
+                    true, // при добавлении обновляет размеры элементов, интересно почему?
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),

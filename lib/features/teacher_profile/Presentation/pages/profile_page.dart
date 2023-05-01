@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:go_router/go_router.dart';
 
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
@@ -31,7 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-
   @override
   void dispose() {
     fullNameController.dispose();
@@ -55,63 +54,61 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Профиль'),
-      ),
-      body:  SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    onFieldSubmitted: (_) {
-                      _fieldFocusChange(context, _fullNameFocus, _emailFocus);
+        appBar: AppBar(
+          title: const Text('Профиль'),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  onFieldSubmitted: (_) {
+                    _fieldFocusChange(context, _fullNameFocus, _emailFocus);
+                  },
+                  focusNode: _fullNameFocus,
+                  keyboardType: TextInputType.name,
+                  autocorrect: false,
+                  controller: fullNameController,
+                  decoration:
+                      DecorationClass().decoration('', '${user?.displayName}'),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  onFieldSubmitted: (_) {
+                    _fieldFocusChange(context, _emailFocus, _passwordFocus);
+                  },
+                  focusNode: _emailFocus,
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  controller: emailController,
+                  decoration:
+                      DecorationClass().decoration('', '${user?.email}'),
+                ),
+                const SizedBox(height: 16),
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                      _signOut(context);
+                      context.go('/');
                     },
-                    focusNode: _fullNameFocus,
-                    keyboardType: TextInputType.name,
-                    autocorrect: false,
-                    controller: fullNameController,
-                    decoration: DecorationClass()
-                        .decoration('', '${user?.displayName}'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    onFieldSubmitted: (_) {
-                      _fieldFocusChange(context, _emailFocus, _passwordFocus);
-                    },
-                    focusNode: _emailFocus,
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    controller: emailController,
-                    decoration:
-                        DecorationClass().decoration('', '${user?.email}'),
-                  ),
-                  const SizedBox(height: 16),
-                  Material(
-                    child: InkWell(
-                      onTap: () {
-                        _signOut(context);
-                      },
-                      child: Container(
-                        height: 30,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.transparent,
-                        ),
-                        child: const Text(
-                          'Выйти',
-                          style: TextStyle(color: Colors.red, fontSize: 20),
-                        ),
+                    child: Container(
+                      height: 30,
+                      width: 250,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.transparent,
+                      ),
+                      child: const Text(
+                        'Выйти',
+                        style: TextStyle(color: Colors.red, fontSize: 20),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
-          ));
-        
-    
-    
+          ),
+        ));
   }
 }

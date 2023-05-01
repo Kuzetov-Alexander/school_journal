@@ -16,10 +16,8 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
-
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -32,21 +30,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void _authenticateWithEmailAndPassword(BuildContext context) {
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) return;
-    if (isValid) {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    } else {
       BlocProvider.of<AuthBloc>(context).add(
         SignInRequested(
           _emailController.text.trim(),
           _passwordController.text.trim(),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Не правильный логин'),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
         ),
       );
     }
@@ -80,7 +70,8 @@ class _SignInPageState extends State<SignInPage> {
         },
         builder: (context, state) {
           if (state is AuthLoading) {
-            return const Center(
+            
+            const Center(
               child: CircularProgressIndicator(),
             );
           }
