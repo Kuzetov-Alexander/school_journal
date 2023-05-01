@@ -6,10 +6,22 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/ios_timer_picker.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
-class BottomSheetModal extends StatelessWidget {
-  const BottomSheetModal({super.key});
+class BottomSheetModal extends StatefulWidget {
+  BottomSheetModal({super.key});
+
+  @override
+  State<BottomSheetModal> createState() => _BottomSheetModalState();
+}
+
+class _BottomSheetModalState extends State<BottomSheetModal> {
+  DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+
+  DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +30,7 @@ class BottomSheetModal extends StatelessWidget {
     return DraggableScrollableSheet(
         initialChildSize: 0.95,
         minChildSize: 0.5,
-        maxChildSize: 0.96,
+        maxChildSize: 0.95,
         builder: (_, controller) => Container(
               decoration: const BoxDecoration(
                   color: Colors.white,
@@ -92,9 +104,6 @@ class BottomSheetModal extends StatelessWidget {
                                 color: AppColors.greyLightSecond,
                               ),
                             ),
-                            SizedBox(
-                              height: heightScreen * 0.03,
-                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -105,13 +114,20 @@ class BottomSheetModal extends StatelessWidget {
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.black212525),
                                 ),
-                                Container(color: AppColors.graygrye)
+                                IosTimePicker(
+                                  time: dateTimestart,
+                                  textTime:
+                                      '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                  onTimeSelected: (DateTime newTime) {
+                                    setState(() {
+                                      dateTimestart = newTime;
+                                    });
+                                  },
+                                )
                               ],
                             ),
-                            SizedBox(
-                              height: heightScreen * 0.03,
-                            ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Конец',
@@ -119,7 +135,18 @@ class BottomSheetModal extends StatelessWidget {
                                       fontSize: heightScreen * 0.02,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.black212525),
-                                )
+                                ),
+                              Platform.isIOS?  IosTimePicker(
+                                  time: dateTimestart,
+                                  textTime:
+                                      '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                  onTimeSelected: (DateTime newTime) {
+                                    setState(() {
+                                      dateTimefinish =
+                                          newTime; // делать через блок или провайдер лучше?
+                                    });
+                                  },
+                                ) : 
                               ],
                             ),
                           ],

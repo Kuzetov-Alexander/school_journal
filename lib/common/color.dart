@@ -9,4 +9,5 @@ abstract class AppColors {
   static const Color greybcc1cd = Color.fromRGBO(188, 193, 205, 1);
    static const Color gray5a5a5a = Color.fromRGBO(90, 90, 90, 1);
    static const Color graygrye = Color.fromRGBO(118, 118, 118, 1);
+   static const Color greyforBoxTime = Color.fromRGBO(118, 118, 128, 0.12);
 }
