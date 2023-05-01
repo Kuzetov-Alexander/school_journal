@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,7 @@ import 'package:school_journal/features/autentification/presentation/bloc/bloc/b
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
+import 'dart:io' show Platform;
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -71,8 +73,8 @@ class _SignInPageState extends State<SignInPage> {
         builder: (context, state) {
           if (state is AuthLoading) {
             
-            const Center(
-              child: CircularProgressIndicator(),
+             Center(
+              child: Platform.isAndroid? const CircularProgressIndicator() :const CupertinoActivityIndicator() ,
             );
           }
           return SafeArea(

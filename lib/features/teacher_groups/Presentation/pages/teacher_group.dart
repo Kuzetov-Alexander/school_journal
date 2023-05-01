@@ -256,6 +256,7 @@ class TeacherGroupPage extends StatelessWidget {
                           splashRadius: 20,
                           onPressed: () {
                             showModalBottomSheet(
+                              // barrierColor:Colors.transparent ,
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               shape: const RoundedRectangleBorder(
@@ -264,7 +265,7 @@ class TeacherGroupPage extends StatelessWidget {
                                 ),
                               ),
                               context: context,
-                              builder: (context) => const BottomSheetModal(),
+                              builder: (context) => BottomSheetModal(),
                             );
                           },
                           icon: const Image(
