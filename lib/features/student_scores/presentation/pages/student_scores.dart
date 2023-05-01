@@ -1,91 +1,115 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:table_sticky_headers/table_sticky_headers.dart';
 
-class StudentScores extends StatelessWidget {
-  const StudentScores({super.key});
+class LandingPage extends StatefulWidget {
+  final columns = 10;
+  final rows = 20;
+
+  LandingPage({
+    Key? key,
+  }) : super(key: key);
+
+  /// Создание колонок с строками
+  List<List<String>> makeData() {
+    final List<List<String>> output = [];
+    for (int i = 0; i < columns; i++) {
+      // Для каждой колонки создаются строки
+      final List<String> row = [];
+      for (int j = 0; j < rows; j++) {
+        row.add('L$j : T$i');
+      }
+      output.add(row);
+    }
+    return output;
+  }
+
+  List allUsers = <String>[
+    'Kuzetov Alexander Olegovich',
+    'Frolov ',
+    'Efanov ',
+    'Kotegov ',
+    'Miler',
+    'Tropin ',
+    'Kozlov ',
+    'Okhmak ',
+    'Chimrov ',
+    'Prosvirov ',
+    'Oreckhov ',
+    'Chuprov',
+    'Putin ',
+    'Putin ',
+    'Putin ',
+    'Putin ',
+    'Putin ',
+    'Putin ',
+    'Putin ',
+    'Putin ',
+  ];
+
+  /// Simple generator for column title
+  List<String> makeTitleColumn() =>
+      List.generate(columns, (i) => 'День\n    $i');
+
+  /// Simple generator for row title
+  List<String> makeTitleRow() => List.generate(rows, (i) => '${allUsers[i]}');
 
   @override
+  LandingPageState createState() => LandingPageState();
+}
+
+class LandingPageState extends State<LandingPage> {
+  @override
   Widget build(BuildContext context) {
-    double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Ученики',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text('Ученики'),
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            context.go('/Groups');
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
+        backgroundColor: Colors.amber,
+        actions: [
+          IconButton(
+            splashRadius: 20,
+            onPressed: () {},
+            icon: const Image(
+              image: AssetImage('assets/images/button_arrow.png'),
+              color: Colors.black,
+            ),
           ),
-        ),
+          IconButton(
+            splashRadius: 20,
+            onPressed: () {},
+            icon: const Image(
+              image: AssetImage('assets/images/plus.png'),
+            ),
+          ),
+        ],
       ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[],
+      body: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: 280,
+                child: StickyHeadersTable(
+                  columnsLength: widget.makeTitleColumn().length,
+                  rowsLength: widget.makeTitleRow().length,
+                  columnsTitleBuilder: (i) =>
+                      Expanded(child: Text(widget.makeTitleColumn()[i])),
+                  rowsTitleBuilder: (i) => Text(widget.makeTitleRow()[i]),
+                  contentCellBuilder: (i, j) => Text(widget.makeData()[i][j]),
+                  legendCell: const Text('Имя'),
+                ),
+              ),
+            ),
+            Column(children: [
+              Container(
+                width: 60,
+                height: 60,
+                color: Colors.green,
+              )
+            ])
+          ],
+        ),
       ),
     );
   }
 }
-
-/// Метод генерирует колонку
-// List<Widget> _buildStaticColumn({
-//   required int count,
-//   required String titleColumn,
-//   required double titleWight,
-//   required String text,
-// }) {
-//   return List.generate(
-//     count,
-//     (index) => index == 0
-
-//         /// Указываем заголовок
-//         ? Container(
-//             alignment: Alignment.center,
-//             width: titleWight,
-//             height: 40.0,
-//             // color: Colors.amber,
-//             decoration: BoxDecoration(
-//                 border: Border.all(color: Colors.black), color: Colors.amber),
-//             child: Text(
-//               titleColumn,
-//               style: const TextStyle(fontWeight: FontWeight.w700),
-//               maxLines: 2,
-//             ),
-//           )
-
-//         /// колонка после
-//         : Container(
-//             alignment: Alignment.center,
-//             width: titleWight,
-//             height: 20.0,
-//             // color: Colors.white,
-//             decoration: BoxDecoration(
-//               border: Border.all(color: Colors.black.withOpacity(0.2)),
-//             ),
-//             child: Text(
-//               '${index + 1}.  $text',
-//               style: const TextStyle(fontWeight: FontWeight.w300),
-//             ),
-//           ),
-//   );
-// }
-
-// Table
-// GridView
-/// Генерирует скролящиеся по горизонтали колонки
-// List<Widget> _buildRows({required int count}) {
-//   return List.generate(
-//     count,
-//     (index) => Row(children: [
-//       ..._buildStaticColumn(
-//           count: 1, titleColumn: '---', text: '', titleWight: 20),
-//       ..._buildStaticColumn(
-//           count: count - 1, titleColumn: '[xxx]', text: '', titleWight: 20)
-//     ]),
-//   );
-// }
