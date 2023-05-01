@@ -35,7 +35,7 @@ class GroupInfoWidget extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 7),
+                          horizontal: 16, vertical: 1),
                       child: Text(
                         'Группа 112',
                         style: TextStyle(

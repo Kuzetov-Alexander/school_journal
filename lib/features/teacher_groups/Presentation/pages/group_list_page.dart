@@ -57,7 +57,7 @@ class GroupListPage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 14.0, bottom: 11, top: 18),
+                            left: 14.0, bottom:2, top: 18),
                         child: Text(
                           // '${user?.email} ${user?.displayName}'
                           'Мои группы',
