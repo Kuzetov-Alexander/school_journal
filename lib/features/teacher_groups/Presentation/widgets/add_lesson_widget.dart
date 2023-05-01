@@ -136,17 +136,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.black212525),
                                 ),
-                              Platform.isIOS?  IosTimePicker(
-                                  time: dateTimestart,
-                                  textTime:
-                                      '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                  onTimeSelected: (DateTime newTime) {
-                                    setState(() {
-                                      dateTimefinish =
-                                          newTime; // делать через блок или провайдер лучше?
-                                    });
-                                  },
-                                ) : 
+                              // Platform.isIOS?  IosTimePicker(
+                              //     time: dateTimestart,
+                              //     textTime:
+                              //         '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                              //     onTimeSelected: (DateTime newTime) {
+                              //       setState(() {
+                              //         dateTimefinish =
+                              //             newTime; // делать через блок или провайдер лучше?
+                              //       });
+                              //     },
+                              //   ) : 
                               ],
                             ),
                           ],

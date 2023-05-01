@@ -83,31 +83,32 @@ class LandingPageState extends State<LandingPage> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Row(
-          children: [
-            Expanded(
-              child: SizedBox(
-                width: 280,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Row(
+            children: [
+              SizedBox(
+                height: 1200,
+                width: 260,
                 child: StickyHeadersTable(
                   columnsLength: widget.makeTitleColumn().length,
                   rowsLength: widget.makeTitleRow().length,
                   columnsTitleBuilder: (i) =>
-                      Expanded(child: Text(widget.makeTitleColumn()[i])),
+                      Text(widget.makeTitleColumn()[i]),
                   rowsTitleBuilder: (i) => Text(widget.makeTitleRow()[i]),
                   contentCellBuilder: (i, j) => Text(widget.makeData()[i][j]),
                   legendCell: const Text('Имя'),
                 ),
               ),
-            ),
-            Column(children: [
-              Container(
-                width: 60,
-                height: 60,
-                color: Colors.green,
-              )
-            ])
-          ],
+              Column(children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  color: Colors.green,
+                )
+              ])
+            ],
+          ),
         ),
       ),
     );
