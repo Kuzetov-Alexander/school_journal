@@ -6,8 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/ios_timer_picker.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
+
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
+
+import 'timer_picker_android.dart';
 
 class BottomSheetModal extends StatefulWidget {
   BottomSheetModal({super.key});
@@ -96,6 +99,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 ],
                               ),
                             ),
+                            // Container(
+                            //   height: heightScreen * 0.08,
+                            //   width: widthScreen,
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(16),
+                            //     color: AppColors.greyLightSecond,
+                            //   ),
+
+                            // ),
                             Container(
                               height: heightScreen * 0.08,
                               width: widthScreen,
@@ -103,6 +115,35 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 borderRadius: BorderRadius.circular(16),
                                 color: AppColors.greyLightSecond,
                               ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0),
+                                    child: Text(
+                                      'Кабинет (опционально)',
+                                      style: TextStyle(
+                                          color: AppColors.grey9d9d9d,
+                                          fontSize: heightScreen * 0.02),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        // надо сделать так чтобы по клику слева появлялся TextField
+                                      },
+                                      icon: const Image(
+                                        height: 20,
+                                        image: AssetImage(
+                                            'assets/images/pen_icon.png'),
+                                        color: Colors.black,
+                                      ))
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.01,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,16 +155,19 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.black212525),
                                 ),
-                                IosTimePicker(
-                                  time: dateTimestart,
-                                  textTime:
-                                      '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
-                                  onTimeSelected: (DateTime newTime) {
-                                    setState(() {
-                                      dateTimestart = newTime;
-                                    });
-                                  },
-                                )
+                                Platform.isIOS
+                                    ? IosTimePicker(
+                                        time: dateTimestart,
+                                        textTime:
+                                            '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                        onTimeSelected: (DateTime newTime) {
+                                          setState(() {
+                                            dateTimefinish =
+                                                newTime; // делать через блок или провайдер лучше?
+                                          });
+                                        },
+                                      )
+                                    : const TimerPickerAndroid()
                               ],
                             ),
                             Row(
@@ -136,17 +180,19 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.black212525),
                                 ),
-                              // Platform.isIOS?  IosTimePicker(
-                              //     time: dateTimestart,
-                              //     textTime:
-                              //         '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                              //     onTimeSelected: (DateTime newTime) {
-                              //       setState(() {
-                              //         dateTimefinish =
-                              //             newTime; // делать через блок или провайдер лучше?
-                              //       });
-                              //     },
-                              //   ) : 
+                                Platform.isIOS
+                                    ? IosTimePicker(
+                                        time: dateTimestart,
+                                        textTime:
+                                            '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                        onTimeSelected: (DateTime newTime) {
+                                          setState(() {
+                                            dateTimefinish =
+                                                newTime; // делать через блок или провайдер лучше?
+                                          });
+                                        },
+                                      )
+                                    : const TimerPickerAndroid()
                               ],
                             ),
                           ],

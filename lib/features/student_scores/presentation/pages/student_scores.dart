@@ -89,7 +89,7 @@ class LandingPageState extends State<LandingPage> {
             children: [
               SizedBox(
                 height: 1200,
-                width: 260,
+                width: 320,
                 child: StickyHeadersTable(
                   columnsLength: widget.makeTitleColumn().length,
                   rowsLength: widget.makeTitleRow().length,

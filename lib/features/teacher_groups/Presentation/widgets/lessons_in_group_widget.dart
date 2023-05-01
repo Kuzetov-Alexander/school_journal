@@ -1,3 +1,4 @@
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
@@ -44,25 +45,7 @@ class LessonsInGroup extends StatelessWidget {
                 children: [
                   InkWell(
                     borderRadius: BorderRadius.circular(16),
-                    onTap: () {
-                      // context.go('/Groups');
-                      
-      //                 showCupertinoDialog(context: context,
-      // builder: (BuildContext context) => CupertinoAlertDialog(
-      //   title: new Text("Dialog Title"),
-      //   content: new Text("This is my content"),
-      //   actions: <Widget>[
-      //     CupertinoDialogAction(
-      //       isDefaultAction: true,
-      //       child: Text('sdsdsd'),
-      //     ),
-      //     CupertinoDialogAction(
-      //       child: Text("No"),
-      //     )
-      //   ],
-      // ));
-     
-                    },
+                    onTap: () {},
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -89,7 +72,25 @@ class LessonsInGroup extends StatelessWidget {
                                 IconButton(
                                     splashRadius: 20,
                                     onPressed: () {
-                                      context.go('/Groups');
+                                      showAdaptiveActionSheet(
+                                        context: context,
+                                        actions: <BottomSheetAction>[
+                                          BottomSheetAction(
+                                            title: const Text('Item 1'),
+                                            onPressed: (_) {},
+                                          ),
+                                          BottomSheetAction(
+                                            title: const Text('Item 2'),
+                                            onPressed: (_) {},
+                                          ),
+                                          BottomSheetAction(
+                                            title: const Text('Item 3'),
+                                            onPressed: (_) {},
+                                          ),
+                                        ],
+                                        cancelAction: CancelAction(
+                                            title: const Text('Cancel')),
+                                      );
                                     },
                                     icon: const Image(
                                         image: AssetImage(

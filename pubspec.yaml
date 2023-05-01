@@ -44,6 +44,8 @@ dependencies:
   email_validator: ^2.0.1
   intl: ^0.17.0
   table_sticky_headers: ^2.0.5
+  adaptive_action_sheet: ^2.0.2
+ 
 
 dev_dependencies:
   flutter_test:
