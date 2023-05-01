@@ -270,7 +270,7 @@ class TeacherGroupPage extends StatelessWidget {
                           icon: const Image(
                             image: AssetImage('assets/images/plus.png'),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Row(
