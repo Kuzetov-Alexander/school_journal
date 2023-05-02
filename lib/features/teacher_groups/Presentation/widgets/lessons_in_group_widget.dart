@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:school_journal/common/color.dart';
 import 'dart:io' show Platform;
 
+import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_edit_class.dart';
+
 class LessonsInGroup extends StatelessWidget {
   const LessonsInGroup({super.key});
 
@@ -188,7 +190,7 @@ class LessonsInGroup extends StatelessWidget {
                       fontWeight: FontWeight.w400)),
               actions: [
                 CupertinoActionSheetAction(
-                  onPressed: () {},
+                  onPressed: () { TeacherEditClass();},
                   child: Text(
                     'Изменить',
                     style: TextStyle(
@@ -263,7 +265,21 @@ class LessonsInGroup extends StatelessWidget {
                   fontSize: heightScreen * 0.022,
                   fontWeight: FontWeight.w400),
             ),
-            onPressed: (_) {},
+            onPressed: (_) {
+              Navigator.of(context).pop(); 
+              showModalBottomSheet(
+                              // barrierColor:Colors.transparent ,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              context: context,
+                              builder: (context) => const TeacherEditClass(),
+                            );
+               },
           ),
         ],
         cancelAction: CancelAction(
