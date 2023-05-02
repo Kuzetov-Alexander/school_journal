@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:school_journal/common/color.dart';
 
 class IosTimePicker extends StatefulWidget {
@@ -61,6 +59,5 @@ class _IosTimePickerState extends State<IosTimePicker> {
                 );
               });
         });
-    ;
   }
 }
