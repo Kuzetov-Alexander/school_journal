@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
 
-
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
 
@@ -21,43 +20,46 @@ class GroupListPage extends StatelessWidget {
               height: heightScreen * 0.15,
               width: widthScreen,
               color: AppColors.greyLight,
-              child:  Column(
+              child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          context.go('/');
-                        },
-                        icon: const Icon(Icons.arrow_left),
-                        iconSize: 35,
-                      ),
-                      IconButton(
-                        splashRadius: 1,
-                        onPressed: () {
-                          context.goNamed('Profile');
-                        },
-                        icon: const Image(
-                          width: 30,
-                          image: AssetImage(
-                              'assets/images/profile_icon.png'), // вставляется с фоном , надо что-то придумать
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            context.go('/');
+                          },
+                          icon: const Icon(Icons.arrow_left),
+                          iconSize: 35,
                         ),
-                      ),
-                      IconButton(
-                        splashRadius: 1,
-                        onPressed: () {},
-                        icon: const Icon(Icons.add),
-                        iconSize: 40,
-                      ),
-                    ],
+                        InkWell(
+                          onTap: () {
+                             context.goNamed('Profile');
+                          },
+                          child: const Image(
+                            image: AssetImage('assets/images/profile_icon.png'),
+                          ),
+                        ),
+                        SizedBox(width: widthScreen*0.07,),
+                        InkWell(
+                          onTap: () {
+                           
+                          },
+                          child: const Image(
+                            image: AssetImage('assets/images/plus_icon.png'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 14.0, bottom:2, top: 18),
+                            left: 14.0, bottom: 2, top: 12),
                         child: Text(
                           // '${user?.email} ${user?.displayName}'
                           'Мои группы',

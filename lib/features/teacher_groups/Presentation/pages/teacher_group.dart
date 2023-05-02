@@ -227,15 +227,19 @@ class TeacherGroupPage extends StatelessWidget {
                                     ),
                                   ),
                                   onPressed: () {
+
+
+
                                        showModalBottomSheet(
+                                        
                               barrierColor:Colors.transparent ,
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
+                              // shape: const RoundedRectangleBorder(
+                              //   borderRadius: BorderRadius.vertical(
+                              //     top: Radius.circular(20),
+                              //   ),
+                              // ),
                               context: context,
                               builder: (context) => const TeacherChangeSchedule(),
                             );
@@ -319,6 +323,8 @@ class TeacherGroupPage extends StatelessWidget {
               ))),
     );
   }
+
+ 
 }
 
 extension StringExtension on String {

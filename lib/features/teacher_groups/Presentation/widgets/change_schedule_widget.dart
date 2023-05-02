@@ -20,11 +20,9 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return DraggableScrollableSheet(
-        initialChildSize: 0.95,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        builder: (_, controller) => Container(
+    return Column(mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius:
@@ -81,6 +79,7 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                     width: widthScreen * 0.9,
                     height: heightScreen * 0.68,
                     child: ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
                         separatorBuilder: (context, index) {
                           return SizedBox(
                             height: heightScreen * 0.02,
@@ -134,13 +133,17 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            'Сделать расписание еженедельным',
-                            style: TextStyle(
-                                fontSize: heightScreen * 0.018,
-                                fontWeight: FontWeight.w600),
+                          SizedBox(
+                            width: widthScreen*0.5,
+                            child: Text(
+                              'Сделать расписание еженедельным',
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontSize: heightScreen * 0.018,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                           Platform.isIOS
                               ? CupertinoSwitch(
@@ -168,8 +171,13 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                       ),
                     ),
                   ),
+                  SizedBox(
+              height: heightScreen * 0.015,
+            ),
                 ],
               ),
-            ));
+            ),
+      ],
+    );
   }
 }
