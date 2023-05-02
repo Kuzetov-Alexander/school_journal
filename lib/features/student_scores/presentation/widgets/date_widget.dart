@@ -25,15 +25,16 @@ class DateWidget extends StatelessWidget {
           Text(
             textDate,
             maxLines: 1,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 12,
+              fontSize: heightScreen * 0.012,
             ),
           ),
           Text(
             DateFormat('d').format(DateTime.now()),
             maxLines: 1,
-            style: const TextStyle(color: Colors.white),
+            style:
+                TextStyle(color: Colors.white, fontSize: heightScreen * 0.018),
           ),
         ],
       ),
