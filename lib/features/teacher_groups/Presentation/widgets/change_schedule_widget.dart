@@ -60,14 +60,23 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                     color: Colors.grey,
                     height: heightScreen * 0.001,
                   ),
-                 Padding(
-                   padding:  EdgeInsets.symmetric(horizontal: widthScreen*0.05,vertical: heightScreen*0.02),
-                   child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                     children: [
-                       Text('Дни недели', style: TextStyle(fontWeight: FontWeight.w700,color: AppColors.black212525,fontSize: heightScreen*0.022),),
-                     ],
-                   ),
-                 ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widthScreen * 0.05,
+                        vertical: heightScreen * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Дни недели',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.black212525,
+                              fontSize: heightScreen * 0.022),
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     width: widthScreen * 0.9,
                     height: heightScreen * 0.68,
@@ -89,30 +98,33 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                               width: widthScreen * 0.8,
                               height: heightScreen * 0.075,
                               child: ListTile(
-                                title: Text(DateFormat('EEEE', 'ru_RU')
-                                    .format(DateTime.now()
-                                        .add(Duration(days: index - 1)))
-                                    .capitalize(), style: TextStyle(color: AppColors.black212525, fontWeight: FontWeight.w600) ),
+                                title: Text(
+                                    DateFormat('EEEE', 'ru_RU')
+                                        .format(DateTime.now()
+                                            .add(Duration(days: index - 1)))
+                                        .capitalize(),
+                                    style: const TextStyle(
+                                        color: AppColors.black212525,
+                                        fontWeight: FontWeight.w600)),
                                 subtitle: const Text(
                                   'Нет занятий',
-                                  style: TextStyle(color: AppColors.grey9d9d9d, fontWeight: FontWeight.w400),
+                                  style: TextStyle(
+                                      color: AppColors.grey9d9d9d,
+                                      fontWeight: FontWeight.w400),
                                 ),
-                                trailing:  const Padding(
-                                  padding: EdgeInsets.only(top:5.0),
+                                trailing: const Padding(
+                                  padding: EdgeInsets.only(top: 5.0),
                                   child: Image(
-                                    
-                                    image: AssetImage(
-                                        'assets/images/arrow.png')),
+                                      image: AssetImage(
+                                          'assets/images/arrow.png')),
                                 ),
                                 isThreeLine: true,
                               ),
                             ),
                           );
-                          
                         }),
                   ),
-                 
-                   Container(
+                  Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       color: AppColors.greyLightSecond,

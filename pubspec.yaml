@@ -45,6 +45,7 @@ dependencies:
   intl: ^0.17.0
   table_sticky_headers: ^2.0.5
   adaptive_action_sheet: ^2.0.2
+  auto_size_text: ^3.0.0
  
 
 dev_dependencies:

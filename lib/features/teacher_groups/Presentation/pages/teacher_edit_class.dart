@@ -1,17 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_android.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
-
-import 'package:school_journal/features/teacher_groups/provider/provider.dart';
-
-
 
 class TeacherEditClass extends StatefulWidget {
   const TeacherEditClass({super.key});
@@ -100,7 +94,6 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                                 ],
                               ),
                             ),
-                         
                             Container(
                               height: heightScreen * 0.08,
                               width: widthScreen,
@@ -193,7 +186,6 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                       ),
                     ),
                   ),
-               
                   SizedBox(
                     height: heightScreen * 0.35,
                   ),

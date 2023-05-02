@@ -10,7 +10,7 @@ class LandingPage extends StatefulWidget {
   LandingPage({super.key});
 
   final List<String> allUsers = <String>[
-    'Kuzetov Alexander Olegovich',
+    'Kuzetov Абдурахмангаджи Olegovich',
     'Frolov Alexander Olegovich',
     'Efanov Alexander Olegovich',
     'Kotegov Alexander Olegovich',
@@ -86,8 +86,9 @@ class LandingPageState extends State<LandingPage> {
                   child: SizedBox(
                     width: widthScreen * 0.3,
                     child: DataTable(
-                      horizontalMargin: 10,
+                      horizontalMargin: 8,
                       checkboxHorizontalMargin: 0,
+                      headingRowHeight: heightScreen * 0.07,
                       dataRowHeight: heightScreen * 0.06,
                       // dividerThickness: 0,
                       border: const TableBorder(
@@ -115,24 +116,25 @@ class LandingPageState extends State<LandingPage> {
                         (int index) => DataRow(
                           cells: [
                             DataCell(
-                              SizedBox(
-                                width: widthScreen * 0.18,
-                                child: InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      // barrierColor:Colors.transparent ,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20),
-                                        ),
+                              InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    // barrierColor:Colors.transparent ,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
                                       ),
-                                      context: context,
-                                      builder: (context) =>
-                                          const StudentProfile(),
-                                    );
-                                  },
+                                    ),
+                                    context: context,
+                                    builder: (context) =>
+                                        const StudentProfile(),
+                                  );
+                                },
+                                // ------------------------------------
+                                child: SizedBox(
+                                  width: widthScreen * 0.26,
                                   child: Text(
                                     widget.allUsers[index],
                                     style: const TextStyle(
@@ -153,6 +155,7 @@ class LandingPageState extends State<LandingPage> {
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
+                      headingRowHeight: heightScreen * 0.07,
                       horizontalMargin: 10,
 
                       dataRowHeight: heightScreen * 0.06,
@@ -206,6 +209,7 @@ class LandingPageState extends State<LandingPage> {
                 SizedBox(
                   width: widthScreen * 0.1,
                   child: DataTable(
+                    headingRowHeight: heightScreen * 0.07,
                     horizontalMargin: 7,
                     clipBehavior: Clip.hardEdge,
                     dataRowHeight: heightScreen * 0.06,
@@ -250,6 +254,7 @@ class LandingPageState extends State<LandingPage> {
                 SizedBox(
                   width: widthScreen * 0.1,
                   child: DataTable(
+                    headingRowHeight: heightScreen * 0.07,
                     horizontalMargin: 7,
                     dataRowHeight: heightScreen * 0.06,
                     // dividerThickness: 0,
