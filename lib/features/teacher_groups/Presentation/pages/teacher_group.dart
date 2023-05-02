@@ -145,66 +145,67 @@ class TeacherGroupPage extends StatelessWidget {
                             ),
                             Expanded(
                               child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 30,
-                                  itemBuilder: (BuildContext context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        context
-                                            .read<ProviderGroupBool>()
-                                            .changeColor();
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: provider
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 30,
+                                itemBuilder: (BuildContext context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<ProviderGroupBool>()
+                                          .changeColor();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: provider
+                                              ? Colors.white
+                                              : AppColors.purple,
+                                          border: Border.all(
+                                            width: 2,
+                                            color:
+                                                Colors.purple.withOpacity(0.4),
+                                          )),
+                                      height: heightScreen * 0.02,
+                                      width: widthScreen * 0.13,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: widthScreen * 0.015),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            DateFormat('E', 'ru')
+                                                .format(DateTime.now()),
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                color: !provider
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                          Text(
+                                            DateFormat('d')
+                                                .format(DateTime.now()),
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                color: !provider
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                          Icon(
+                                            Icons.circle_rounded,
+                                            color: !provider
                                                 ? Colors.white
                                                 : AppColors.purple,
-                                            border: Border.all(
-                                              width: 2,
-                                              color: Colors.purple
-                                                  .withOpacity(0.4),
-                                            )),
-                                        height: heightScreen * 0.02,
-                                        width: widthScreen * 0.13,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: widthScreen * 0.015),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              DateFormat('E', 'ru')
-                                                  .format(DateTime.now()),
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  color: !provider
-                                                      ? Colors.white
-                                                      : Colors.black),
-                                            ),
-                                            Text(
-                                              DateFormat('d')
-                                                  .format(DateTime.now()),
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  color: !provider
-                                                      ? Colors.white
-                                                      : Colors.black),
-                                            ),
-                                            Icon(
-                                              Icons.circle_rounded,
-                                              color: !provider
-                                                  ? Colors.white
-                                                  : AppColors.purple,
-                                              size: 5,
-                                            )
-                                          ],
-                                        ),
+                                            size: 5,
+                                          )
+                                        ],
                                       ),
-                                    );
-                                  }),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
@@ -279,7 +280,7 @@ class TeacherGroupPage extends StatelessWidget {
                                 ),
                               ),
                               context: context,
-                              builder: (context) => BottomSheetModal(),
+                              builder: (context) => const BottomSheetModal(),
                             );
                           },
                           icon: const Image(

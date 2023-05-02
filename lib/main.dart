@@ -19,7 +19,6 @@ import 'package:school_journal/features/autentification/presentation/provider.da
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/example.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
 import 'dart:io' show Platform;
@@ -91,7 +90,7 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'StudentScores',
             name: 'StudentScores',
-            builder: (context, state) =>  MyTable(),
+            builder: (context, state) => LandingPage(),
           ),
         ],
       ),

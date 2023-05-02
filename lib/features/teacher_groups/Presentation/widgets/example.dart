@@ -11,7 +11,6 @@ class MyTable extends StatelessWidget {
         child: Column(
           children: [
             Row(
-           
               children: [
                 ColoredBox(
                   color: Colors.red,
@@ -21,12 +20,16 @@ class MyTable extends StatelessWidget {
                       dataRowHeight: 25,
                       dividerThickness: 0,
                       border: const TableBorder(
-                        verticalInside: BorderSide(
+                        right: BorderSide(
                           color: AppColors.gray5a5a5a,
                           width: 2,
                         ),
+                        // verticalInside: BorderSide(
+                        //   color: AppColors.gray5a5a5a,
+                        //   width: 2,
+                        // ),
                       ),
-                      columnSpacing: 10.0,
+                      columnSpacing: 30.0,
                       columns: const [
                         DataColumn(
                           label: Text('Имя'),
@@ -76,7 +79,7 @@ class MyTable extends StatelessWidget {
                         10,
                         (int index) => DataRow(
                           cells: [
-                            DataCell(Text('Name ${index + 1}')),
+                            DataCell(Text('taC ${index + 1}')),
                             const DataCell(Text('Date 1')),
                             const DataCell(Text('Date 2')),
                             const DataCell(Text('Date 3')),
@@ -93,33 +96,37 @@ class MyTable extends StatelessWidget {
                     ),
                   ),
                 ),
-               SizedBox(
-                width: 70,
-                 child: DataTable(
-                        dataRowHeight: 25,
-                        dividerThickness: 0,
-                        border: const TableBorder(
-                          verticalInside: BorderSide(
-                            color: AppColors.gray5a5a5a,
-                            width: 2,
-                          ),
-                        ),
-                        columnSpacing: 15.0,
-                        columns: const [
-                          DataColumn(label: Text('СР')),
-                          DataColumn(label: Text('АТ')),
-                        ],
-                        rows: List<DataRow>.generate(
-                          10,
-                          (int index) => const DataRow(
-                            cells: [
-                              DataCell(Text('2')),
-                              DataCell(Text('5')),
-                            ],
-                          ),
-                        ),
+                SizedBox(
+                  width: 70,
+                  child: DataTable(
+                    dataRowHeight: 25,
+                    dividerThickness: 0,
+                    border: const TableBorder(
+                      left: BorderSide(
+                        color: AppColors.gray5a5a5a,
+                        width: 3,
                       ),
-               ),
+                      verticalInside: BorderSide(
+                        color: AppColors.gray5a5a5a,
+                        width: 2,
+                      ),
+                    ),
+                    columnSpacing: 15.0,
+                    columns: const [
+                      DataColumn(label: Text('СР')),
+                      DataColumn(label: Text('АТ')),
+                    ],
+                    rows: List<DataRow>.generate(
+                      10,
+                      (int index) => const DataRow(
+                        cells: [
+                          DataCell(Text('2')),
+                          DataCell(Text('5')),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
