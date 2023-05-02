@@ -74,9 +74,9 @@ class LessonsInGroup extends StatelessWidget {
                                     splashRadius: 20,
                                     onPressed: () {
                                       Platform.isAndroid
-                                          ? ActionSheetAndroid(
+                                          ? actionSheetAndroid(
                                               heightScreen, context)
-                                          : ActionSheetIos(
+                                          : actionSheetIos(
                                               context, heightScreen);
                                     },
                                     icon: const Image(
@@ -172,7 +172,7 @@ class LessonsInGroup extends StatelessWidget {
     );
   }
 
-  Future<dynamic> ActionSheetIos(BuildContext context, double heightScreen) {
+  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen) {
     return showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) => CupertinoActionSheet(
@@ -218,7 +218,7 @@ class LessonsInGroup extends StatelessWidget {
             ));
   }
 
-  Future<dynamic> ActionSheetAndroid(
+  Future<dynamic> actionSheetAndroid(
       double heightScreen, BuildContext context) {
     return showAdaptiveActionSheet(
         title: Column(

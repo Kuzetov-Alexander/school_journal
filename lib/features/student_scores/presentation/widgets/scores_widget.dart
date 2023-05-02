@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/edit_scores_widget.dart';
 
 class ScoresWidget extends StatelessWidget {
-  const ScoresWidget({super.key});
+  const ScoresWidget({super.key, required this.list});
+  final List<String> list;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,9 @@ class ScoresWidget extends StatelessWidget {
               ),
             ),
             context: context,
-            builder: (context) => const EditScoresWidget(),
+            builder: (context) => EditScoresWidget(
+              list: list,
+            ),
           );
         },
         child: Column(

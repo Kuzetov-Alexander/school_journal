@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:school_journal/common/color.dart';
 
 class IosTimePicker extends StatefulWidget {
-  DateTime time;
-  String textTime;
+  final DateTime time;
+  final String textTime;
   final Function(DateTime)? onTimeSelected;
 
-  IosTimePicker(
+  const IosTimePicker(
       {super.key,
       required this.time,
       required this.textTime,
