@@ -42,8 +42,8 @@ class LandingPageState extends State<LandingPage> {
     double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Ученики",
+        title:  Text(
+          "$selectedSubject",
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
