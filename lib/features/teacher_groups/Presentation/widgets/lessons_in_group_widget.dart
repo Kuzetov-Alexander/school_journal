@@ -273,11 +273,8 @@ class LessonsInGroup extends StatelessWidget {
                 // barrierColor:Colors.transparent ,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
+                
+                
                 context: context,
                 builder: (context) => const TeacherEditClass(),
               );

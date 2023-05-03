@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_day_schedule.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherChangeSchedule extends StatefulWidget {
@@ -88,7 +89,21 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                         itemCount: 7,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                               showModalBottomSheet(
+               
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                context: context,
+                builder: (context) => const TeacherChangeDaySchedule());
+
+
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
