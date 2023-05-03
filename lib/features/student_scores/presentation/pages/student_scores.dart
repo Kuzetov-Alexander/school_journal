@@ -35,15 +35,15 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-  String selectedSubject = 'Математика';
+  String selectedSubject = '';
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
-          "$selectedSubject",
+        title: Text(
+          selectedSubject,
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -52,11 +52,12 @@ class LandingPageState extends State<LandingPage> {
             splashRadius: 20,
             onPressed: () {
               showDialog(
-                  barrierDismissible: true,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialogforTable(widthScreen, heightScreen);
-                  });
+                barrierDismissible: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return alertDialogforTable(widthScreen, heightScreen);
+                },
+              );
             },
             icon: const Image(
               image: AssetImage('assets/images/button_arrow.png'),
@@ -101,7 +102,6 @@ class LandingPageState extends State<LandingPage> {
                       checkboxHorizontalMargin: 0,
                       headingRowHeight: heightScreen * 0.07,
                       dataRowHeight: heightScreen * 0.06,
-                      // dividerThickness: 0,
                       border: const TableBorder(
                         top: BorderSide(
                           color: AppColors.greyForTable,
@@ -168,9 +168,7 @@ class LandingPageState extends State<LandingPage> {
                     child: DataTable(
                       headingRowHeight: heightScreen * 0.07,
                       horizontalMargin: 10,
-
                       dataRowHeight: heightScreen * 0.06,
-                      // dividerThickness: 0,
                       border: const TableBorder(
                         top: BorderSide(
                           color: AppColors.greyForTable,
@@ -224,7 +222,6 @@ class LandingPageState extends State<LandingPage> {
                     horizontalMargin: 7,
                     clipBehavior: Clip.hardEdge,
                     dataRowHeight: heightScreen * 0.06,
-                    // dividerThickness: 0,
                     border: const TableBorder(
                       top: BorderSide(
                         color: AppColors.greyForTable,
@@ -268,7 +265,6 @@ class LandingPageState extends State<LandingPage> {
                     headingRowHeight: heightScreen * 0.07,
                     horizontalMargin: 7,
                     dataRowHeight: heightScreen * 0.06,
-                    // dividerThickness: 0,
                     border: const TableBorder(
                       top: BorderSide(
                         color: AppColors.greyForTable,
@@ -314,74 +310,78 @@ class LandingPageState extends State<LandingPage> {
     );
   }
 
-  AlertDialog AlertDialogforTable(double widthScreen, double heightScreen) {
+  AlertDialog alertDialogforTable(double widthScreen, double heightScreen) {
     return AlertDialog(
-                    contentPadding: const EdgeInsets.all(10),
-                    content: SizedBox(
-                        width: widthScreen * 0.5,
-                        height: heightScreen * 0.25,
-                        child: StatefulBuilder(builder: (context, setState) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                selectedSubject,
-                                style: TextStyle(
-                                    fontSize: heightScreen * 0.025,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black212525),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (context) => Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: heightScreen * 0.7),
-                                              child: CupertinoPicker(
-                                                backgroundColor: Colors.white,
-                                                scrollController:
-                                                    FixedExtentScrollController(
-                                                        initialItem: 1),
-                                                itemExtent: 30,
-                                                onSelectedItemChanged:
-                                                    (value) {
-                                                  setState(() {
-                                                    selectedSubject = [
-                                                      'Математика',
-                                                      'История',
-                                                      'Химия',
-                                                      'Русский язык',
-                                                      'Физика'
-                                                    ][value];
-                                                  });
-                                                },
-                                                children: const [
-                                                  Text('Математика'),
-                                                  Text('История'),
-                                                  Text('Химия'),
-                                                  Text('Русский язык'),
-                                                  Text('Физика')
-                                                ],
-                                              ),
-                                            ));
-                                  },
-                                  child: const Text('Выбрать предмет')),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: const Text('Выгрузить в Excel')),
-                              ElevatedButton(
-                                  style: const ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStatePropertyAll(
-                                              AppColors.greybcc1cd)),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("Ок"))
-                            ],
-                          );
-                        })),
-                  );
+      contentPadding: const EdgeInsets.all(10),
+      content: SizedBox(
+        width: widthScreen * 0.5,
+        height: heightScreen * 0.25,
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  selectedSubject,
+                  style: TextStyle(
+                      fontSize: heightScreen * 0.025,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.black212525),
+                ),
+                TextButton(
+                  onPressed: () {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (context) => Padding(
+                        padding: EdgeInsets.only(top: heightScreen * 0.7),
+                        child: CupertinoPicker(
+                          backgroundColor: Colors.white,
+                          scrollController:
+                              FixedExtentScrollController(initialItem: 1),
+                          itemExtent: 30,
+                          onSelectedItemChanged: (value) {
+                            setState(
+                              () {
+                                selectedSubject = [
+                                  'Математика',
+                                  'История',
+                                  'Химия',
+                                  'Русский язык',
+                                  'Физика'
+                                ][value];
+                              },
+                            );
+                          },
+                          children: const [
+                            Text('Математика'),
+                            Text('История'),
+                            Text('Химия'),
+                            Text('Русский язык'),
+                            Text('Физика')
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Выбрать предмет'),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Выгрузить в Excel'),
+                ),
+                ElevatedButton(
+                    style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.greybcc1cd)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ок"))
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 }

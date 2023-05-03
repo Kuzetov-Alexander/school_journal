@@ -30,9 +30,7 @@ class ScoresWidget extends StatelessWidget {
               ),
             ),
             context: context,
-            builder: (context) => EditScoresWidget(
-              list: list,
-            ),
+            builder: (context) => const EditScoresWidget(),
           );
         },
         child: Column(

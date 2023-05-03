@@ -34,14 +34,14 @@ class GroupListPage extends StatelessWidget {
                           icon: const Icon(Icons.arrow_left),
                           iconSize: 35,
                         ),
+                        InkWell(
+                          onTap: () {
+                            context.goNamed('Shedule');
+                          },
+                          child: const Icon(Icons.calendar_month_outlined),
+                        ),
                         SizedBox(
-                          width: widthScreen * 0.2,
-                          child: InkWell(
-                            onTap: () {
-                              context.goNamed('Shedule');
-                            },
-                            child: const Icon(Icons.calendar_month_outlined),
-                          ),
+                          width: widthScreen * 0.07,
                         ),
                         InkWell(
                           onTap: () {
