@@ -34,19 +34,28 @@ class GroupListPage extends StatelessWidget {
                           icon: const Icon(Icons.arrow_left),
                           iconSize: 35,
                         ),
+                        SizedBox(
+                          width: widthScreen * 0.2,
+                          child: InkWell(
+                            onTap: () {
+                              context.goNamed('Shedule');
+                            },
+                            child: const Icon(Icons.calendar_month_outlined),
+                          ),
+                        ),
                         InkWell(
                           onTap: () {
-                             context.goNamed('Profile');
+                            context.goNamed('Profile');
                           },
                           child: const Image(
                             image: AssetImage('assets/images/profile_icon.png'),
                           ),
                         ),
-                        SizedBox(width: widthScreen*0.07,),
+                        SizedBox(
+                          width: widthScreen * 0.07,
+                        ),
                         InkWell(
-                          onTap: () {
-                           
-                          },
+                          onTap: () {},
                           child: const Image(
                             image: AssetImage('assets/images/plus_icon.png'),
                           ),
