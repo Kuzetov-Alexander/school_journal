@@ -18,6 +18,7 @@ import 'package:school_journal/features/autentification/presentation/pages/welco
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/pages/shedule_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
@@ -77,6 +78,11 @@ class MyApp extends StatelessWidget {
         path: '/Groups',
         builder: (context, state) => const GroupListPage(),
         routes: [
+          GoRoute(
+            path: 'Shedule',
+            name: 'Shedule',
+            builder: (context, state) => const ShedulePage(),
+          ),
           GoRoute(
             path: 'TeacherGroup',
             name: 'TeacherGroup',

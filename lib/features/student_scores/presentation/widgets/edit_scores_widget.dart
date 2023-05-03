@@ -19,7 +19,7 @@ class EditScoresWidget extends StatefulWidget {
 class _EditScoresWidgetState extends State<EditScoresWidget> {
   @override
   Widget build(BuildContext context) {
-    final dayofweek = DateFormat('MM.dd').format(DateTime.now());
+    final dayofweek = DateFormat('dd.MM').format(DateTime.now());
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return DraggableScrollableSheet(
