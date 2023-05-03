@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
+import 'package:school_journal/features/teacher_profile/Presentation/widgets/edit_certificate_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -16,12 +17,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+
   final _fullNameFocus = FocusNode();
   final _emailFocus = FocusNode();
-  final _passwordFocus = FocusNode();
-  final _confirmPasswordFocus = FocusNode();
+
   void _fieldFocusChange(
     BuildContext context,
     FocusNode currentfocus,
@@ -35,12 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
   void dispose() {
     fullNameController.dispose();
     emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+
     _fullNameFocus.dispose();
     _emailFocus.dispose();
-    _passwordFocus.dispose();
-    _confirmPasswordFocus.dispose();
+
     super.dispose();
   }
 
@@ -52,6 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
+    double heightScreen = MediaQuery.of(context).size.height;
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
         appBar: AppBar(
@@ -59,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(widthScreen * 0.06),
             child: Column(
               children: [
                 TextFormField(
@@ -111,9 +110,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  onFieldSubmitted: (_) {
-                    _fieldFocusChange(context, _emailFocus, _passwordFocus);
-                  },
                   focusNode: _emailFocus,
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
@@ -121,27 +117,85 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration:
                       DecorationClass().decoration('', '${user?.email}'),
                 ),
-                const SizedBox(height: 16),
-                Material(
-                  child: InkWell(
-                    onTap: () {
-                      _signOut(context);
-                      context.go('/');
-                    },
-                    child: Container(
-                      height: 30,
-                      width: 250,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.transparent,
+                SizedBox(height: heightScreen * 0.019),
+                SizedBox(
+                  height: heightScreen * 0.065,
+                  width: widthScreen * 0.88,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: const MaterialStatePropertyAll<Color>(
+                          Color(0xffF3F3F3)),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                      child: const Text(
-                        'Выйти',
-                        style: TextStyle(color: Colors.red, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        context: context,
+                        builder: (context) => const EditCertificateWidget(),
+                      );
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: widthScreen * 0.013),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Настройка аттестации',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: heightScreen * 0.019,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(height: heightScreen * 0.019),
+                SizedBox(
+                  height: heightScreen * 0.065,
+                  width: widthScreen * 0.88,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: const MaterialStatePropertyAll<Color>(
+                          Color(0xffF3F3F3)),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      _signOut(context);
+                      context.go('/');
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: widthScreen * 0.013),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Выйти',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: heightScreen * 0.019,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
