@@ -27,14 +27,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
   late final TextEditingController _controllerClass = TextEditingController();
-  late final TextEditingController _controllerClassSecond = TextEditingController();
-  late final TextEditingController _controllerClassThird = TextEditingController();
+  late final TextEditingController _controllerClassSecond =
+      TextEditingController();
+  late final TextEditingController _controllerClassThird =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return Column(mainAxisSize: MainAxisSize.min,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           decoration: const BoxDecoration(
@@ -97,13 +100,30 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                           ],
                         ),
                       ),
-                        TextformFieldWidget(controllerClass: _controllerClass, hintTextx: 'Введите группу', labelTextx: 'Группа',),
-                      SizedBox(height: heightScreen*0.015,),
-                         TextformFieldWidget(controllerClass: _controllerClassSecond, hintTextx: 'Введите предмет', labelTextx: 'Предмет',),
-                      SizedBox(height: heightScreen*0.015,),
-                         TextformFieldWidget(controllerClass: _controllerClassThird, hintTextx: 'Введите кабинет (не обязательно)', labelTextx: 'Кабинет',),
-                      SizedBox(height: heightScreen*0.015,),
-                     
+                      TextformFieldWidget(
+                        controllerClass: _controllerClass,
+                        hintTextx: 'Введите группу',
+                        labelTextx: 'Группа',
+                      ),
+                      SizedBox(
+                        height: heightScreen * 0.015,
+                      ),
+                      TextformFieldWidget(
+                        controllerClass: _controllerClassSecond,
+                        hintTextx: 'Введите предмет',
+                        labelTextx: 'Предмет',
+                      ),
+                      SizedBox(
+                        height: heightScreen * 0.015,
+                      ),
+                      TextformFieldWidget(
+                        controllerClass: _controllerClassThird,
+                        hintTextx: 'Введите кабинет (не обязательно)',
+                        labelTextx: 'Кабинет',
+                      ),
+                      SizedBox(
+                        height: heightScreen * 0.015,
+                      ),
                       SizedBox(
                         height: heightScreen * 0.01,
                       ),
@@ -185,8 +205,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                     Platform.isIOS
                         ? CupertinoSwitch(
                             activeColor: AppColors.purple,
-                            value:
-                                context.watch<ProviderGroupBool>().newLessonAdded,
+                            value: context
+                                .watch<ProviderGroupBool>()
+                                .newLessonAdded,
                             onChanged: (value) {
                               context
                                   .read<ProviderGroupBool>()
@@ -194,8 +215,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             },
                           )
                         : Switch(
-                            value:
-                                context.watch<ProviderGroupBool>().newLessonAdded,
+                            value: context
+                                .watch<ProviderGroupBool>()
+                                .newLessonAdded,
                             onChanged: (value) {
                               context
                                   .read<ProviderGroupBool>()
@@ -206,7 +228,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                 ),
               ),
             ),
-           SizedBox(
+            SizedBox(
               height: heightScreen * 0.1,
             ),
             SizedBox(
@@ -234,7 +256,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                 ),
               ),
             ),
-             SizedBox(
+            SizedBox(
               height: heightScreen * 0.015,
             ),
           ]),
@@ -247,61 +269,61 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 class TextformFieldWidget extends StatelessWidget {
   const TextformFieldWidget({
     super.key,
-    required TextEditingController controllerClass, required this.hintTextx, required this.labelTextx,
+    required TextEditingController controllerClass,
+    required this.hintTextx,
+    required this.labelTextx,
   }) : _controllerClass = controllerClass;
 
   final TextEditingController _controllerClass;
   final String hintTextx;
-    final String labelTextx;
+  final String labelTextx;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-    keyboardType: TextInputType.name,
-    autocorrect: false,
-    buildCounter: (BuildContext context,
-            {int? currentLength,
-            required bool isFocused,
-            int? maxLength}) =>
-        null,
-    maxLength: 20,
-    controller: _controllerClass,
-    decoration:  InputDecoration(
-      filled: true,
-      fillColor: const Color(0xffFAFAFA),
-      border: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-      ),
-      focusedBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
+      keyboardType: TextInputType.name,
+      autocorrect: false,
+      buildCounter: (BuildContext context,
+              {int? currentLength, required bool isFocused, int? maxLength}) =>
+          null,
+      maxLength: 20,
+      controller: _controllerClass,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color(0xffFAFAFA),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
-        borderSide: BorderSide(
-          color: Color(0xffFAFAFA),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+          borderSide: BorderSide(
+            color: Color(0xffFAFAFA),
+          ),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+          borderSide: BorderSide(color: Color(0xffFAFAFA)),
+        ),
+        hintText: hintTextx,
+        hintStyle: const TextStyle(
+            color: Color(0xff9D9D9D),
+            fontWeight: FontWeight.w600,
+            fontSize: 14),
+        labelText: labelTextx,
+        labelStyle: const TextStyle(
+            color: Color(0xff9D9D9D),
+            fontWeight: FontWeight.w600,
+            fontSize: 10),
+        suffixIcon: const Image(
+          height: 20,
+          image: AssetImage('assets/images/pen_icon.png'),
+          color: Colors.black,
         ),
       ),
-      enabledBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
-        ),
-        borderSide: BorderSide(color: Color(0xffFAFAFA)),
-      ),
-      hintText: hintTextx,
-      hintStyle: const TextStyle(
-          color: Color(0xff9D9D9D),
-          fontWeight: FontWeight.w600,
-          fontSize: 14),
-      labelText: labelTextx,
-      labelStyle: const TextStyle(
-          color: Color(0xff9D9D9D),
-          fontWeight: FontWeight.w600,
-          fontSize: 10),
-      suffixIcon: const Image(
-        height: 20,
-        image: AssetImage('assets/images/pen_icon.png'),
-        color: Colors.black,
-      ),
-    ),
-                      );
+    );
   }
 }
