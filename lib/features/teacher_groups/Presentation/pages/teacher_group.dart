@@ -104,7 +104,7 @@ class TeacherGroupPage extends StatelessWidget {
                     ),
                     SizedBox(height: heightScreen * 0.01),
                     Container(
-                      height: heightScreen * 0.3,
+                      height: heightScreen * 0.18,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: AppColors.purple,
@@ -116,30 +116,40 @@ class TeacherGroupPage extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: heightScreen * 0.018),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                      splashRadius: 1,
-                                      onPressed: () {},
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/arrow_left_white.png'))),
-                                  Text(
-                                    'Апрель',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: heightScreen * 0.024,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  IconButton(
-                                      splashRadius: 1,
-                                      onPressed: () {},
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/arrow_right_white.png')))
-                                ],
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: widthScreen*0.03),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                
+                                       
+                                   
+                                         InkWell(
+                                          onTap: () {
+                                            
+                                          },
+                                           child: const Image(
+                                              image: AssetImage(
+                                                  'assets/images/arrow_left_white.png')),
+                                         ),
+                                    Text(
+                                      'Апрель',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: heightScreen * 0.024,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    InkWell(
+                                          onTap: () {
+                                            
+                                          },
+                                           child: const Image(
+                                              image: AssetImage(
+                                                  'assets/images/arrow_right_white.png')),
+                                         ),
+                                  ],
+                                ),
                               ),
                             ),
                             Expanded(
@@ -206,14 +216,10 @@ class TeacherGroupPage extends StatelessWidget {
                                 },
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16.0, right: 16, top: 16, bottom: 32),
-                              child: SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                
-                              ),
+                            SizedBox(
+                              height: heightScreen*0.02,
+                              width: double.infinity,
+                              
                             ),
                           ],
                         ),
@@ -234,6 +240,7 @@ class TeacherGroupPage extends StatelessWidget {
                         
                       ],
                     ),
+                    SizedBox(height: heightScreen*0.01,),
                     Row(
                       children: [
                         Text(
