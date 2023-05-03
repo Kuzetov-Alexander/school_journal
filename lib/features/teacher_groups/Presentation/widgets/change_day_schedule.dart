@@ -74,7 +74,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                           height: heightScreen * 0.02,
                         );
                       },
-                      itemCount: 1,
+                      itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {
