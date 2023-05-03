@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/add_student_widget.dart';
@@ -34,19 +35,29 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
+  String selectedSubject = 'Математика';
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ученики'),
+        title:  Text(
+          "$selectedSubject",
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         actions: [
           IconButton(
             splashRadius: 20,
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                  barrierDismissible: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialogforTable(widthScreen, heightScreen);
+                  });
+            },
             icon: const Image(
               image: AssetImage('assets/images/button_arrow.png'),
               color: Colors.black,
@@ -301,5 +312,76 @@ class LandingPageState extends State<LandingPage> {
         ),
       ),
     );
+  }
+
+  AlertDialog AlertDialogforTable(double widthScreen, double heightScreen) {
+    return AlertDialog(
+                    contentPadding: const EdgeInsets.all(10),
+                    content: SizedBox(
+                        width: widthScreen * 0.5,
+                        height: heightScreen * 0.25,
+                        child: StatefulBuilder(builder: (context, setState) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                selectedSubject,
+                                style: TextStyle(
+                                    fontSize: heightScreen * 0.025,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.black212525),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) => Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: heightScreen * 0.7),
+                                              child: CupertinoPicker(
+                                                backgroundColor: Colors.white,
+                                                scrollController:
+                                                    FixedExtentScrollController(
+                                                        initialItem: 1),
+                                                itemExtent: 30,
+                                                onSelectedItemChanged:
+                                                    (value) {
+                                                  setState(() {
+                                                    selectedSubject = [
+                                                      'Математика',
+                                                      'История',
+                                                      'Химия',
+                                                      'Русский язык',
+                                                      'Физика'
+                                                    ][value];
+                                                  });
+                                                },
+                                                children: const [
+                                                  Text('Математика'),
+                                                  Text('История'),
+                                                  Text('Химия'),
+                                                  Text('Русский язык'),
+                                                  Text('Физика')
+                                                ],
+                                              ),
+                                            ));
+                                  },
+                                  child: const Text('Выбрать предмет')),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Text('Выгрузить в Excel')),
+                              ElevatedButton(
+                                  style: const ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll(
+                                              AppColors.greybcc1cd)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("Ок"))
+                            ],
+                          );
+                        })),
+                  );
   }
 }

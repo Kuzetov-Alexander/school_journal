@@ -17,234 +17,234 @@ class _StudentProfileState extends State<StudentProfile> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      minChildSize: 0.5,
-      maxChildSize: 1,
-      builder: (_, controller) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
+    return Column(mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height: heightScreen*0.95,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      icon: const Image(
-                          image: AssetImage('assets/images/cross_icon.png'))),
-                  SizedBox(
-                    width: widthScreen / 5,
-                  ),
-                  Text(
-                    'Профиль ученика',
-                    style: TextStyle(
-                        color: AppColors.black212525,
-                        fontSize: heightScreen * 0.023,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: const Image(
+                            image: AssetImage('assets/images/cross_icon.png'))),
+                    SizedBox(
+                      width: widthScreen / 5,
+                    ),
+                    Text(
+                      'Профиль ученика',
+                      style: TextStyle(
+                          color: AppColors.black212525,
+                          fontSize: heightScreen * 0.023,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              color: Colors.grey,
-              height: heightScreen * 0.001,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: heightScreen * 0.025,
-                  horizontal: widthScreen * 0.06),
-              child: Column(
-                children: [
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    autocorrect: false,
-                    buildCounter: (BuildContext context,
-                            {int? currentLength,
-                            required bool isFocused,
-                            int? maxLength}) =>
-                        null,
-                    maxLength: 20,
-                    controller: _controllerName,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xffF3F3F3),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
+              Container(
+                color: Colors.grey,
+                height: heightScreen * 0.001,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: heightScreen * 0.025,
+                    horizontal: widthScreen * 0.06),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      keyboardType: TextInputType.name,
+                      autocorrect: false,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 20,
+                      controller: _controllerName,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xffF3F3F3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
                         ),
-                        borderSide: BorderSide(
-                          color: Color(0xffF3F3F3),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                        borderSide: BorderSide(color: Color(0xffF3F3F3)),
-                      ),
-                      hintText: 'Введите ФИО',
-                      hintStyle: TextStyle(
-                          color: Color(0xff9D9D9D),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      labelText: 'фИО',
-                      labelStyle: TextStyle(
-                          color: Color(0xff9D9D9D),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      suffixIcon: Image(
-                        height: 20,
-                        image: AssetImage('assets/images/pen_icon.png'),
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: heightScreen * 0.02),
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    autocorrect: false,
-                    buildCounter: (BuildContext context,
-                            {int? currentLength,
-                            required bool isFocused,
-                            int? maxLength}) =>
-                        null,
-                    maxLength: 20,
-                    controller: _controllerEmail,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xffF3F3F3),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                        borderSide: BorderSide(
-                          color: Color(0xffF3F3F3),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                        borderSide: BorderSide(color: Color(0xffF3F3F3)),
-                      ),
-                      hintText: 'Введите почту',
-                      hintStyle: TextStyle(
-                          color: Color(0xff9D9D9D),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      labelText: 'Почта (не обязательно)',
-                      labelStyle: TextStyle(
-                          color: Color(0xff9D9D9D),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      suffixIcon: Image(
-                        height: 20,
-                        image: AssetImage('assets/images/pen_icon.png'),
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: heightScreen * 0.02),
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    autocorrect: false,
-                    buildCounter: (BuildContext context,
-                            {int? currentLength,
-                            required bool isFocused,
-                            int? maxLength}) =>
-                        null,
-                    maxLength: 20,
-                    controller: _controllerEmail,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xffF3F3F3),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                        borderSide: BorderSide(
-                          color: Color(0xffF3F3F3),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                        borderSide: BorderSide(color: Color(0xffF3F3F3)),
-                      ),
-                      hintText: 'Личная ссылка',
-                      hintStyle: TextStyle(
-                          color: Color(0xff9D9D9D),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      labelText: 'Ссылка',
-                      labelStyle: TextStyle(
-                          color: Color(0xff9D9D9D),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      suffixIcon: Image(
-                        height: 20,
-                        image: AssetImage('assets/images/import.png'),
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: heightScreen * 0.03),
-                  SizedBox(
-                    height: heightScreen * 0.07,
-                    width: double.infinity,
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: const MaterialStatePropertyAll<Color>(
-                            Color(0xffF3F3F3)),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xffF3F3F3),
                           ),
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          borderSide: BorderSide(color: Color(0xffF3F3F3)),
+                        ),
+                        hintText: 'Введите ФИО',
+                        hintStyle: TextStyle(
+                            color: Color(0xff9D9D9D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        labelText: 'фИО',
+                        labelStyle: TextStyle(
+                            color: Color(0xff9D9D9D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        suffixIcon: Image(
+                          height: 20,
+                          image: AssetImage('assets/images/pen_icon.png'),
+                          color: Colors.black,
+                        ),
                       ),
-                      onPressed: () {},
-                      child: Row(
-                        children: [
-                          SizedBox(width: widthScreen * 0.011),
-                          Text(
-                            'Удалить',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: const Color(0xffF82525),
-                              fontSize: heightScreen * 0.017,
-                              fontWeight: FontWeight.w600,
+                    ),
+                    SizedBox(height: heightScreen * 0.02),
+                    TextFormField(
+                      keyboardType: TextInputType.name,
+                      autocorrect: false,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 20,
+                      controller: _controllerEmail,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xffF3F3F3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xffF3F3F3),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          borderSide: BorderSide(color: Color(0xffF3F3F3)),
+                        ),
+                        hintText: 'Введите почту',
+                        hintStyle: TextStyle(
+                            color: Color(0xff9D9D9D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        labelText: 'Почта (не обязательно)',
+                        labelStyle: TextStyle(
+                            color: Color(0xff9D9D9D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        suffixIcon: Image(
+                          height: 20,
+                          image: AssetImage('assets/images/pen_icon.png'),
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: heightScreen * 0.02),
+                    TextFormField(
+                      keyboardType: TextInputType.name,
+                      autocorrect: false,
+                      buildCounter: (BuildContext context,
+                              {int? currentLength,
+                              required bool isFocused,
+                              int? maxLength}) =>
+                          null,
+                      maxLength: 20,
+                      controller: _controllerEmail,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xffF3F3F3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color(0xffF3F3F3),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          borderSide: BorderSide(color: Color(0xffF3F3F3)),
+                        ),
+                        hintText: 'Личная ссылка',
+                        hintStyle: TextStyle(
+                            color: Color(0xff9D9D9D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        labelText: 'Ссылка',
+                        labelStyle: TextStyle(
+                            color: Color(0xff9D9D9D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        suffixIcon: Image(
+                          height: 20,
+                          image: AssetImage('assets/images/import.png'),
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: heightScreen * 0.03),
+                    SizedBox(
+                      height: heightScreen * 0.07,
+                      width: double.infinity,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: const MaterialStatePropertyAll<Color>(
+                              Color(0xffF3F3F3)),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                        ],
+                        ),
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            SizedBox(width: widthScreen * 0.011),
+                            Text(
+                              'Удалить',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: const Color(0xffF82525),
+                                fontSize: heightScreen * 0.017,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
