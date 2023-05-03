@@ -1,3 +1,4 @@
+
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -226,6 +227,18 @@ class LessonsInGroup extends StatelessWidget {
                   fontSize: heightScreen * 0.022,
                   fontWeight: FontWeight.w400),
             ),
+            // onPressed: (_) {
+            //   Navigator.of(context).pop();
+            //   showModalBottomSheet(
+            //     // barrierColor:Colors.transparent ,
+            //     isScrollControlled: true,
+            //     backgroundColor: Colors.transparent,
+                
+                
+            //     context: context,
+            //     builder: (context) => const TeacherEditClass(),
+            //   );
+            // },
           ),
           CupertinoActionSheetAction(
             onPressed: () {},

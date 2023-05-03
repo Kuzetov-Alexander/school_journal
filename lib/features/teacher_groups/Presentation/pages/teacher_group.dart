@@ -3,8 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_schedule_widget.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
@@ -105,7 +104,7 @@ class TeacherGroupPage extends StatelessWidget {
                     ),
                     SizedBox(height: heightScreen * 0.01),
                     Container(
-                      height: heightScreen * 0.3,
+                      height: heightScreen * 0.18,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: AppColors.purple,
@@ -117,30 +116,40 @@ class TeacherGroupPage extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: heightScreen * 0.018),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                      splashRadius: 1,
-                                      onPressed: () {},
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/arrow_left_white.png'))),
-                                  Text(
-                                    'Апрель',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: heightScreen * 0.024,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  IconButton(
-                                      splashRadius: 1,
-                                      onPressed: () {},
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/arrow_right_white.png')))
-                                ],
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: widthScreen*0.03),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                
+                                       
+                                   
+                                         InkWell(
+                                          onTap: () {
+                                            
+                                          },
+                                           child: const Image(
+                                              image: AssetImage(
+                                                  'assets/images/arrow_left_white.png')),
+                                         ),
+                                    Text(
+                                      'Апрель',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: heightScreen * 0.024,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    InkWell(
+                                          onTap: () {
+                                            
+                                          },
+                                           child: const Image(
+                                              image: AssetImage(
+                                                  'assets/images/arrow_right_white.png')),
+                                         ),
+                                  ],
+                                ),
                               ),
                             ),
                             Expanded(
@@ -207,53 +216,10 @@ class TeacherGroupPage extends StatelessWidget {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 16.0, right: 16, top: 16, bottom: 32),
-                              child: SizedBox(
-                                height: 56,
-                                width: double.infinity,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        const MaterialStatePropertyAll<Color>(
-                                            Colors.white),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-
-
-
-                                       showModalBottomSheet(
-                                        
-                              barrierColor:Colors.transparent ,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              // shape: const RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.vertical(
-                              //     top: Radius.circular(20),
-                              //   ),
-                              // ),
-                              context: context,
-                              builder: (context) => const TeacherChangeSchedule(),
-                            );
-                                  },
-                                  child: const Text(
-                                    'Изменить расписание',
-                                    style: TextStyle(
-                                      color: AppColors.black343434,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            SizedBox(
+                              height: heightScreen*0.02,
+                              width: double.infinity,
+                              
                             ),
                           ],
                         ),
@@ -271,28 +237,10 @@ class TeacherGroupPage extends StatelessWidget {
                               // letterSpacing: 1,
                               color: AppColors.black212525),
                         ),
-                        IconButton(
-                          splashRadius: 20,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              // barrierColor:Colors.transparent ,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) => const BottomSheetModal(),
-                            );
-                          },
-                          icon: const Image(
-                            image: AssetImage('assets/images/plus.png'),
-                          ),
-                        ),
+                        
                       ],
                     ),
+                    SizedBox(height: heightScreen*0.01,),
                     Row(
                       children: [
                         Text(
