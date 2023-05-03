@@ -3,8 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_schedule_widget.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
@@ -207,52 +206,13 @@ class TeacherGroupPage extends StatelessWidget {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
+                            const Padding(
+                              padding: EdgeInsets.only(
                                   left: 16.0, right: 16, top: 16, bottom: 32),
                               child: SizedBox(
                                 height: 56,
                                 width: double.infinity,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        const MaterialStatePropertyAll<Color>(
-                                            Colors.white),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-
-
-
-                                       showModalBottomSheet(
-                                        
-                              barrierColor:Colors.transparent ,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              // shape: const RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.vertical(
-                              //     top: Radius.circular(20),
-                              //   ),
-                              // ),
-                              context: context,
-                              builder: (context) => const TeacherChangeSchedule(),
-                            );
-                                  },
-                                  child: const Text(
-                                    'Изменить расписание',
-                                    style: TextStyle(
-                                      color: AppColors.black343434,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
+                                
                               ),
                             ),
                           ],

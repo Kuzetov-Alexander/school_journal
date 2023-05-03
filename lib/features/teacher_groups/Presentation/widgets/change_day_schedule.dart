@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_android.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
@@ -14,7 +14,7 @@ class TeacherChangeDaySchedule extends StatefulWidget {
   State<TeacherChangeDaySchedule> createState() =>
       _TeacherChangeDayScheduleState();
 }
- late final TextEditingController _controllerClass = TextEditingController();
+  final TextEditingController _controllerClass = TextEditingController();
 class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);

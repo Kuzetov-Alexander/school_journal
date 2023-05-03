@@ -55,7 +55,7 @@ class LandingPageState extends State<LandingPage> {
                   barrierDismissible: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialogforTable(widthScreen, heightScreen);
+                    return alertDialogforTable(widthScreen, heightScreen);
                   });
             },
             icon: const Image(
@@ -314,7 +314,7 @@ class LandingPageState extends State<LandingPage> {
     );
   }
 
-  AlertDialog AlertDialogforTable(double widthScreen, double heightScreen) {
+  AlertDialog alertDialogforTable(double widthScreen, double heightScreen) {
     return AlertDialog(
                     contentPadding: const EdgeInsets.all(10),
                     content: SizedBox(
