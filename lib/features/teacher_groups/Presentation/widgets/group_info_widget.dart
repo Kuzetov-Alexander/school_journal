@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_group.dart';
+import 'package:school_journal/features/teacher_groups/domain/entity.dart';
 
 class GroupInfoWidget extends StatelessWidget {
   const GroupInfoWidget({
@@ -14,6 +16,11 @@ class GroupInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<AddNewGroupEntity> allgroups = [
+    AddNewGroupEntity(
+        groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
+  ];
+  List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
     return Column(
       children: [
         Material(
@@ -37,7 +44,7 @@ class GroupInfoWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 1),
                       child: Text(
-                        'Группа 112',
+                        allgroups[0].groupName,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: heightScreen * 0.02),
@@ -46,10 +53,10 @@ class GroupInfoWidget extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: const [
+                  children:  [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0),
-                      child: Text('Ближайшее занятие: Завтра, 10:45 - 12:15'),
+                      child: Text('Ближайшее занятие: ${allgroups[0].nextLesson}'),
                     )
                   ],
                 ),
@@ -67,12 +74,12 @@ class GroupInfoWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Row(
-                    children: const [
+                    children:  [
                       Image(image: AssetImage('assets/images/mini_person.png')),
                       SizedBox(
                         width: 10,
                       ),
-                      Text('27 учеников'),
+                      Text('${allgroups[0].studentsAmount} учеников'),
                     ],
                   ),
                 )

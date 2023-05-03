@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
+import 'package:school_journal/features/teacher_groups/domain/entity.dart';
 
-class GroupListPage extends StatelessWidget {
+class GroupListPage extends StatefulWidget {
   const GroupListPage({super.key});
 
+  @override
+  State<GroupListPage> createState() => _GroupListPageState();
+}
+
+class _GroupListPageState extends State<GroupListPage> {
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     // final user = FirebaseAuth.instance.currentUser;
+ List<AddNewGroupEntity> allgroups = [
+    AddNewGroupEntity(
+        groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
+  ];
 
     return Scaffold(
       body: SafeArea(
@@ -55,7 +66,20 @@ class GroupListPage extends StatelessWidget {
                           width: widthScreen * 0.07,
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                             showModalBottomSheet(
+               
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                context: context,
+                builder: (context) => const AddNewGroup());
+
+                          },
                           child: const Image(
                             image: AssetImage('assets/images/plus_icon.png'),
                           ),
@@ -96,8 +120,9 @@ class GroupListPage extends StatelessWidget {
                     height: heightScreen * 0.02,
                   );
                 },
-                itemCount: 2,
+                itemCount: allgroups.length,
                 itemBuilder: (BuildContext context, int index) {
+               
                   return GroupInfoWidget(
                       heightScreen: heightScreen, widthScreen: widthScreen);
                 },
