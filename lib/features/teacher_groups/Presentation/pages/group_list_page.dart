@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
@@ -7,16 +8,27 @@ import 'package:school_journal/features/teacher_groups/Presentation/widgets/grou
 class GroupListPage extends StatefulWidget {
   const GroupListPage({super.key});
 
+
   @override
   State<GroupListPage> createState() => _GroupListPageState();
 }
 
+
 class _GroupListPageState extends State<GroupListPage> {
+  late DatabaseReference ref ;
+  @override
+  void initState() {
+   
+    super.initState();
+    ref = FirebaseDatabase.instance.ref().child('Students');
+  }
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     // final user = FirebaseAuth.instance.currentUser;
+   
+
 
     return Scaffold(
       body: SafeArea(
@@ -34,8 +46,13 @@ class _GroupListPageState extends State<GroupListPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          onPressed: () {
-                            context.go('/');
+                          onPressed: ()  {
+                            // context.go('/');
+                      Map <String, String> students = {
+                        'name':'sdsdsd'
+                      };
+
+                          ref.push().set(students);
                           },
                           icon: const Icon(Icons.arrow_left),
                           iconSize: 35,
