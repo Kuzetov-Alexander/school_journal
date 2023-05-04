@@ -18,10 +18,7 @@ class _GroupListPageState extends State<GroupListPage> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     // final user = FirebaseAuth.instance.currentUser;
- List<AddNewGroupEntity> allgroups = [
-    AddNewGroupEntity(
-        groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
-  ];
+
 
     return Scaffold(
       body: SafeArea(
@@ -120,7 +117,7 @@ class _GroupListPageState extends State<GroupListPage> {
                     height: heightScreen * 0.02,
                   );
                 },
-                itemCount: allgroups.length,
+                itemCount:2,
                 itemBuilder: (BuildContext context, int index) {
                
                   return GroupInfoWidget(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:school_journal/common/color.dart';
@@ -249,7 +250,12 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 color: AppColors.black212525,
                                 fontWeight: FontWeight.w600)),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+      context: context,
+      builder: (BuildContext context) => alertDialogCreateLesson( widthScreen,  heightScreen));
+                            
+                          },
                           child: const Image(
                               image: AssetImage('assets/images/blackplus_icon.png')),
                         ),
@@ -291,6 +297,49 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
           ),
         ),
       ],
+    );
+  }
+   AlertDialog alertDialogCreateLesson(double widthScreen, double heightScreen) {
+    return AlertDialog(
+      contentPadding: const EdgeInsets.all(10),
+      content: SizedBox(
+        width: widthScreen * 0.5,
+        height: heightScreen * 0.25,
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontSize: heightScreen * 0.025,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.black212525),
+                ),
+                TextButton(
+                  onPressed: () {
+                    
+                  },
+                  child: const Text('Выбрать предмет'),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Выгрузить в Excel'),
+                ),
+                ElevatedButton(
+                    style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.greybcc1cd)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ок"))
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

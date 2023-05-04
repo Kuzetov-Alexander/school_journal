@@ -16,9 +16,8 @@ class GroupInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<AddNewGroupEntity> allgroups = [
-    AddNewGroupEntity(
-        groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
+    List<GroupsInformation> allgroups = [
+  
   ];
   List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
     return Column(
@@ -44,7 +43,7 @@ class GroupInfoWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 1),
                       child: Text(
-                        allgroups[0].groupName,
+                        'Name',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: heightScreen * 0.02),
@@ -55,8 +54,8 @@ class GroupInfoWidget extends StatelessWidget {
                 Row(
                   children:  [
                     Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Text('Ближайшее занятие: ${allgroups[0].nextLesson}'),
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Text('Ближайшее занятие: '),
                     )
                   ],
                 ),
@@ -75,11 +74,11 @@ class GroupInfoWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Row(
                     children:  [
-                      Image(image: AssetImage('assets/images/mini_person.png')),
-                      SizedBox(
+                      const Image(image: AssetImage('assets/images/mini_person.png')),
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text('${allgroups[0].studentsAmount} учеников'),
+                      Text(' учеников'),
                     ],
                   ),
                 )

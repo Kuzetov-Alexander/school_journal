@@ -115,7 +115,8 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                                 title: Text(
                                     DateFormat('EEEE', 'ru_RU')
                                         .format(DateTime.now()
-                                            .add(Duration(days: index - 1)))
+                                            .add(Duration(days: 7+index ))
+                                            )
                                         .capitalize(),
                                     style: const TextStyle(
                                         color: AppColors.black212525,

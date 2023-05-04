@@ -23,11 +23,11 @@ class _AddNewGroupState extends State<AddNewGroup> {
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
-  List<AddNewGroupEntity> allgroups = [
-    AddNewGroupEntity(
-        groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
-  ];
-  List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
+  // List<GroupsInformation> allgroups = [
+  //   GroupsInformation(
+  //      )
+  // ];
+  // List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
 
   @override
   Widget build(BuildContext context) {
@@ -132,11 +132,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
                       ),
                     ),
                     onPressed: () {
-                      setState(() {
-                        
-                      });
-allgroups.add(AddNewGroupEntity(studentsAmount: 5, groupName: _controllerClass.text, nextLesson: 'нет'));
-                      print(allgroups[1].groupName);
+                     
                       Navigator.of(context).pop();
                     },
                     child: Text(
