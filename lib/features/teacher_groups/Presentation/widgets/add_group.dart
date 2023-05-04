@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:school_journal/common/color.dart';
@@ -132,10 +130,11 @@ class _AddNewGroupState extends State<AddNewGroup> {
                       ),
                     ),
                     onPressed: () {
-                      setState(() {
-                        
-                      });
-allgroups.add(AddNewGroupEntity(studentsAmount: 5, groupName: _controllerClass.text, nextLesson: 'нет'));
+                      setState(() {});
+                      allgroups.add(AddNewGroupEntity(
+                          studentsAmount: 5,
+                          groupName: _controllerClass.text,
+                          nextLesson: 'нет'));
                       print(allgroups[1].groupName);
                       Navigator.of(context).pop();
                     },

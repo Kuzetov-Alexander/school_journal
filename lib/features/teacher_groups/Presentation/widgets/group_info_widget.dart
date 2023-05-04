@@ -17,10 +17,10 @@ class GroupInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<AddNewGroupEntity> allgroups = [
-    AddNewGroupEntity(
-        groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
-  ];
-  List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
+      AddNewGroupEntity(
+          groupName: titleGroup, nextLesson: 'нет', studentsAmount: 5)
+    ];
+    // List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
     return Column(
       children: [
         Material(
@@ -53,10 +53,11 @@ class GroupInfoWidget extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children:  [
+                  children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Text('Ближайшее занятие: ${allgroups[0].nextLesson}'),
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child:
+                          Text('Ближайшее занятие: ${allgroups[0].nextLesson}'),
                     )
                   ],
                 ),
@@ -74,9 +75,10 @@ class GroupInfoWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Row(
-                    children:  [
-                      Image(image: AssetImage('assets/images/mini_person.png')),
-                      SizedBox(
+                    children: [
+                      const Image(
+                          image: AssetImage('assets/images/mini_person.png')),
+                      const SizedBox(
                         width: 10,
                       ),
                       Text('${allgroups[0].studentsAmount} учеников'),

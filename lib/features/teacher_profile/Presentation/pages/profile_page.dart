@@ -21,15 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final _fullNameFocus = FocusNode();
   final _emailFocus = FocusNode();
 
-  void _fieldFocusChange(
-    BuildContext context,
-    FocusNode currentfocus,
-    FocusNode nextFocus,
-  ) {
-    currentfocus.unfocus();
-    FocusScope.of(context).requestFocus(nextFocus);
-  }
-
   @override
   void dispose() {
     fullNameController.dispose();
@@ -53,157 +44,152 @@ class _ProfilePageState extends State<ProfilePage> {
     double heightScreen = MediaQuery.of(context).size.height;
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Профиль'),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(widthScreen * 0.06),
-            child: Column(
-              children: [
-                TextFormField(
-                        keyboardType: TextInputType.name,
-                        autocorrect: false,
-                        buildCounter: (BuildContext context,
-                                {int? currentLength,
-                                required bool isFocused,
-                                int? maxLength}) =>
-                            null,
-                        maxLength: 20,
-                        // controller: _controllerClass,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xffB6B6B6),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            borderSide: BorderSide(
-                              color: Color(0xffB6B6B6),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            borderSide: BorderSide(color: Color(0xffB6B6B6)),
-                          ),
-                          hintText: 'Введите кабинет',
-                          hintStyle: TextStyle(
-                              color: Color(0xffB6B6B6),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14),
-                          labelText: 'Кабинет (не обязательно)',
-                          labelStyle: TextStyle(
-                              color: Color(0xffB6B6B6),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10),
-                          suffixIcon: Image(
-                            height: 20,
-                            image: AssetImage('assets/images/pen_icon.png'),
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  focusNode: _emailFocus,
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  controller: emailController,
-                  decoration:
-                      DecorationClass().decoration('', '${user?.email}'),
+      appBar: AppBar(
+        title: const Text('Профиль'),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(widthScreen * 0.06),
+          child: Column(
+            children: [
+              TextFormField(
+                keyboardType: TextInputType.name,
+                autocorrect: false,
+                buildCounter: (BuildContext context,
+                        {int? currentLength,
+                        required bool isFocused,
+                        int? maxLength}) =>
+                    null,
+                maxLength: 20,
+                // controller: _controllerClass,
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xffF3F3F3),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                    borderSide: BorderSide(
+                      color: Color(0xffF3F3F3),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                    borderSide: BorderSide(color: Color(0xffF3F3F3)),
+                  ),
+                  hintText: 'Введите кабинет',
+                  hintStyle: TextStyle(
+                      color: Color(0xffB6B6B6),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                  labelText: 'Кабинет (не обязательно)',
+                  labelStyle: TextStyle(
+                      color: Color(0xffB6B6B6),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10),
+                  suffixIcon: Image(
+                    height: 20,
+                    image: AssetImage('assets/images/pen_icon.png'),
+                    color: Colors.black,
+                  ),
                 ),
-                SizedBox(height: heightScreen * 0.019),
-                SizedBox(
-                  height: heightScreen * 0.065,
-                  width: widthScreen * 0.88,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll<Color>(
-                          Color(0xffF3F3F3)),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                focusNode: _emailFocus,
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                controller: emailController,
+                decoration: DecorationClass().decoration('', '${user?.email}'),
+              ),
+              SizedBox(height: heightScreen * 0.019),
+              SizedBox(
+                height: heightScreen * 0.065,
+                width: widthScreen * 0.88,
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll<Color>(
+                        Color(0xffF3F3F3)),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
                         ),
-                        context: context,
-                        builder: (context) => const EditCertificateWidget(),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(left: widthScreen * 0.013),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Настройка аттестации',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: heightScreen * 0.019,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      context: context,
+                      builder: (context) => const EditCertificateWidget(),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: widthScreen * 0.013),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Настройка аттестации',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: heightScreen * 0.019,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: heightScreen * 0.019),
-                SizedBox(
-                  height: heightScreen * 0.065,
-                  width: widthScreen * 0.88,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll<Color>(
-                          Color(0xffF3F3F3)),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+              ),
+              SizedBox(height: heightScreen * 0.019),
+              SizedBox(
+                height: heightScreen * 0.065,
+                width: widthScreen * 0.88,
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll<Color>(
+                        Color(0xffF3F3F3)),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
-                      _signOut(context);
-                      context.go('/');
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(left: widthScreen * 0.013),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Выйти',
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: heightScreen * 0.019,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  ),
+                  onPressed: () {
+                    _signOut(context);
+                    context.go('/');
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: widthScreen * 0.013),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Выйти',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: heightScreen * 0.019,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
-
-
-
-
-
