@@ -34,9 +34,8 @@ class GroupsInformation extends Equatable {
       : currentDay = currentDay ?? DateTime.now(),
         dayOfWeek = dayOfWeek ?? DateTime.now(),
         lessonTimeStart = lessonTimeStart ?? DateTime.now(),
-          lessonTimeFinish = lessonTimeFinish ?? DateTime.now()
-        ;
+        lessonTimeFinish = lessonTimeFinish ?? DateTime.now();
 
   @override
-  List<Object?> get props => [groupName,subject];
+  List<Object?> get props => [groupName, subject];
 }

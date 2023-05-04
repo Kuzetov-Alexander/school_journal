@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/domain/entity.dart';
 
 class GroupInfoWidget extends StatelessWidget {
   const GroupInfoWidget({
@@ -15,8 +14,8 @@ class GroupInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<GroupsInformation> allgroups = [];
-    List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
+    // List<GroupsInformation> allgroups = [];
+    // List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
     return Column(
       children: [
         Material(
