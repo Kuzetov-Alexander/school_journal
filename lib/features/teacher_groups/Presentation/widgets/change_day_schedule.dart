@@ -14,7 +14,9 @@ class TeacherChangeDaySchedule extends StatefulWidget {
   State<TeacherChangeDaySchedule> createState() =>
       _TeacherChangeDayScheduleState();
 }
-  final TextEditingController _controllerClass = TextEditingController();
+
+final TextEditingController _controllerClass = TextEditingController();
+
 class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
@@ -77,9 +79,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
-                          onTap: () {
-                            
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
@@ -95,7 +95,9 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 19.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           'Урок 1',
@@ -106,66 +108,67 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                               color: AppColors.gray5a5a5a),
                                         ),
                                         InkWell(
-                                          onTap: () {
-                                            
-                                          },
+                                          onTap: () {},
                                           child: const Image(
-                                                height: 20,
-                                                image: AssetImage(
-                                                    'assets/images/delete_icon.png'),
-                                                color: Colors.black,
-                                              ),
+                                            height: 20,
+                                            image: AssetImage(
+                                                'assets/images/delete_icon.png'),
+                                            color: Colors.black,
+                                          ),
                                         )
                                       ],
                                     ),
                                   ),
-                                   TextFormField(
-                        keyboardType: TextInputType.name,
-                        autocorrect: false,
-                        buildCounter: (BuildContext context,
-                                {int? currentLength,
-                                required bool isFocused,
-                                int? maxLength}) =>
-                            null,
-                        maxLength: 20,
-                        controller: _controllerClass,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xffFAFAFA),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            borderSide: BorderSide(
-                              color: Color(0xffFAFAFA),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            borderSide: BorderSide(color: Color(0xffFAFAFA)),
-                          ),
-                          hintText: 'Введите кабинет',
-                          hintStyle: TextStyle(
-                              color: Color(0xff9D9D9D),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14),
-                          labelText: 'Кабинет (не обязательно)',
-                          labelStyle: TextStyle(
-                              color: Color(0xff9D9D9D),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12),
-                          suffixIcon: Image(
-                            height: 20,
-                            image: AssetImage('assets/images/pen_icon.png'),
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.name,
+                                    autocorrect: false,
+                                    buildCounter: (BuildContext context,
+                                            {int? currentLength,
+                                            required bool isFocused,
+                                            int? maxLength}) =>
+                                        null,
+                                    maxLength: 20,
+                                    controller: _controllerClass,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Color(0xffFAFAFA),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12),
+                                        ),
+                                        borderSide: BorderSide(
+                                          color: Color(0xffFAFAFA),
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12),
+                                        ),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffFAFAFA)),
+                                      ),
+                                      hintText: 'Введите кабинет',
+                                      hintStyle: TextStyle(
+                                          color: Color(0xff9D9D9D),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                      labelText: 'Кабинет (не обязательно)',
+                                      labelStyle: TextStyle(
+                                          color: Color(0xff9D9D9D),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12),
+                                      suffixIcon: Image(
+                                        height: 20,
+                                        image: AssetImage(
+                                            'assets/images/pen_icon.png'),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
                                   SizedBox(
                                     height: heightScreen * 0.01,
                                   ),
@@ -249,9 +252,16 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 color: AppColors.black212525,
                                 fontWeight: FontWeight.w600)),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    alertDialogCreateLesson(
+                                        widthScreen, heightScreen));
+                          },
                           child: const Image(
-                              image: AssetImage('assets/images/blackplus_icon.png')),
+                              image: AssetImage(
+                                  'assets/images/blackplus_icon.png')),
                         ),
                       ],
                     ),
@@ -291,6 +301,48 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
           ),
         ),
       ],
+    );
+  }
+
+  AlertDialog alertDialogCreateLesson(double widthScreen, double heightScreen) {
+    return AlertDialog(
+      contentPadding: const EdgeInsets.all(10),
+      content: SizedBox(
+        width: widthScreen * 0.5,
+        height: heightScreen * 0.25,
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '',
+                  style: TextStyle(
+                      fontSize: heightScreen * 0.025,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.black212525),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Выбрать предмет'),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Выгрузить в Excel'),
+                ),
+                ElevatedButton(
+                    style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(AppColors.greybcc1cd)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Ок"))
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

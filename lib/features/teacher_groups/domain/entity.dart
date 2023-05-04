@@ -1,34 +1,42 @@
 import 'package:equatable/equatable.dart';
 
-class TeacherGroups {
-  final String fullName;
-  final String email;
-  final String confirmPassword;
-
-  TeacherGroups(this.fullName, this.email, this.confirmPassword);
-}
-
 class GroupsInformation extends Equatable {
+  final String groupName;
   final int studentsAmount;
   final String lessonName;
   final int studentsAtLesson;
-  final DateTime nextLesson;
+  final String nextLesson;
   final bool isHomework;
   final String homework;
   final String lessonRoom;
+  final DateTime currentDay;
+  final String subject;
+  final DateTime lessonTimeStart;
+  final DateTime lessonTimeFinish;
+  final bool isMadeWeekly;
+  final DateTime dayOfWeek;
 
-  const GroupsInformation(this.studentsAmount, this.nextLesson, this.lessonName,
-      this.studentsAtLesson, this.isHomework, this.homework, this.lessonRoom);
-      
-        @override
-        
-        List<Object?> get props => [studentsAmount];
-}
+  GroupsInformation(
+      {required this.groupName,
+      this.subject = '',
+      DateTime? lessonTimeStart,
+      DateTime? lessonTimeFinish,
+      this.isMadeWeekly = false,
+      DateTime? dayOfWeek,
+      DateTime? currentDay,
+      this.studentsAmount = 0,
+      this.nextLesson = '',
+      this.lessonName = '',
+      this.studentsAtLesson = 0,
+      this.isHomework = false,
+      this.homework = '',
+      this.lessonRoom = ''})
+      : currentDay = currentDay ?? DateTime.now(),
+        dayOfWeek = dayOfWeek ?? DateTime.now(),
+        lessonTimeStart = lessonTimeStart ?? DateTime.now(),
+          lessonTimeFinish = lessonTimeFinish ?? DateTime.now()
+        ;
 
-class AddNewGroupEntity {
-  final int studentsAmount;
-  final String groupName;
-  final String nextLesson;
-
-  AddNewGroupEntity({required this.studentsAmount,required this.groupName,required this.nextLesson});
+  @override
+  List<Object?> get props => [groupName,subject];
 }
