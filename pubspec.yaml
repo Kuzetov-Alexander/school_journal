@@ -45,8 +45,7 @@ dependencies:
   intl: ^0.17.0
   adaptive_action_sheet: ^2.0.2
   firebase_database: ^10.1.2
-  cloud_firestore: ^4.6.0
-  firebase_storage: ^11.1.2
+ 
  
 
  
