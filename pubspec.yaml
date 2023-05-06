@@ -45,10 +45,7 @@ dependencies:
   intl: ^0.17.0
   adaptive_action_sheet: ^2.0.2
   firebase_database: ^10.1.2
- 
- 
 
- 
 
 dev_dependencies:
   flutter_test:

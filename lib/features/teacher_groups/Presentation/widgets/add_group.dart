@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:school_journal/common/color.dart';
-
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 
 String titleGroup = 'sd';
 
@@ -20,11 +21,12 @@ class _AddNewGroupState extends State<AddNewGroup> {
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
-  // List<GroupsInformation> allgroups = [
-  //   GroupsInformation(
-  //      )
-  // ];
-  // List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
+  void _createGroup(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(CreateGroup(groupName: _controllerClass.text));
+    print(_controllerClass.text);
+    print(_controllerClass.text.trim());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +131,8 @@ class _AddNewGroupState extends State<AddNewGroup> {
                       ),
                     ),
                     onPressed: () {
-                     
+                      _createGroup(context);
+
                       Navigator.of(context).pop();
                     },
                     child: Text(
