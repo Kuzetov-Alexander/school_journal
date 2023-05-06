@@ -2,15 +2,30 @@
 part of 'bloc_teacher_groups_bloc.dart';
 
 abstract class BlocTeacherGroupsState extends Equatable {
-  const BlocTeacherGroupsState();
+  
+  
+   const BlocTeacherGroupsState();
+  
 
   @override
   List<Object> get props => [];
 }
 
-class IsCreatedGroup extends BlocTeacherGroupsState {
+class IsCreatingGroup extends BlocTeacherGroupsState {
   @override
   List<Object> get props => [];
+}
+
+
+class IsCreatedGroup extends BlocTeacherGroupsState {
+  
+  List <List<Object?>>  allCreatedGroup ;
+
+  IsCreatedGroup({required this.allCreatedGroup});
+
+
+  @override
+  List<Object> get props => [allCreatedGroup];
 }
 
 class NoGroups extends BlocTeacherGroupsState {
@@ -21,7 +36,7 @@ class NoGroups extends BlocTeacherGroupsState {
 class Error extends BlocTeacherGroupsState {
   final String error;
 
-  const Error({required this.error});
+   Error({required this.error});
 
   @override
   List<Object> get props => [error];

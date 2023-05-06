@@ -3,19 +3,20 @@ import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 
 class GroupInfoWidget extends StatelessWidget {
+
   const GroupInfoWidget({
     super.key,
     required this.heightScreen,
-    required this.widthScreen,
+    required this.widthScreen, required this.listGroups, required this.i,
   });
-
+  final List  <List<Object?>> listGroups;
   final double heightScreen;
   final double widthScreen;
+  final int i;
 
   @override
   Widget build(BuildContext context) {
-    // List<GroupsInformation> allgroups = [];
-    // List<String> textOptions = ['Ученика', 'Ученик', 'Учеников'];
+  
     return Column(
       children: [
         Material(
@@ -39,7 +40,7 @@ class GroupInfoWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 1),
                       child: Text(
-                        'Name',
+                        listGroups[i][0].toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: heightScreen * 0.02),
@@ -48,10 +49,10 @@ class GroupInfoWidget extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children: const [
+                  children:  [
                     Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Text('Ближайшее занятие: '),
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Text( 'Ближайшее занятие: ${listGroups[i][1]}'),
                     )
                   ],
                 ),
@@ -69,12 +70,12 @@ class GroupInfoWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Row(
-                    children: const [
-                      Image(image: AssetImage('assets/images/mini_person.png')),
-                      SizedBox(
+                    children:  [
+                      const Image(image: AssetImage('assets/images/mini_person.png')),
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text(' учеников'),
+                      Text('${listGroups[i][2]} учеников'),
                     ],
                   ),
                 )

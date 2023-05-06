@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -24,12 +27,27 @@ class _GroupListPageState extends State<GroupListPage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+    List <List<Object?>> listAllGroups =[];
 
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
           if (state is IsCreatedGroup) {
-            print('Новая группа создана');
+            print(state.allCreatedGroup);
+          listAllGroups = state.allCreatedGroup;
+
+          print(listAllGroups);
+              ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.green,
+                content: Text('Новая группа успешно создана'),
+              ),
+            );
+          }
+          if (state is IsCreatingGroup) {
+               Center(
+              child: Platform.isAndroid? const CircularProgressIndicator() :const CupertinoActivityIndicator() ,
+            );
           }
           if (state is Error) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -68,13 +86,13 @@ class _GroupListPageState extends State<GroupListPage> {
                                 // Map<String, String> students = {
                                 //   'name': 'asdsasdsdsd'
                                 // };
-                                final setValue =
-                                    FirebaseDatabase.instance.ref().child('User');
-                                final setSnapshot = setValue.set({
-                                  'name': 'sasha',
-                                  'age': 15,
-                                  'addres': {'line': '100 mountain View'}
-                                }); // перезаписывает данные
+                                // final setValue =
+                                //     FirebaseDatabase.instance.ref().child('User');
+                                // final setSnapshot = setValue.set({
+                                //   'name': 'sasha',
+                                //   'age': 15,
+                                //   'addres': {'line': '100 mountain View'}
+                                // }); // перезаписывает данные
 
                                 // final updateAge = await FirebaseDatabase.instance
                                 //     .ref()
@@ -84,14 +102,14 @@ class _GroupListPageState extends State<GroupListPage> {
                                 // final deleteAddres =
                                 //     await FirebaseDatabase.instance.ref().set(null);
 
-                                final ref = FirebaseDatabase.instance.ref();
-                                final getSnapshot =
-                                    await ref.child('User').get();
-                                if (getSnapshot.exists) {
-                                  print(getSnapshot.value);
-                                } else {
-                                  print('No data');
-                                }
+                                // final ref = FirebaseDatabase.instance.ref();
+                                // final getSnapshot =
+                                //     await ref.child('User').get();
+                                // if (getSnapshot.exists) {
+                                //   print(getSnapshot.value);
+                                // } else {
+                                //   print('No data');
+                                // }
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
@@ -128,7 +146,7 @@ class _GroupListPageState extends State<GroupListPage> {
                                       ),
                                     ),
                                     context: context,
-                                    builder: (context) => const AddNewGroup());
+                                    builder: (context) =>  const AddNewGroup());
                               },
                               child: const Image(
                                 image:
@@ -171,10 +189,10 @@ class _GroupListPageState extends State<GroupListPage> {
                         height: heightScreen * 0.02,
                       );
                     },
-                    itemCount: 2,
+                    itemCount: listAllGroups.length   ,
                     itemBuilder: (BuildContext context, int index) {
                       return GroupInfoWidget(
-                          heightScreen: heightScreen, widthScreen: widthScreen);
+                          heightScreen: heightScreen, widthScreen: widthScreen, listGroups: listAllGroups, i: index,);
                     },
                   ),
                 ),
