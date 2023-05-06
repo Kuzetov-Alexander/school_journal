@@ -19,13 +19,16 @@ import 'package:school_journal/features/autentification/presentation/pages/signu
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/shedule_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
+import 'package:school_journal/features/teacher_groups/data/repositories/create_group_repository_impl.dart';
+import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
 import 'dart:io' show Platform;
-
 
 import 'package:school_journal/firebase_options.dart';
 
@@ -36,6 +39,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // TODO(Sanya) Уточнить где инициализировать?
   FirebaseDatabase database = FirebaseDatabase.instance;
 
   runApp(
@@ -109,16 +113,35 @@ class MyApp extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<UserRepository>(
-      lazy: false,
-      create: (context) => UserRepositoryImpl(
-        remoteDataSource: RemoteDataSourceImpl(),
-      ),
-      child: BlocProvider<AuthBloc>(
-        lazy: false,
-        create: (context) => AuthBloc(
-          authRepository: RepositoryProvider.of<UserRepository>(context),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<UserRepository>(
+          lazy: false,
+          create: (context) => UserRepositoryImpl(
+            remoteDataSource: RemoteDataSourceImpl(),
+          ),
         ),
+        RepositoryProvider<CreateGroupRepository>(
+          lazy: false,
+          create: (context) =>
+              CreateGroupRepositoryImpl(dataBase: RemoteDataFirebaseImpl()),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            lazy: false,
+            create: (context) => AuthBloc(
+              authRepository: RepositoryProvider.of<UserRepository>(context),
+            ),
+          ),
+          BlocProvider<BlocTeacherGroupsBloc>(
+            lazy: false,
+            create: (context) => BlocTeacherGroupsBloc(
+                // repository: RepositoryProvider.of<CreateGroupRepository>(context),
+                ),
+          ),
+        ],
         child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             scrollBehavior: Platform.isAndroid
