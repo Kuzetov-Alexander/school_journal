@@ -1,39 +1,47 @@
 {
-  "project_info": {
-    "project_number": "201990896589",
-    "project_id": "schooldiary-55bc7",
-    "storage_bucket": "schooldiary-55bc7.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:201990896589:android:263bdd5b43d5fcf3a72284",
-        "android_client_info": {
-          "package_name": "com.example.school_journal"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "201990896589-ldhh03pbu8fg9rnfoov9cs4rned3m9u5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIR_brZQC63p8yTwCAiwu1xotu1Jejc60"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "201990896589-ldhh03pbu8fg9rnfoov9cs4rned3m9u5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+    "project_info": {
+      "project_number": "201990896589",
+      "firebase_url": "https://schooldiary-55bc7-default-rtdb.europe-west1.firebasedatabase.app",
+      "project_id": "schooldiary-55bc7",
+      "storage_bucket": "schooldiary-55bc7.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:201990896589:android:263bdd5b43d5fcf3a72284",
+          "android_client_info": {
+            "package_name": "com.example.school_journal"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "201990896589-ldhh03pbu8fg9rnfoov9cs4rned3m9u5.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDIR_brZQC63p8yTwCAiwu1xotu1Jejc60"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "201990896589-ldhh03pbu8fg9rnfoov9cs4rned3m9u5.apps.googleusercontent.com",
+                "client_type": 3
+              },
+              {
+                "client_id": "201990896589-1ksr3q3s134e1i3cphh60cc0brrjqh00.apps.googleusercontent.com",
+                "client_type": 2,
+                "ios_info": {
+                  "bundle_id": "com.example.schoolJournal"
+                }
+              }
+            ]
+          }
         }
       }
-    }
-  ],
-  "configuration_version": "1"
-}
+    ],
+    "configuration_version": "1"
+  }

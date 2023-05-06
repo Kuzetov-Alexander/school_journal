@@ -25,7 +25,7 @@ import 'package:school_journal/features/teacher_groups/Presentation/pages/teache
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
 import 'dart:io' show Platform;
-import 'package:firebase_database/firebase_database.dart';
+
 
 import 'package:school_journal/firebase_options.dart';
 

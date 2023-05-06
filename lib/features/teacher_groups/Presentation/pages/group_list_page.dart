@@ -8,27 +8,25 @@ import 'package:school_journal/features/teacher_groups/Presentation/widgets/grou
 class GroupListPage extends StatefulWidget {
   const GroupListPage({super.key});
 
-
   @override
   State<GroupListPage> createState() => _GroupListPageState();
 }
 
-
 class _GroupListPageState extends State<GroupListPage> {
-  late DatabaseReference ref ;
+  // final DatabaseReference ref = FirebaseDatabase.instance.ref();
   @override
   void initState() {
-   
     super.initState();
-    ref = FirebaseDatabase.instance.ref().child('Students');
+
+    // ref = FirebaseDatabase.instance.ref('students');
+
+    // ref = FirebaseDatabase.instance.refFromURL('');
   }
+
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    // final user = FirebaseAuth.instance.currentUser;
-   
-
 
     return Scaffold(
       body: SafeArea(
@@ -46,13 +44,33 @@ class _GroupListPageState extends State<GroupListPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          onPressed: ()  {
+                          onPressed: () async {
                             // context.go('/');
-                      Map <String, String> students = {
-                        'name':'sdsdsd'
-                      };
+                            // final ref = FirebaseDatabase.instance;
+                            // ref.ref().
+                            // ;
+                            // database("https://<databaseName><region>.firebasedatabase.app");
 
-                          ref.push().set(students);
+                            // Map<String, String> students = {
+                            //   'name': 'asdsasdsdsd'
+                            // };
+                            // FirebaseDatabase.instance
+                            //     .ref()
+                            //     .child('TEAM')
+                            //     .set({'name': 'asdsasdsdsd'});
+                            // final ref = FirebaseDatabase.instance.refFromURL(
+                            //     'https://schooldiary-55bc7-default-rtdb.europe-west1.firebasedatabase.app/');
+
+                            // ref.child('TEAM').set({'name': 'asdsasdsdsd'});
+                            // print(ref);
+
+                            final ref = FirebaseDatabase.instance.ref();
+                            final snapshot = await ref.child('name').get();
+                            if (snapshot.exists) {
+                              print(snapshot.value);
+                            } else {
+                              print('No data');
+                            }
                           },
                           icon: const Icon(Icons.arrow_left),
                           iconSize: 35,
