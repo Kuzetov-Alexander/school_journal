@@ -2,21 +2,103 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 
-class GroupInfoWidget extends StatelessWidget {
+// class GroupInfoWidget extends StatelessWidget {
+//   const GroupInfoWidget(
+//       {super.key, required this.listGroups, required this.index});
 
-  const GroupInfoWidget({
-    super.key,
-    required this.heightScreen,
-    required this.widthScreen, required this.listGroups, required this.i,
-  });
-  final List  <List<Object?>> listGroups;
-  final double heightScreen;
-  final double widthScreen;
-  final int i;
+//   final List<List<Object?>> listGroups;
+//   // final double heightScreen;
+//   // final double widthScreen;
+//   final int index;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double widthScreen = MediaQuery.of(context).size.width;
+//     double heightScreen = MediaQuery.of(context).size.height;
+//     return Column(
+//       children: [
+//         Material(
+//           borderRadius: BorderRadius.circular(16),
+//           color: AppColors.greyLight,
+//           child: InkWell(
+//             onTap: () {
+//               context.goNamed('TeacherGroup');
+//             },
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(16),
+//                 color: Colors.transparent,
+//               ),
+//               height: heightScreen * 0.15,
+//               width: widthScreen * 0.9,
+//               child: Column(children: [
+//                 Row(
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.symmetric(
+//                           horizontal: 16, vertical: 1),
+//                       child: Text(
+//                         listGroups[index][0].toString(),
+//                         style: TextStyle(
+//                             fontWeight: FontWeight.w600,
+//                             fontSize: heightScreen * 0.02),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 Row(
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.only(left: 16.0),
+//                       child: Text('Ближайшее занятие: ${listGroups[index][1]}'),
+//                     )
+//                   ],
+//                 ),
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.end,
+//                   children: [
+//                     IconButton(
+//                         onPressed: () {},
+//                         icon: const Image(
+//                           width: 8,
+//                           image: AssetImage('assets/images/arrow.png'),
+//                         ))
+//                   ],
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.only(left: 16.0),
+//                   child: Row(
+//                     children: [
+//                       const Image(
+//                           image: AssetImage('assets/images/mini_person.png')),
+//                       const SizedBox(
+//                         width: 10,
+//                       ),
+//                       Text('${listGroups[index][2]} учеников'),
+//                     ],
+//                   ),
+//                 )
+//               ]),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+class MyGroupInfoWidget extends StatelessWidget {
+  final Map mapGroups;
+
+  final int index;
+
+  const MyGroupInfoWidget(
+      {super.key, required this.mapGroups, required this.index});
 
   @override
   Widget build(BuildContext context) {
-  
+    double widthScreen = MediaQuery.of(context).size.width;
+    double heightScreen = MediaQuery.of(context).size.height;
     return Column(
       children: [
         Material(
@@ -40,7 +122,7 @@ class GroupInfoWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 1),
                       child: Text(
-                        listGroups[i][0].toString(),
+                        mapGroups['GroupName'].toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: heightScreen * 0.02),
@@ -49,10 +131,11 @@ class GroupInfoWidget extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  children:  [
+                  children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0),
-                      child: Text( 'Ближайшее занятие: ${listGroups[i][1]}'),
+                      child: Text(
+                          'Ближайшее занятие: ${mapGroups['nextLesson']}'),
                     )
                   ],
                 ),
@@ -70,12 +153,13 @@ class GroupInfoWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Row(
-                    children:  [
-                      const Image(image: AssetImage('assets/images/mini_person.png')),
+                    children: [
+                      const Image(
+                          image: AssetImage('assets/images/mini_person.png')),
                       const SizedBox(
                         width: 10,
                       ),
-                      Text('${listGroups[i][2]} учеников'),
+                      Text('${mapGroups['amountStudents']} учеников'),
                     ],
                   ),
                 )

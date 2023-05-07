@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,6 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
-
 //  void _createGroup(context) {
 //   BlocProvider.of<BlocTeacherGroupsBloc>(context).add(CreateGroup(groupName: ))
 //  }
@@ -27,17 +27,18 @@ class _GroupListPageState extends State<GroupListPage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    List <List<Object?>> listAllGroups =[];
+    List<List<Object?>> listAllGroups = [];
+    final db = FirebaseDatabase.instance.ref().child('Groups');
 
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
           if (state is IsCreatedGroup) {
-            print(state.allCreatedGroup);
-          listAllGroups = state.allCreatedGroup;
+            print('---------------${state.allCreatedGroup}');
+            listAllGroups = state.allCreatedGroup;
+            print('---------------$listAllGroups');
 
-          print(listAllGroups);
-              ScaffoldMessenger.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.green,
                 content: Text('Новая группа успешно создана'),
@@ -45,11 +46,13 @@ class _GroupListPageState extends State<GroupListPage> {
             );
           }
           if (state is IsCreatingGroup) {
-               Center(
-              child: Platform.isAndroid? const CircularProgressIndicator() :const CupertinoActivityIndicator() ,
+            Center(
+              child: Platform.isAndroid
+                  ? const CircularProgressIndicator()
+                  : const CupertinoActivityIndicator(),
             );
           }
-          if (state is Error) {
+          if (state is DatabaseError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
@@ -77,39 +80,7 @@ class _GroupListPageState extends State<GroupListPage> {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                // context.go('/');
-                                // final ref = FirebaseDatabase.instance;
-                                // ref.ref().
-                                // ;
-                                // database("https://<databaseName><region>.firebasedatabase.app");
-
-                                // Map<String, String> students = {
-                                //   'name': 'asdsasdsdsd'
-                                // };
-                                // final setValue =
-                                //     FirebaseDatabase.instance.ref().child('User');
-                                // final setSnapshot = setValue.set({
-                                //   'name': 'sasha',
-                                //   'age': 15,
-                                //   'addres': {'line': '100 mountain View'}
-                                // }); // перезаписывает данные
-
-                                // final updateAge = await FirebaseDatabase.instance
-                                //     .ref()
-                                //     .child('User')
-                                //     .update({'ads': 'value'});
-
-                                // final deleteAddres =
-                                //     await FirebaseDatabase.instance.ref().set(null);
-
-                                // final ref = FirebaseDatabase.instance.ref();
-                                // final getSnapshot =
-                                //     await ref.child('User').get();
-                                // if (getSnapshot.exists) {
-                                //   print(getSnapshot.value);
-                                // } else {
-                                //   print('No data');
-                                // }
+                                context.go('/');
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
@@ -146,7 +117,7 @@ class _GroupListPageState extends State<GroupListPage> {
                                       ),
                                     ),
                                     context: context,
-                                    builder: (context) =>  const AddNewGroup());
+                                    builder: (context) => const AddNewGroup());
                               },
                               child: const Image(
                                 image:
@@ -179,23 +150,43 @@ class _GroupListPageState extends State<GroupListPage> {
                   color: Colors.grey,
                   height: heightScreen * 0.001,
                 ),
-                SizedBox(
-                  height: heightScreen * 0.04,
-                ),
+                SizedBox(height: heightScreen * 0.04),
                 Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        height: heightScreen * 0.02,
-                      );
-                    },
-                    itemCount: listAllGroups.length   ,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GroupInfoWidget(
-                          heightScreen: heightScreen, widthScreen: widthScreen, listGroups: listAllGroups, i: index,);
-                    },
+                  child: SizedBox(
+                    height: heightScreen * 0.02,
+                    child: FirebaseAnimatedList(
+                      query: db,
+                      itemBuilder: (context, DataSnapshot snapshot,
+                          Animation<double> animation, int index) {
+                        Map<dynamic, dynamic> student = snapshot.value as Map;
+                        student['key'] = snapshot.key;
+
+                        return Column(
+                          children: [
+                            MyGroupInfoWidget(mapGroups: student, index: index),
+                            SizedBox(height: heightScreen * 0.04)
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
+                // Expanded(
+                //   child: ListView.separated(
+                //     separatorBuilder: (context, index) {
+                //       return SizedBox(
+                //         height: heightScreen * 0.02,
+                //       );
+                //     },
+                //     itemCount: listAllGroups.length,
+                //     itemBuilder: (BuildContext context, int index) {
+                //       return GroupInfoWidget(
+                //         listGroups: listAllGroups,
+                //         index: index,
+                //       );
+                //     },
+                //   ),
+                // ),
                 TextButton(
                   onPressed: () {
                     context.go('/Groups/StudentScores');

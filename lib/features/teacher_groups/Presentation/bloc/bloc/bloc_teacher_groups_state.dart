@@ -1,11 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'bloc_teacher_groups_bloc.dart';
 
 abstract class BlocTeacherGroupsState extends Equatable {
-  
-  
-   const BlocTeacherGroupsState();
-  
+  const BlocTeacherGroupsState();
 
   @override
   List<Object> get props => [];
@@ -16,13 +12,10 @@ class IsCreatingGroup extends BlocTeacherGroupsState {
   List<Object> get props => [];
 }
 
-
 class IsCreatedGroup extends BlocTeacherGroupsState {
-  
-  List <List<Object?>>  allCreatedGroup ;
+  List<List<Object?>> allCreatedGroup;
 
   IsCreatedGroup({required this.allCreatedGroup});
-
 
   @override
   List<Object> get props => [allCreatedGroup];
@@ -33,10 +26,10 @@ class NoGroups extends BlocTeacherGroupsState {
   List<Object> get props => [];
 }
 
-class Error extends BlocTeacherGroupsState {
+class DatabaseError extends BlocTeacherGroupsState {
   final String error;
 
-   Error({required this.error});
+  const DatabaseError({required this.error});
 
   @override
   List<Object> get props => [error];
