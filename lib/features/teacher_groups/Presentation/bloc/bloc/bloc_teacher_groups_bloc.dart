@@ -7,7 +7,7 @@ part 'bloc_teacher_groups_state.dart';
 
 class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
-  List<dynamic> list = [];
+  // List<String> list = [];
 
   // final CreateGroupRepository repository;
 
@@ -85,10 +85,10 @@ class BlocTeacherGroupsBloc
           }
         }
 
-        print(groupNames);
-        list = groupNames;
+        // print(groupNames);
+        // list = groupNames;
 
-        emit(DownloadNameGroupsState(allNamesGroup: list));
+        emit(DownloadNameGroupsState(allNamesGroup: groupNames));
       } else {
         print('no data');
       }

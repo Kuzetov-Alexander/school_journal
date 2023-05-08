@@ -18,7 +18,7 @@ class ShedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List <dynamic> listNamesGroup =[];
+    List <String> listNamesGroup =[];
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
@@ -45,11 +45,12 @@ class ShedulePage extends StatelessWidget {
       ),
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
-          if (state is DownloadNameGroupsState) {
-            // print(state.allNamesGroup);
-           listNamesGroup = state.allNamesGroup;
-          //  print(listNamesGroup);
-          }
+          // if (state is DownloadNameGroupsState) {
+          //   // print(state.allNamesGroup);
+          // //  listNamesGroup = state.allNamesGroup;  !!!!!!!// если на этой странице это закоментить, то при переходе 
+                                                      // назад со страницы добавить урок, лист будет равен нулю. иначе все будет ок
+          // //  print(listNamesGroup);
+          // }
         },
         builder: (context, state) {
           return SafeArea(
@@ -237,7 +238,7 @@ class ShedulePage extends StatelessWidget {
                                 ),
                               ),
                               context: context,
-                              builder: (context) =>  BottomSheetModal(listGroupNames: listNamesGroup,),
+                              builder: (context) =>  BottomSheetModal(),
                             );
                           },
                           icon: const Image(

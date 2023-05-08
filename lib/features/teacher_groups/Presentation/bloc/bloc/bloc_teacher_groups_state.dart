@@ -26,7 +26,7 @@ class NoGroups extends BlocTeacherGroupsState {
   List<Object> get props => [];
 }
 class DownloadNameGroupsState extends BlocTeacherGroupsState {
-   List<dynamic> allNamesGroup;
+   List<String> allNamesGroup;
 
      DownloadNameGroupsState({required this.allNamesGroup});
   @override

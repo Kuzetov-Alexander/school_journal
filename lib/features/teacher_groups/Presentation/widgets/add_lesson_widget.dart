@@ -16,15 +16,17 @@ import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'timer_picker_android.dart';
 
 class BottomSheetModal extends StatefulWidget {
-  List<dynamic> listGroupNames = [];
+  
 
-  BottomSheetModal({super.key, required this.listGroupNames});
+  BottomSheetModal({super.key, });
 
   @override
   State<BottomSheetModal> createState() => _BottomSheetModalState();
+  
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
+  List<String> listGroupNames = [];
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
@@ -36,286 +38,307 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       TextEditingController();
   late final TextEditingController _controllerClassThird =
       TextEditingController();
-  String? selectedGroup;
-  int select = 0;
 
   void _downloadNameGroups(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadNameGroupsEvent());
   }
 
+
   @override
   Widget build(BuildContext context) {
+     String selectedGroup ='';
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Image(
-                          image: AssetImage('assets/images/cross_icon.png'))),
-                  SizedBox(
-                    width: widthScreen / 4,
-                  ),
-                  Text(
-                    'Добавить урок',
-                    style: TextStyle(
-                        color: AppColors.black212525,
-                        fontSize: heightScreen * 0.023,
-                        fontWeight: FontWeight.w600),
-                  )
-                ],
-              ),
-            ),
+    return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+      listener: (context, state) {
+       if (state is DownloadNameGroupsState) {
+         
+            // print(state.allNamesGroup);
+          final List<String> listNames =[];
+          listGroupNames = listNames + state.allNamesGroup;
+        
+          //  print(widget.listGroupNames);
+          }
+      },
+      builder: (context, state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Container(
-              color: Colors.grey,
-              height: heightScreen * 0.001,
-            ),
-            Padding(
-              padding: EdgeInsets.all(heightScreen * 0.03),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: AppColors.greyLight,
-                ),
-                height: heightScreen * 0.5,
-                width: widthScreen * 0.88,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20))),
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 19.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: heightScreen * 0.016,
-                                  // letterSpacing: 1,
-                                  color: AppColors.gray5a5a5a),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: const Color(0xffFAFAFA)),
-                        width: double.infinity,
-                        height: heightScreen * 0.08,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(widget.listGroupNames.isEmpty
-                                ? ''
-                                : "${widget.listGroupNames[0]}"),
-                            TextButton(
-                              onPressed: () {
-                                _downloadNameGroups(context);
-                                showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (context) => Padding(
-                                    padding: EdgeInsets.only(
-                                        top: heightScreen * 0.7),
-                                    child: CupertinoPicker(
-                                      backgroundColor: Colors.white,
-                                      scrollController:
-                                          FixedExtentScrollController(
-                                              initialItem: 1),
-                                      itemExtent: 30,
-                                      onSelectedItemChanged: (value) {
-                                        setState(
-                                          () {
-                                            selectedGroup =
-                                                widget.listGroupNames[value];
-                                          },
-                                        );
-                                      },
-                                      children: widget.listGroupNames
-                                          .map((e) => Text(e))
-                                          .toList(),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Text('Выбрать группу'),
-                            ),
-                          ],
-                        ),
-                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Image(
+                              image:
+                                  AssetImage('assets/images/cross_icon.png'))),
                       SizedBox(
-                        height: heightScreen * 0.015,
+                        width: widthScreen / 4,
                       ),
-                      TextformFieldWidget(
-                        controllerClass: _controllerClassSecond,
-                        hintTextx: 'Введите предмет',
-                        labelTextx: 'Предмет',
-                      ),
-                      SizedBox(
-                        height: heightScreen * 0.015,
-                      ),
-                      TextformFieldWidget(
-                        controllerClass: _controllerClassThird,
-                        hintTextx: 'Введите кабинет (не обязательно)',
-                        labelTextx: 'Кабинет',
-                      ),
-                      SizedBox(
-                        height: heightScreen * 0.015,
-                      ),
-                      SizedBox(
-                        height: heightScreen * 0.01,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Начало',
-                            style: TextStyle(
-                                fontSize: heightScreen * 0.02,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.black212525),
-                          ),
-                          Platform.isIOS
-                              ? IosTimePicker(
-                                  time: dateTimestart,
-                                  textTime:
-                                      '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                  onTimeSelected: (DateTime newTime) {
-                                    setState(
-                                      () {
-                                        dateTimefinish = newTime;
-                                        // TODO(Sanya) Делать через блок или провайдер лучше?
-                                      },
-                                    );
-                                  },
-                                )
-                              : const TimerPickerAndroid()
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Конец',
-                            style: TextStyle(
-                                fontSize: heightScreen * 0.02,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.black212525),
-                          ),
-                          Platform.isIOS
-                              ? IosTimePicker(
-                                  time: dateTimestart,
-                                  textTime:
-                                      '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                  onTimeSelected: (DateTime newTime) {
-                                    setState(() {
-                                      dateTimefinish =
-                                          newTime; // делать через блок или провайдер лучше?
-                                    });
-                                  },
-                                )
-                              : const TimerPickerAndroid()
-                        ],
-                      ),
+                      Text(
+                        'Добавить урок',
+                        style: TextStyle(
+                            color: AppColors.black212525,
+                            fontSize: heightScreen * 0.023,
+                            fontWeight: FontWeight.w600),
+                      )
                     ],
                   ),
                 ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.greyLight,
-              ),
-              height: heightScreen * 0.08,
-              width: widthScreen * 0.88,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Добавить в расписание',
-                      style: TextStyle(
-                          fontSize: heightScreen * 0.018,
-                          fontWeight: FontWeight.w600),
+                Container(
+                  color: Colors.grey,
+                  height: heightScreen * 0.001,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(heightScreen * 0.03),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: AppColors.greyLight,
                     ),
-                    Platform.isIOS
-                        ? CupertinoSwitch(
-                            activeColor: AppColors.purple,
-                            value: context
-                                .watch<ProviderGroupBool>()
-                                .newLessonAdded,
-                            onChanged: (value) {
-                              context
-                                  .read<ProviderGroupBool>()
-                                  .addNewLesson(value);
-                            },
-                          )
-                        : Switch(
-                            value: context
-                                .watch<ProviderGroupBool>()
-                                .newLessonAdded,
-                            onChanged: (value) {
-                              context
-                                  .read<ProviderGroupBool>()
-                                  .addNewLesson(value);
-                            },
+                    height: heightScreen * 0.5,
+                    width: widthScreen * 0.88,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 19.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: heightScreen * 0.016,
+                                      // letterSpacing: 1,
+                                      color: AppColors.gray5a5a5a),
+                                ),
+                              ],
+                            ),
                           ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: heightScreen * 0.1,
-            ),
-            SizedBox(
-              height: 56,
-              width: widthScreen * 0.88,
-              child: TextButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      const MaterialStatePropertyAll<Color>(AppColors.purple),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: const Color(0xffFAFAFA)),
+                            width: double.infinity,
+                            height: heightScreen * 0.08,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(listGroupNames.isEmpty
+                                    ? ''
+                                    : "$selectedGroup"),
+                                TextButton(
+                                  onPressed: () {
+                                    _downloadNameGroups(context);
+                                   
+                                    setState(() {});
+
+                                  
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                top: heightScreen * 0.7),
+                                            child: CupertinoPicker(
+                                              backgroundColor: Colors.white,
+                                              scrollController:
+                                                  FixedExtentScrollController(
+                                                      initialItem: 0),
+                                              itemExtent: 30,
+                                              onSelectedItemChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    selectedGroup =
+                                                        listGroupNames[value];
+                                                  },
+                                                );
+                                              },
+                                              children: listGroupNames
+                                                  .map((e) => Text(e))
+                                                  .toList(),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: const Text('Выбрать группу'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: heightScreen * 0.015,
+                          ),
+                          TextformFieldWidget(
+                            controllerClass: _controllerClassSecond,
+                            hintTextx: 'Введите предмет',
+                            labelTextx: 'Предмет',
+                          ),
+                          SizedBox(
+                            height: heightScreen * 0.015,
+                          ),
+                          TextformFieldWidget(
+                            controllerClass: _controllerClassThird,
+                            hintTextx: 'Введите кабинет (не обязательно)',
+                            labelTextx: 'Кабинет',
+                          ),
+                          SizedBox(
+                            height: heightScreen * 0.015,
+                          ),
+                          SizedBox(
+                            height: heightScreen * 0.01,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Начало',
+                                style: TextStyle(
+                                    fontSize: heightScreen * 0.02,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.black212525),
+                              ),
+                              Platform.isIOS
+                                  ? IosTimePicker(
+                                      time: dateTimestart,
+                                      textTime:
+                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                      onTimeSelected: (DateTime newTime) {
+                                        setState(
+                                          () {
+                                            dateTimefinish = newTime;
+                                            // TODO(Sanya) Делать через блок или провайдер лучше?
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : const TimerPickerAndroid()
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Конец',
+                                style: TextStyle(
+                                    fontSize: heightScreen * 0.02,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.black212525),
+                              ),
+                              Platform.isIOS
+                                  ? IosTimePicker(
+                                      time: dateTimestart,
+                                      textTime:
+                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                      onTimeSelected: (DateTime newTime) {
+                                        setState(() {
+                                          dateTimefinish =
+                                              newTime; // делать через блок или провайдер лучше?
+                                        });
+                                      },
+                                    )
+                                  : const TimerPickerAndroid()
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                onPressed: () {},
-                child: Text(
-                  'Добавить',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: heightScreen * 0.022,
-                    fontWeight: FontWeight.w600,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: AppColors.greyLight,
+                  ),
+                  height: heightScreen * 0.08,
+                  width: widthScreen * 0.88,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Добавить в расписание',
+                          style: TextStyle(
+                              fontSize: heightScreen * 0.018,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Platform.isIOS
+                            ? CupertinoSwitch(
+                                activeColor: AppColors.purple,
+                                value: context
+                                    .watch<ProviderGroupBool>()
+                                    .newLessonAdded,
+                                onChanged: (value) {
+                                  context
+                                      .read<ProviderGroupBool>()
+                                      .addNewLesson(value);
+                                },
+                              )
+                            : Switch(
+                                value: context
+                                    .watch<ProviderGroupBool>()
+                                    .newLessonAdded,
+                                onChanged: (value) {
+                                  context
+                                      .read<ProviderGroupBool>()
+                                      .addNewLesson(value);
+                                },
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  height: heightScreen * 0.1,
+                ),
+                SizedBox(
+                  height: 56,
+                  width: widthScreen * 0.88,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: const MaterialStatePropertyAll<Color>(
+                          AppColors.purple),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      'Добавить',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: heightScreen * 0.022,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: heightScreen * 0.015,
+                ),
+              ]),
             ),
-            SizedBox(
-              height: heightScreen * 0.015,
-            ),
-          ]),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
