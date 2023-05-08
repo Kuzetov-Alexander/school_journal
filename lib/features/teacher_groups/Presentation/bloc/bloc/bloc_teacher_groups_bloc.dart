@@ -70,12 +70,22 @@ class BlocTeacherGroupsBloc
 
       if (dataSnapshot.exists) {
         final Map<Object?, Object?> data =
-            dataSnapshot.value 
-            as Map<Object?, Object?>;
-            
-       list = data.values.toList();
+            dataSnapshot.value as Map<Object?, Object?>;
+
+        final List<String> groupNames =[]; // Здесь будут храниться все значения ключа "GroupName"
+        final List<dynamic> dataList = data.values.toList();
         
-      
+        for (final dynamic element in dataList) {
+          if (element is Map<dynamic, dynamic>) {
+            final String? groupName = element["GroupName"] as String?;
+            if (groupName != null) {
+              groupNames.add(groupName);
+            }
+          }
+        }
+        // Map<dynamic,dynamic> a = data.map((key, value) => null);
+        print(groupNames);
+
         emit(DownloadNameGroupsState(allNamesGroup: list));
       } else {
         print('no data');

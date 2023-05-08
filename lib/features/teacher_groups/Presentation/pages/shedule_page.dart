@@ -46,9 +46,9 @@ class ShedulePage extends StatelessWidget {
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
           if (state is DownloadNameGroupsState) {
-            print(state.allNamesGroup);
+            // print(state.allNamesGroup);
            listNamesGroup = state.allNamesGroup;
-           print(listNamesGroup);
+          //  print(listNamesGroup);
           }
         },
         builder: (context, state) {
