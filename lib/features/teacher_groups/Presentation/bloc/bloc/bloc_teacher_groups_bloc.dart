@@ -72,9 +72,10 @@ class BlocTeacherGroupsBloc
         final Map<Object?, Object?> data =
             dataSnapshot.value as Map<Object?, Object?>;
 
-        final List<String> groupNames =[]; // Здесь будут храниться все значения ключа "GroupName"
+        final List<String> groupNames =
+            []; // Здесь будут храниться все значения ключа "GroupName"
         final List<dynamic> dataList = data.values.toList();
-        
+
         for (final dynamic element in dataList) {
           if (element is Map<dynamic, dynamic>) {
             final String? groupName = element["GroupName"] as String?;
@@ -83,8 +84,9 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-        // Map<dynamic,dynamic> a = data.map((key, value) => null);
+
         print(groupNames);
+        list = groupNames;
 
         emit(DownloadNameGroupsState(allNamesGroup: list));
       } else {

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +16,9 @@ import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'timer_picker_android.dart';
 
 class BottomSheetModal extends StatefulWidget {
+  List<dynamic> listGroupNames = [];
 
-    List<dynamic> listGroupNames = [];
-
-  BottomSheetModal({super.key,required this.listGroupNames});
+  BottomSheetModal({super.key, required this.listGroupNames});
 
   @override
   State<BottomSheetModal> createState() => _BottomSheetModalState();
@@ -38,14 +36,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       TextEditingController();
   late final TextEditingController _controllerClassThird =
       TextEditingController();
+  String? selectedGroup;
+  int select = 0;
 
-       void _downloadNameGroups(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(DownloadNameGroupsEvent());
+  void _downloadNameGroups(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(DownloadNameGroupsEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-      final db = FirebaseDatabase.instance.ref().child('Groups');
+    final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -112,47 +113,51 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                           ],
                         ),
                       ),
-                      Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color:Color(0xffFAFAFA) ),
-                      width: double.infinity,
-                      height: heightScreen*0.08,
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text( widget.listGroupNames.isEmpty? '' : "${widget.listGroupNames[0]}"),
-                          TextButton(onPressed: () {
-                              _downloadNameGroups(context);
-                            showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) => Padding(
-                        padding: EdgeInsets.only(top: heightScreen * 0.7),
-                        child: CupertinoPicker(
-                          backgroundColor: Colors.white,
-                          scrollController:
-                              FixedExtentScrollController(initialItem: 1),
-                          itemExtent: 30,
-                          onSelectedItemChanged: (value) {
-                            setState(
-                              () {
-                                
-
-
-                                // selectedSubject = [
-                                //   'Математика',
-                                //   'История',
-                                //   'Химия',
-                                //   'Русский язык',
-                                //   'Физика'
-                                // ][value];
-                              },
-                            );
-                          },
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xffFAFAFA)),
+                        width: double.infinity,
+                        height: heightScreen * 0.08,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                        // widget.listGroupNames.map((e) => Text(e); )
+                            Text(widget.listGroupNames.isEmpty
+                                ? ''
+                                : "${widget.listGroupNames[0]}"),
+                            TextButton(
+                              onPressed: () {
+                                _downloadNameGroups(context);
+                                showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (context) => Padding(
+                                    padding: EdgeInsets.only(
+                                        top: heightScreen * 0.7),
+                                    child: CupertinoPicker(
+                                      backgroundColor: Colors.white,
+                                      scrollController:
+                                          FixedExtentScrollController(
+                                              initialItem: 1),
+                                      itemExtent: 30,
+                                      onSelectedItemChanged: (value) {
+                                        setState(
+                                          () {
+                                            selectedGroup =
+                                                widget.listGroupNames[value];
+                                          },
+                                        );
+                                      },
+                                      children: widget.listGroupNames
+                                          .map((e) => Text(e))
+                                          .toList(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text('Выбрать группу'),
+                            ),
                           ],
-                        ),));
-                          },
-                          child: Text('Выбрать группу'),),
-                        ],
-                      ),
+                        ),
                       ),
                       SizedBox(
                         height: heightScreen * 0.015,
