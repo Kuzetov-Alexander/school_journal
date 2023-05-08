@@ -8,6 +8,7 @@ part 'bloc_teacher_groups_state.dart';
 class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
   List<List<Object?>> list = [];
+
   // final CreateGroupRepository repository;
 // final groupId = const Uuid().v4(); // для генерации уникального номера группы
   BlocTeacherGroupsBloc() : super(NoGroups()) {
@@ -16,13 +17,18 @@ class BlocTeacherGroupsBloc
 
       emit(IsCreatingGroup());
       //можно пуш добавить и будет уникальное имя
-      await dataBase.update({
-        event.groupName: {
-          'GroupName': event.groupName,
-          'amountStudents': '0',
-          'nextLesson': 'нет'
-        }
-      });
+      final newPostKey = dataBase.push().key;
+
+      final postData = {
+        'GroupName': event.groupName,
+        'amountStudents': '0',
+        'nextLesson': 'нет'
+      };
+
+      final Map<String, Map> updates = {};
+      updates['/Groups/$newPostKey'] = postData;
+
+      FirebaseDatabase.instance.ref().update(updates);
 
       // final dataSnapshot = await dataBase.child(event.groupName).get();
       // if (dataSnapshot.exists) {
@@ -34,15 +40,6 @@ class BlocTeacherGroupsBloc
       // } else {
       //   print('no data');
       // }
-
-      // DatabaseReference starCountRef =
-      //     FirebaseDatabase.instance.ref().child(event.groupName);
-      // starCountRef.onValue.listen((DatabaseEvent event) {
-      //   final data =
-      //       event.snapshot.value! ;
-      //   List newcreatedGroup = data.values.toList();
-      //   list.add(newcreatedGroup);
-      // });
 
       // state.allCreatedGroup.add(newGroup);
 
@@ -59,6 +56,12 @@ class BlocTeacherGroupsBloc
       //   emit(const Error(error: 'Ошибка создания группы'));
       // }
       // });
+    });
+
+    on<DeleteGroup>((event, emit) {
+      final dataBase =
+          FirebaseDatabase.instance.ref().child('Groups/${event.key}');
+      dataBase.remove();
     });
   }
 }

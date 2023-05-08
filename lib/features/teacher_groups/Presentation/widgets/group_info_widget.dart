@@ -134,8 +134,8 @@ class MyGroupInfoWidget extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0),
-                      child: Text(
-                          'Ближайшее занятие: ${mapGroups['nextLesson']}'),
+                      child:
+                          Text('Ближайшее занятие: ${mapGroups['nextLesson']}'),
                     )
                   ],
                 ),

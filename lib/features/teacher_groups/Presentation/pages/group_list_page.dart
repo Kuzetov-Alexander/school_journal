@@ -5,6 +5,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
@@ -19,9 +20,9 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
-//  void _createGroup(context) {
-//   BlocProvider.of<BlocTeacherGroupsBloc>(context).add(CreateGroup(groupName: ))
-//  }
+  void _deleteGroup(context, {required String? key}) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(DeleteGroup(key: key));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +143,7 @@ class _GroupListPageState extends State<GroupListPage> {
                             ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -159,34 +160,44 @@ class _GroupListPageState extends State<GroupListPage> {
                       itemBuilder: (context, DataSnapshot snapshot,
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
-                        student['key'] = snapshot.key;
 
+                        final key = snapshot.key;
                         return Column(
                           children: [
-                            MyGroupInfoWidget(mapGroups: student, index: index),
-                            SizedBox(height: heightScreen * 0.04)
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: widthScreen * 0.05),
+                              child: Slidable(
+                                key: UniqueKey(),
+                                endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    dismissible:
+                                        DismissiblePane(onDismissed: () {
+                                      _deleteGroup(context, key: key);
+                                    }),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (context) {
+                                          _deleteGroup(context, key: key);
+                                        },
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                        borderRadius: BorderRadius.circular(16),
+                                        icon: Icons.delete_outlined,
+                                        label: 'Удалить',
+                                      ),
+                                    ]),
+                                child: MyGroupInfoWidget(
+                                    mapGroups: student, index: index),
+                              ),
+                            ),
+                            SizedBox(height: heightScreen * 0.02)
                           ],
                         );
                       },
                     ),
                   ),
                 ),
-                // Expanded(
-                //   child: ListView.separated(
-                //     separatorBuilder: (context, index) {
-                //       return SizedBox(
-                //         height: heightScreen * 0.02,
-                //       );
-                //     },
-                //     itemCount: listAllGroups.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       return GroupInfoWidget(
-                //         listGroups: listAllGroups,
-                //         index: index,
-                //       );
-                //     },
-                //   ),
-                // ),
                 TextButton(
                   onPressed: () {
                     context.go('/Groups/StudentScores');
