@@ -25,6 +25,15 @@ class NoGroups extends BlocTeacherGroupsState {
   @override
   List<Object> get props => [];
 }
+class DownloadNameGroupsState extends BlocTeacherGroupsState {
+   List<dynamic> allNamesGroup;
+
+     DownloadNameGroupsState({required this.allNamesGroup});
+  @override
+  List<Object> get props => [];
+}
+
+
 
 class DatabaseError extends BlocTeacherGroupsState {
   final String error;

@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
@@ -13,7 +17,10 @@ import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'timer_picker_android.dart';
 
 class BottomSheetModal extends StatefulWidget {
-  const BottomSheetModal({super.key});
+
+    List<dynamic> listGroupNames = [];
+
+  BottomSheetModal({super.key,required this.listGroupNames});
 
   @override
   State<BottomSheetModal> createState() => _BottomSheetModalState();
@@ -32,8 +39,13 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   late final TextEditingController _controllerClassThird =
       TextEditingController();
 
+       void _downloadNameGroups(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(DownloadNameGroupsEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
+      final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -100,10 +112,47 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                           ],
                         ),
                       ),
-                      TextformFieldWidget(
-                        controllerClass: _controllerClass,
-                        hintTextx: 'Введите группу',
-                        labelTextx: 'Группа',
+                      Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color:Color(0xffFAFAFA) ),
+                      width: double.infinity,
+                      height: heightScreen*0.08,
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text( widget.listGroupNames.isEmpty? '' : "${widget.listGroupNames[0]}"),
+                          TextButton(onPressed: () {
+                              _downloadNameGroups(context);
+                            showCupertinoModalPopup(
+                      context: context,
+                      builder: (context) => Padding(
+                        padding: EdgeInsets.only(top: heightScreen * 0.7),
+                        child: CupertinoPicker(
+                          backgroundColor: Colors.white,
+                          scrollController:
+                              FixedExtentScrollController(initialItem: 1),
+                          itemExtent: 30,
+                          onSelectedItemChanged: (value) {
+                            setState(
+                              () {
+                                
+
+
+                                // selectedSubject = [
+                                //   'Математика',
+                                //   'История',
+                                //   'Химия',
+                                //   'Русский язык',
+                                //   'Физика'
+                                // ][value];
+                              },
+                            );
+                          },
+                          children: [
+                        // widget.listGroupNames.map((e) => Text(e); )
+                          ],
+                        ),));
+                          },
+                          child: Text('Выбрать группу'),),
+                        ],
+                      ),
                       ),
                       SizedBox(
                         height: heightScreen * 0.015,

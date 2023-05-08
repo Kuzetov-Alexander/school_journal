@@ -28,17 +28,14 @@ class _GroupListPageState extends State<GroupListPage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    List<List<Object?>> listAllGroups = [];
+    // List<List<Object?>> listAllGroups = [];
     final db = FirebaseDatabase.instance.ref().child('Groups');
 
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
           if (state is IsCreatedGroup) {
-            print('---------------${state.allCreatedGroup}');
-            listAllGroups = state.allCreatedGroup;
-            print('---------------$listAllGroups');
-
+            
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.green,
@@ -62,7 +59,9 @@ class _GroupListPageState extends State<GroupListPage> {
           }
         },
         builder: (context, state) {
+          
           if (state is NoGroups) {
+            
             const Center(child: Text('Нет групп'));
           }
           return SafeArea(

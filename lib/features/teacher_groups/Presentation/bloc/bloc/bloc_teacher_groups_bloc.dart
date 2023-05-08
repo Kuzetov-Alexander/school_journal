@@ -7,10 +7,10 @@ part 'bloc_teacher_groups_state.dart';
 
 class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
-  List<List<Object?>> list = [];
+  List<dynamic> list = [];
 
   // final CreateGroupRepository repository;
-// final groupId = const Uuid().v4(); // для генерации уникального номера группы
+
   BlocTeacherGroupsBloc() : super(NoGroups()) {
     on<CreateGroup>((event, emit) async {
       final dataBase = FirebaseDatabase.instance.ref().child('Groups');
@@ -62,6 +62,24 @@ class BlocTeacherGroupsBloc
       final dataBase =
           FirebaseDatabase.instance.ref().child('Groups/${event.key}');
       dataBase.remove();
+    });
+
+    on<DownloadNameGroupsEvent>((event, emit) async {
+      final dataSnapshot =
+          await FirebaseDatabase.instance.ref().child('Groups').get();
+
+      if (dataSnapshot.exists) {
+        final Map<Object?, Object?> data =
+            dataSnapshot.value 
+            as Map<Object?, Object?>;
+            
+       list = data.values.toList();
+        
+      
+        emit(DownloadNameGroupsState(allNamesGroup: list));
+      } else {
+        print('no data');
+      }
     });
   }
 }
