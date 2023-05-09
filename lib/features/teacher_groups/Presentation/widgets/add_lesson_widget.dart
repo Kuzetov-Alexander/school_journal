@@ -16,13 +16,12 @@ import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'timer_picker_android.dart';
 
 class BottomSheetModal extends StatefulWidget {
-  
-
-  BottomSheetModal({super.key, });
+  BottomSheetModal({
+    super.key,
+  });
 
   @override
   State<BottomSheetModal> createState() => _BottomSheetModalState();
-  
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
@@ -44,25 +43,31 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         .add(DownloadNameGroupsEvent());
   }
 
-
   @override
   Widget build(BuildContext context) {
-     String selectedGroup ='';
+    
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
       listener: (context, state) {
-       if (state is DownloadNameGroupsState) {
-         
-            // print(state.allNamesGroup);
-          final List<String> listNames =[];
+        if (state is DownloadNameGroupsState) {
+          // print(state.allNamesGroup);
+          final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
-        
-          //  print(widget.listGroupNames);
-          }
+
+          print(listGroupNames);
+        }
       },
       builder: (context, state) {
+        if (state is DownloadNameGroupsState) {
+          // print(state.allNamesGroup);
+          final List<String> listNames = [];
+          listGroupNames = listNames + state.allNamesGroup;
+
+          print(listGroupNames);
+        }
+        String selectedGroup = '';
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -138,16 +143,11 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(listGroupNames.isEmpty
-                                    ? ''
-                                    : "$selectedGroup"),
+                                Text("$listGroupNames"),
                                 TextButton(
                                   onPressed: () {
                                     _downloadNameGroups(context);
-                                   
-                                    setState(() {});
 
-                                  
                                     showCupertinoModalPopup(
                                         context: context,
                                         builder: (context) {

@@ -12,6 +12,9 @@ class BlocTeacherGroupsBloc
   // final CreateGroupRepository repository;
 
   BlocTeacherGroupsBloc() : super(NoGroups()) {
+
+
+
     on<CreateGroup>((event, emit) async {
       final dataBase = FirebaseDatabase.instance.ref().child('Groups');
 
@@ -84,7 +87,7 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-
+        
         // print(groupNames);
         // list = groupNames;
 
