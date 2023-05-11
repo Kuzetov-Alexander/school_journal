@@ -49,8 +49,8 @@ Future<void> main() async {
         ChangeNotifierProvider<ProviderLoginBool>(
           create: (context) => ProviderLoginBool(),
         ),
-        ChangeNotifierProvider<ProviderGroupBool>(
-          create: (context) => ProviderGroupBool(),
+        ChangeNotifierProvider<ProviderGroup>(
+          create: (context) => ProviderGroup(),
         ),
         ChangeNotifierProvider<ProviderCalendar>(
           create: (context) => ProviderCalendar(),

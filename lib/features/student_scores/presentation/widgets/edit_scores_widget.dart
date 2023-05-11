@@ -96,21 +96,21 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
                             ? CupertinoSwitch(
                                 activeColor: AppColors.purple,
                                 value: context
-                                    .watch<ProviderGroupBool>()
+                                    .watch<ProviderGroup>()
                                     .newLessonAdded,
                                 onChanged: (value) {
                                   context
-                                      .read<ProviderGroupBool>()
+                                      .read<ProviderGroup>()
                                       .addNewLesson(value);
                                 },
                               )
                             : Switch(
                                 value: context
-                                    .watch<ProviderGroupBool>()
+                                    .watch<ProviderGroup>()
                                     .newLessonAdded,
                                 onChanged: (value) {
                                   context
-                                      .read<ProviderGroupBool>()
+                                      .read<ProviderGroup>()
                                       .addNewLesson(value);
                                 },
                               ),
