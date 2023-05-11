@@ -7,20 +7,36 @@ part 'bloc_teacher_groups_state.dart';
 
 class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
-  // List<String> list = [];
-
   // final CreateGroupRepository repository;
 
   BlocTeacherGroupsBloc() : super(NoGroups()) {
+// Добавляем урок в общее расписание
+    on<AddLessonEvent>((event, emit) async {
+      final dataBase = FirebaseDatabase.instance.ref().child('Groups');
+      emit(AddedLessonState());
+      final dataSnapshot = await 
+          dataBase.once();
 
 
+
+print(dataSnapshot.snapshot.children.firstWhere((element) => element.key!.endsWith('Moscow')).key
+
+//  where((element) => element.key!.endsWith("Moscow"))
+ );
+      if (dataSnapshot.snapshot.value != null) {
+        Object? values = dataSnapshot.snapshot.value;
+        // print(values);
+      } else {
+        print('Группа не найдена');
+      }
+    });
 
     on<CreateGroup>((event, emit) async {
       final dataBase = FirebaseDatabase.instance.ref().child('Groups');
 
       emit(IsCreatingGroup());
       //можно пуш добавить и будет уникальное имя
-      final newPostKey = dataBase.push().key;
+      final newPostKey = dataBase.push().key! + event.groupName;
 
       final postData = {
         'GroupName': event.groupName,
@@ -87,9 +103,6 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-        
-        // print(groupNames);
-        // list = groupNames;
 
         emit(DownloadNameGroupsState(allNamesGroup: groupNames));
       } else {

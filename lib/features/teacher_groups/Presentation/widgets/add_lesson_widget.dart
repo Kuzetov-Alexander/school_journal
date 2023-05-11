@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class BottomSheetModal extends StatefulWidget {
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
+  String selectedGroup = 's';
   List<String> listGroupNames = [];
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
@@ -30,20 +32,23 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
   // late final TextEditingController _controllerClass = TextEditingController();
-  late final TextEditingController _controllerClassSecond =
-      TextEditingController();
-  late final TextEditingController _controllerClassThird =
-      TextEditingController();
+  late final TextEditingController _controllerSubject = TextEditingController();
+  late final TextEditingController _controllerRoom = TextEditingController();
 
   void _downloadNameGroups(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadNameGroupsEvent());
   }
+   void _addLesson(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(AddLessonEvent(groupNameforLesson:selectedGroup ));
+  
+  }
 
   @override
   Widget build(BuildContext context) {
-      String selectedGroup = '';
-    // final db = FirebaseDatabase.instance.ref().child('Groups');
+    
+    final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
@@ -51,17 +56,18 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         if (state is DownloadNameGroupsState) {
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
+
           print(listGroupNames);
         }
+        
       },
       builder: (context, state) {
         if (state is DownloadNameGroupsState) {
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
 
-          print(listGroupNames);
         }
-      
+        String selectedGroup = '';
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -134,51 +140,58 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 color: const Color(0xffFAFAFA)),
                             width: double.infinity,
                             height: heightScreen * 0.08,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("$listGroupNames"),
-                                TextButton(
-                                  onPressed: () {
-                                    _downloadNameGroups(context);
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(selectedGroup == ''
+                                      ? "Название группы"
+                                      : selectedGroup),
+                                  TextButton(
+                                    onPressed: () {
+                                      _downloadNameGroups(context);
 
-                                    showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(
-                                                top: heightScreen * 0.7),
-                                            child: CupertinoPicker(
-                                              backgroundColor: Colors.white,
-                                              scrollController:
-                                                  FixedExtentScrollController(
-                                                      initialItem: 0),
-                                              itemExtent: 30,
-                                              onSelectedItemChanged: (value) {
-                                                setState(
-                                                  () {
-                                                    selectedGroup =
-                                                        listGroupNames[value];
-                                                  },
-                                                );
-                                              },
-                                              children: listGroupNames
-                                                  .map((e) => Text(e))
-                                                  .toList(),
-                                            ),
-                                          );
-                                        });
-                                  },
-                                  child: const Text('Выбрать группу'),
-                                ),
-                              ],
+                                      showCupertinoModalPopup(
+                                          context: context,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: heightScreen * 0.7),
+                                              child: CupertinoPicker(
+                                                backgroundColor: Colors.white,
+                                                scrollController:
+                                                    FixedExtentScrollController(
+                                                        initialItem: 0),
+                                                itemExtent: 30,
+                                                onSelectedItemChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      selectedGroup =
+                                                          listGroupNames[value];
+                                                    },
+                                                  );
+                                                },
+                                                children: listGroupNames
+                                                    .map((e) => Text(e))
+                                                    .toList(),
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    child: const Text('Выбрать группу'),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
                           ),
                           TextformFieldWidget(
-                            controllerClass: _controllerClassSecond,
+                            controllerClass: _controllerSubject,
                             hintTextx: 'Введите предмет',
                             labelTextx: 'Предмет',
                           ),
@@ -186,7 +199,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             height: heightScreen * 0.015,
                           ),
                           TextformFieldWidget(
-                            controllerClass: _controllerClassThird,
+                            controllerClass: _controllerRoom,
                             hintTextx: 'Введите кабинет (не обязательно)',
                             labelTextx: 'Кабинет',
                           ),
@@ -314,7 +327,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // print(selectedGroup);
+                      _addLesson(context);
+                    },
                     child: Text(
                       'Добавить',
                       style: TextStyle(
