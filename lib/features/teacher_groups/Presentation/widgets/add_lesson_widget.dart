@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +22,7 @@ class BottomSheetModal extends StatefulWidget {
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
-  String selectedGroup = 's';
+  String selectedGroup = '';
   List<String> listGroupNames = [];
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
@@ -32,6 +31,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
   // late final TextEditingController _controllerClass = TextEditingController();
+
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
@@ -41,9 +41,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   }
 
   void _addLesson(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add( AddLessonEvent(
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
       groupNameforLesson: selectedGroup,
-      lessonRoom:_controllerRoom.text ,
+      lessonRoom: _controllerRoom.text,
       lessonTimeFinish: '10:00',
       lessonTimeStart: '9:00',
       subject: _controllerSubject.text,
@@ -52,8 +52,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   @override
   Widget build(BuildContext context) {
-    
-    final db = FirebaseDatabase.instance.ref().child('Groups');
+    // final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
@@ -70,7 +69,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
         }
-        String selectedGroup = '';
+
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
