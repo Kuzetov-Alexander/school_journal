@@ -22,11 +22,15 @@ class BlocTeacherGroupsBloc
           .key;
 
       final lessonData = {
-        'Schedule': {
-          'Subject': event.subject,
-          'LessonRoom': event.lessonRoom,
-          'lessonTimeStart': event.lessonTimeStart,
-          'lessonTimeFinish': event.lessonTimeFinish
+        'Schedule': {  event.currentYear:{
+          event.currentMonth: { event.currentDay: {
+            'Subject': event.subject,
+            'LessonRoom': event.lessonRoom,
+            'lessonTimeStart': event.lessonTimeStart,
+            'lessonTimeFinish': event.lessonTimeFinish
+          }}
+        }  
+         
         }
       };
       await dataBase.child('Groups/$currentGroupKey').update(lessonData);

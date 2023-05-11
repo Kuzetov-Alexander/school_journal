@@ -22,8 +22,11 @@ class BottomSheetModal extends StatefulWidget {
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
-  String selectedGroup = '';
+  String selectedGroup = 'Название группы';
   List<String> listGroupNames = [];
+  final String _currentDay =
+      '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}';
+
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
@@ -44,12 +47,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
       groupNameforLesson: selectedGroup,
       lessonRoom: _controllerRoom.text,
-      lessonTimeFinish: '10:00',
-      lessonTimeStart: '9:00',
+      lessonTimeStart: DateFormat.Hm().format(dateTimestart),
+      lessonTimeFinish: DateFormat.Hm().format(dateTimefinish),
       subject: _controllerSubject.text,
+      currentDay: DateTime.now().day.toString(),
+      currentMonth:
+          DateFormat('LLLL', 'ru').format(DateTime.now()).capitalize(),
+      currentYear: DateTime.now().year.toString(),
     ));
   }
 
+  late DateTime timefinish;
   @override
   Widget build(BuildContext context) {
     // final db = FirebaseDatabase.instance.ref().child('Groups');
@@ -61,7 +69,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
 
-          print(listGroupNames);
+          print(timefinish);
         }
       },
       builder: (context, state) {
@@ -126,7 +134,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             child: Row(
                               children: [
                                 Text(
-                                  '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}',
+                                  _currentDay,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: heightScreen * 0.016,
@@ -221,21 +229,23 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.black212525),
                               ),
-                              Platform.isIOS
-                                  ? IosTimePicker(
-                                      time: dateTimestart,
-                                      textTime:
-                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTime) {
-                                        setState(
-                                          () {
-                                            dateTimefinish = newTime;
-                                            // TODO(Sanya) Делать через блок или провайдер лучше?
-                                          },
-                                        );
-                                      },
-                                    )
-                                  : const TimerPickerAndroid()
+                              // Platform.isIOS
+                              //     ?
+                              IosTimePicker(
+                                time: dateTimestart,
+                                textTime:
+                                    '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                onTimeSelected: (DateTime newTime) {
+                                  setState(
+                                    () {
+                                      dateTimestart = newTime;
+
+                                      // TODO(Sanya) Делать через блок или провайдер лучше?
+                                    },
+                                  );
+                                },
+                              )
+                              // : const TimerPickerAndroid()
                             ],
                           ),
                           Row(
@@ -248,19 +258,20 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.black212525),
                               ),
-                              Platform.isIOS
-                                  ? IosTimePicker(
-                                      time: dateTimestart,
-                                      textTime:
-                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTime) {
-                                        setState(() {
-                                          dateTimefinish =
-                                              newTime; // делать через блок или провайдер лучше?
-                                        });
-                                      },
-                                    )
-                                  : const TimerPickerAndroid()
+                              // Platform.isIOS
+                              //     ?
+                              IosTimePicker(
+                                time: dateTimefinish,
+                                textTime:
+                                    '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                onTimeSelected: (DateTime newTimefinish) {
+                                  setState(() {
+                                    dateTimefinish =
+                                        newTimefinish; // делать через блок или провайдер лучше?
+                                  });
+                                },
+                              )
+                              // : const TimerPickerAndroid()
                             ],
                           ),
                         ],
