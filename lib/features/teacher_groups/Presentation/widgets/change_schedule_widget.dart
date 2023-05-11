@@ -165,21 +165,21 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                               ? CupertinoSwitch(
                                   activeColor: AppColors.purple,
                                   value: context
-                                      .watch<ProviderGroupBool>()
+                                      .watch<ProviderGroup>()
                                       .saveSchedule,
                                   onChanged: (value) {
                                     context
-                                        .read<ProviderGroupBool>()
+                                        .read<ProviderGroup>()
                                         .saveScheduleFunc(value);
                                   },
                                 )
                               : Switch(
                                   value: context
-                                      .watch<ProviderGroupBool>()
+                                      .watch<ProviderGroup>()
                                       .saveSchedule,
                                   onChanged: (value) {
                                     context
-                                        .read<ProviderGroupBool>()
+                                        .read<ProviderGroup>()
                                         .saveScheduleFunc(value);
                                   },
                                 ),

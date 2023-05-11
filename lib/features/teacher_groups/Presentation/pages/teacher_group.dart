@@ -14,7 +14,7 @@ class TeacherGroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final provider = context.watch<ProviderGroupBool>().isSelected;
+    final provider = context.watch<ProviderGroup>().isSelected;
     final dayofweek = DateFormat('EEEE', 'ru').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
@@ -161,7 +161,7 @@ class TeacherGroupPage extends StatelessWidget {
                                   return InkWell(
                                     onTap: () {
                                       context
-                                          .read<ProviderGroupBool>()
+                                          .read<ProviderGroup>()
                                           .changeColor();
                                     },
                                     child: Container(

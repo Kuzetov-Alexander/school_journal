@@ -26,6 +26,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
 
   @override
   Widget build(BuildContext context) {
+    TimeOfDay selectedTimeAndroid = TimeOfDay.now();
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -183,8 +184,9 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                             fontWeight: FontWeight.w400,
                                             color: AppColors.black212525),
                                       ),
-                                      Platform.isIOS
-                                          ? IosTimePicker(
+                                      // Platform.isIOS
+                                      //     ? 
+                                          IosTimePicker(
                                               time: dateTimestart,
                                               textTime:
                                                   '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
@@ -196,7 +198,26 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                                 });
                                               },
                                             )
-                                          : const TimerPickerAndroid()
+                                    //       :  TimerPickerAndroid(
+                                    //   onTimeSelected: () async {
+                                    //     final TimeOfDay? timeStartLesson =
+                                    //         await showTimePicker(
+                                    //             context: context,
+                                    //             initialTime:
+                                    //                 selectedTimeAndroid,
+                                    //             initialEntryMode:
+                                    //                 TimePickerEntryMode.dial);
+                                    //     if (timeStartLesson != null) {
+                                    //       setState(() {
+                                    //         selectedTimeAndroid =
+                                    //             timeStartLesson;
+                                    //       });
+                                    //     }
+                                    //   },
+                                    //   textTime:
+                                    //       '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                    //   time: dateTimestart,
+                                    // )
                                     ],
                                   ),
                                   Row(
@@ -210,9 +231,10 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                             fontWeight: FontWeight.w400,
                                             color: AppColors.black212525),
                                       ),
-                                      Platform.isIOS
-                                          ? IosTimePicker(
-                                              time: dateTimestart,
+                                      // Platform.isIOS
+                                      //     ? 
+                                          IosTimePicker(
+                                              time: dateTimefinish,
                                               textTime:
                                                   '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
                                               onTimeSelected:
@@ -223,7 +245,26 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                                 });
                                               },
                                             )
-                                          : const TimerPickerAndroid()
+                                    //       : TimerPickerAndroid(
+                                    //   onTimeSelected: () async {
+                                    //     final TimeOfDay? timeFinishLesson =
+                                    //         await showTimePicker(
+                                    //             context: context,
+                                    //             initialTime:
+                                    //                 selectedTimeAndroid,
+                                    //             initialEntryMode:
+                                    //                 TimePickerEntryMode.dial);
+                                    //     if (timeFinishLesson != null) {
+                                    //       setState(() {
+                                    //         selectedTimeAndroid =
+                                    //             timeFinishLesson;
+                                    //       });
+                                    //     }
+                                    //   },
+                                    //   textTime:
+                                    //       '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                    //   time: dateTimefinish,
+                                    // )
                                     ],
                                   ),
                                 ],
