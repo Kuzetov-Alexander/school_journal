@@ -24,4 +24,11 @@ class DownloadNameGroupsEvent extends BlocTeacherGroupsEvent {
   // const DownloadNameGroups({required this.key});
 }
 
+class AddLessonEvent extends BlocTeacherGroupsEvent {
+ 
+final String groupNameforLesson;
+
+  const AddLessonEvent({required this.groupNameforLesson});
+}
+
 

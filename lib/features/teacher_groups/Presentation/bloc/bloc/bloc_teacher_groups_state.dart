@@ -34,7 +34,11 @@ class DownloadNameGroupsState extends BlocTeacherGroupsState {
 }
 
 
-
+class AddedLessonState extends BlocTeacherGroupsState {
+  
+  @override
+  List<Object> get props => [];
+}
 
 
 class DatabaseError extends BlocTeacherGroupsState {
