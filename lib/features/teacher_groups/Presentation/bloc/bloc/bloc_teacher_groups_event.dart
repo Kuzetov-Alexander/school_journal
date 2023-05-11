@@ -19,16 +19,21 @@ class DeleteGroup extends BlocTeacherGroupsEvent {
 }
 
 class DownloadNameGroupsEvent extends BlocTeacherGroupsEvent {
- 
   // final String? key;
   // const DownloadNameGroups({required this.key});
 }
 
 class AddLessonEvent extends BlocTeacherGroupsEvent {
- 
-final String groupNameforLesson;
+  final String groupNameforLesson;
+  final String subject;
+  final String lessonRoom;
+  final String lessonTimeStart;
+  final String lessonTimeFinish;
 
-  const AddLessonEvent({required this.groupNameforLesson});
+  const AddLessonEvent(
+      {required this.subject,
+      required this.lessonRoom,
+      required this.lessonTimeStart,
+      required this.lessonTimeFinish,
+      required this.groupNameforLesson});
 }
-
-

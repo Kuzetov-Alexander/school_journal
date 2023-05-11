@@ -12,23 +12,24 @@ class BlocTeacherGroupsBloc
   BlocTeacherGroupsBloc() : super(NoGroups()) {
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref().child('Groups');
+      final dataBase = FirebaseDatabase.instance.ref();
       emit(AddedLessonState());
-      final dataSnapshot = await 
-          dataBase.once();
+      final dataSnapshot = await dataBase.child('Groups').once();
 
+      String? currentGroupKey = dataSnapshot.snapshot.children
+          .firstWhere(
+              (element) => element.key!.endsWith(event.groupNameforLesson))
+          .key;
 
-
-print(dataSnapshot.snapshot.children.firstWhere((element) => element.key!.endsWith('Moscow')).key
-
-//  where((element) => element.key!.endsWith("Moscow"))
- );
-      if (dataSnapshot.snapshot.value != null) {
-        Object? values = dataSnapshot.snapshot.value;
-        // print(values);
-      } else {
-        print('Группа не найдена');
-      }
+      final lessonData = {
+        'Schedule': {
+          'Subject': event.subject,
+          'LessonRoom': event.lessonRoom,
+          'lessonTimeStart': event.lessonTimeStart,
+          'lessonTimeFinish': event.lessonTimeFinish
+        }
+      };
+      await dataBase.child('Groups/$currentGroupKey').update(lessonData);
     });
 
     on<CreateGroup>((event, emit) async {

@@ -33,7 +33,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
-  late final TextEditingController _controllerClass = TextEditingController();
+  // late final TextEditingController _controllerClass = TextEditingController();
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
@@ -41,10 +41,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadNameGroupsEvent());
   }
-   void _addLesson(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
-        .add(AddLessonEvent(groupNameforLesson:selectedGroup ));
-  
+
+  void _addLesson(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add( AddLessonEvent(
+      groupNameforLesson: selectedGroup,
+      lessonRoom:_controllerRoom.text ,
+      lessonTimeFinish: '10:00',
+      lessonTimeStart: '9:00',
+      subject: _controllerSubject.text,
+    ));
   }
 
   @override
@@ -58,14 +63,12 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
         }
-        
       },
       builder: (context, state) {
         if (state is DownloadNameGroupsState) {
           // print(state.allNamesGroup);
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
-
         }
 
         return Column(
