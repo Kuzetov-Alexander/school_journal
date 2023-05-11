@@ -127,8 +127,8 @@ class _ShedulePageState extends State<ShedulePage> {
                                 controller: scrollController,
                                 // формула для вывода дней в текущем месяце,
                                 // все что вне текущего месяца не учитывается
-                                itemCount: DateTime(
-                                        today.year, today.month, -today.day + 2)
+                                itemCount: DateTime(today.year, today.month ,
+                                        -today.day + 2)
                                     .day,
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
