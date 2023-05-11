@@ -16,9 +16,7 @@ import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'timer_picker_android.dart';
 
 class BottomSheetModal extends StatefulWidget {
-  BottomSheetModal({
-    super.key,
-  });
+  const BottomSheetModal({super.key});
 
   @override
   State<BottomSheetModal> createState() => _BottomSheetModalState();
@@ -54,6 +52,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   @override
   Widget build(BuildContext context) {
+    
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
@@ -62,15 +61,16 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         if (state is DownloadNameGroupsState) {
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
+
+          print(listGroupNames);
         }
       },
       builder: (context, state) {
         if (state is DownloadNameGroupsState) {
-          // print(state.allNamesGroup);
           final List<String> listNames = [];
           listGroupNames = listNames + state.allNamesGroup;
         }
-
+        String selectedGroup = '';
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -27,6 +27,7 @@ import 'package:school_journal/features/teacher_groups/data/data_sources/remote_
 import 'package:school_journal/features/teacher_groups/data/repositories/create_group_repository_impl.dart';
 import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
 import 'dart:io' show Platform;
 
@@ -50,6 +51,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider<ProviderGroupBool>(
           create: (context) => ProviderGroupBool(),
+        ),
+        ChangeNotifierProvider<ProviderCalendar>(
+          create: (context) => ProviderCalendar(),
         )
       ],
       child: MyApp(),
@@ -143,6 +147,8 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp.router(
+            // themeMode: ThemeMode.dark,
+            darkTheme: ThemeData.dark(),
             debugShowCheckedModeBanner: false,
             scrollBehavior: Platform.isAndroid
                 ? MyBehaviorAndroid()

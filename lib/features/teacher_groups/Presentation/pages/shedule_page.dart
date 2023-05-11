@@ -1,28 +1,36 @@
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_schedule_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
-import 'package:school_journal/features/teacher_groups/provider/provider.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
-class ShedulePage extends StatelessWidget {
+class ShedulePage extends StatefulWidget {
   const ShedulePage({super.key});
 
   @override
+  State<ShedulePage> createState() => _ShedulePageState();
+}
+
+/// Чтобы отслеживать прокрутку ListView
+ScrollController scrollController = ScrollController();
+
+class _ShedulePageState extends State<ShedulePage> {
+  @override
   Widget build(BuildContext context) {
-    List <String> listNamesGroup =[];
-    final db = FirebaseDatabase.instance.ref().child('Groups');
+    // final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final provider = context.watch<ProviderGroupBool>().isSelected;
+    final providerSelectedIndex =
+        context.watch<ProviderCalendar>().currentDaySelectedIndex;
+    final providerMonths = context.watch<ProviderCalendar>().listOfMonths;
+    final providerDays = context.watch<ProviderCalendar>().listOfDays;
+    final today = DateTime.now();
     final dayofweek = DateFormat('EEEE', 'ru').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
@@ -47,8 +55,8 @@ class ShedulePage extends StatelessWidget {
         listener: (context, state) {
           // if (state is DownloadNameGroupsState) {
           //   // print(state.allNamesGroup);
-          // //  listNamesGroup = state.allNamesGroup;  !!!!!!!// если на этой странице это закоментить, то при переходе 
-                                                      // назад со страницы добавить урок, лист будет равен нулю. иначе все будет ок
+          // //  listNamesGroup = state.allNamesGroup;  !!!!!!!// если на этой странице это закоментить, то при переходе
+          // назад со страницы добавить урок, лист будет равен нулю. иначе все будет ок
           // //  print(listNamesGroup);
           // }
         },
@@ -85,19 +93,30 @@ class ShedulePage extends StatelessWidget {
                                       icon: const Image(
                                           image: AssetImage(
                                               'assets/images/arrow_left_white.png'))),
+                                  // Text(
+                                  //   DateFormat('MMM', 'ru')
+                                  //       .format(DateTime.now()),
+                                  //   style: TextStyle(
+                                  //       color: Colors.white,
+                                  //       fontSize: heightScreen * 0.024,
+                                  //       fontWeight: FontWeight.w600),
+                                  // ),
                                   Text(
-                                    'Апрель',
+                                    '${providerMonths[today.month - 1]}  ${DateTime.now().year} ',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: heightScreen * 0.024,
                                         fontWeight: FontWeight.w600),
                                   ),
+
                                   IconButton(
-                                      splashRadius: 1,
-                                      onPressed: () {},
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/arrow_right_white.png')))
+                                    splashRadius: 1,
+                                    onPressed: () {},
+                                    icon: const Image(
+                                      image: AssetImage(
+                                          'assets/images/arrow_right_white.png'),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -105,23 +124,35 @@ class ShedulePage extends StatelessWidget {
                               child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 30,
+                                controller: scrollController,
+                                // формула для вывода дней в текущем месяце,
+                                // все что вне текущего месяца не учитывается
+                                itemCount: DateTime(
+                                        today.year, today.month, -today.day + 2)
+                                    .day,
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
                                     onTap: () {
-                                      context
-                                          .read<ProviderGroupBool>()
-                                          .changeColor();
+                                      setState(() {
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getCurrentDaySelectedIndex(index);
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getSelectedDate(index);
+                                      });
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: provider
+                                        color: providerSelectedIndex == index
                                             ? Colors.white
                                             : AppColors.purple,
                                         border: Border.all(
-                                          width: 2,
-                                          color: Colors.purple.withOpacity(0.4),
+                                          width: 1,
+                                          color: providerSelectedIndex == index
+                                              ? Colors.white
+                                              : Colors.purple.withOpacity(0.4),
                                         ),
                                       ),
                                       height: heightScreen * 0.02,
@@ -132,29 +163,49 @@ class ShedulePage extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
+                                          // Text(
+                                          //   DateFormat('E', 'ru')
+                                          //       .format(DateTime.now()),
+                                          //   maxLines: 1,
+                                          //   style: TextStyle(
+                                          //       color: providerSelectedIndex ==
+                                          //               index
+                                          //           ? Colors.black
+                                          //           : Colors.white),
+                                          // ),
+
+                                          ///День недели выводит
                                           Text(
-                                            DateFormat('E', 'ru')
-                                                .format(DateTime.now()),
-                                            maxLines: 1,
+                                            providerDays[DateTime.now()
+                                                    .add(Duration(days: index))
+                                                    .weekday -
+                                                1],
                                             style: TextStyle(
-                                                color: !provider
-                                                    ? Colors.white
-                                                    : Colors.black),
+                                                color: providerSelectedIndex ==
+                                                        index
+                                                    ? Colors.black
+                                                    : Colors.white),
                                           ),
+
+                                          /// Выводит актуальный день
                                           Text(
-                                            DateFormat('d')
-                                                .format(DateTime.now()),
-                                            maxLines: 1,
+                                            DateTime.now()
+                                                .add(Duration(days: index))
+                                                .day
+                                                .toString(),
                                             style: TextStyle(
-                                                color: !provider
-                                                    ? Colors.white
-                                                    : Colors.black),
+                                                color: providerSelectedIndex ==
+                                                        index
+                                                    ? Colors.black
+                                                    : Colors.white),
                                           ),
+
                                           Icon(
                                             Icons.circle_rounded,
-                                            color: !provider
-                                                ? Colors.white
-                                                : AppColors.purple,
+                                            color:
+                                                providerSelectedIndex == index
+                                                    ? AppColors.purple
+                                                    : Colors.white,
                                             size: 5,
                                           )
                                         ],
@@ -238,7 +289,7 @@ class ShedulePage extends StatelessWidget {
                                 ),
                               ),
                               context: context,
-                              builder: (context) =>  BottomSheetModal(),
+                              builder: (context) => const BottomSheetModal(),
                             );
                           },
                           icon: const Image(

@@ -13,9 +13,9 @@ class IsCreatingGroup extends BlocTeacherGroupsState {
 }
 
 class IsCreatedGroup extends BlocTeacherGroupsState {
-  List<List<Object?>> allCreatedGroup;
+  final List<List<Object?>> allCreatedGroup;
 
-  IsCreatedGroup({required this.allCreatedGroup});
+  const IsCreatedGroup({required this.allCreatedGroup});
 
   @override
   List<Object> get props => [allCreatedGroup];
@@ -25,10 +25,11 @@ class NoGroups extends BlocTeacherGroupsState {
   @override
   List<Object> get props => [];
 }
-class DownloadNameGroupsState extends BlocTeacherGroupsState {
-   List<String> allNamesGroup;
 
-     DownloadNameGroupsState({required this.allNamesGroup});
+class DownloadNameGroupsState extends BlocTeacherGroupsState {
+  final List<String> allNamesGroup;
+
+  const DownloadNameGroupsState({required this.allNamesGroup});
   @override
   List<Object> get props => [];
 }
