@@ -25,6 +25,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final resultSignUp = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       resultSignUp.user?.updateDisplayName(fullName);
+      
     } on FirebaseAuthException catch (error) {
       if (error.code == 'weak-password') {
         throw Exception('The password provided is too weak.');

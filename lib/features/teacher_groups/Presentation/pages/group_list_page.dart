@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,7 +36,6 @@ class _GroupListPageState extends State<GroupListPage> {
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
           if (state is IsCreatedGroup) {
-            
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.green,
@@ -59,9 +59,7 @@ class _GroupListPageState extends State<GroupListPage> {
           }
         },
         builder: (context, state) {
-          
           if (state is NoGroups) {
-            
             const Center(child: Text('Нет групп'));
           }
           return SafeArea(
@@ -80,7 +78,10 @@ class _GroupListPageState extends State<GroupListPage> {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                context.go('/');
+                                //
+                                final firebaseAuth = FirebaseAuth.instance;
+                                final a = firebaseAuth.currentUser!.uid;
+                                print('------------------$a');
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
