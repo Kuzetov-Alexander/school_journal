@@ -1,4 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final db = FirebaseDatabase.instance.ref();
+final firebaseAuth = FirebaseAuth.instance;
 
 /// Контракт для инициализации, входа, выхода, регистрации в firebase
 abstract class RemoteDataSource {
@@ -12,8 +16,6 @@ abstract class RemoteDataSource {
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-  final firebaseAuth = FirebaseAuth.instance;
-
   /// Зарегистрироваться
   @override
   Future<void> signUp({
@@ -25,7 +27,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final resultSignUp = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       resultSignUp.user?.updateDisplayName(fullName);
-      
+
+      final authData = {'name': fullName, 'email': email};
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      await db.child('Users/$userId').update(authData);
     } on FirebaseAuthException catch (error) {
       if (error.code == 'weak-password') {
         throw Exception('The password provided is too weak.');

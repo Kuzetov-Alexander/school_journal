@@ -29,8 +29,9 @@ class _GroupListPageState extends State<GroupListPage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    // List<List<Object?>> listAllGroups = [];
-    final db = FirebaseDatabase.instance.ref().child('Groups');
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final db = FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
 
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
@@ -160,7 +161,7 @@ class _GroupListPageState extends State<GroupListPage> {
                       itemBuilder: (context, DataSnapshot snapshot,
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
-
+                        print('---------------------------$student');
                         final key = snapshot.key;
                         return Column(
                           children: [

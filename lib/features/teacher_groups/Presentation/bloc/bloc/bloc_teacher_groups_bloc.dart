@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,10 +11,12 @@ class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
   // final CreateGroupRepository repository;
 
+  final dataBase = FirebaseDatabase.instance.ref();
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+
   BlocTeacherGroupsBloc() : super(NoGroups()) {
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
       emit(AddedLessonState());
       final dataSnapshot = await dataBase.child('Groups').once();
 
@@ -22,25 +26,38 @@ class BlocTeacherGroupsBloc
           .key;
 
       final lessonData = {
-        'Schedule': {  event.currentYear:{
-          event.currentMonth: { event.currentDay: {
-            'Subject': event.subject,
-            'LessonRoom': event.lessonRoom,
-            'lessonTimeStart': event.lessonTimeStart,
-            'lessonTimeFinish': event.lessonTimeFinish
-          }}
-        }  
-         
+        'Schedule': {
+          event.currentYear: {
+            event.currentMonth: {
+              event.currentDay: {
+                'Subject': event.subject,
+                'LessonRoom': event.lessonRoom,
+                'lessonTimeStart': event.lessonTimeStart,
+                'lessonTimeFinish': event.lessonTimeFinish
+              }
+            }
+          }
         }
       };
       await dataBase.child('Groups/$currentGroupKey').update(lessonData);
     });
 
     on<CreateGroup>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref().child('Groups');
+      // final dataBase = FirebaseDatabase.instance.ref().child('Users/$userId');
 
-      emit(IsCreatingGroup());
-      //можно пуш добавить и будет уникальное имя
+      // emit(IsCreatingGroup());
+
+      // final postData = {
+      //   'Groups': {
+      //     'GroupName': event.groupName,
+      //     'amountStudents': '0',
+      //     'nextLesson': 'нет'
+      //   }
+      // };
+
+      // dataBase.update(postData);
+
+      // можно пуш добавить и будет уникальное имя
       final newPostKey = dataBase.push().key! + event.groupName;
 
       final postData = {
@@ -53,7 +70,7 @@ class BlocTeacherGroupsBloc
       updates['/Groups/$newPostKey'] = postData;
 
       FirebaseDatabase.instance.ref().update(updates);
-
+//------------------------------------------------------------
       // final dataSnapshot = await dataBase.child(event.groupName).get();
       // if (dataSnapshot.exists) {
       //   final Map<Object?, Object?> data =
