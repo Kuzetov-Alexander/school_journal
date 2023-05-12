@@ -42,17 +42,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadNameGroupsEvent());
   }
-
+ TimeOfDay timeStartAndroid;
   void _addLesson(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
       groupNameforLesson: selectedGroup,
       lessonRoom: _controllerRoom.text,
       lessonTimeStart: DateFormat.Hm().format(Platform.isIOS
           ? dateTimestart
-          : context.watch<ProviderGroup>().startlessonTime),
+          : context.watch<ProviderGroup>(listen:false).startlessonTime),
       lessonTimeFinish: DateFormat.Hm().format(Platform.isIOS
           ? dateTimefinish
-          : context.watch<ProviderGroup>().finishlessonTime),
+          : ),
       subject: _controllerSubject.text,
       currentDay: DateTime.now().day.toString(),
       currentMonth:
@@ -60,9 +60,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       currentYear: DateTime.now().year.toString(),
     ));
   }
-
+       
   @override
   Widget build(BuildContext context) {
+     timeStartAndroid = context.watch<ProviderGroup>().finishlessonTime;
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
@@ -245,9 +246,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                         );
                                       },
                                     )
-                                  : const TimerPickerAndroidStart(
-                                    
-                                      )
+                                  : const TimerPickerAndroidStart()
                             ],
                           ),
                           Row(

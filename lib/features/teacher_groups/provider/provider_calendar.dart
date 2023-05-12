@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class ProviderCalendar extends ChangeNotifier {
   bool isSelected = false;
   bool newLessonAdded = false;
@@ -33,6 +34,7 @@ class ProviderCalendar extends ChangeNotifier {
   Color mapperColorButtom(Color activeColor, Color passiveColor) {
     return currentDaySelectedIndex == 0 ? activeColor : passiveColor;
   }
+
 
   void getSelectedDate(int index) {
     selectedDate = DateTime.now().add(Duration(days: index));
