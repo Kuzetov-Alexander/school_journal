@@ -1,49 +1,64 @@
 import 'package:flutter/material.dart';
 
 class ProviderCalendar extends ChangeNotifier {
-  bool isSelected = false;
-  bool newLessonAdded = false;
-  bool switcher = false;
-  bool saveSchedule = false;
-  bool switcherSchedule = false;
+  DateTime currentDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-  List<String> listOfMonths = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь"
-  ];
+  void getNextMonth() {
+    currentDate =
+        DateTime(currentDate.year, currentDate.month + 1, DateTime.now().day);
+  }
+
+  void getPreviousMonth() {
+    currentDate =
+        DateTime(currentDate.year, currentDate.month - 1, DateTime.now().day);
+  }
+
+  // List<String> listOfMonths = [
+  //   "Январь",
+  //   "Февраль",
+  //   "Март",
+  //   "Апрель",
+  //   "Май",
+  //   "Июнь",
+  //   "Июль",
+  //   "Август",
+  //   "Сентябрь",
+  //   "Октябрь",
+  //   "Ноябрь",
+  //   "Декабрь"
+  // ];
+
+  // ${DateFormat('EEEE', 'ru').format(curentDateTime).capitalize()}
+
+  // String
 
   List<String> listOfDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
-  /// Отслеживать дату
-  DateTime selectedDate = DateTime.now();
-
   /// Для прокрутки даты
-  int currentDaySelectedIndex = 0;
+  int indexDay = 0;
 
   Color mapperColorButtom(Color activeColor, Color passiveColor) {
-    return currentDaySelectedIndex == 0 ? activeColor : passiveColor;
+    return indexDay == 0 ? activeColor : passiveColor;
   }
 
   void getSelectedDate(int index) {
-    selectedDate = DateTime.now().add(Duration(days: index));
+    // DateTime selectedDate = DateTime.now();
+    currentDate = DateTime.now().add(Duration(days: index));
   }
-
-  // void getChangeMonths(int index) {
-  //   DateTime.now().
-  //   // selectedDate = DateTime.now().add(const Duration(days: 30));
-  // }
 
   void getCurrentDaySelectedIndex(int index) {
-    currentDaySelectedIndex = index;
+    indexDay = index;
   }
 }
+
+// final items = List<DateTime>.generate(
+//   60,
+//   (i) => DateTime.utc(
+//     DateTime.now().year,
+//     DateTime.now().month,
+//     DateTime.now().day,
+//   ).add(
+//     Duration(days: i),
+//   ),
+// );

@@ -9,10 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_android.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
-
 
 class BottomSheetModal extends StatefulWidget {
   const BottomSheetModal({super.key});
@@ -238,15 +238,11 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                         setState(
                                           () {
                                             dateTimestart = newTime;
-
-                                            // TODO(Sanya) Делать через блок или провайдер лучше?
                                           },
                                         );
                                       },
                                     )
-                                  : const TimerPickerAndroidStart(
-                                    
-                                      )
+                                  : const TimerPickerAndroidStart()
                             ],
                           ),
                           Row(
