@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class ProviderCalendar extends ChangeNotifier {
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -41,6 +42,7 @@ class ProviderCalendar extends ChangeNotifier {
   Color mapperColorButtom(Color activeColor, Color passiveColor) {
     return indexDay == 0 ? activeColor : passiveColor;
   }
+
 
   void getSelectedDate(int index) {
     // DateTime selectedDate = DateTime.now();
