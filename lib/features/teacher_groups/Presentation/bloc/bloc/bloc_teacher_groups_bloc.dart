@@ -18,42 +18,44 @@ class BlocTeacherGroupsBloc
   BlocTeacherGroupsBloc() : super(NoGroups()) {
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
-      // emit(AddedLessonState());
-      //   final dataSnapshot = await dataBase.child('Groups').once();
+      emit(AddedLessonState());
+      final dataSnapshot = await dataBase.child('Users/$userId/Groups').once();
 
-      //   String? currentGroupKey = dataSnapshot.snapshot.children
-      //       .firstWhere(
-      //           (element) => element.key!.endsWith(event.groupNameforLesson))
-      //       .key;
+      String? currentGroupKey = dataSnapshot.snapshot.children
+          .firstWhere(
+              (element) => element.key!.endsWith(event.groupNameforLesson))
+          .key;
 
-      //   final lessonData = {
-      //     'Schedule': {
-      //       event.currentYear: {
-      //         event.currentMonth: {
-      //           event.currentDay: {
-      //             'Subject': event.subject,
-      //             'LessonRoom': event.lessonRoom,
-      //             'lessonTimeStart': event.lessonTimeStart,
-      //             'lessonTimeFinish': event.lessonTimeFinish
-      //           }
-      //         }
-      //       }
-      //     }
-      //   };
-      //   await dataBase.child('Groups/$currentGroupKey').update(lessonData);
+      final lessonData = {
+        event.lessonTimeStart: {
+          'Subject': event.subject,
+          'LessonRoom': event.lessonRoom,
+          'lessonTimeFinish': event.lessonTimeFinish
+        }
+      };
+      await dataBase
+          .child(
+              'Users/$userId/Groups/$currentGroupKey/Schedule/${event.currentYear}/${event.currentMonth}/${event.currentDay}')
+          .update(lessonData);
+
+      await dataBase
+          .child('Users/$userId/Groups/$currentGroupKey/allSubject')
+          .update({event.subject: ''});
     });
 
     on<CreateGroup>((event, emit) async {
       final dataBase =
           FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-          
+
       emit(IsCreatingGroup());
 
       final postData = {
         event.groupName: {
           'GroupName': event.groupName,
           'amountStudents': '0',
-          'nextLesson': 'нет'
+          'nextLesson': 'нет',
+          'allStudents': 'пусто',
+          'allSubject': 'пусто'
         }
       };
 
@@ -102,14 +104,15 @@ class BlocTeacherGroupsBloc
     });
 
     on<DeleteGroup>((event, emit) {
-      final dataBase =
-          FirebaseDatabase.instance.ref().child('${event.key}');
+      final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
       dataBase.remove();
     });
 
     on<DownloadNameGroupsEvent>((event, emit) async {
-      final dataSnapshot =
-          await FirebaseDatabase.instance.ref().child('Groups').get();
+      final dataSnapshot = await FirebaseDatabase.instance
+          .ref()
+          .child('Users/$userId/Groups')
+          .get();
 
       if (dataSnapshot.exists) {
         final Map<Object?, Object?> data =

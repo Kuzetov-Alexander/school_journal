@@ -47,12 +47,19 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
       groupNameforLesson: selectedGroup,
       lessonRoom: _controllerRoom.text,
-      lessonTimeStart: DateFormat.Hm().format(Platform.isIOS
-          ? dateTimestart
-          : timeStartAndroid),
-      lessonTimeFinish: DateFormat.Hm().format(Platform.isIOS
-          ? dateTimefinish
-          : timeFinishAndroid),
+      lessonTimeStart: DateFormat.Hm().format(
+        // Platform.isIOS
+        //   ?
+           dateTimestart
+          // : timeStartAndroid
+          ),
+      lessonTimeFinish: 
+      DateFormat.Hm().format(
+        // Platform.isIOS
+        //   ?
+           dateTimefinish
+          // : timeFinishAndroid
+          ),
       subject: _controllerSubject.text,
       currentDay: DateTime.now().day.toString(),
       currentMonth:
@@ -63,7 +70,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
        
   @override
   Widget build(BuildContext context) {
-
+  // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
+  //   DateTime  timeStartAndroid =  DateTime(year)  ;
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
@@ -159,9 +167,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(selectedGroup == ''
+                                  Text(listGroupNames.isEmpty
                                       ? "Название группы"
-                                      : selectedGroup),
+                                      : listGroupNames.length==1? listGroupNames[0]: selectedGroup),
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
@@ -173,6 +181,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                               padding: EdgeInsets.only(
                                                   top: heightScreen * 0.7),
                                               child: CupertinoPicker(
+                                               squeeze: 0.8,
                                                 backgroundColor: Colors.white,
                                                 scrollController:
                                                     FixedExtentScrollController(
@@ -231,8 +240,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.black212525),
                               ),
-                              Platform.isIOS
-                                  ? IosTimePicker(
+                              // Platform.isIOS
+                              //     ? 
+                                  IosTimePicker(
                                       time: dateTimestart,
                                       textTime:
                                           '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
@@ -244,7 +254,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                         );
                                       },
                                     )
-                                  : const TimerPickerAndroidStart()
+                                  // : const TimerPickerAndroidStart()
                             ],
                           ),
                           Row(
@@ -257,8 +267,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.black212525),
                               ),
-                              Platform.isIOS
-                                  ? IosTimePicker(
+                              // Platform.isIOS
+                              //     ? 
+                                  IosTimePicker(
                                       time: dateTimefinish,
                                       textTime:
                                           '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
@@ -269,7 +280,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                         });
                                       },
                                     )
-                                  : const TimerPickerAndroidFinish()
+                                  // : const TimerPickerAndroidFinish()
                             ],
                           ),
                         ],
@@ -339,8 +350,13 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                       ),
                     ),
                     onPressed: () {
-                      // print(selectedGroup);
+                     
                       _addLesson(context);
+                      setState(() {
+                         _controllerSubject.text ='';
+                        _controllerRoom.text ='';
+                      });
+                     
                     },
                     child: Text(
                       'Добавить',
