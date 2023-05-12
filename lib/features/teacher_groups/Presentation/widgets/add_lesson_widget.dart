@@ -64,7 +64,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   @override
   Widget build(BuildContext context) {
 
-    final db = FirebaseDatabase.instance.ref().child('Groups');
+    // final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(

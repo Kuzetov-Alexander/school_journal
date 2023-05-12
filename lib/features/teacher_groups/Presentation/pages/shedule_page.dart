@@ -26,7 +26,7 @@ class _ShedulePageState extends State<ShedulePage> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final providerSelectedIndex = context.watch<ProviderCalendar>().indexDay;
-    final providerDays = context.watch<ProviderCalendar>().listOfDays;
+    // final providerDays = context.watch<ProviderCalendar>().listOfDays;
 
     DateTime curentDateTime = context.watch<ProviderCalendar>().currentDate;
 
@@ -141,7 +141,7 @@ class _ShedulePageState extends State<ShedulePage> {
                                 // все что вне текущего месяца не учитывается
                                 itemCount: DateTime(curentDateTime.year,
                                             curentDateTime.month, 0)
-                                        .day + 
+                                        .day +
                                     1,
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
@@ -176,29 +176,29 @@ class _ShedulePageState extends State<ShedulePage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          // Text(
-                                          //   DateFormat('E', 'ru')
-                                          //       .format(DateTime.now()),
-                                          //   maxLines: 1,
-                                          //   style: TextStyle(
-                                          //       color: providerSelectedIndex ==
-                                          //               index
-                                          //           ? Colors.black
-                                          //           : Colors.white),
-                                          // ),
-
-                                          ///День недели выводит
                                           Text(
-                                            providerDays[DateTime.now()
-                                                    .add(Duration(days: index))
-                                                    .weekday -
-                                                1],
+                                            DateFormat('E', 'ru')
+                                                .format(curentDateTime),
+                                            maxLines: 1,
                                             style: TextStyle(
                                                 color: providerSelectedIndex ==
                                                         index
                                                     ? Colors.black
                                                     : Colors.white),
                                           ),
+
+                                          ///День недели выводит
+                                          // Text(
+                                          //   providerDays[DateTime.now()
+                                          //           .add(Duration(days: index))
+                                          //           .weekday -
+                                          //       1],
+                                          //   style: TextStyle(
+                                          //       color: providerSelectedIndex ==
+                                          //               index
+                                          //           ? Colors.black
+                                          //           : Colors.white),
+                                          // ),
 
                                           /// Выводит актуальный день
                                           Text(

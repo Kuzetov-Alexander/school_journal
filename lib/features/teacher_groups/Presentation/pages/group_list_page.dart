@@ -27,23 +27,23 @@ class _GroupListPageState extends State<GroupListPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map<int, Map<String, int>> myMap = {};
+    // Map<int, Map<String, int>> myMap = {};
 
-    for (int month = 0; month <= 12; month++) {
-      // Создаем внутреннюю Map для каждого месяца
-      Map<String, int> monthMap = {};
+    // for (int month = 0; month <= 12; month++) {
+    //   // Создаем внутреннюю Map для каждого месяца
+    //   Map<String, int> monthMap = {};
 
-      // Вычисляем количество дней в месяце
-      int daysInMonth = DateTime(2023, month + 1, 0).day;
+    //   // Вычисляем количество дней в месяце
+    //   int daysInMonth = DateTime(2023, month + 1, 0).day;
 
-      // Добавляем дни в месяцев во внутреннюю Map
-      for (int day = 1; day <= daysInMonth; day++) {
-        monthMap['day$day'] = day;
-      }
+    //   // Добавляем дни в месяцев во внутреннюю Map
+    //   for (int day = 1; day <= daysInMonth; day++) {
+    //     monthMap['day$day'] = day;
+    //   }
 
-      // Добавляем внутреннюю Map в основную Map, используя номер месяца в качестве ключа
-      myMap[month] = monthMap;
-    }
+    //   // Добавляем внутреннюю Map в основную Map, используя номер месяца в качестве ключа
+    //   myMap[month] = monthMap;
+    // }
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -97,9 +97,9 @@ class _GroupListPageState extends State<GroupListPage> {
                             IconButton(
                               onPressed: () {
                                 //
-                                // final firebaseAuth = FirebaseAuth.instance;
-                                // final a = firebaseAuth.currentUser!.uid;
-                                // print('------------------$a');
+                                final firebaseAuth = FirebaseAuth.instance;
+                                final a = firebaseAuth.currentUser!.displayName;
+                                print('------------------$a');
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ProviderCalendar extends ChangeNotifier {
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -34,8 +33,6 @@ class ProviderCalendar extends ChangeNotifier {
 
   // String
 
-  List<String> listOfDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-
   /// Для прокрутки даты
   int indexDay = 0;
 
@@ -43,10 +40,10 @@ class ProviderCalendar extends ChangeNotifier {
     return indexDay == 0 ? activeColor : passiveColor;
   }
 
-
   void getSelectedDate(int index) {
-    // DateTime selectedDate = DateTime.now();
-    currentDate = DateTime.now().add(Duration(days: index));
+   
+    currentDate =
+        DateTime.now().add(Duration(days: index - DateTime.now().day + 1));
   }
 
   void getCurrentDaySelectedIndex(int index) {
