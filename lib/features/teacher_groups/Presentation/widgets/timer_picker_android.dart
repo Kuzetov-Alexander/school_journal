@@ -16,6 +16,7 @@ class _TimerPickerAndroidStart extends State<TimerPickerAndroidStart> {
   TimeOfDay selectedTime = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
+    context.watch<ProviderGroup>().startlessonTime = selectedTime;
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return CupertinoButton(
@@ -44,14 +45,10 @@ class _TimerPickerAndroidStart extends State<TimerPickerAndroidStart> {
             setState(() {
               selectedTime = timeOfDay;
             });
-            context.watch<ProviderGroup>().startlessonTime = timeOfDay;
           }
         });
   }
 }
-
-
-
 
 class TimerPickerAndroidFinish extends StatefulWidget {
   const TimerPickerAndroidFinish({super.key});
@@ -64,6 +61,7 @@ class _TimerPickerAndroidFinish extends State<TimerPickerAndroidFinish> {
   TimeOfDay selectedTime = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
+    context.watch<ProviderGroup>().finishlessonTime = selectedTime;
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return CupertinoButton(
@@ -91,9 +89,7 @@ class _TimerPickerAndroidFinish extends State<TimerPickerAndroidFinish> {
           if (timeOfDay != null) {
             setState(() {
               selectedTime = timeOfDay;
-              
             });
-            context.watch<ProviderGroup>().finishlessonTime = timeOfDay;
           }
         });
   }

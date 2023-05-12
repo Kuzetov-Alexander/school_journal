@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_android.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -32,8 +33,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+ DateTime timeStartAndroid  = DateTime.now();
+ DateTime timeFinishAndroid = DateTime.now();
 
-  // late final TextEditingController _controllerClass = TextEditingController();
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
@@ -41,17 +43,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadNameGroupsEvent());
   }
- TimeOfDay timeStartAndroid;
+
   void _addLesson(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
       groupNameforLesson: selectedGroup,
       lessonRoom: _controllerRoom.text,
       lessonTimeStart: DateFormat.Hm().format(Platform.isIOS
           ? dateTimestart
-          : context.watch<ProviderGroup>(listen:false).startlessonTime),
+          : timeStartAndroid),
       lessonTimeFinish: DateFormat.Hm().format(Platform.isIOS
           ? dateTimefinish
-          : ),
+          : timeFinishAndroid),
       subject: _controllerSubject.text,
       currentDay: DateTime.now().day.toString(),
       currentMonth:
@@ -62,7 +64,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
        
   @override
   Widget build(BuildContext context) {
-     timeStartAndroid = context.watch<ProviderGroup>().finishlessonTime;
+
     final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;

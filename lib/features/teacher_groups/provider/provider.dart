@@ -6,8 +6,8 @@ class ProviderGroup extends ChangeNotifier {
   bool switcher = false;
   bool saveSchedule = false;
   bool switcherSchedule = false;
-   TimeOfDay startlessonTime =TimeOfDay.now() ;
-    TimeOfDay finishlessonTime  = TimeOfDay.now();
+  TimeOfDay startlessonTime = TimeOfDay.now();
+  TimeOfDay finishlessonTime = TimeOfDay.now();
 
   void saveScheduleFunc(switcherSchedule) {
     saveSchedule = switcherSchedule;
