@@ -14,7 +14,6 @@ import 'package:school_journal/features/teacher_groups/Presentation/widgets/time
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
-
 class BottomSheetModal extends StatefulWidget {
   const BottomSheetModal({super.key});
 
@@ -241,8 +240,6 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                         setState(
                                           () {
                                             dateTimestart = newTime;
-
-                                            // TODO(Sanya) Делать через блок или провайдер лучше?
                                           },
                                         );
                                       },

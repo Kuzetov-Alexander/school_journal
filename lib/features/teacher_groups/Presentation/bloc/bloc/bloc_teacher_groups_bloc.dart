@@ -13,63 +13,65 @@ class BlocTeacherGroupsBloc
 
   final dataBase = FirebaseDatabase.instance.ref();
   final userId = FirebaseAuth.instance.currentUser?.uid;
+  final name = FirebaseAuth.instance.currentUser?.displayName;
 
   BlocTeacherGroupsBloc() : super(NoGroups()) {
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
-      emit(AddedLessonState());
-      final dataSnapshot = await dataBase.child('Groups').once();
+      // emit(AddedLessonState());
+      //   final dataSnapshot = await dataBase.child('Groups').once();
 
-      String? currentGroupKey = dataSnapshot.snapshot.children
-          .firstWhere(
-              (element) => element.key!.endsWith(event.groupNameforLesson))
-          .key;
+      //   String? currentGroupKey = dataSnapshot.snapshot.children
+      //       .firstWhere(
+      //           (element) => element.key!.endsWith(event.groupNameforLesson))
+      //       .key;
 
-      final lessonData = {
-        'Schedule': {
-          event.currentYear: {
-            event.currentMonth: {
-              event.currentDay: {
-                'Subject': event.subject,
-                'LessonRoom': event.lessonRoom,
-                'lessonTimeStart': event.lessonTimeStart,
-                'lessonTimeFinish': event.lessonTimeFinish
-              }
-            }
-          }
-        }
-      };
-      await dataBase.child('Groups/$currentGroupKey').update(lessonData);
+      //   final lessonData = {
+      //     'Schedule': {
+      //       event.currentYear: {
+      //         event.currentMonth: {
+      //           event.currentDay: {
+      //             'Subject': event.subject,
+      //             'LessonRoom': event.lessonRoom,
+      //             'lessonTimeStart': event.lessonTimeStart,
+      //             'lessonTimeFinish': event.lessonTimeFinish
+      //           }
+      //         }
+      //       }
+      //     }
+      //   };
+      //   await dataBase.child('Groups/$currentGroupKey').update(lessonData);
     });
 
     on<CreateGroup>((event, emit) async {
-      // final dataBase = FirebaseDatabase.instance.ref().child('Users/$userId');
-
-      // emit(IsCreatingGroup());
-
-      // final postData = {
-      //   'Groups': {
-      //     'GroupName': event.groupName,
-      //     'amountStudents': '0',
-      //     'nextLesson': 'нет'
-      //   }
-      // };
-
-      // dataBase.update(postData);
-
-      // можно пуш добавить и будет уникальное имя
-      final newPostKey = dataBase.push().key! + event.groupName;
+      final dataBase =
+          FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
+          
+      emit(IsCreatingGroup());
 
       final postData = {
-        'GroupName': event.groupName,
-        'amountStudents': '0',
-        'nextLesson': 'нет'
+        event.groupName: {
+          'GroupName': event.groupName,
+          'amountStudents': '0',
+          'nextLesson': 'нет'
+        }
       };
 
-      final Map<String, Map> updates = {};
-      updates['/Groups/$newPostKey'] = postData;
+      dataBase.update(postData);
 
-      FirebaseDatabase.instance.ref().update(updates);
+      // можно пуш добавить и будет уникальное имя
+      // final newPostKey = dataBase.push().key! + event.groupName;
+
+      // final postData = {
+      //   'GroupName': event.groupName,
+      //   'amountStudents': '0',
+      //   'nextLesson': 'нет'
+      // };
+
+      // final Map<String, Map> updates = {};
+      // updates['/Groups/$newPostKey'] = postData;
+
+      // FirebaseDatabase.instance.ref().update(updates);
 //------------------------------------------------------------
       // final dataSnapshot = await dataBase.child(event.groupName).get();
       // if (dataSnapshot.exists) {
@@ -101,7 +103,7 @@ class BlocTeacherGroupsBloc
 
     on<DeleteGroup>((event, emit) {
       final dataBase =
-          FirebaseDatabase.instance.ref().child('Groups/${event.key}');
+          FirebaseDatabase.instance.ref().child('${event.key}');
       dataBase.remove();
     });
 
@@ -119,7 +121,7 @@ class BlocTeacherGroupsBloc
 
         for (final dynamic element in dataList) {
           if (element is Map<dynamic, dynamic>) {
-            final String? groupName = element["GroupName"] as String?;
+            final String? groupName = element['GroupName'] as String?;
             if (groupName != null) {
               groupNames.add(groupName);
             }

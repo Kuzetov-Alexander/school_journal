@@ -23,15 +23,13 @@ ScrollController scrollController = ScrollController();
 class _ShedulePageState extends State<ShedulePage> {
   @override
   Widget build(BuildContext context) {
-    // final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final providerSelectedIndex =
-        context.watch<ProviderCalendar>().currentDaySelectedIndex;
-    final providerMonths = context.watch<ProviderCalendar>().listOfMonths;
+    final providerSelectedIndex = context.watch<ProviderCalendar>().indexDay;
     final providerDays = context.watch<ProviderCalendar>().listOfDays;
-    final today = DateTime.now();
-    final dayofweek = DateFormat('EEEE', 'ru').format(DateTime.now());
+
+    DateTime curentDateTime = context.watch<ProviderCalendar>().currentDate;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -88,11 +86,19 @@ class _ShedulePageState extends State<ShedulePage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                      splashRadius: 1,
-                                      onPressed: () {},
-                                      icon: const Image(
-                                          image: AssetImage(
-                                              'assets/images/arrow_left_white.png'))),
+                                    splashRadius: 1,
+                                    onPressed: () {
+                                      setState(() {
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getPreviousMonth();
+                                      });
+                                    },
+                                    icon: const Image(
+                                      image: AssetImage(
+                                          'assets/images/arrow_left_white.png'),
+                                    ),
+                                  ),
                                   // Text(
                                   //   DateFormat('MMM', 'ru')
                                   //       .format(DateTime.now()),
@@ -102,7 +108,7 @@ class _ShedulePageState extends State<ShedulePage> {
                                   //       fontWeight: FontWeight.w600),
                                   // ),
                                   Text(
-                                    '${providerMonths[today.month - 1]}  ${DateTime.now().year} ',
+                                    '${DateFormat('MMMM', 'ru').format(curentDateTime)} ${DateFormat('yyyy', 'ru').format(curentDateTime)}',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: heightScreen * 0.024,
@@ -111,7 +117,13 @@ class _ShedulePageState extends State<ShedulePage> {
 
                                   IconButton(
                                     splashRadius: 1,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getNextMonth();
+                                      });
+                                    },
                                     icon: const Image(
                                       image: AssetImage(
                                           'assets/images/arrow_right_white.png'),
@@ -127,9 +139,10 @@ class _ShedulePageState extends State<ShedulePage> {
                                 controller: scrollController,
                                 // формула для вывода дней в текущем месяце,
                                 // все что вне текущего месяца не учитывается
-                                itemCount: DateTime(today.year, today.month ,
-                                        -today.day + 2)
-                                    .day,
+                                itemCount: DateTime(curentDateTime.year,
+                                            curentDateTime.month, 0)
+                                        .day + 
+                                    1,
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
                                     onTap: () {
@@ -189,7 +202,8 @@ class _ShedulePageState extends State<ShedulePage> {
 
                                           /// Выводит актуальный день
                                           Text(
-                                            DateTime.now()
+                                            DateTime(DateTime.now().year,
+                                                    DateTime.now().month, 1)
                                                 .add(Duration(days: index))
                                                 .day
                                                 .toString(),
@@ -267,8 +281,8 @@ class _ShedulePageState extends State<ShedulePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${dayofweek.capitalize()} , ${DateFormat('d MMM', 'ru').format(
-                            DateTime.now(),
+                          '${DateFormat('EEEE', 'ru').format(curentDateTime).capitalize()} , ${DateFormat('d MMM', 'ru').format(
+                            curentDateTime,
                           )}',
                           style: TextStyle(
                               fontWeight: FontWeight.w700,

@@ -27,6 +27,23 @@ class _GroupListPageState extends State<GroupListPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map<int, Map<String, int>> myMap = {};
+
+    for (int month = 0; month <= 12; month++) {
+      // Создаем внутреннюю Map для каждого месяца
+      Map<String, int> monthMap = {};
+
+      // Вычисляем количество дней в месяце
+      int daysInMonth = DateTime(2023, month + 1, 0).day;
+
+      // Добавляем дни в месяцев во внутреннюю Map
+      for (int day = 1; day <= daysInMonth; day++) {
+        monthMap['day$day'] = day;
+      }
+
+      // Добавляем внутреннюю Map в основную Map, используя номер месяца в качестве ключа
+      myMap[month] = monthMap;
+    }
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -78,11 +95,11 @@ class _GroupListPageState extends State<GroupListPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                              onPressed: () async {
+                              onPressed: () {
                                 //
-                                final firebaseAuth = FirebaseAuth.instance;
-                                final a = firebaseAuth.currentUser!.uid;
-                                print('------------------$a');
+                                // final firebaseAuth = FirebaseAuth.instance;
+                                // final a = firebaseAuth.currentUser!.uid;
+                                // print('------------------$a');
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
@@ -161,8 +178,7 @@ class _GroupListPageState extends State<GroupListPage> {
                       itemBuilder: (context, DataSnapshot snapshot,
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
-                        print('---------------------------$student');
-                        final key = snapshot.key;
+                        snapshot.key;
                         return Column(
                           children: [
                             Padding(
@@ -172,14 +188,12 @@ class _GroupListPageState extends State<GroupListPage> {
                                 key: UniqueKey(),
                                 endActionPane: ActionPane(
                                     motion: const ScrollMotion(),
-                                    dismissible:
-                                        DismissiblePane(onDismissed: () {
-                                      _deleteGroup(context, key: key);
-                                    }),
                                     children: [
                                       SlidableAction(
                                         onPressed: (context) {
-                                          _deleteGroup(context, key: key);
+                                          _deleteGroup(context,
+                                              key:
+                                                  'Users/$userId/Groups/${snapshot.key}');
                                         },
                                         backgroundColor: Colors.red,
                                         foregroundColor: Colors.white,
