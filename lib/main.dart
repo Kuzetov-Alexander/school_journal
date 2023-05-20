@@ -47,9 +47,11 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ProviderLoginBool>(
+          
           create: (context) => ProviderLoginBool(),
         ),
         ChangeNotifierProvider<ProviderGroup>(
+          lazy: false,
           create: (context) => ProviderGroup(),
         ),
         ChangeNotifierProvider<ProviderCalendar>(
@@ -155,7 +157,7 @@ class MyApp extends StatelessWidget {
                 : const MyBehaviorIOS(),
             theme: ThemeData(
                 useMaterial3:
-                    true, // при добавлении обновляет размеры элементов, интересно почему?
+                    true, 
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),

@@ -8,6 +8,19 @@ class ProviderGroup extends ChangeNotifier {
   bool switcherSchedule = false;
   TimeOfDay startlessonTime = TimeOfDay.now();
   TimeOfDay finishlessonTime = TimeOfDay.now();
+  List<String> listNames = [];
+
+  void addGroupName(List<String> newGroup) {
+    List<String> listGroups = [];
+    listGroups.addAll(newGroup);
+    listNames = listGroups.toSet().toList();
+
+    notifyListeners();
+  }
+
+  void deleteGroupName(String name) {
+    listNames.removeWhere((e) => e == name);
+  }
 
   void saveScheduleFunc(switcherSchedule) {
     saveSchedule = switcherSchedule;

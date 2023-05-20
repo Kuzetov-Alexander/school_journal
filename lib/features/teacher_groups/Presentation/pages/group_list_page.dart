@@ -8,10 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
+
+import '../../provider/provider.dart';
 
 class GroupListPage extends StatefulWidget {
   const GroupListPage({super.key});
@@ -22,7 +25,8 @@ class GroupListPage extends StatefulWidget {
 
 class _GroupListPageState extends State<GroupListPage> {
   void _deleteGroup(context, {required String? key}) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(DeleteGroup(key: key));
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(DeleteGroupEvent(key: key));
   }
 
   @override
@@ -49,11 +53,11 @@ class _GroupListPageState extends State<GroupListPage> {
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     final db = FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-
+    ProviderGroup _provider = Provider.of<ProviderGroup>(context);
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
-          if (state is IsCreatedGroup) {
+          if (state is IsCreatedGroupState) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.green,
@@ -61,14 +65,14 @@ class _GroupListPageState extends State<GroupListPage> {
               ),
             );
           }
-          if (state is IsCreatingGroup) {
+          if (state is IsCreatingGroupState) {
             Center(
               child: Platform.isAndroid
                   ? const CircularProgressIndicator()
                   : const CupertinoActivityIndicator(),
             );
           }
-          if (state is DatabaseError) {
+          if (state is DatabaseErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
@@ -77,7 +81,7 @@ class _GroupListPageState extends State<GroupListPage> {
           }
         },
         builder: (context, state) {
-          if (state is NoGroups) {
+          if (state is NoGroupsState) {
             const Center(child: Text('Нет групп'));
           }
           return SafeArea(
@@ -153,7 +157,6 @@ class _GroupListPageState extends State<GroupListPage> {
                             padding: const EdgeInsets.only(
                                 left: 14.0, bottom: 2, top: 12),
                             child: Text(
-                              // '${user?.email} ${user?.displayName}'
                               'Мои группы',
                               style: TextStyle(
                                   fontSize: heightScreen * 0.04,
@@ -194,6 +197,9 @@ class _GroupListPageState extends State<GroupListPage> {
                                           _deleteGroup(context,
                                               key:
                                                   'Users/$userId/Groups/${snapshot.key}');
+                                          _provider.deleteGroupName(snapshot
+                                              .children.first.value
+                                              .toString());
                                         },
                                         backgroundColor: Colors.red,
                                         foregroundColor: Colors.white,

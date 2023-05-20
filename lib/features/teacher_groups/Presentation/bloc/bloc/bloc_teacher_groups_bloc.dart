@@ -15,7 +15,7 @@ class BlocTeacherGroupsBloc
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final name = FirebaseAuth.instance.currentUser?.displayName;
 
-  BlocTeacherGroupsBloc() : super(NoGroups()) {
+  BlocTeacherGroupsBloc() : super(NoGroupsState()) {
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
       emit(AddedLessonState());
@@ -43,11 +43,11 @@ class BlocTeacherGroupsBloc
           .update({event.subject: ''});
     });
 
-    on<CreateGroup>((event, emit) async {
+    on<CreateGroupEvent>((event, emit) async {
       final dataBase =
           FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
 
-      emit(IsCreatingGroup());
+      emit(IsCreatingGroupState());
 
       final postData = {
         event.groupName: {
@@ -60,6 +60,7 @@ class BlocTeacherGroupsBloc
       };
 
       dataBase.update(postData);
+      emit(IsCreatedGroupState());
 
       // можно пуш добавить и будет уникальное имя
       // final newPostKey = dataBase.push().key! + event.groupName;
@@ -103,9 +104,11 @@ class BlocTeacherGroupsBloc
       // });
     });
 
-    on<DeleteGroup>((event, emit) {
+    on<DeleteGroupEvent>((event, emit) {
       final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
+      
       dataBase.remove();
+      emit(UpdateState());
     });
 
     on<DownloadNameGroupsEvent>((event, emit) async {
@@ -130,11 +133,9 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-
-        emit(DownloadNameGroupsState(allNamesGroup: groupNames));
-      } else {
-        print('no data');
-      }
+        
+        emit(DownloadNameGroupsState( groupNames));
+      } 
     });
   }
 }

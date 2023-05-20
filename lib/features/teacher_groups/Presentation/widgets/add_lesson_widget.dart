@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_android.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -23,7 +23,7 @@ class BottomSheetModal extends StatefulWidget {
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
   String selectedGroup = 'Название группы';
-  List<String> listGroupNames = [];
+
   final String _currentDay =
       '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}';
 
@@ -32,8 +32,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
- DateTime timeStartAndroid  = DateTime.now();
- DateTime timeFinishAndroid = DateTime.now();
+  DateTime timeStartAndroid = DateTime.now();
+  DateTime timeFinishAndroid = DateTime.now();
 
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
@@ -48,16 +48,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       groupNameforLesson: selectedGroup,
       lessonRoom: _controllerRoom.text,
       lessonTimeStart: DateFormat.Hm().format(
-        // Platform.isIOS
-        //   ?
-           dateTimestart
+          // Platform.isIOS
+          //   ?
+          dateTimestart
           // : timeStartAndroid
           ),
-      lessonTimeFinish: 
-      DateFormat.Hm().format(
-        // Platform.isIOS
-        //   ?
-           dateTimefinish
+      lessonTimeFinish: DateFormat.Hm().format(
+          // Platform.isIOS
+          //   ?
+          dateTimefinish
           // : timeFinishAndroid
           ),
       subject: _controllerSubject.text,
@@ -67,26 +66,26 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       currentYear: DateTime.now().year.toString(),
     ));
   }
-       
+
   @override
   Widget build(BuildContext context) {
-  // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
-  //   DateTime  timeStartAndroid =  DateTime(year)  ;
-    final db = FirebaseDatabase.instance.ref().child('Groups');
+    // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
+    //   DateTime  timeStartAndroid =  DateTime(year)  ;
+    ProviderGroup _provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
       listener: (context, state) {
         if (state is DownloadNameGroupsState) {
-          final List<String> listNames = [];
-          listGroupNames = listNames + state.allNamesGroup;
+          _provider.addGroupName(state.allNamesGroup);
         }
       },
       builder: (context, state) {
-        if (state is DownloadNameGroupsState) {
-          final List<String> listNames = [];
-          listGroupNames = listNames + state.allNamesGroup;
-        }
+        ProviderGroup provider =
+            Provider.of<ProviderGroup>(context, listen: false);
+        // if (state is DownloadNameGroupsState) {
+        //   provider.addGroupName(state.allNamesGroup);
+        // }  // проблема состоит в том, что вызов провадйдера в методе билдер создает ошибку, вроде все работает, но в консоле ошибка. Необходимо понять почему, другой вариант прописывать в ивенте на удаление группы удаление из списка в провайдере название этой группы
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -167,9 +166,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(listGroupNames.isEmpty
-                                      ? "Название группы"
-                                      : listGroupNames.length==1? listGroupNames[0]: selectedGroup),
+                                  Text(_provider.listNames.isEmpty
+                                      ? "Название группы": _provider.listNames.length ==1
+                                      ? _provider.listNames.first : selectedGroup),
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
@@ -181,21 +180,19 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                               padding: EdgeInsets.only(
                                                   top: heightScreen * 0.7),
                                               child: CupertinoPicker(
-                                               squeeze: 0.8,
+                                                squeeze: 0.8,
                                                 backgroundColor: Colors.white,
                                                 scrollController:
                                                     FixedExtentScrollController(
                                                         initialItem: 0),
                                                 itemExtent: 30,
                                                 onSelectedItemChanged: (value) {
-                                                  setState(
-                                                    () {
-                                                      selectedGroup =
-                                                          listGroupNames[value];
-                                                    },
-                                                  );
+                                                  setState(() {});
+
+                                                  selectedGroup = _provider
+                                                      .listNames[value];
                                                 },
-                                                children: listGroupNames
+                                                children: _provider.listNames
                                                     .map((e) => Text(e))
                                                     .toList(),
                                               ),
@@ -241,20 +238,20 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     color: AppColors.black212525),
                               ),
                               // Platform.isIOS
-                              //     ? 
-                                  IosTimePicker(
-                                      time: dateTimestart,
-                                      textTime:
-                                          '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTime) {
-                                        setState(
-                                          () {
-                                            dateTimestart = newTime;
-                                          },
-                                        );
-                                      },
-                                    )
-                                  // : const TimerPickerAndroidStart()
+                              //     ?
+                              IosTimePicker(
+                                time: dateTimestart,
+                                textTime:
+                                    '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                onTimeSelected: (DateTime newTime) {
+                                  setState(
+                                    () {
+                                      dateTimestart = newTime;
+                                    },
+                                  );
+                                },
+                              )
+                              // : const TimerPickerAndroidStart()
                             ],
                           ),
                           Row(
@@ -268,19 +265,19 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     color: AppColors.black212525),
                               ),
                               // Platform.isIOS
-                              //     ? 
-                                  IosTimePicker(
-                                      time: dateTimefinish,
-                                      textTime:
-                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTimefinish) {
-                                        setState(() {
-                                          dateTimefinish =
-                                              newTimefinish; // делать через блок или провайдер лучше?
-                                        });
-                                      },
-                                    )
-                                  // : const TimerPickerAndroidFinish()
+                              //     ?
+                              IosTimePicker(
+                                time: dateTimefinish,
+                                textTime:
+                                    '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                onTimeSelected: (DateTime newTimefinish) {
+                                  setState(() {
+                                    dateTimefinish =
+                                        newTimefinish; // делать через блок или провайдер лучше?
+                                  });
+                                },
+                              )
+                              // : const TimerPickerAndroidFinish()
                             ],
                           ),
                         ],
@@ -350,13 +347,11 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                       ),
                     ),
                     onPressed: () {
-                     
                       _addLesson(context);
                       setState(() {
-                         _controllerSubject.text ='';
-                        _controllerRoom.text ='';
+                        _controllerSubject.text = '';
+                        _controllerRoom.text = '';
                       });
-                     
                     },
                     child: Text(
                       'Добавить',
