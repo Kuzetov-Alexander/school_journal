@@ -51,12 +51,7 @@ class _ShedulePageState extends State<ShedulePage> {
       ),
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
-          // if (state is DownloadNameGroupsState) {
-          //   // print(state.allNamesGroup);
-          // //  listNamesGroup = state.allNamesGroup;  !!!!!!!// если на этой странице это закоментить, то при переходе
-          // назад со страницы добавить урок, лист будет равен нулю. иначе все будет ок
-          // //  print(listNamesGroup);
-          // }
+        
         },
         builder: (context, state) {
           return SafeArea(

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
 
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
@@ -22,8 +23,6 @@ class BottomSheetModal extends StatefulWidget {
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
-  String selectedGroup = 'Название группы';
-
   final String _currentDay =
       '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}';
 
@@ -38,14 +37,32 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
-  void _downloadNameGroups(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
-        .add(DownloadNameGroupsEvent());
+  showTip(BuildContext context, double height) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
+      return Center(
+          child: Material(
+              color: Colors.transparent,
+              child: Padding(
+                  padding: EdgeInsets.only(top: height),
+                  child: const Text(
+                    'Подтвердите добавление',
+                    style: TextStyle(color: Colors.redAccent),
+                  ))));
+    });
+    overlayState.insert(overlayEntry);
+    await Future.delayed(const Duration(seconds: 1));
+    overlayEntry.remove();
   }
 
-  void _addLesson(context) {
+  void _downloadNameGroups(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(DownloadGroupNameEvent());
+  }
+
+  void _addLesson(context, String groupName) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
-      groupNameforLesson: selectedGroup,
+      groupNameforLesson: groupName,
       lessonRoom: _controllerRoom.text,
       lessonTimeStart: DateFormat.Hm().format(
           // Platform.isIOS
@@ -71,22 +88,20 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   Widget build(BuildContext context) {
     // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
     //   DateTime  timeStartAndroid =  DateTime(year)  ;
-    ProviderGroup _provider = Provider.of<ProviderGroup>(context);
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
       listener: (context, state) {
-        if (state is DownloadNameGroupsState) {
-          _provider.addGroupName(state.allNamesGroup);
+        if (state is DownloadGroupNameState) {
+          provider.addGroupName(state.allNamesGroup);
+        }
+        if (state is DownloadSubjectNameState) {
+          provider.addSubjectName(state.allSubjectGroup);
         }
       },
       builder: (context, state) {
-        ProviderGroup provider =
-            Provider.of<ProviderGroup>(context, listen: false);
-        // if (state is DownloadNameGroupsState) {
-        //   provider.addGroupName(state.allNamesGroup);
-        // }  // проблема состоит в том, что вызов провадйдера в методе билдер создает ошибку, вроде все работает, но в консоле ошибка. Необходимо понять почему, другой вариант прописывать в ивенте на удаление группы удаление из списка в провайдере название этой группы
-
+        print(state);
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -147,7 +162,6 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: heightScreen * 0.016,
-                                      // letterSpacing: 1,
                                       color: AppColors.gray5a5a5a),
                                 ),
                               ],
@@ -166,9 +180,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(_provider.listNames.isEmpty
-                                      ? "Название группы": _provider.listNames.length ==1
-                                      ? _provider.listNames.first : selectedGroup),
+                                  Text(provider.listGroup.isEmpty
+                                      ? provider.selectedGroup
+                                      : provider.selectedGroup),
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
@@ -177,26 +191,19 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                           context: context,
                                           builder: (context) {
                                             return Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: heightScreen * 0.7),
-                                              child: CupertinoPicker(
-                                                squeeze: 0.8,
-                                                backgroundColor: Colors.white,
-                                                scrollController:
-                                                    FixedExtentScrollController(
-                                                        initialItem: 0),
-                                                itemExtent: 30,
-                                                onSelectedItemChanged: (value) {
-                                                  setState(() {});
-
-                                                  selectedGroup = _provider
-                                                      .listNames[value];
-                                                },
-                                                children: _provider.listNames
-                                                    .map((e) => Text(e))
-                                                    .toList(),
-                                              ),
-                                            );
+                                                padding: EdgeInsets.only(
+                                                    top: heightScreen * 0.7),
+                                                child: CupertinoPickerWidget(
+                                                  listWidget: provider.listGroup
+                                                      .map((e) => Text(e))
+                                                      .toList(),
+                                                  onSelected: (value) {
+                                                    setState(() {});
+                                                    provider.selectedGroup =
+                                                        provider
+                                                            .listGroup[value];
+                                                  },
+                                                ));
                                           });
                                     },
                                     child: const Text('Выбрать группу'),
@@ -212,6 +219,14 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             controllerClass: _controllerSubject,
                             hintTextx: 'Введите предмет',
                             labelTextx: 'Предмет',
+                            // listWidget: provider.listSubjects
+                            //     .map((e) => Text(e))
+                            //     .toList(),
+                            // onSelected: (value) {
+                            //   setState(() {});
+                            //   _controllerSubject.text =
+                            //       provider.listSubjects[value];
+                            // },
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -220,6 +235,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             controllerClass: _controllerRoom,
                             hintTextx: 'Введите кабинет (не обязательно)',
                             labelTextx: 'Кабинет',
+                            // listWidget: [],
+                            // onSelected: null,
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -313,6 +330,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   context
                                       .read<ProviderGroup>()
                                       .addNewLesson(value);
+                                  provider.newLessonSaved = value;
                                 },
                               )
                             : Switch(
@@ -323,6 +341,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   context
                                       .read<ProviderGroup>()
                                       .addNewLesson(value);
+                                  provider.newLessonSaved = value;
                                 },
                               ),
                       ],
@@ -347,11 +366,16 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                       ),
                     ),
                     onPressed: () {
-                      _addLesson(context);
-                      setState(() {
-                        _controllerSubject.text = '';
-                        _controllerRoom.text = '';
-                      });
+                      if (provider.newLessonAdded) {
+                        _addLesson(context, provider.selectedGroup);
+                        setState(() {
+                          _controllerSubject.text = '';
+                          _controllerRoom.text = '';
+                        });
+                        Navigator.of(context).pop();
+                      } else {
+                        showTip(context, heightScreen * 0.68);
+                      }
                     },
                     child: Text(
                       'Добавить',
@@ -376,19 +400,27 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 }
 
 class TextformFieldWidget extends StatelessWidget {
-  const TextformFieldWidget({
+  TextformFieldWidget({
     super.key,
     required TextEditingController controllerClass,
     required this.hintTextx,
     required this.labelTextx,
+    // required this.onSelected,
+    // required this.listWidget,
   }) : _controllerClass = controllerClass;
 
+  // void Function(int)? onSelected;
+
+  // List<Widget> listWidget;
   final TextEditingController _controllerClass;
   final String hintTextx;
   final String labelTextx;
 
   @override
   Widget build(BuildContext context) {
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
+    double heightScreen = MediaQuery.of(context).size.height;
+
     return TextFormField(
       keyboardType: TextInputType.name,
       autocorrect: false,
@@ -427,10 +459,35 @@ class TextformFieldWidget extends StatelessWidget {
             color: Color(0xff9D9D9D),
             fontWeight: FontWeight.w600,
             fontSize: 10),
-        suffixIcon: const Image(
-          height: 20,
-          image: AssetImage('assets/images/pen_icon.png'),
-          color: Colors.black,
+        suffixIcon: InkWell(
+          onTap: () {
+            print(provider.selectedGroup);
+            BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                DownloadSubjectNameEvent(
+                    selectedGroup: provider.selectedGroup));
+            print(provider.listSubjects);
+
+            showCupertinoModalPopup(
+                context: context,
+                builder: (context) {
+                  return Padding(
+                      padding: EdgeInsets.only(top: heightScreen * 0.7),
+                      child: CupertinoPickerWidget(
+                       listWidget: provider.listSubjects
+                                .map((e) => Text(e))
+                                .toList(),
+                            onSelected: (value) {
+                              // setState(() {});
+                              // _controllerSubject.text =
+                                  provider.listSubjects[value];}
+                      ));
+                });
+          },
+          child: const Image(
+            height: 20,
+            image: AssetImage('assets/images/pen_icon.png'),
+            color: Colors.black,
+          ),
         ),
       ),
     );

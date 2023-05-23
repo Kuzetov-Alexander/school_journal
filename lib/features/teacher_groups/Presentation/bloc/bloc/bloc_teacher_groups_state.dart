@@ -26,25 +26,32 @@ class NoGroupsState extends BlocTeacherGroupsState {
   List<Object> get props => [];
 }
 
-class UpdateState extends BlocTeacherGroupsState {
-  
-}
+class UpdateState extends BlocTeacherGroupsState {}
 
-class DownloadNameGroupsState extends BlocTeacherGroupsState {
+class DownloadGroupNameState extends BlocTeacherGroupsState {
   final List<String> allNamesGroup;
 
-  const DownloadNameGroupsState( this.allNamesGroup);
+  const DownloadGroupNameState({
+    required this.allNamesGroup,
+  });
   @override
   List<Object> get props => [];
 }
 
+class DownloadSubjectNameState extends BlocTeacherGroupsState {
+  final List<dynamic> allSubjectGroup;
+
+  const DownloadSubjectNameState({
+    required this.allSubjectGroup,
+  });
+  @override
+  List<Object> get props => [];
+}
 
 class AddedLessonState extends BlocTeacherGroupsState {
-  
   @override
   List<Object> get props => [];
 }
-
 
 class DatabaseErrorState extends BlocTeacherGroupsState {
   final String error;

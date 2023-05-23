@@ -3,23 +3,35 @@ import 'package:flutter/material.dart';
 class ProviderGroup extends ChangeNotifier {
   bool isSelected = false;
   bool newLessonAdded = false;
+  bool newLessonSaved = true;
   bool switcher = false;
   bool saveSchedule = false;
   bool switcherSchedule = false;
   TimeOfDay startlessonTime = TimeOfDay.now();
   TimeOfDay finishlessonTime = TimeOfDay.now();
-  List<String> listNames = [];
+  String selectedGroup = 'Выберите группу';
+  List<String> listGroup = [];
+  List<dynamic> listSubjects = [];
+  List<String> listRooms = [];
 
-  void addGroupName(List<String> newGroup) {
-    List<String> listGroups = [];
-    listGroups.addAll(newGroup);
-    listNames = listGroups.toSet().toList();
+  void addSubjectName(List<dynamic> newSubject) {
+    List<dynamic> list = [];
+    list.addAll(newSubject);
+    listSubjects = list.toSet().toList();
 
     notifyListeners();
   }
 
+  void addGroupName(List<String> newGroup) {
+    List<String> listGroups = [];
+    listGroups.addAll(newGroup);
+    listGroup = listGroups.toSet().toList();
+   
+    notifyListeners();
+  }
+
   void deleteGroupName(String name) {
-    listNames.removeWhere((e) => e == name);
+    listGroup.removeWhere((e) => e == name);
   }
 
   void saveScheduleFunc(switcherSchedule) {

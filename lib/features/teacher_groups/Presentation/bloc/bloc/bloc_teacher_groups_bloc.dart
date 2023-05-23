@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 
 part 'bloc_teacher_groups_event.dart';
 part 'bloc_teacher_groups_state.dart';
@@ -22,8 +23,7 @@ class BlocTeacherGroupsBloc
       final dataSnapshot = await dataBase.child('Users/$userId/Groups').once();
 
       String? currentGroupKey = dataSnapshot.snapshot.children
-          .firstWhere(
-              (element) => element.key!.endsWith(event.groupNameforLesson))
+          .firstWhere((e) => e.key == event.groupNameforLesson)
           .key;
 
       final lessonData = {
@@ -62,7 +62,72 @@ class BlocTeacherGroupsBloc
       dataBase.update(postData);
       emit(IsCreatedGroupState());
 
-      // можно пуш добавить и будет уникальное имя
+      //
+
+      //
+    });
+
+    on<DeleteGroupEvent>((event, emit) {
+      final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
+
+      dataBase.remove();
+      emit(UpdateState());
+    });
+
+    on<DownloadGroupNameEvent>((event, emit) async {
+      final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
+
+      if (dataSnapshot.exists) {
+        final Map<Object?, Object?> data =
+            dataSnapshot.value as Map<Object?, Object?>;
+
+        final List<String> groupNames =
+            []; // Здесь будут храниться все значения ключа "GroupName"
+
+        final List<dynamic> dataList = data.values.toList();
+
+        for (final dynamic element in dataList) {
+          if (element is Map<dynamic, dynamic>) {
+            final String? groupName = element['GroupName'] as String?;
+            if (groupName != null) {
+              groupNames.add(groupName);
+            }
+          }
+        }
+        emit(DownloadGroupNameState(
+            allNamesGroup: groupNames,
+            ));
+           
+      }
+    });
+
+
+ on<DownloadSubjectNameEvent>((event, emit) async {
+   final dataShot = await dataBase
+            .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
+            .once();
+
+        List<dynamic> subjectNames = [];
+        final dataSubject = dataShot.snapshot.value;
+       
+        if (dataSubject is Map) {
+          subjectNames = dataSubject.keys.toList();
+           
+        }
+         
+        emit(DownloadSubjectNameState(
+              allSubjectGroup: subjectNames,
+            ));
+            
+ });
+
+
+  }
+}
+
+
+
+  // можно пуш добавить и будет уникальное имя
       // final newPostKey = dataBase.push().key! + event.groupName;
 
       // final postData = {
@@ -102,40 +167,3 @@ class BlocTeacherGroupsBloc
       //   emit(const Error(error: 'Ошибка создания группы'));
       // }
       // });
-    });
-
-    on<DeleteGroupEvent>((event, emit) {
-      final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
-      
-      dataBase.remove();
-      emit(UpdateState());
-    });
-
-    on<DownloadNameGroupsEvent>((event, emit) async {
-      final dataSnapshot = await FirebaseDatabase.instance
-          .ref()
-          .child('Users/$userId/Groups')
-          .get();
-
-      if (dataSnapshot.exists) {
-        final Map<Object?, Object?> data =
-            dataSnapshot.value as Map<Object?, Object?>;
-
-        final List<String> groupNames =
-            []; // Здесь будут храниться все значения ключа "GroupName"
-        final List<dynamic> dataList = data.values.toList();
-
-        for (final dynamic element in dataList) {
-          if (element is Map<dynamic, dynamic>) {
-            final String? groupName = element['GroupName'] as String?;
-            if (groupName != null) {
-              groupNames.add(groupName);
-            }
-          }
-        }
-        
-        emit(DownloadNameGroupsState( groupNames));
-      } 
-    });
-  }
-}
