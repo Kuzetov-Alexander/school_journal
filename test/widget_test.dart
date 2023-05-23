@@ -1,30 +1,38 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+class Solution {
+  // In LeetCode the HashMap is not fully implemented
+  // Runtime 503
+  List<int> twoSum(List<int> nums, int target) {
+// Map to keep an eye on the close range, simply correlation
+    final Map<int, int> correspondence = <int, int>{};
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+    // loop through the entire list values
+    for (var i = 0; i < nums.length; i++) {
+      // saving value inside a variable
+      final int value = nums[i];
 
-import 'package:school_journal/main.dart';
+      // we are getting key in a very tricky way like target value which
+      // we will enter and than we will subtract the single value
+      //that we got from looping from the list.
+      //
+      final int key = target - value;
+      if (correspondence.containsKey(key)) {
+        // than we will return if int of the map and the second int
+        // which shows the position in a list which two value will result the target value
+        return [correspondence[key]!, i];
+      }
+      // here we defining that our key will i the digit inside of our list
+      // if we don't do  this than it will return the value of the list which is inside the list
+      correspondence[value] = i;
+
+      // Remember = correspondence[key] is Our key , correspondence[value] is Our Value
+    }
+    return [];
+  }
+}
+
+List<int> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget( MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+  final res = Solution().twoSum(list, 9);
+  print(res);
 }

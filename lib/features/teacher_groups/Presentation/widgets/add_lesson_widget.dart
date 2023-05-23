@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +31,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
- DateTime timeStartAndroid  = DateTime.now();
- DateTime timeFinishAndroid = DateTime.now();
+  DateTime timeStartAndroid = DateTime.now();
+  DateTime timeFinishAndroid = DateTime.now();
 
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
@@ -47,12 +46,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
       groupNameforLesson: selectedGroup,
       lessonRoom: _controllerRoom.text,
-      lessonTimeStart: DateFormat.Hm().format(Platform.isIOS
-          ? dateTimestart
-          : timeStartAndroid),
-      lessonTimeFinish: DateFormat.Hm().format(Platform.isIOS
-          ? dateTimefinish
-          : timeFinishAndroid),
+      lessonTimeStart: DateFormat.Hm()
+          .format(Platform.isIOS ? dateTimestart : timeStartAndroid),
+      lessonTimeFinish: DateFormat.Hm()
+          .format(Platform.isIOS ? dateTimefinish : timeFinishAndroid),
       subject: _controllerSubject.text,
       currentDay: DateTime.now().day.toString(),
       currentMonth:
@@ -60,10 +57,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       currentYear: DateTime.now().year.toString(),
     ));
   }
-       
+
   @override
   Widget build(BuildContext context) {
-
     // final db = FirebaseDatabase.instance.ref().child('Groups');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;

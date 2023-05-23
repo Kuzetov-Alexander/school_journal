@@ -25,7 +25,7 @@ class _ShedulePageState extends State<ShedulePage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final providerSelectedIndex = context.watch<ProviderCalendar>().indexDay;
+    // final providerSelectedIndex = context.watch<ProviderCalendar>().indexDay;
     // final providerDays = context.watch<ProviderCalendar>().listOfDays;
 
     DateTime curentDateTime = context.watch<ProviderCalendar>().currentDate;
@@ -139,17 +139,21 @@ class _ShedulePageState extends State<ShedulePage> {
                                 controller: scrollController,
                                 // формула для вывода дней в текущем месяце,
                                 // все что вне текущего месяца не учитывается
-                                itemCount: DateTime(curentDateTime.year,
+                                itemCount: 1 +
+                                    DateTime(curentDateTime.year,
                                             curentDateTime.month, 0)
-                                        .day +
-                                    1,
+                                        .day,
+
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
-                                        context
-                                            .read<ProviderCalendar>()
-                                            .getCurrentDaySelectedIndex(index);
+                                        curentDateTime.day - 1 == index;
+                                        // curentDateTime = DateTime.now().add(
+                                        //     Duration(
+                                        //         days: index -
+                                        //             DateTime.now().day +
+                                        //             1));
                                         context
                                             .read<ProviderCalendar>()
                                             .getSelectedDate(index);
@@ -158,12 +162,12 @@ class _ShedulePageState extends State<ShedulePage> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: providerSelectedIndex == index
+                                        color: curentDateTime.day - 1 == index
                                             ? Colors.white
                                             : AppColors.purple,
                                         border: Border.all(
                                           width: 1,
-                                          color: providerSelectedIndex == index
+                                          color: curentDateTime.day - 1 == index
                                               ? Colors.white
                                               : Colors.purple.withOpacity(0.4),
                                         ),
@@ -177,11 +181,16 @@ class _ShedulePageState extends State<ShedulePage> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            DateFormat('E', 'ru')
-                                                .format(curentDateTime),
+                                            DateFormat('E', 'ru').format(
+                                              DateTime(DateTime.now().year,
+                                                      DateTime.now().month, 1)
+                                                  .add(
+                                                Duration(days: index),
+                                              ),
+                                            ),
                                             maxLines: 1,
                                             style: TextStyle(
-                                                color: providerSelectedIndex ==
+                                                color: curentDateTime.day - 1 ==
                                                         index
                                                     ? Colors.black
                                                     : Colors.white),
@@ -208,7 +217,7 @@ class _ShedulePageState extends State<ShedulePage> {
                                                 .day
                                                 .toString(),
                                             style: TextStyle(
-                                                color: providerSelectedIndex ==
+                                                color: curentDateTime.day - 1 ==
                                                         index
                                                     ? Colors.black
                                                     : Colors.white),
@@ -217,7 +226,7 @@ class _ShedulePageState extends State<ShedulePage> {
                                           Icon(
                                             Icons.circle_rounded,
                                             color:
-                                                providerSelectedIndex == index
+                                                curentDateTime.day - 1 == index
                                                     ? AppColors.purple
                                                     : Colors.white,
                                             size: 5,

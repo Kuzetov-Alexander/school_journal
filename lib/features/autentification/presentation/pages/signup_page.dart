@@ -70,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: BlocConsumer<AuthBloc, BlocAuthState>(listener: (context, state) {
         if (state is Authenticated) {
-          context.go('/Groups');
+          context.go('/SignIn');
         }
         if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -80,10 +80,11 @@ class _SignUpPageState extends State<SignUpPage> {
           );
         }
         if (state is AuthLoading) {
-         
-         Center(
-              child: Platform.isAndroid? const CircularProgressIndicator() :const CupertinoActivityIndicator() ,
-            );
+          Center(
+            child: Platform.isAndroid
+                ? const CircularProgressIndicator()
+                : const CupertinoActivityIndicator(),
+          );
         }
       }, builder: (context, state) {
         return SafeArea(

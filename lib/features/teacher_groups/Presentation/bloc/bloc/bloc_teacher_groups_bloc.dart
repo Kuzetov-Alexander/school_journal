@@ -11,9 +11,7 @@ class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
   // final CreateGroupRepository repository;
 
-  final dataBase = FirebaseDatabase.instance.ref();
-  final userId = FirebaseAuth.instance.currentUser?.uid;
-  final name = FirebaseAuth.instance.currentUser?.displayName;
+  // final dataBase = FirebaseDatabase.instance.ref();
 
   BlocTeacherGroupsBloc() : super(NoGroups()) {
 // Добавляем урок в общее расписание
@@ -44,9 +42,10 @@ class BlocTeacherGroupsBloc
     });
 
     on<CreateGroup>((event, emit) async {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       final dataBase =
           FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-          
+
       emit(IsCreatingGroup());
 
       final postData = {
@@ -57,7 +56,7 @@ class BlocTeacherGroupsBloc
         }
       };
 
-      dataBase.update(postData);
+      await dataBase.update(postData);
 
       // можно пуш добавить и будет уникальное имя
       // final newPostKey = dataBase.push().key! + event.groupName;
@@ -102,8 +101,7 @@ class BlocTeacherGroupsBloc
     });
 
     on<DeleteGroup>((event, emit) {
-      final dataBase =
-          FirebaseDatabase.instance.ref().child('${event.key}');
+      final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
       dataBase.remove();
     });
 
