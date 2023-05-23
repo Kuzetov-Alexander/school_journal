@@ -10,17 +10,17 @@ import 'package:school_journal/features/teacher_groups/Presentation/widgets/chan
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
-class ShedulePage extends StatefulWidget {
-  const ShedulePage({super.key});
+class SchedulePage extends StatefulWidget {
+  const SchedulePage({super.key});
 
   @override
-  State<ShedulePage> createState() => _ShedulePageState();
+  State<SchedulePage> createState() => _SchedulePageState();
 }
 
 /// Чтобы отслеживать прокрутку ListView
 ScrollController scrollController = ScrollController();
 
-class _ShedulePageState extends State<ShedulePage> {
+class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
@@ -51,12 +51,7 @@ class _ShedulePageState extends State<ShedulePage> {
       ),
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
-          // if (state is DownloadNameGroupsState) {
-          //   // print(state.allNamesGroup);
-          // //  listNamesGroup = state.allNamesGroup;  !!!!!!!// если на этой странице это закоментить, то при переходе
-          // назад со страницы добавить урок, лист будет равен нулю. иначе все будет ок
-          // //  print(listNamesGroup);
-          // }
+        
         },
         builder: (context, state) {
           return SafeArea(

@@ -21,7 +21,8 @@ import 'package:school_journal/features/autentification/presentation/provider.da
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/pages/shedule_page.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
 import 'package:school_journal/features/teacher_groups/data/repositories/create_group_repository_impl.dart';
@@ -47,9 +48,11 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ProviderLoginBool>(
+          
           create: (context) => ProviderLoginBool(),
         ),
         ChangeNotifierProvider<ProviderGroup>(
+          lazy: false,
           create: (context) => ProviderGroup(),
         ),
         ChangeNotifierProvider<ProviderCalendar>(
@@ -94,7 +97,7 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'Shedule',
             name: 'Shedule',
-            builder: (context, state) => const ShedulePage(),
+            builder: (context, state) => const SchedulePage(),
           ),
           GoRoute(
             path: 'TeacherGroup',
@@ -155,7 +158,7 @@ class MyApp extends StatelessWidget {
                 : const MyBehaviorIOS(),
             theme: ThemeData(
                 useMaterial3:
-                    true, // при добавлении обновляет размеры элементов, интересно почему?
+                    true, 
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),

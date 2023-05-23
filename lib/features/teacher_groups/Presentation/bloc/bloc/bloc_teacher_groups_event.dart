@@ -8,19 +8,33 @@ abstract class BlocTeacherGroupsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CreateGroup extends BlocTeacherGroupsEvent {
+class CreateGroupEvent extends BlocTeacherGroupsEvent {
   final String groupName;
-  const CreateGroup({required this.groupName});
+  const CreateGroupEvent({required this.groupName});
 }
 
-class DeleteGroup extends BlocTeacherGroupsEvent {
+class DeleteGroupEvent extends BlocTeacherGroupsEvent {
   final String? key;
-  const DeleteGroup({required this.key});
+  const DeleteGroupEvent({required this.key});
 }
 
-class DownloadNameGroupsEvent extends BlocTeacherGroupsEvent {
-  // final String? key;
-  // const DownloadNameGroups({required this.key});
+class DownloadGroupNameEvent extends BlocTeacherGroupsEvent {
+
+}
+
+
+class DownloadSubjectNameEvent extends BlocTeacherGroupsEvent {
+final String selectedGroup;
+
+   const DownloadSubjectNameEvent({required this.selectedGroup});
+}
+
+
+class DownloadRoomNameEvent extends BlocTeacherGroupsEvent {
+ 
+final String selectedGroup;
+
+  const DownloadRoomNameEvent({required this.selectedGroup});
 }
 
 class AddLessonEvent extends BlocTeacherGroupsEvent {
@@ -29,15 +43,13 @@ class AddLessonEvent extends BlocTeacherGroupsEvent {
   final String lessonRoom;
   final String lessonTimeStart;
   final String lessonTimeFinish;
-  final String currentDay;
-  final String currentMonth;
-  final String currentYear;
+  final String currentDate;
+  
 
   const AddLessonEvent(
       {required this.subject,
-     required this.currentYear, 
-     required this.currentMonth,  
-     required this.currentDay,
+     required this.currentDate, 
+   
       required this.lessonRoom,
       required this.lessonTimeStart,
       required this.lessonTimeFinish,

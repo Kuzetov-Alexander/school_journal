@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_android.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -21,8 +23,6 @@ class BottomSheetModal extends StatefulWidget {
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
-  String selectedGroup = 'Название группы';
-  List<String> listGroupNames = [];
   final String _currentDay =
       '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}';
 
@@ -37,45 +37,70 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
-  void _downloadNameGroups(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
-        .add(DownloadNameGroupsEvent());
+  showTip(BuildContext context, double height) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
+      return Center(
+          child: Material(
+              color: Colors.transparent,
+              child: Padding(
+                  padding: EdgeInsets.only(top: height),
+                  child: const Text(
+                    'Подтвердите добавление',
+                    style: TextStyle(color: Colors.redAccent),
+                  ))));
+    });
+    overlayState.insert(overlayEntry);
+    await Future.delayed(const Duration(seconds: 1));
+    overlayEntry.remove();
   }
 
-  void _addLesson(context) {
+  void _downloadNameGroups(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(DownloadGroupNameEvent());
+      
+  }
+
+  void _addLesson(context, String groupName) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
-      groupNameforLesson: selectedGroup,
+      groupNameforLesson: groupName,
       lessonRoom: _controllerRoom.text,
-      lessonTimeStart: DateFormat.Hm()
-          .format(Platform.isIOS ? dateTimestart : timeStartAndroid),
-      lessonTimeFinish: DateFormat.Hm()
-          .format(Platform.isIOS ? dateTimefinish : timeFinishAndroid),
+      lessonTimeStart: DateFormat.Hm().format(
+          // Platform.isIOS
+          //   ?
+          dateTimestart
+          // : timeStartAndroid
+          ),
+      lessonTimeFinish: DateFormat.Hm().format(
+          // Platform.isIOS
+          //   ?
+          dateTimefinish
+          // : timeFinishAndroid
+          ),
       subject: _controllerSubject.text,
-      currentDay: DateTime.now().day.toString(),
-      currentMonth:
-          DateFormat('LLLL', 'ru').format(DateTime.now()).capitalize(),
-      currentYear: DateTime.now().year.toString(),
+      currentDate: DateFormat.yMMMd().format(DateTime.now())
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    // final db = FirebaseDatabase.instance.ref().child('Groups');
+    // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
+    //   DateTime  timeStartAndroid =  DateTime(year)  ;
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
       listener: (context, state) {
-        if (state is DownloadNameGroupsState) {
-          final List<String> listNames = [];
-          listGroupNames = listNames + state.allNamesGroup;
+        if (state is DownloadGroupNameState) {
+          provider.addGroupName(state.allNamesGroup);
+          
+        }
+        if (state is DownloadSubjectNameState) {
+          provider.addSubjectName(state.allSubjectGroup);
         }
       },
       builder: (context, state) {
-        if (state is DownloadNameGroupsState) {
-          final List<String> listNames = [];
-          listGroupNames = listNames + state.allNamesGroup;
-        }
-
+       
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -136,7 +161,6 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: heightScreen * 0.016,
-                                      // letterSpacing: 1,
                                       color: AppColors.gray5a5a5a),
                                 ),
                               ],
@@ -155,38 +179,46 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(selectedGroup == ''
-                                      ? "Название группы"
-                                      : selectedGroup),
+                                  Text(provider.listGroup.isEmpty
+                                      ? provider.selectedGroup
+                                      : provider.selectedGroup),
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
-
+                                        _controllerSubject.text = '';
                                       showCupertinoModalPopup(
                                           context: context,
                                           builder: (context) {
+                                          
                                             return Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: heightScreen * 0.7),
-                                              child: CupertinoPicker(
-                                                backgroundColor: Colors.white,
-                                                scrollController:
-                                                    FixedExtentScrollController(
-                                                        initialItem: 0),
-                                                itemExtent: 30,
-                                                onSelectedItemChanged: (value) {
-                                                  setState(
-                                                    () {
-                                                      selectedGroup =
-                                                          listGroupNames[value];
-                                                    },
-                                                  );
-                                                },
-                                                children: listGroupNames
-                                                    .map((e) => Text(e))
-                                                    .toList(),
-                                              ),
-                                            );
+                                                padding: EdgeInsets.only(
+                                                    top: heightScreen * 0.7),
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(
+                                                      child: CupertinoPickerWidget(
+                                                        
+                                                        listWidget: provider.listGroup
+                                                            .map((e) => Text(e))
+                                                            .toList(),
+                                                        onSelected: (value) {
+                                                          setState(() {});
+                                                          provider.selectedGroup =
+                                                              provider
+                                                                  .listGroup[value];
+                                                        },
+                                                      ),
+                                                    ),
+                                                    ColoredBox(
+                                                      color: Colors.white,
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          CupertinoButton(child: Text('Подтвердить'), onPressed: (){}),
+                                                        ],
+                                                      ))
+                                                  ],
+                                                ));
                                           });
                                     },
                                     child: const Text('Выбрать группу'),
@@ -202,6 +234,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             controllerClass: _controllerSubject,
                             hintTextx: 'Введите предмет',
                             labelTextx: 'Предмет',
+                            select: (value) {
+                              setState(() {});
+
+                              _controllerSubject.text =
+                                  provider.listSubjects[value];
+                            },
+                            // listWidget: provider.listSubjects
+                            //     .map((e) => Text(e))
+                            //     .toList(),
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -210,6 +251,11 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             controllerClass: _controllerRoom,
                             hintTextx: 'Введите кабинет (не обязательно)',
                             labelTextx: 'Кабинет',
+                            select: (value) {
+                              setState(() {});
+                              _controllerSubject.text =
+                                  provider.listSubjects[value];
+                            },
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -227,20 +273,21 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.black212525),
                               ),
-                              Platform.isIOS
-                                  ? IosTimePicker(
-                                      time: dateTimestart,
-                                      textTime:
-                                          '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTime) {
-                                        setState(
-                                          () {
-                                            dateTimestart = newTime;
-                                          },
-                                        );
-                                      },
-                                    )
-                                  : const TimerPickerAndroidStart()
+                              // Platform.isIOS
+                              //     ?
+                              IosTimePicker(
+                                time: dateTimestart,
+                                textTime:
+                                    '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                onTimeSelected: (DateTime newTime) {
+                                  setState(
+                                    () {
+                                      dateTimestart = newTime;
+                                    },
+                                  );
+                                },
+                              )
+                              // : const TimerPickerAndroidStart()
                             ],
                           ),
                           Row(
@@ -253,19 +300,20 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.black212525),
                               ),
-                              Platform.isIOS
-                                  ? IosTimePicker(
-                                      time: dateTimefinish,
-                                      textTime:
-                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTimefinish) {
-                                        setState(() {
-                                          dateTimefinish =
-                                              newTimefinish; // делать через блок или провайдер лучше?
-                                        });
-                                      },
-                                    )
-                                  : const TimerPickerAndroidFinish()
+                              // Platform.isIOS
+                              //     ?
+                              IosTimePicker(
+                                time: dateTimefinish,
+                                textTime:
+                                    '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                onTimeSelected: (DateTime newTimefinish) {
+                                  setState(() {
+                                    dateTimefinish =
+                                        newTimefinish; // делать через блок или провайдер лучше?
+                                  });
+                                },
+                              )
+                              // : const TimerPickerAndroidFinish()
                             ],
                           ),
                         ],
@@ -301,6 +349,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   context
                                       .read<ProviderGroup>()
                                       .addNewLesson(value);
+                                  provider.newLessonSaved = value;
                                 },
                               )
                             : Switch(
@@ -311,6 +360,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   context
                                       .read<ProviderGroup>()
                                       .addNewLesson(value);
+                                  provider.newLessonSaved = value;
                                 },
                               ),
                       ],
@@ -335,8 +385,16 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                       ),
                     ),
                     onPressed: () {
-                      // print(selectedGroup);
-                      _addLesson(context);
+                      if (provider.newLessonAdded) {
+                        _addLesson(context, provider.selectedGroup);
+                        setState(() {
+                          _controllerSubject.text = '';
+                          _controllerRoom.text = '';
+                        });
+                        Navigator.of(context).pop();
+                      } else {
+                        showTip(context, heightScreen * 0.68);
+                      }
                     },
                     child: Text(
                       'Добавить',
@@ -361,19 +419,27 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 }
 
 class TextformFieldWidget extends StatelessWidget {
-  const TextformFieldWidget({
+  TextformFieldWidget({
     super.key,
     required TextEditingController controllerClass,
     required this.hintTextx,
     required this.labelTextx,
+    required this.select,
+    // required this.listWidget,
   }) : _controllerClass = controllerClass;
 
+  void Function(int)? select;
+
+  // List<Widget> listWidget;
   final TextEditingController _controllerClass;
   final String hintTextx;
   final String labelTextx;
 
   @override
   Widget build(BuildContext context) {
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
+    double heightScreen = MediaQuery.of(context).size.height;
+
     return TextFormField(
       keyboardType: TextInputType.name,
       autocorrect: false,
@@ -412,10 +478,29 @@ class TextformFieldWidget extends StatelessWidget {
             color: Color(0xff9D9D9D),
             fontWeight: FontWeight.w600,
             fontSize: 10),
-        suffixIcon: const Image(
-          height: 20,
-          image: AssetImage('assets/images/pen_icon.png'),
-          color: Colors.black,
+        suffixIcon: InkWell(
+          onTap: () {
+            BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                DownloadSubjectNameEvent(
+                    selectedGroup: provider.selectedGroup));
+
+            showCupertinoModalPopup(
+                context: context,
+                builder: (context) {
+                  return Padding(
+                      padding: EdgeInsets.only(top: heightScreen * 0.7),
+                      child: CupertinoPickerWidget(
+                        listWidget:
+                            provider.listSubjects.map((e) => Text(e)).toList(),
+                        onSelected: select,
+                      ));
+                });
+          },
+          child: const Image(
+            height: 20,
+            image: AssetImage('assets/images/pen_icon.png'),
+            color: Colors.black,
+          ),
         ),
       ),
     );

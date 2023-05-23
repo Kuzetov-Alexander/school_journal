@@ -7,45 +7,56 @@ abstract class BlocTeacherGroupsState extends Equatable {
   List<Object> get props => [];
 }
 
-class IsCreatingGroup extends BlocTeacherGroupsState {
+class IsCreatingGroupState extends BlocTeacherGroupsState {
   @override
   List<Object> get props => [];
 }
 
-class IsCreatedGroup extends BlocTeacherGroupsState {
-  final List<List<Object?>> allCreatedGroup;
+class IsCreatedGroupState extends BlocTeacherGroupsState {
+  // final List<List<Object?>> allCreatedGroup;
 
-  const IsCreatedGroup({required this.allCreatedGroup});
+  // const IsCreatedGroup({required this.allCreatedGroup});
 
-  @override
-  List<Object> get props => [allCreatedGroup];
+  // @override
+  // List<Object> get props => [allCreatedGroup];
 }
 
-class NoGroups extends BlocTeacherGroupsState {
+class NoGroupsState extends BlocTeacherGroupsState {
   @override
   List<Object> get props => [];
 }
 
-class DownloadNameGroupsState extends BlocTeacherGroupsState {
+class UpdateState extends BlocTeacherGroupsState {}
+
+class DownloadGroupNameState extends BlocTeacherGroupsState {
   final List<String> allNamesGroup;
 
-  const DownloadNameGroupsState({required this.allNamesGroup});
+  const DownloadGroupNameState({
+    required this.allNamesGroup,
+  });
   @override
   List<Object> get props => [];
 }
 
+class DownloadSubjectNameState extends BlocTeacherGroupsState {
+  final List<dynamic> allSubjectGroup;
+
+  const DownloadSubjectNameState({
+    required this.allSubjectGroup,
+  });
+  @override
+  List<Object> get props => [];
+}
 
 class AddedLessonState extends BlocTeacherGroupsState {
-  
   @override
   List<Object> get props => [];
 }
 
-
-class DatabaseError extends BlocTeacherGroupsState {
+class DatabaseErrorState extends BlocTeacherGroupsState {
   final String error;
 
-  const DatabaseError({required this.error});
+  const DatabaseErrorState({required this.error});
 
   @override
   List<Object> get props => [error];

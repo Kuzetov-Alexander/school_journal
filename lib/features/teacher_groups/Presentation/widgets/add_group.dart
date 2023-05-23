@@ -21,7 +21,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
 
   void _createGroup(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
-        .add(CreateGroup(groupName: _controllerClass.text));
+        .add(CreateGroupEvent(groupName: _controllerClass.text));
   }
 
   @override

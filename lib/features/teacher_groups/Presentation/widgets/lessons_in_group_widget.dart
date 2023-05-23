@@ -1,7 +1,10 @@
-
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:school_journal/common/color.dart';
 import 'dart:io' show Platform;
 
@@ -12,14 +15,23 @@ class LessonsInGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final dataBase =
+        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return ListView.separated(
+    return FirebaseAnimatedList(
+      query: dataBase.child('${DateFormat.yMMMd().format(DateTime.now())}'),
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 4,
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
+          int index) {
+        Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
+       List<dynamic> lessonInfo = lessonsInfo.values.toList();
+     
+       
         return Padding(
           padding: EdgeInsets.only(bottom: heightScreen * 0.022),
           child: Row(
@@ -28,15 +40,15 @@ class LessonsInGroup extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    '9:00',
+                    '${lessonInfo[2]}',
                     style: TextStyle(
                         color: AppColors.black212525,
-                        fontSize: heightScreen * 0.02),
+                        fontSize: heightScreen * 0.018),
                   ),
                   SizedBox(
                     height: heightScreen * 0.01,
                   ),
-                  Text('10:30',
+                  Text('${lessonInfo[4]}',
                       style: TextStyle(
                           color: AppColors.greybcc1cd,
                           fontSize: heightScreen * 0.018))
@@ -66,7 +78,7 @@ class LessonsInGroup extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Группа',
+                                  '${lessonInfo[0]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.02,
                                     color: AppColors.black212525,
@@ -99,7 +111,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  'Комната 2-136',
+                                  '${lessonInfo[1]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -125,7 +137,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  'Предмет',
+                                  '${lessonInfo[5]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -149,7 +161,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  'Отметить присутсвующих',
+                                  '${lessonInfo[3]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -173,7 +185,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  'Задать домашнее задание',
+                                   '${lessonInfo[6]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -193,11 +205,7 @@ class LessonsInGroup extends StatelessWidget {
           ),
         );
       },
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          height: heightScreen * 0.01,
-        );
-      },
+     
     );
   }
 
@@ -233,8 +241,7 @@ class LessonsInGroup extends StatelessWidget {
             //     // barrierColor:Colors.transparent ,
             //     isScrollControlled: true,
             //     backgroundColor: Colors.transparent,
-                
-                
+
             //     context: context,
             //     builder: (context) => const TeacherEditClass(),
             //   );

@@ -28,6 +28,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
+      
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
