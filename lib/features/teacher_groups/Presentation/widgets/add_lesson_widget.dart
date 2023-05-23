@@ -58,6 +58,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   void _downloadNameGroups(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadGroupNameEvent());
+      
   }
 
   void _addLesson(context, String groupName) {
@@ -95,13 +96,14 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       listener: (context, state) {
         if (state is DownloadGroupNameState) {
           provider.addGroupName(state.allNamesGroup);
+          
         }
         if (state is DownloadSubjectNameState) {
           provider.addSubjectName(state.allSubjectGroup);
         }
       },
       builder: (context, state) {
-        print(state);
+       
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -186,7 +188,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
-
+                                        _controllerSubject.text = '';
                                       showCupertinoModalPopup(
                                           context: context,
                                           builder: (context) {
@@ -219,14 +221,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             controllerClass: _controllerSubject,
                             hintTextx: 'Введите предмет',
                             labelTextx: 'Предмет',
+                            select: (value) {
+                              setState(() {});
+
+                              _controllerSubject.text =
+                                  provider.listSubjects[value];
+                            },
                             // listWidget: provider.listSubjects
                             //     .map((e) => Text(e))
                             //     .toList(),
-                            // onSelected: (value) {
-                            //   setState(() {});
-                            //   _controllerSubject.text =
-                            //       provider.listSubjects[value];
-                            // },
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -235,8 +238,11 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             controllerClass: _controllerRoom,
                             hintTextx: 'Введите кабинет (не обязательно)',
                             labelTextx: 'Кабинет',
-                            // listWidget: [],
-                            // onSelected: null,
+                            select: (value) {
+                              setState(() {});
+                              _controllerSubject.text =
+                                  provider.listSubjects[value];
+                            },
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -405,11 +411,11 @@ class TextformFieldWidget extends StatelessWidget {
     required TextEditingController controllerClass,
     required this.hintTextx,
     required this.labelTextx,
-    // required this.onSelected,
+    required this.select,
     // required this.listWidget,
   }) : _controllerClass = controllerClass;
 
-  // void Function(int)? onSelected;
+  void Function(int)? select;
 
   // List<Widget> listWidget;
   final TextEditingController _controllerClass;
@@ -461,11 +467,9 @@ class TextformFieldWidget extends StatelessWidget {
             fontSize: 10),
         suffixIcon: InkWell(
           onTap: () {
-            print(provider.selectedGroup);
             BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
                 DownloadSubjectNameEvent(
                     selectedGroup: provider.selectedGroup));
-            print(provider.listSubjects);
 
             showCupertinoModalPopup(
                 context: context,
@@ -473,13 +477,9 @@ class TextformFieldWidget extends StatelessWidget {
                   return Padding(
                       padding: EdgeInsets.only(top: heightScreen * 0.7),
                       child: CupertinoPickerWidget(
-                       listWidget: provider.listSubjects
-                                .map((e) => Text(e))
-                                .toList(),
-                            onSelected: (value) {
-                              // setState(() {});
-                              // _controllerSubject.text =
-                                  provider.listSubjects[value];}
+                        listWidget:
+                            provider.listSubjects.map((e) => Text(e)).toList(),
+                        onSelected: select,
                       ));
                 });
           },

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
 
 part 'bloc_teacher_groups_event.dart';
 part 'bloc_teacher_groups_state.dart';
@@ -20,26 +19,30 @@ class BlocTeacherGroupsBloc
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
       emit(AddedLessonState());
-      final dataSnapshot = await dataBase.child('Users/$userId/Groups').once();
+      // final dataSnapshot = await dataBase.child('Users/$userId').once();
 
-      String? currentGroupKey = dataSnapshot.snapshot.children
-          .firstWhere((e) => e.key == event.groupNameforLesson)
-          .key;
+      // String? currentGroupKey = dataSnapshot.snapshot.children
+      //     .firstWhere((e) => e.key == event.groupNameforLesson)
+      //     .key;
 
       final lessonData = {
         event.lessonTimeStart: {
           'Subject': event.subject,
           'LessonRoom': event.lessonRoom,
-          'lessonTimeFinish': event.lessonTimeFinish
+          'lessonTimeStart': event.lessonTimeStart,
+          'lessonTimeFinish': event.lessonTimeFinish,
+          'Group' : event.groupNameforLesson,
+          'Homework' : 'не задано',
+          'StudentAmountatLesson' : '0'
         }
       };
       await dataBase
           .child(
-              'Users/$userId/Groups/$currentGroupKey/Schedule/${event.currentYear}/${event.currentMonth}/${event.currentDay}')
+              'Users/$userId/Schedule/${event.currentYear}/${event.currentMonth}/${event.currentDay}')
           .update(lessonData);
 
       await dataBase
-          .child('Users/$userId/Groups/$currentGroupKey/allSubject')
+          .child('Users/$userId/Groups/${event.groupNameforLesson}/allSubject')
           .update({event.subject: ''});
     });
 
@@ -95,35 +98,68 @@ class BlocTeacherGroupsBloc
           }
         }
         emit(DownloadGroupNameState(
-            allNamesGroup: groupNames,
-            ));
-           
+          allNamesGroup: groupNames,
+        ));
       }
     });
 
+    on<DownloadSubjectNameEvent>((event, emit) async {
+      final dataShot = await dataBase
+          .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
+          .once();
 
- on<DownloadSubjectNameEvent>((event, emit) async {
-   final dataShot = await dataBase
-            .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
-            .once();
+      List<dynamic> subjectNames = [];
+      final dataSubject = dataShot.snapshot.value;
 
-        List<dynamic> subjectNames = [];
-        final dataSubject = dataShot.snapshot.value;
-       
-        if (dataSubject is Map) {
-          subjectNames = dataSubject.keys.toList();
-           
-        }
-         
-        emit(DownloadSubjectNameState(
-              allSubjectGroup: subjectNames,
-            ));
-            
- });
+      if (dataSubject is Map) {
+        subjectNames = dataSubject.keys.toList();
+      }
 
-
+      emit(DownloadSubjectNameState(
+        allSubjectGroup: subjectNames,
+      ));
+    });
   }
 }
+
+
+
+
+
+// Первая версия добавления урока
+
+// on<AddLessonEvent>((event, emit) async {
+//       emit(AddedLessonState());
+//       final dataSnapshot = await dataBase.child('Users/$userId/Groups').once();
+
+//       String? currentGroupKey = dataSnapshot.snapshot.children
+//           .firstWhere((e) => e.key == event.groupNameforLesson)
+//           .key;
+
+//       final lessonData = {
+//         event.lessonTimeStart: {
+//           'Subject': event.subject,
+//           'LessonRoom': event.lessonRoom,
+//           'lessonTimeFinish': event.lessonTimeFinish
+//         }
+//       };
+//       await dataBase
+//           .child(
+//               'Users/$userId/Groups/$currentGroupKey/Schedule/${event.currentYear}/${event.currentMonth}/${event.currentDay}')
+//           .update(lessonData);
+
+//       await dataBase
+//           .child('Users/$userId/Groups/$currentGroupKey/allSubject')
+//           .update({event.subject: ''});
+//     });
+
+
+
+
+
+
+
+
 
 
 

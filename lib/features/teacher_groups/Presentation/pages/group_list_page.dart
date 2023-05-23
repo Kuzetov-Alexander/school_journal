@@ -53,7 +53,7 @@ class _GroupListPageState extends State<GroupListPage> {
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     final db = FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-    ProviderGroup _provider = Provider.of<ProviderGroup>(context);
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
@@ -197,7 +197,7 @@ class _GroupListPageState extends State<GroupListPage> {
                                           _deleteGroup(context,
                                               key:
                                                   'Users/$userId/Groups/${snapshot.key}');
-                                          _provider.deleteGroupName(snapshot
+                                          provider.deleteGroupName(snapshot
                                               .children.first.value
                                               .toString());
                                         },
