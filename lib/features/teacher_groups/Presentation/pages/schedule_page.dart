@@ -25,8 +25,6 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    // final providerSelectedIndex = context.watch<ProviderCalendar>().indexDay;
-    // final providerDays = context.watch<ProviderCalendar>().listOfDays;
 
     DateTime curentDateTime = context.watch<ProviderCalendar>().currentDate;
 
@@ -50,9 +48,7 @@ class _SchedulePageState extends State<SchedulePage> {
         automaticallyImplyLeading: false,
       ),
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
-        listener: (context, state) {
-        
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           return SafeArea(
             child: SingleChildScrollView(
@@ -134,16 +130,23 @@ class _SchedulePageState extends State<SchedulePage> {
                                 controller: scrollController,
                                 // формула для вывода дней в текущем месяце,
                                 // все что вне текущего месяца не учитывается
-                                itemCount: 1 +
-                                    DateTime(curentDateTime.year,
-                                            curentDateTime.month, 0)
-                                        .day,
+                                itemCount: curentDateTime.month % 2 == 0
+                                    ? DateTime(curentDateTime.year,
+                                                curentDateTime.month, 0)
+                                            .day -
+                                        1
+                                    : 1 +
+                                        DateTime(curentDateTime.year,
+                                                curentDateTime.month, 0)
+                                            .day,
 
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
                                         curentDateTime.day - 1 == index;
+                                        // curentDateTime.day == index;
+
                                         // curentDateTime = DateTime.now().add(
                                         //     Duration(
                                         //         days: index -
@@ -177,8 +180,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                         children: [
                                           Text(
                                             DateFormat('E', 'ru').format(
-                                              DateTime(DateTime.now().year,
-                                                      DateTime.now().month, 1)
+                                              DateTime(curentDateTime.year,
+                                                      curentDateTime.month, 1)
                                                   .add(
                                                 Duration(days: index),
                                               ),

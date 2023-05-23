@@ -7,17 +7,20 @@ class ProviderCalendar extends ChangeNotifier {
   void getNextMonth() {
     currentDate =
         DateTime(currentDate.year, currentDate.month + 1, DateTime.now().day);
+    notifyListeners();
   }
 
   void getPreviousMonth() {
     currentDate =
         DateTime(currentDate.year, currentDate.month - 1, DateTime.now().day);
+    notifyListeners();
     // currentDate.month == DateTime.now().month ? DateTime.now().day : 1);
   }
 
   void getSelectedDate(int index) {
-    currentDate =
-        DateTime.now().add(Duration(days: index - DateTime.now().day + 1));
+    currentDate = currentDate.add(Duration(days: index - currentDate.day + 1));
+    // DateTime.now().add(Duration(days: index - DateTime.now().day + 1));
+    notifyListeners();
   }
 
   // void getCurrentDaySelectedIndex(int index) {
