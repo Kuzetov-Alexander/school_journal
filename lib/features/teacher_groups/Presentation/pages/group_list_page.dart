@@ -24,7 +24,7 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
-  void _deleteGroup(context, {required String? key}) {
+  void _deleteGroup(context, {required String key}) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DeleteGroupEvent(key: key));
   }
@@ -100,9 +100,8 @@ class _GroupListPageState extends State<GroupListPage> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                //
-                                final firebaseAuth = FirebaseAuth.instance;
-                                firebaseAuth.currentUser!.displayName;
+                                // final firebaseAuth = FirebaseAuth.instance;
+                                // firebaseAuth.currentUser!.displayName;
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
@@ -180,8 +179,8 @@ class _GroupListPageState extends State<GroupListPage> {
                       itemBuilder: (context, DataSnapshot snapshot,
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
-                        snapshot.key;
-                        // print(student);
+                        // snapshot.key;
+
                         return Column(
                           children: [
                             Padding(

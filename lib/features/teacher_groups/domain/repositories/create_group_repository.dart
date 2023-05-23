@@ -7,7 +7,7 @@ abstract class CreateGroupRepository {
 
   Future<Either<Failure, void>> updateGroup();
 
-  Future<Either<Failure, void>> removeGroup();
+  Future<Either<Failure, void>> deleteGroup({required String keyWidget});
 
   Future<Either<Failure, void>> readGroup();
   

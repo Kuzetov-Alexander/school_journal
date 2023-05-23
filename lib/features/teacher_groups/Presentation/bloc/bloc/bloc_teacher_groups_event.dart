@@ -14,25 +14,20 @@ class CreateGroupEvent extends BlocTeacherGroupsEvent {
 }
 
 class DeleteGroupEvent extends BlocTeacherGroupsEvent {
-  final String? key;
+  final String key;
   const DeleteGroupEvent({required this.key});
 }
 
-class DownloadGroupNameEvent extends BlocTeacherGroupsEvent {
-
-}
-
+class DownloadGroupNameEvent extends BlocTeacherGroupsEvent {}
 
 class DownloadSubjectNameEvent extends BlocTeacherGroupsEvent {
-final String selectedGroup;
+  final String selectedGroup;
 
-   const DownloadSubjectNameEvent({required this.selectedGroup});
+  const DownloadSubjectNameEvent({required this.selectedGroup});
 }
 
-
 class DownloadRoomNameEvent extends BlocTeacherGroupsEvent {
- 
-final String selectedGroup;
+  final String selectedGroup;
 
   const DownloadRoomNameEvent({required this.selectedGroup});
 }
@@ -44,12 +39,10 @@ class AddLessonEvent extends BlocTeacherGroupsEvent {
   final String lessonTimeStart;
   final String lessonTimeFinish;
   final String currentDate;
-  
 
   const AddLessonEvent(
       {required this.subject,
-     required this.currentDate, 
-   
+      required this.currentDate,
       required this.lessonRoom,
       required this.lessonTimeStart,
       required this.lessonTimeFinish,

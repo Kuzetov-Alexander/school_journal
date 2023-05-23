@@ -3,21 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 
 part 'bloc_teacher_groups_event.dart';
 part 'bloc_teacher_groups_state.dart';
 
 class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
-  // final CreateGroupRepository repository;
+  final CreateGroupRepository repository;
 
-  final dataBase = FirebaseDatabase.instance.ref();
-  final userId = FirebaseAuth.instance.currentUser?.uid;
-  
+  BlocTeacherGroupsBloc({required this.repository}) : super(NoGroupsState()) {
+    /// Создаем группу из ГЭ
+    on<CreateGroupEvent>((event, emit) async {
+      emit(IsCreatingGroupState());
+      await repository.createGroup(groupName: event.groupName);
+      emit(IsCreatedGroupState());
+    });
 
-  BlocTeacherGroupsBloc() : super(NoGroupsState()) {
-// Добавляем урок в общее расписание
+    /// Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
+      final dataBase = FirebaseDatabase.instance.ref();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       emit(AddedLessonState());
 
       final lessonData = {
@@ -40,38 +46,15 @@ class BlocTeacherGroupsBloc
           .update({event.subject: ''});
     });
 
-    on<CreateGroupEvent>((event, emit) async {
-      final dataBase =
-          FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-
-      emit(IsCreatingGroupState());
-
-      final postData = {
-        event.groupName: {
-          'GroupName': event.groupName,
-          'amountStudents': '0',
-          'nextLesson': 'нет',
-          'allStudents': 'пусто',
-          'allSubject': 'пусто'
-        }
-      };
-
-      dataBase.update(postData);
-      emit(IsCreatedGroupState());
-
-      //
-
-      //
-    });
-
+    /// Удалить группу из ГЭ
     on<DeleteGroupEvent>((event, emit) {
-      final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
-
-      dataBase.remove();
+      repository.deleteGroup(keyWidget: event.key);
       emit(UpdateState());
     });
 
     on<DownloadGroupNameEvent>((event, emit) async {
+      final dataBase = FirebaseDatabase.instance.ref();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
 
       if (dataSnapshot.exists) {
@@ -99,6 +82,8 @@ class BlocTeacherGroupsBloc
     });
 
     on<DownloadSubjectNameEvent>((event, emit) async {
+      final dataBase = FirebaseDatabase.instance.ref();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       final dataShot = await dataBase
           .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
           .once();

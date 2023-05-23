@@ -142,8 +142,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<BlocTeacherGroupsBloc>(
             lazy: false,
             create: (context) => BlocTeacherGroupsBloc(
-                // repository: RepositoryProvider.of<CreateGroupRepository>(context),
-                ),
+              repository: RepositoryProvider.of<CreateGroupRepository>(context),
+            ),
           ),
         ],
         child: MaterialApp.router(
