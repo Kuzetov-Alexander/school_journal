@@ -49,12 +49,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String password,
   }) async {
     try {
-      final before = firebaseAuth.currentUser;
-
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      final after = firebaseAuth.currentUser;
-      print(after);
     } on FirebaseAuthException catch (error) {
       if (error.code == 'user-not-found') {
         throw Exception('No user found for that email.');

@@ -102,8 +102,7 @@ class _GroupListPageState extends State<GroupListPage> {
                               onPressed: () {
                                 //
                                 final firebaseAuth = FirebaseAuth.instance;
-                                final a = firebaseAuth.currentUser!.displayName;
-                                print('------------------$a');
+                                firebaseAuth.currentUser!.displayName;
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
@@ -182,7 +181,7 @@ class _GroupListPageState extends State<GroupListPage> {
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
                         snapshot.key;
-                        print(student);
+                        // print(student);
                         return Column(
                           children: [
                             Padding(

@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,14 +41,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // // TODO(Sanya) Уточнить где инициализировать?
-  // FirebaseDatabase database = FirebaseDatabase.instance;
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ProviderLoginBool>(
-          
           create: (context) => ProviderLoginBool(),
         ),
         ChangeNotifierProvider<ProviderGroup>(
@@ -157,8 +154,7 @@ class MyApp extends StatelessWidget {
                 ? MyBehaviorAndroid()
                 : const MyBehaviorIOS(),
             theme: ThemeData(
-                useMaterial3:
-                    true, 
+                useMaterial3: true,
                 fontFamily: 'SF-Pro',
                 appBarTheme: const AppBarTheme(color: AppColors.greyLight)),
             routerConfig: _router),

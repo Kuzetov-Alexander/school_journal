@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProviderCalendar extends ChangeNotifier {
   DateTime currentDate =
@@ -23,33 +24,11 @@ class ProviderCalendar extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void getCurrentDaySelectedIndex(int index) {
-  //   currentDate.day - 1 = index;
-  // }
+  String getDayOfWeek(int index) {
+    return DateFormat('E', 'ru').format(
+      DateTime(currentDate.year, currentDate.month, 1).add(
+        Duration(days: index),
+      ),
+    );
+  }
 }
-
-// final items = List<DateTime>.generate(
-//   60,
-//   (i) => DateTime.utc(
-//     DateTime.now().year,
-//     DateTime.now().month,
-//     DateTime.now().day,
-//   ).add(
-//     Duration(days: i),
-//   ),
-// );
-
-  // List<String> listOfMonths = [
-  //   "Январь",
-  //   "Февраль",
-  //   "Март",
-  //   "Апрель",
-  //   "Май",
-  //   "Июнь",
-  //   "Июль",
-  //   "Август",
-  //   "Сентябрь",
-  //   "Октябрь",
-  //   "Ноябрь",
-  //   "Декабрь"
-  // ];

@@ -91,7 +91,7 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-        print(groupNames);
+        // print(groupNames);
         emit(DownloadGroupNameState(
           allNamesGroup: groupNames,
         ));

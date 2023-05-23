@@ -178,14 +178,11 @@ class _SchedulePageState extends State<SchedulePage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
+                                          // TODO(Sanya) Подумать как внедрить по другому?
                                           Text(
-                                            DateFormat('E', 'ru').format(
-                                              DateTime(curentDateTime.year,
-                                                      curentDateTime.month, 1)
-                                                  .add(
-                                                Duration(days: index),
-                                              ),
-                                            ),
+                                            context
+                                                .read<ProviderCalendar>()
+                                                .getDayOfWeek(index),
                                             maxLines: 1,
                                             style: TextStyle(
                                                 color: curentDateTime.day - 1 ==

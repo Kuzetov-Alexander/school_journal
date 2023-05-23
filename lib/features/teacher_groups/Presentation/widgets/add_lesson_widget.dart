@@ -58,28 +58,26 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   void _downloadNameGroups(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadGroupNameEvent());
-      
   }
 
   void _addLesson(context, String groupName) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
-      groupNameforLesson: groupName,
-      lessonRoom: _controllerRoom.text,
-      lessonTimeStart: DateFormat.Hm().format(
-          // Platform.isIOS
-          //   ?
-          dateTimestart
-          // : timeStartAndroid
-          ),
-      lessonTimeFinish: DateFormat.Hm().format(
-          // Platform.isIOS
-          //   ?
-          dateTimefinish
-          // : timeFinishAndroid
-          ),
-      subject: _controllerSubject.text,
-      currentDate: DateFormat.yMMMd().format(DateTime.now())
-    ));
+        groupNameforLesson: groupName,
+        lessonRoom: _controllerRoom.text,
+        lessonTimeStart: DateFormat.Hm().format(
+            // Platform.isIOS
+            //   ?
+            dateTimestart
+            // : timeStartAndroid
+            ),
+        lessonTimeFinish: DateFormat.Hm().format(
+            // Platform.isIOS
+            //   ?
+            dateTimefinish
+            // : timeFinishAndroid
+            ),
+        subject: _controllerSubject.text,
+        currentDate: DateFormat.yMMMd().format(DateTime.now())));
   }
 
   @override
@@ -93,14 +91,12 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
       listener: (context, state) {
         if (state is DownloadGroupNameState) {
           provider.addGroupName(state.allNamesGroup);
-          
         }
         if (state is DownloadSubjectNameState) {
           provider.addSubjectName(state.allSubjectGroup);
         }
       },
       builder: (context, state) {
-       
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -185,40 +181,47 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
-                                        _controllerSubject.text = '';
+                                      _controllerSubject.text = '';
                                       showCupertinoModalPopup(
                                           context: context,
                                           builder: (context) {
-                                          
                                             return Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: heightScreen * 0.7),
-                                                child: Column(
-                                                  children: [
-                                                    Expanded(
-                                                      child: CupertinoPickerWidget(
-                                                        
-                                                        listWidget: provider.listGroup
-                                                            .map((e) => Text(e))
-                                                            .toList(),
-                                                        onSelected: (value) {
-                                                          setState(() {});
-                                                          provider.selectedGroup =
-                                                              provider
-                                                                  .listGroup[value];
-                                                        },
-                                                      ),
+                                              padding: EdgeInsets.only(
+                                                  top: heightScreen * 0.7),
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child:
+                                                        CupertinoPickerWidget(
+                                                      listWidget: provider
+                                                          .listGroup
+                                                          .map((e) => Text(e))
+                                                          .toList(),
+                                                      onSelected: (value) {
+                                                        setState(() {});
+                                                        provider.selectedGroup =
+                                                            provider.listGroup[
+                                                                value];
+                                                      },
                                                     ),
-                                                    ColoredBox(
-                                                      color: Colors.white,
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          CupertinoButton(child: Text('Подтвердить'), onPressed: (){}),
-                                                        ],
-                                                      ))
-                                                  ],
-                                                ));
+                                                  ),
+                                                  ColoredBox(
+                                                    color: Colors.white,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        CupertinoButton(
+                                                            child: const Text(
+                                                                'Подтвердить'),
+                                                            onPressed: () {}),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
                                           });
                                     },
                                     child: const Text('Выбрать группу'),

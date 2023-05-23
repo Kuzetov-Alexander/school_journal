@@ -22,16 +22,15 @@ class LessonsInGroup extends StatelessWidget {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return FirebaseAnimatedList(
-      query: dataBase.child('${DateFormat.yMMMd().format(DateTime.now())}'),
+      query: dataBase.child(DateFormat.yMMMd().format(DateTime.now())),
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
           int index) {
         Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
-       List<dynamic> lessonInfo = lessonsInfo.values.toList();
-     
-       
+        List<dynamic> lessonInfo = lessonsInfo.values.toList();
+
         return Padding(
           padding: EdgeInsets.only(bottom: heightScreen * 0.022),
           child: Row(
@@ -185,7 +184,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                   '${lessonInfo[6]}',
+                                  '${lessonInfo[6]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -205,7 +204,6 @@ class LessonsInGroup extends StatelessWidget {
           ),
         );
       },
-     
     );
   }
 
