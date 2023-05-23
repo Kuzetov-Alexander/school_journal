@@ -43,15 +43,13 @@ class AddLessonEvent extends BlocTeacherGroupsEvent {
   final String lessonRoom;
   final String lessonTimeStart;
   final String lessonTimeFinish;
-  final String currentDay;
-  final String currentMonth;
-  final String currentYear;
+  final String currentDate;
+  
 
   const AddLessonEvent(
       {required this.subject,
-     required this.currentYear, 
-     required this.currentMonth,  
-     required this.currentDay,
+     required this.currentDate, 
+   
       required this.lessonRoom,
       required this.lessonTimeStart,
       required this.lessonTimeFinish,

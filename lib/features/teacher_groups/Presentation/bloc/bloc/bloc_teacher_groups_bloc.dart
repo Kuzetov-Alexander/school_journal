@@ -19,11 +19,7 @@ class BlocTeacherGroupsBloc
 // Добавляем урок в общее расписание
     on<AddLessonEvent>((event, emit) async {
       emit(AddedLessonState());
-      // final dataSnapshot = await dataBase.child('Users/$userId').once();
-
-      // String? currentGroupKey = dataSnapshot.snapshot.children
-      //     .firstWhere((e) => e.key == event.groupNameforLesson)
-      //     .key;
+   
 
       final lessonData = {
         event.lessonTimeStart: {
@@ -38,7 +34,7 @@ class BlocTeacherGroupsBloc
       };
       await dataBase
           .child(
-              'Users/$userId/Schedule/${event.currentYear}/${event.currentMonth}/${event.currentDay}')
+              'Users/$userId/Schedule/${event.currentDate}')
           .update(lessonData);
 
       await dataBase
@@ -97,6 +93,7 @@ class BlocTeacherGroupsBloc
             }
           }
         }
+        print(groupNames);
         emit(DownloadGroupNameState(
           allNamesGroup: groupNames,
         ));

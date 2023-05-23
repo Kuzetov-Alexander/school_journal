@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:school_journal/common/color.dart';
 import 'dart:io' show Platform;
 
@@ -17,11 +18,11 @@ class LessonsInGroup extends StatelessWidget {
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     final dataBase =
-        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule/2023/Май/23');
+        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return FirebaseAnimatedList(
-      query: dataBase,
+      query: dataBase.child('${DateFormat.yMMMd().format(DateTime.now())}'),
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -29,7 +30,8 @@ class LessonsInGroup extends StatelessWidget {
           int index) {
         Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
        List<dynamic> lessonInfo = lessonsInfo.values.toList();
-        print(lessonInfo);
+     
+       
         return Padding(
           padding: EdgeInsets.only(bottom: heightScreen * 0.022),
           child: Row(
@@ -159,7 +161,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  'Отметить присутсвующих',
+                                  '${lessonInfo[3]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -183,7 +185,7 @@ class LessonsInGroup extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  'Задать домашнее задание',
+                                   '${lessonInfo[6]}',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,

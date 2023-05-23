@@ -78,10 +78,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
           // : timeFinishAndroid
           ),
       subject: _controllerSubject.text,
-      currentDay: DateTime.now().day.toString(),
-      currentMonth:
-          DateFormat('LLLL', 'ru').format(DateTime.now()).capitalize(),
-      currentYear: DateTime.now().year.toString(),
+      currentDate: DateFormat.yMMMd().format(DateTime.now())
     ));
   }
 
@@ -192,19 +189,35 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                       showCupertinoModalPopup(
                                           context: context,
                                           builder: (context) {
+                                          
                                             return Padding(
                                                 padding: EdgeInsets.only(
                                                     top: heightScreen * 0.7),
-                                                child: CupertinoPickerWidget(
-                                                  listWidget: provider.listGroup
-                                                      .map((e) => Text(e))
-                                                      .toList(),
-                                                  onSelected: (value) {
-                                                    setState(() {});
-                                                    provider.selectedGroup =
-                                                        provider
-                                                            .listGroup[value];
-                                                  },
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(
+                                                      child: CupertinoPickerWidget(
+                                                        
+                                                        listWidget: provider.listGroup
+                                                            .map((e) => Text(e))
+                                                            .toList(),
+                                                        onSelected: (value) {
+                                                          setState(() {});
+                                                          provider.selectedGroup =
+                                                              provider
+                                                                  .listGroup[value];
+                                                        },
+                                                      ),
+                                                    ),
+                                                    ColoredBox(
+                                                      color: Colors.white,
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          CupertinoButton(child: Text('Подтвердить'), onPressed: (){}),
+                                                        ],
+                                                      ))
+                                                  ],
                                                 ));
                                           });
                                     },
