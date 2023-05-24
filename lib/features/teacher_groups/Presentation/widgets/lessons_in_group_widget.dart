@@ -4,31 +4,48 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'dart:io' show Platform;
 
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_edit_class.dart';
+
+import '../../provider/provider_calendar.dart';
 
 class LessonsInGroup extends StatelessWidget {
   const LessonsInGroup({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
+      String providerDate = context.watch<ProviderCalendar>().day;
+  
+
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    final dataBase =
-        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
+    var dataBase = FirebaseDatabase.instance
+        .ref()
+        .child('Users/$userId/Schedule/ $providerDate');
+   
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+
     return FirebaseAnimatedList(
-      query: dataBase.child(DateFormat.yMMMd().format(DateTime.now())),
+      query: dataBase,
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
           int index) {
+             print('Выбранная дата: ${providerDate}');
+            if (snapshot.exists) {
+            print(snapshot.key);}
+            else {
+              print('false');
+            }
         Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
+
         List<dynamic> lessonInfo = lessonsInfo.values.toList();
 
         return Padding(

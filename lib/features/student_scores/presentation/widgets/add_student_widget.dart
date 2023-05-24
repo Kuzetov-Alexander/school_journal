@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 
 class AddStudentWidget extends StatefulWidget {
   const AddStudentWidget({super.key});
@@ -13,6 +15,11 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
 
+void addNewstudent(context) {
+    BlocProvider.of<ScoresPageBloc>(context).add(AddNewStudentEvent(
+      studentName: _controllerName.text, groupName: '4b Class', email: _controllerEmail.text
+        ));
+  }
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
@@ -178,7 +185,10 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
                       ),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    addNewstudent(context);
+                    Navigator.of(context).pop();
+                  },
                   child: Text(
                     'Добавить',
                     style: TextStyle(

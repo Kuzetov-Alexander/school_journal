@@ -18,7 +18,9 @@ import 'package:school_journal/features/autentification/presentation/pages/signi
 import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
@@ -26,7 +28,7 @@ import 'package:school_journal/features/teacher_groups/Presentation/pages/schedu
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
 import 'package:school_journal/features/teacher_groups/data/repositories/create_group_repository_impl.dart';
-import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/domain/repositories/create_group_repository.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
@@ -54,7 +56,10 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider<ProviderCalendar>(
           create: (context) => ProviderCalendar(),
-        )
+        ),
+        ChangeNotifierProvider<ProviderScorePage>(
+          create: (context) => ProviderScorePage(),
+        ),
       ],
       child: MyApp(),
     ),
@@ -143,6 +148,12 @@ class MyApp extends StatelessWidget {
             lazy: false,
             create: (context) => BlocTeacherGroupsBloc(
                 // repository: RepositoryProvider.of<CreateGroupRepository>(context),
+                ),
+          ),
+          BlocProvider<ScoresPageBloc>(
+            lazy: false,
+            create: (context) => ScoresPageBloc(
+               
                 ),
           ),
         ],

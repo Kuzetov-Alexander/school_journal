@@ -14,6 +14,7 @@ import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupe
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
 class BottomSheetModal extends StatefulWidget {
   const BottomSheetModal({super.key});
@@ -23,9 +24,6 @@ class BottomSheetModal extends StatefulWidget {
 }
 
 class _BottomSheetModalState extends State<BottomSheetModal> {
-  final String _currentDay =
-      '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}';
-
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
@@ -60,7 +58,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         .add(DownloadGroupNameEvent());
   }
 
-  void _addLesson(context, String groupName) {
+  void _addLesson(context, String groupName, String currentDay) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
         groupNameforLesson: groupName,
         lessonRoom: _controllerRoom.text,
@@ -77,13 +75,14 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
             // : timeFinishAndroid
             ),
         subject: _controllerSubject.text,
-        currentDate: DateFormat.yMMMd().format(DateTime.now())));
+        currentDate: currentDay));
   }
 
   @override
   Widget build(BuildContext context) {
     // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
     //   DateTime  timeStartAndroid =  DateTime(year)  ;
+    ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
@@ -153,7 +152,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             child: Row(
                               children: [
                                 Text(
-                                  _currentDay,
+                                 
+                                  '${DateFormat('EEEE', 'ru').format(providerDate.currentDate).capitalize()} , ${DateFormat('d MMM', 'ru').format(providerDate.currentDate)}'
+                                  ,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: heightScreen * 0.016,
@@ -199,9 +200,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                                           .toList(),
                                                       onSelected: (value) {
                                                         setState(() {});
-                                                        provider.selectedGroup =
-                                                            provider.listGroup[
-                                                                value];
+                                                        provider.listGroup
+                                                                .isEmpty
+                                                            ? provider
+                                                                    .selectedGroup =
+                                                                ''
+                                                            : provider
+                                                                    .selectedGroup =
+                                                                provider.listGroup[
+                                                                    value];
                                                       },
                                                     ),
                                                   ),
@@ -239,9 +246,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             labelTextx: 'Предмет',
                             select: (value) {
                               setState(() {});
-
-                              _controllerSubject.text =
-                                  provider.listSubjects[value];
+                              provider.listSubjects.isEmpty
+                                  ? _controllerSubject.text = ''
+                                  : _controllerSubject.text =
+                                      provider.listSubjects[value];
                             },
                             // listWidget: provider.listSubjects
                             //     .map((e) => Text(e))
@@ -389,7 +397,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                     ),
                     onPressed: () {
                       if (provider.newLessonAdded) {
-                        _addLesson(context, provider.selectedGroup);
+                        _addLesson(context, provider.selectedGroup,
+                            ' ${DateFormat('d MMM y', 'ru').format(providerDate.currentDate)}');
                         setState(() {
                           _controllerSubject.text = '';
                           _controllerRoom.text = '';
