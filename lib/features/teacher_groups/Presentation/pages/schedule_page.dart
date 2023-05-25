@@ -7,7 +7,8 @@ import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_schedule_widget.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_general_schedule_widget.dart';
+
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -340,7 +341,7 @@ class _SchedulePageState extends State<SchedulePage> {
                     SizedBox(
                       height: heightScreen * 0.02,
                     ),
-                    const LessonsInGroup(),
+                    const LessonsInGeneralSchedule(),
                   ],
                 ),
               ),

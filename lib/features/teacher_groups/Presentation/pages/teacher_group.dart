@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_general_schedule_widget.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_schedule_widget.dart';
 
-import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
+
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherGroupPage extends StatelessWidget {
@@ -264,7 +266,7 @@ class TeacherGroupPage extends StatelessWidget {
                     SizedBox(
                       height: heightScreen * 0.02,
                     ),
-                    const LessonsInGroup(),
+                    const LessonsInGroupSchedule(),
                   ],
                 ),
               ))),

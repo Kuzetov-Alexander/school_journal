@@ -13,8 +13,8 @@ import 'package:school_journal/features/teacher_groups/Presentation/pages/teache
 
 import '../../provider/provider_calendar.dart';
 
-class LessonsInGroup extends StatelessWidget {
-  const LessonsInGroup({super.key});
+class LessonsInGeneralSchedule extends StatelessWidget {
+  const LessonsInGeneralSchedule({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +26,34 @@ class LessonsInGroup extends StatelessWidget {
 
     var dataBase = FirebaseDatabase.instance
         .ref()
-        .child('Users/$userId/Schedule/ $providerDate');
+        .child('Users/$userId/Schedule');
+        
+      
    
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
+// getData (DataSnapshot shot) async {
+//     final map =  await shot.child('$providerDate').;
+    
+// };
     return FirebaseAnimatedList(
       query: dataBase,
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
-          int index) {
-            //  print('Выбранная дата: ${providerDate}');
-            if (snapshot.exists) {
-            // print(snapshot.key);
-            }
-            else {
-              // print('false');
-            }
-        Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
+          int index)   {
+          Map<dynamic,dynamic> map = snapshot.value as Map<dynamic,dynamic>;
+        //  getData(snapshot);
+    print(map.removeWhere((key, value) => ) );
+       
+       
+           
+          
+        // Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
 
-        List<dynamic> lessonInfo = lessonsInfo.values.toList();
+        // List<dynamic> lessonInfo = lessonsInfo.values.toList();
 
         return Padding(
           padding: EdgeInsets.only(bottom: heightScreen * 0.022),
@@ -56,8 +62,9 @@ class LessonsInGroup extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Text(
-                    '${lessonInfo[2]}',
+                  Text( ''
+                    // '${lessonInfo[2]}'
+                    ,
                     style: TextStyle(
                         color: AppColors.black212525,
                         fontSize: heightScreen * 0.018),
@@ -65,7 +72,9 @@ class LessonsInGroup extends StatelessWidget {
                   SizedBox(
                     height: heightScreen * 0.01,
                   ),
-                  Text('${lessonInfo[4]}',
+                  Text( ''
+                    // '${lessonInfo[4]}'
+                  ,
                       style: TextStyle(
                           color: AppColors.greybcc1cd,
                           fontSize: heightScreen * 0.018))
@@ -94,8 +103,9 @@ class LessonsInGroup extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  '${lessonInfo[0]}',
+                                Text(''
+                                  // '${lessonInfo[0]}'
+                                  ,
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.02,
                                     color: AppColors.black212525,
@@ -127,8 +137,9 @@ class LessonsInGroup extends StatelessWidget {
                                 SizedBox(
                                   width: widthScreen * 0.025,
                                 ),
-                                Text(
-                                  '${lessonInfo[1]}',
+                                Text(''
+                                  // '${lessonInfo[1]}'
+                                  ,
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -153,8 +164,9 @@ class LessonsInGroup extends StatelessWidget {
                                 SizedBox(
                                   width: widthScreen * 0.025,
                                 ),
-                                Text(
-                                  '${lessonInfo[5]}',
+                                Text(''
+                                  // '${lessonInfo[5]}'
+                                  ,
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -177,8 +189,9 @@ class LessonsInGroup extends StatelessWidget {
                                 SizedBox(
                                   width: widthScreen * 0.025,
                                 ),
-                                Text(
-                                  '${lessonInfo[3]}',
+                                Text(''
+                                  // '${lessonInfo[3]}'
+                                  ,
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -201,8 +214,9 @@ class LessonsInGroup extends StatelessWidget {
                                 SizedBox(
                                   width: widthScreen * 0.025,
                                 ),
-                                Text(
-                                  '${lessonInfo[6]}',
+                                Text(''
+                                  // '${lessonInfo[6]}' 
+                                  ,
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,

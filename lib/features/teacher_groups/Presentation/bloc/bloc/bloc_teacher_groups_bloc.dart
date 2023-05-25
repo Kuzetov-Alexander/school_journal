@@ -21,7 +21,7 @@ class BlocTeacherGroupsBloc
       emit(AddedLessonState());
 
       final lessonData = {
-        event.lessonTimeStart: {
+        event.lessonTimeStart + event.currentDate: {
           'Subject': event.subject,
           'LessonRoom': event.lessonRoom,
           'lessonTimeStart': event.lessonTimeStart,
@@ -107,6 +107,7 @@ class BlocTeacherGroupsBloc
 
       if (dataSubject is Map) {
         subjectNames = dataSubject.keys.toList();
+        
       }
 
       emit(DownloadSubjectNameState(
