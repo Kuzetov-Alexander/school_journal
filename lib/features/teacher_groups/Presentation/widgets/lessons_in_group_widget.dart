@@ -38,11 +38,12 @@ class LessonsInGroup extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
           int index) {
-             print('Выбранная дата: ${providerDate}');
+            //  print('Выбранная дата: ${providerDate}');
             if (snapshot.exists) {
-            print(snapshot.key);}
+            // print(snapshot.key);
+            }
             else {
-              print('false');
+              // print('false');
             }
         Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
 

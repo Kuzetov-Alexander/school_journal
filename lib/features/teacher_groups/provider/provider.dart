@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProviderGroup extends ChangeNotifier {
+  String currentGroup='';
   bool isSelected = false;
   bool newLessonAdded = false;
   bool newLessonSaved = true;

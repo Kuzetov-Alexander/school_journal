@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class MyGroupInfoWidget extends StatelessWidget {
   final Map mapGroups;
@@ -12,6 +14,7 @@ class MyGroupInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -19,6 +22,8 @@ class MyGroupInfoWidget extends StatelessWidget {
         InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: () {
+             provider.currentGroup = mapGroups['GroupName'].toString();
+            
             context.goNamed('TeacherGroup');
           },
           child: Container(

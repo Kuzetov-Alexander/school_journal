@@ -18,32 +18,37 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
 
       final allSubjects = await dataBase.child('allSubject').once();
       late dynamic data;
+      Map<String, Object> studentData = {};
+
       if (allSubjects.snapshot.value is String) {
         data = allSubjects.snapshot.value as String;
+        studentData = {
+          event.studentName: {
+            'Email': event.email,
+            'Subjects': '',
+          }
+        };
       } else {
         data = allSubjects.snapshot.value as Map<Object?, Object?>;
-      }
 
-      final List<String> subjects =
-          []; // Здесь будут храниться все значения ключа "GroupName"
+        final List<dynamic> dataList = data.keys.toList();
 
-      final List<dynamic> dataList = data.keys.toList();
+        Map<String?, Object?> mapSubjects = {};
+        Map generalMap = {
+          'data': {'grade': '', 'visit': ''}
+        };
 
-      Map<String?, Object?> mapSubjects = {};
-      Map generalMap = {
-        'data': {'grade': '', 'visit': ''}
-      };
-
-      for (var item in dataList) {
-        mapSubjects[item] = generalMap;
-      }
-
-      final studentData = {
-        event.studentName: {
-          'Email': event.email,
-          'Subjects': mapSubjects,
+        for (var item in dataList) {
+          mapSubjects[item] = generalMap;
         }
-      };
+
+        studentData = {
+          event.studentName: {
+            'Email': event.email,
+            'Subjects': mapSubjects,
+          }
+        };
+      }
 
       dataBase.child('allStudents').update(studentData);
       emit(AddedNewStudent());

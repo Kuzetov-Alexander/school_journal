@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/add_student_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/attestation_widget.dart';
@@ -42,6 +43,14 @@ class LandingPageState extends State<LandingPage> {
     double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+         leading: InkWell(
+          onTap: () => context.goNamed('TeacherGroup'),
+          child: const Image(
+            image: AssetImage(
+                'assets/images/arrow_left.png'), 
+          ),
+        ),
+        automaticallyImplyLeading: false,
         title: Text(
           selectedSubject,
         ),

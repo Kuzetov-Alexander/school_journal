@@ -8,13 +8,17 @@ import 'package:school_journal/features/teacher_groups/Presentation/widgets/less
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherGroupPage extends StatelessWidget {
-  const TeacherGroupPage({super.key});
+  const TeacherGroupPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+
     final provider = context.watch<ProviderGroup>().isSelected;
+    final providerGroup = Provider.of<ProviderGroup>(context).currentGroup;
     final dayofweek = DateFormat('EEEE', 'ru').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
@@ -22,12 +26,11 @@ class TeacherGroupPage extends StatelessWidget {
         leading: InkWell(
           onTap: () => context.go('/Groups'),
           child: const Image(
-            image: AssetImage(
-                'assets/images/arrow_left.png'), // вставляется с фоном , надо что-то придумать
+            image: AssetImage('assets/images/arrow_left.png'),
           ),
         ),
         title: Text(
-          'Группа 112',
+          ' $providerGroup',
           style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: heightScreen * 0.022,
@@ -73,7 +76,9 @@ class TeacherGroupPage extends StatelessWidget {
                               style: TextStyle(color: Colors.white),
                             ),
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.goNamed('StudentScores');
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
@@ -117,22 +122,18 @@ class TeacherGroupPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   vertical: heightScreen * 0.018),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: widthScreen*0.03),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: widthScreen * 0.03),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                
-                                       
-                                   
-                                         InkWell(
-                                          onTap: () {
-                                            
-                                          },
-                                           child: const Image(
-                                              image: AssetImage(
-                                                  'assets/images/arrow_left_white.png')),
-                                         ),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/arrow_left_white.png')),
+                                    ),
                                     Text(
                                       'Апрель',
                                       style: TextStyle(
@@ -141,13 +142,11 @@ class TeacherGroupPage extends StatelessWidget {
                                           fontWeight: FontWeight.w600),
                                     ),
                                     InkWell(
-                                          onTap: () {
-                                            
-                                          },
-                                           child: const Image(
-                                              image: AssetImage(
-                                                  'assets/images/arrow_right_white.png')),
-                                         ),
+                                      onTap: () {},
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/arrow_right_white.png')),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -217,9 +216,8 @@ class TeacherGroupPage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: heightScreen*0.02,
+                              height: heightScreen * 0.02,
                               width: double.infinity,
-                              
                             ),
                           ],
                         ),
@@ -237,10 +235,11 @@ class TeacherGroupPage extends StatelessWidget {
                               // letterSpacing: 1,
                               color: AppColors.black212525),
                         ),
-                        
                       ],
                     ),
-                    SizedBox(height: heightScreen*0.01,),
+                    SizedBox(
+                      height: heightScreen * 0.01,
+                    ),
                     Row(
                       children: [
                         Text(
@@ -271,8 +270,6 @@ class TeacherGroupPage extends StatelessWidget {
               ))),
     );
   }
-
- 
 }
 
 extension StringExtension on String {

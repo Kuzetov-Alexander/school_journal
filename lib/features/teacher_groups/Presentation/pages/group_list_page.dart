@@ -31,23 +31,7 @@ class _GroupListPageState extends State<GroupListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Map<int, Map<String, int>> myMap = {};
-
-    // for (int month = 0; month <= 12; month++) {
-    //   // Создаем внутреннюю Map для каждого месяца
-    //   Map<String, int> monthMap = {};
-
-    //   // Вычисляем количество дней в месяце
-    //   int daysInMonth = DateTime(2023, month + 1, 0).day;
-
-    //   // Добавляем дни в месяцев во внутреннюю Map
-    //   for (int day = 1; day <= daysInMonth; day++) {
-    //     monthMap['day$day'] = day;
-    //   }
-
-    //   // Добавляем внутреннюю Map в основную Map, используя номер месяца в качестве ключа
-    //   myMap[month] = monthMap;
-    // }
+  
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -181,7 +165,7 @@ class _GroupListPageState extends State<GroupListPage> {
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
                         snapshot.key;
-                        // print(student);
+                       
                         return Column(
                           children: [
                             Padding(
@@ -219,12 +203,7 @@ class _GroupListPageState extends State<GroupListPage> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    context.go('/Groups/StudentScores');
-                  },
-                  child: const Text('Next Page Student Scores'),
-                )
+                
               ],
             ),
           );

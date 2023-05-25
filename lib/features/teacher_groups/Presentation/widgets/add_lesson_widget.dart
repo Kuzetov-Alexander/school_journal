@@ -35,28 +35,20 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
-  showTip(BuildContext context, double height) async {
-    OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
-      return Center(
-          child: Material(
-              color: Colors.transparent,
-              child: Padding(
-                  padding: EdgeInsets.only(top: height),
-                  child: const Text(
-                    'Подтвердите добавление',
-                    style: TextStyle(color: Colors.redAccent),
-                  ))));
-    });
-    overlayState.insert(overlayEntry);
-    await Future.delayed(const Duration(seconds: 1));
-    overlayEntry.remove();
-  }
+ 
 
   void _downloadNameGroups(context) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DownloadGroupNameEvent());
   }
+void _downloadSubjects(context,String selectedGroup) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                DownloadSubjectNameEvent(
+                    selectedGroup: selectedGroup));
+  }
+
+
+
 
   void _addLesson(context, String groupName, String currentDay) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
@@ -178,7 +170,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 children: [
                                   Text(provider.listGroup.isEmpty
                                       ? provider.selectedGroup
-                                      : provider.selectedGroup),
+                                      : provider.selectedGroup, style: TextStyle(fontSize: heightScreen*0.019),),
                                   TextButton(
                                     onPressed: () {
                                       _downloadNameGroups(context);
@@ -241,19 +233,41 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             height: heightScreen * 0.015,
                           ),
                           TextformFieldWidget(
+                            
                             controllerClass: _controllerSubject,
                             hintTextx: 'Введите предмет',
-                            labelTextx: 'Предмет',
-                            select: (value) {
+                            labelTextx: 'Предмет', iconButton:  
+                            InkWell(
+          onTap: (){
+  _downloadSubjects(context, provider.selectedGroup);
+                    showCupertinoModalPopup(
+                context: context,
+                builder: (context) {
+                  return Padding(
+                      padding: EdgeInsets.only(top: heightScreen * 0.7),
+                      child: CupertinoPickerWidget(
+                        listWidget:
+                            provider.listSubjects.map((e) => Text(e)).toList(), onSelected:  
+                            (value) {
                               setState(() {});
                               provider.listSubjects.isEmpty
                                   ? _controllerSubject.text = ''
                                   : _controllerSubject.text =
-                                      provider.listSubjects[value];
-                            },
-                            // listWidget: provider.listSubjects
-                            //     .map((e) => Text(e))
-                            //     .toList(),
+                                      provider.listSubjects[value]; }
+                        
+                      ));
+                }
+                );
+          },
+       
+          child: const Image(
+            height: 20,
+            image: AssetImage('assets/images/pen_icon.png'),
+            color: Colors.black,
+          ),
+        ),
+                           
+                         
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -261,12 +275,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                           TextformFieldWidget(
                             controllerClass: _controllerRoom,
                             hintTextx: 'Введите кабинет (не обязательно)',
-                            labelTextx: 'Кабинет',
-                            select: (value) {
-                              setState(() {});
-                              _controllerSubject.text =
-                                  provider.listSubjects[value];
-                            },
+                            labelTextx: 'Кабинет', iconButton: null,
+                            
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -344,11 +354,13 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Добавить в расписание',
-                          style: TextStyle(
-                              fontSize: heightScreen * 0.018,
-                              fontWeight: FontWeight.w600),
+                        Expanded(
+                          child: Text(
+                            'Добавить в еженедельное расписание',
+                            style: TextStyle(
+                                fontSize: heightScreen * 0.018,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                         Platform.isIOS
                             ? CupertinoSwitch(
@@ -396,7 +408,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                       ),
                     ),
                     onPressed: () {
-                      if (provider.newLessonAdded) {
+                     
                         _addLesson(context, provider.selectedGroup,
                             ' ${DateFormat('d MMM y', 'ru').format(providerDate.currentDate)}');
                         setState(() {
@@ -404,9 +416,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                           _controllerRoom.text = '';
                         });
                         Navigator.of(context).pop();
-                      } else {
-                        showTip(context, heightScreen * 0.68);
-                      }
+                      
                     },
                     child: Text(
                       'Добавить',
@@ -436,13 +446,15 @@ class TextformFieldWidget extends StatelessWidget {
     required TextEditingController controllerClass,
     required this.hintTextx,
     required this.labelTextx,
-    required this.select,
-    // required this.listWidget,
+  
+    required this.iconButton,
   }) : _controllerClass = controllerClass;
 
-  void Function(int)? select;
 
-  // List<Widget> listWidget;
+  
+  
+    final InkWell? iconButton ;
+ 
   final TextEditingController _controllerClass;
   final String hintTextx;
   final String labelTextx;
@@ -490,30 +502,8 @@ class TextformFieldWidget extends StatelessWidget {
             color: Color(0xff9D9D9D),
             fontWeight: FontWeight.w600,
             fontSize: 10),
-        suffixIcon: InkWell(
-          onTap: () {
-            BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
-                DownloadSubjectNameEvent(
-                    selectedGroup: provider.selectedGroup));
-
-            showCupertinoModalPopup(
-                context: context,
-                builder: (context) {
-                  return Padding(
-                      padding: EdgeInsets.only(top: heightScreen * 0.7),
-                      child: CupertinoPickerWidget(
-                        listWidget:
-                            provider.listSubjects.map((e) => Text(e)).toList(),
-                        onSelected: select,
-                      ));
-                });
-          },
-          child: const Image(
-            height: 20,
-            image: AssetImage('assets/images/pen_icon.png'),
-            color: Colors.black,
-          ),
-        ),
+        suffixIcon:  iconButton ,
+       
       ),
     );
   }
