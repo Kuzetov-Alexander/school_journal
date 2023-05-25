@@ -109,7 +109,10 @@ class BlocTeacherGroupsBloc
         subjectNames = dataSubject.keys.toList();
         
       }
-
+  var dataBase1 = FirebaseDatabase.instance.ref()
+        .child('Users/$userId/Schedule');
+           final b =  await dataBase1.orderByKey().equalTo(' 4 мая 2023').once();
+           print(b.snapshot.value);
       emit(DownloadSubjectNameState(
         allSubjectGroup: subjectNames,
       ));

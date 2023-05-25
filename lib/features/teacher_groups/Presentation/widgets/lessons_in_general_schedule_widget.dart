@@ -24,29 +24,30 @@ class LessonsInGeneralSchedule extends StatelessWidget {
 
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    var dataBase = FirebaseDatabase.instance
-        .ref()
+    var dataBase = FirebaseDatabase.instance.ref()
         .child('Users/$userId/Schedule');
-        
       
-   
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-
-// getData (DataSnapshot shot) async {
-//     final map =  await shot.child('$providerDate').;
+// print(dataBase.equalTo(' 25 мая 2025').path);
+// getData (DataSnapshot shot)  async {
     
+//     dataBase = await FirebaseDatabase.instance
+//         .ref()
+//         .child('Users/$userId/Schedule/$providerDate').once();
 // };
     return FirebaseAnimatedList(
-      query: dataBase,
+      query: dataBase.orderByKey().equalTo('25 мая 2023'),
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
           int index)   {
-          Map<dynamic,dynamic> map = snapshot.value as Map<dynamic,dynamic>;
-        //  getData(snapshot);
-    print(map.removeWhere((key, value) => ) );
+      
+       
+        // print(snapshot.key);
+            //  Map<dynamic,dynamic> map = snapshot.value as Map<dynamic,dynamic>;
+    // print(map.removeWhere((key, value) => ) );
        
        
            
