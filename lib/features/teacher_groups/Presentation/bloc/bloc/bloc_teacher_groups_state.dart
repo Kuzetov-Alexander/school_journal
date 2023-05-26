@@ -53,6 +53,15 @@ class AddedLessonState extends BlocTeacherGroupsState {
   List<Object> get props => [];
 }
 
+class GotAllLessons extends BlocTeacherGroupsState {
+ List allLessons;
+  String keyDate;
+   GotAllLessons({required this.allLessons, required this.keyDate});
+
+  @override
+  List<Object> get props => [];
+}
+
 class DatabaseErrorState extends BlocTeacherGroupsState {
   final String error;
 

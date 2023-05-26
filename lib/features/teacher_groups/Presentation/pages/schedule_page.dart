@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
@@ -21,6 +22,13 @@ class SchedulePage extends StatefulWidget {
 /// Чтобы отслеживать прокрутку ListView
 ScrollController scrollController = ScrollController();
 
+void _getAllLessons(context,String date) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                GetAllLessonsEvent(selectedDate: date
+                    ));
+  }
+
+
 class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class _SchedulePageState extends State<SchedulePage> {
     double heightScreen = MediaQuery.of(context).size.height;
 
     DateTime curentDateTime = context.watch<ProviderCalendar>().currentDate;
-
+    ProviderCalendar provider= Provider.of<ProviderCalendar>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -156,6 +164,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                         context
                                             .read<ProviderCalendar>()
                                             .getSelectedDate(index);
+                                           _getAllLessons(context,provider.day);
+                                           
                                       });
                                     },
                                     child: Container(

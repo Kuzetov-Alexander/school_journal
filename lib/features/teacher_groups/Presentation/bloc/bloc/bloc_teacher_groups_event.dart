@@ -37,6 +37,15 @@ final String selectedGroup;
   const DownloadRoomNameEvent({required this.selectedGroup});
 }
 
+class GetAllLessonsEvent extends BlocTeacherGroupsEvent {
+ final String selectedDate;
+
+  const GetAllLessonsEvent({required this.selectedDate});
+
+
+}
+
+
 class AddLessonEvent extends BlocTeacherGroupsEvent {
   final String groupNameforLesson;
   final String subject;

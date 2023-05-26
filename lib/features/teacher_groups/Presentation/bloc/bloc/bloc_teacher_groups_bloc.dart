@@ -13,7 +13,6 @@ class BlocTeacherGroupsBloc
 
   final dataBase = FirebaseDatabase.instance.ref();
   final userId = FirebaseAuth.instance.currentUser?.uid;
-  
 
   BlocTeacherGroupsBloc() : super(NoGroupsState()) {
 // Добавляем урок в общее расписание
@@ -78,7 +77,8 @@ class BlocTeacherGroupsBloc
         final Map<Object?, Object?> data =
             dataSnapshot.value as Map<Object?, Object?>;
 
-        final List<String> groupNames =[]; // Здесь будут храниться все значения ключа "GroupName"
+        final List<String> groupNames =
+            []; // Здесь будут храниться все значения ключа "GroupName"
 
         final List<dynamic> dataList = data.values.toList();
 
@@ -90,7 +90,7 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-      
+
         emit(DownloadGroupNameState(
           allNamesGroup: groupNames,
         ));
@@ -107,21 +107,32 @@ class BlocTeacherGroupsBloc
 
       if (dataSubject is Map) {
         subjectNames = dataSubject.keys.toList();
-        
       }
-  var dataBase1 = FirebaseDatabase.instance.ref()
-        .child('Users/$userId/Schedule');
-           final b =  await dataBase1.orderByKey().equalTo(' 4 мая 2023').once();
-           print(b.snapshot.value);
+
       emit(DownloadSubjectNameState(
         allSubjectGroup: subjectNames,
       ));
+    });
+
+    on<GetAllLessonsEvent>((event, emit) async {
+      final dataShot = await dataBase
+          .child('Users/$userId/Schedule/ ${event.selectedDate}')
+          .once();
+      List dataList = [];
+      String keydata = '';
+      if (dataShot.snapshot.value is Map) {
+        Map data = dataShot.snapshot.value as Map;
+        dataList = data.values.toList();
+        keydata = dataShot.snapshot.key.toString();
+      }
+      emit(UpdateState());
+      emit(GotAllLessons(allLessons: dataList, keyDate: keydata));
     });
   }
 }
 
 
-
+//  print(data.values.toList().where((e) =>e['Group'] == '2a Class' ).toList()); - для получения расписания в определенной группе
 
 
 // Первая версия добавления урока

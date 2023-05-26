@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProviderGroup extends ChangeNotifier {
-  String currentGroup='';
+  String currentGroup = '';
   bool isSelected = false;
   bool newLessonAdded = false;
   bool newLessonSaved = true;
@@ -11,10 +11,25 @@ class ProviderGroup extends ChangeNotifier {
   TimeOfDay startlessonTime = TimeOfDay.now();
   TimeOfDay finishlessonTime = TimeOfDay.now();
   String selectedGroup = 'Выберите группу';
+
   List<String> listGroup = [];
   List<dynamic> listSubjects = [];
-  List<String> listRooms = [];
+  
 
+  Map<String, List> allLessons = {}; // Map для всех уроков
+  int lengthlistLesson = 0;
+
+// функция для добавления всех уроков для Page Расписание
+  void saveAllLessons(List lessons, String date, String currentDate) {
+    if (date != '') {
+      allLessons[date] = lessons;
+      if (allLessons.containsKey(currentDate)) {
+        lengthlistLesson = allLessons[currentDate]!.length;
+      } else {
+        lengthlistLesson = 0;
+      }
+    }
+  }
 
   void addSubjectName(List<dynamic> newSubject) {
     List<dynamic> list = [];
@@ -28,7 +43,7 @@ class ProviderGroup extends ChangeNotifier {
     List<String> listGroups = [];
     listGroups.addAll(newGroup);
     listGroup = listGroups.toSet().toList();
-   
+
     notifyListeners();
   }
 

@@ -4,12 +4,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'dart:io' show Platform;
 
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_edit_class.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 import '../../provider/provider_calendar.dart';
 
@@ -19,222 +21,223 @@ class LessonsInGeneralSchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
-      String providerDate = context.watch<ProviderCalendar>().day;
-  
-
+    String providerDate = context.watch<ProviderCalendar>().day;
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    var dataBase = FirebaseDatabase.instance.ref()
-        .child('Users/$userId/Schedule');
-      
+    var dataBase =
+        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
+
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-// print(dataBase.equalTo(' 25 мая 2025').path);
-// getData (DataSnapshot shot)  async {
-    
-//     dataBase = await FirebaseDatabase.instance
-//         .ref()
-//         .child('Users/$userId/Schedule/$providerDate').once();
-// };
-    return FirebaseAnimatedList(
-      query: dataBase.orderByKey().equalTo('25 мая 2023'),
-      physics: const NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
-          int index)   {
-      
-       
-        // print(snapshot.key);
-            //  Map<dynamic,dynamic> map = snapshot.value as Map<dynamic,dynamic>;
-    // print(map.removeWhere((key, value) => ) );
-       
-       
-           
-          
-        // Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
 
-        // List<dynamic> lessonInfo = lessonsInfo.values.toList();
+    return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is GotAllLessons) {
+          provider.saveAllLessons(
+              state.allLessons, state.keyDate, ' $providerDate');
 
-        return Padding(
-          padding: EdgeInsets.only(bottom: heightScreen * 0.022),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
+          // print(provider.allLessons[' $providerDate']![0]['Group'] );
+        }
+        return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: provider.lengthlistLesson,
+          itemBuilder: (context, int index) {
+            final listLessons = provider.allLessons[' $providerDate'];
+            print(listLessons![0]['Group']);
+            return Padding(
+              padding: EdgeInsets.only(bottom: heightScreen * 0.022),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text( ''
-                    // '${lessonInfo[2]}'
-                    ,
-                    style: TextStyle(
-                        color: AppColors.black212525,
-                        fontSize: heightScreen * 0.018),
-                  ),
-                  SizedBox(
-                    height: heightScreen * 0.01,
-                  ),
-                  Text( ''
-                    // '${lessonInfo[4]}'
-                  ,
-                      style: TextStyle(
-                          color: AppColors.greybcc1cd,
-                          fontSize: heightScreen * 0.018))
-                ],
-              ),
-              const SizedBox(
-                width: 30,
-              ),
-              Column(
-                children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: AppColors.greyLight,
+                  Column(
+                    children: [
+                      Text(
+                        listLessons.isNotEmpty
+                            ? listLessons[index]['lessonTimeStart']
+                            : '',
+                        style: TextStyle(
+                            color: AppColors.black212525,
+                            fontSize: heightScreen * 0.018),
                       ),
-                      height: heightScreen * 0.19,
-                      width: widthScreen * 0.7,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: widthScreen * 0.04),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      SizedBox(
+                        height: heightScreen * 0.01,
+                      ),
+                      Text(
+                          listLessons.isNotEmpty
+                              ? listLessons[index]['lessonTimeFinish']
+                              : '',
+                          style: TextStyle(
+                              color: AppColors.greybcc1cd,
+                              fontSize: heightScreen * 0.018))
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Column(
+                    children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.greyLight,
+                          ),
+                          height: heightScreen * 0.19,
+                          width: widthScreen * 0.7,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: widthScreen * 0.04),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(''
-                                  // '${lessonInfo[0]}'
-                                  ,
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.02,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['Group']
+                                          : '',
+                                      style: TextStyle(
+                                        fontSize: heightScreen * 0.02,
+                                        color: AppColors.black212525,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    IconButton(
+                                        splashRadius: 20,
+                                        onPressed: () {
+                                          Platform.isAndroid
+                                              ? actionSheetAndroid(
+                                                  heightScreen, context)
+                                              : actionSheetIos(
+                                                  context, heightScreen);
+                                        },
+                                        icon: const Image(
+                                            image: AssetImage(
+                                                'assets/images/settings_icon.png')))
+                                  ],
                                 ),
-                                IconButton(
-                                    splashRadius: 20,
-                                    onPressed: () {
-                                      Platform.isAndroid
-                                          ? actionSheetAndroid(
-                                              heightScreen, context)
-                                          : actionSheetIos(
-                                              context, heightScreen);
-                                    },
-                                    icon: const Image(
-                                        image: AssetImage(
-                                            'assets/images/settings_icon.png')))
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Image(
-                                      image: AssetImage(
-                                          'assets/images/point_icon.png')),
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/point_icon.png')),
+                                    ),
+                                    SizedBox(
+                                      width: widthScreen * 0.025,
+                                    ),
+                                    Text(
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['LessonRoom']
+                                          : '',
+                                      style: TextStyle(
+                                        fontSize: heightScreen * 0.015,
+                                        color: AppColors.black212525,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
-                                  width: widthScreen * 0.025,
+                                  height: heightScreen * 0.01,
                                 ),
-                                Text(''
-                                  // '${lessonInfo[1]}'
-                                  ,
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: heightScreen * 0.01,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.menu_book_rounded,
-                                    size: widthScreen * 0.030,
-                                    color: const Color(0xff88889D),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: widthScreen * 0.025,
-                                ),
-                                Text(''
-                                  // '${lessonInfo[5]}'
-                                  ,
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: heightScreen * 0.01,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Image(
-                                      image: AssetImage(
-                                          'assets/images/user_icon.png')),
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Icon(
+                                        Icons.menu_book_rounded,
+                                        size: widthScreen * 0.030,
+                                        color: const Color(0xff88889D),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: widthScreen * 0.025,
+                                    ),
+                                    Text(
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['Subject']
+                                          : '',
+                                      style: TextStyle(
+                                        fontSize: heightScreen * 0.015,
+                                        color: AppColors.black212525,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
-                                  width: widthScreen * 0.025,
+                                  height: heightScreen * 0.01,
                                 ),
-                                Text(''
-                                  // '${lessonInfo[3]}'
-                                  ,
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: heightScreen * 0.01,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Image(
-                                      image: AssetImage(
-                                          'assets/images/home_icon.png')),
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/user_icon.png')),
+                                    ),
+                                    SizedBox(
+                                      width: widthScreen * 0.025,
+                                    ),
+                                    Text(
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]
+                                              ['StudentAmountatLesson']
+                                          : '',
+                                      style: TextStyle(
+                                        fontSize: heightScreen * 0.015,
+                                        color: AppColors.black212525,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
-                                  width: widthScreen * 0.025,
+                                  height: heightScreen * 0.01,
                                 ),
-                                Text(''
-                                  // '${lessonInfo[6]}' 
-                                  ,
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/home_icon.png')),
+                                    ),
+                                    SizedBox(
+                                      width: widthScreen * 0.025,
+                                    ),
+                                    Text(
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['Homework']
+                                          : '',
+                                      style: TextStyle(
+                                        fontSize: heightScreen * 0.015,
+                                        color: AppColors.black212525,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
