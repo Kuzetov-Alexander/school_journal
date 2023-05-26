@@ -19,220 +19,220 @@ class LessonsInGroupSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     String providerDate = context.watch<ProviderCalendar>().day;
+    String providerDate = context.watch<ProviderCalendar>().day;
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
 
-   
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
- 
- return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is GotCurrentLessonsState) {
-          provider.saveCurrentLessons(
-              state.lessons, state.keyDate, ' $providerDate');
-          
-               print(provider.allCurrentLessons);
-        }
+    return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is GotCurrentLessonsState) {
+            provider.saveCurrentLessons(
+                state.lessons, state.keyDate, ' $providerDate');
+          }
 
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: provider.lengthCurrentlistLesson,
-      itemBuilder: (context, int index) {
-         final listLessons = provider.allCurrentLessons[' $providerDate'];
-        return Padding(
-          padding: EdgeInsets.only(bottom: heightScreen * 0.022),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    provider.allCurrentLessons.isNotEmpty
-                            ? listLessons![index]['lessonTimeStart']
-                            : '',
-                    style: TextStyle(
-                        color: AppColors.black212525,
-                        fontSize: heightScreen * 0.018),
-                  ),
-                  SizedBox(
-                    height: heightScreen * 0.01,
-                  ),
-                  Text(provider.allCurrentLessons.isNotEmpty
-                              ? listLessons![index]['lessonTimeFinish']
+          return ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: provider.lengthCurrentlistLesson,
+            itemBuilder: (context, int index) {
+              final listLessons = provider.allCurrentLessons[' $providerDate'];
+              return Padding(
+                padding: EdgeInsets.only(bottom: heightScreen * 0.022),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          provider.allCurrentLessons.isNotEmpty
+                              ? listLessons![index]['lessonTimeStart']
                               : '',
-                      style: TextStyle(
-                          color: AppColors.greybcc1cd,
-                          fontSize: heightScreen * 0.018))
-                ],
-              ),
-              const SizedBox(
-                width: 30,
-              ),
-              Column(
-                children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: AppColors.greyLight,
-                      ),
-                      height: heightScreen * 0.19,
-                      width: widthScreen * 0.7,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: widthScreen * 0.04),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  provider.allCurrentLessons.isNotEmpty
-                                          ? listLessons![index]['Group']
-                                          : '',
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.02,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                IconButton(
-                                    splashRadius: 20,
-                                    onPressed: () {
-                                      Platform.isAndroid
-                                          ? actionSheetAndroid(
-                                              heightScreen, context)
-                                          : actionSheetIos(
-                                              context, heightScreen);
-                                    },
-                                    icon: const Image(
-                                        image: AssetImage(
-                                            'assets/images/settings_icon.png')))
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Image(
-                                      image: AssetImage(
-                                          'assets/images/point_icon.png')),
-                                ),
-                                SizedBox(
-                                  width: widthScreen * 0.025,
-                                ),
-                                Text(
-                                 provider.allCurrentLessons.isNotEmpty
-                                          ? listLessons![index]['LessonRoom']
-                                          : '',
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: heightScreen * 0.01,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.menu_book_rounded,
-                                    size: widthScreen * 0.030,
-                                    color: const Color(0xff88889D),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: widthScreen * 0.025,
-                                ),
-                                Text(
-                                 provider.allCurrentLessons.isNotEmpty
-                                          ? listLessons![index]['Subject']
-                                          : '',
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: heightScreen * 0.01,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Image(
-                                      image: AssetImage(
-                                          'assets/images/user_icon.png')),
-                                ),
-                                SizedBox(
-                                  width: widthScreen * 0.025,
-                                ),
-                                Text(
-                                   provider.allCurrentLessons.isNotEmpty
-                                          ? listLessons![index]
-                                              ['StudentAmountatLesson']
-                                          : '',
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: heightScreen * 0.01,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Image(
-                                      image: AssetImage(
-                                          'assets/images/home_icon.png')),
-                                ),
-                                SizedBox(
-                                  width: widthScreen * 0.025,
-                                ),
-                                Text(
-                                   provider.allCurrentLessons.isNotEmpty
-                                          ? listLessons![index]['Homework']
-                                          : '',
-                                  style: TextStyle(
-                                    fontSize: heightScreen * 0.015,
-                                    color: AppColors.black212525,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
+                          style: TextStyle(
+                              color: AppColors.black212525,
+                              fontSize: heightScreen * 0.018),
                         ),
-                      ),
+                        SizedBox(
+                          height: heightScreen * 0.01,
+                        ),
+                        Text(
+                            provider.allCurrentLessons.isNotEmpty
+                                ? listLessons![index]['lessonTimeFinish']
+                                : '',
+                            style: TextStyle(
+                                color: AppColors.greybcc1cd,
+                                fontSize: heightScreen * 0.018))
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );});
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Column(
+                      children: [
+                        InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: AppColors.greyLight,
+                            ),
+                            height: heightScreen * 0.19,
+                            width: widthScreen * 0.7,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(left: widthScreen * 0.04),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        provider.allCurrentLessons.isNotEmpty
+                                            ? listLessons![index]['Group']
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: heightScreen * 0.02,
+                                          color: AppColors.black212525,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          splashRadius: 20,
+                                          onPressed: () {
+                                            Platform.isAndroid
+                                                ? actionSheetAndroid(
+                                                    heightScreen, context)
+                                                : actionSheetIos(
+                                                    context, heightScreen);
+                                          },
+                                          icon: const Image(
+                                              image: AssetImage(
+                                                  'assets/images/settings_icon.png')))
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: const Image(
+                                            image: AssetImage(
+                                                'assets/images/point_icon.png')),
+                                      ),
+                                      SizedBox(
+                                        width: widthScreen * 0.025,
+                                      ),
+                                      Text(
+                                        provider.allCurrentLessons.isNotEmpty
+                                            ? listLessons![index]['LessonRoom']
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: heightScreen * 0.015,
+                                          color: AppColors.black212525,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: heightScreen * 0.01,
+                                  ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: Icon(
+                                          Icons.menu_book_rounded,
+                                          size: widthScreen * 0.030,
+                                          color: const Color(0xff88889D),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: widthScreen * 0.025,
+                                      ),
+                                      Text(
+                                        provider.allCurrentLessons.isNotEmpty
+                                            ? listLessons![index]['Subject']
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: heightScreen * 0.015,
+                                          color: AppColors.black212525,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: heightScreen * 0.01,
+                                  ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: const Image(
+                                            image: AssetImage(
+                                                'assets/images/user_icon.png')),
+                                      ),
+                                      SizedBox(
+                                        width: widthScreen * 0.025,
+                                      ),
+                                      Text(
+                                        provider.allCurrentLessons.isNotEmpty
+                                            ? listLessons![index]
+                                                ['StudentAmountatLesson']
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: heightScreen * 0.015,
+                                          color: AppColors.black212525,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: heightScreen * 0.01,
+                                  ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: const Image(
+                                            image: AssetImage(
+                                                'assets/images/home_icon.png')),
+                                      ),
+                                      SizedBox(
+                                        width: widthScreen * 0.025,
+                                      ),
+                                      Text(
+                                        provider.allCurrentLessons.isNotEmpty
+                                            ? listLessons![index]['Homework']
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: heightScreen * 0.015,
+                                          color: AppColors.black212525,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        });
   }
 
   Future<dynamic> actionSheetIos(BuildContext context, double heightScreen) {
