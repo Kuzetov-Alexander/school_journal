@@ -19,7 +19,6 @@ class LessonsInGeneralSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     String providerDate = context.watch<ProviderCalendar>().day;
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
    
@@ -32,6 +31,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
         if (state is GotAllLessons) {
           provider.saveAllLessons(
               state.allLessons, state.keyDate, ' $providerDate');
+             
         }
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),

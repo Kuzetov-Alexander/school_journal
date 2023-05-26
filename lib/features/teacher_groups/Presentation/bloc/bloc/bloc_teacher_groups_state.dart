@@ -54,9 +54,18 @@ class AddedLessonState extends BlocTeacherGroupsState {
 }
 
 class GotAllLessons extends BlocTeacherGroupsState {
- List allLessons;
-  String keyDate;
-   GotAllLessons({required this.allLessons, required this.keyDate});
+ final List allLessons;
+  final String keyDate;
+   const GotAllLessons({required this.allLessons, required this.keyDate});
+
+  @override
+  List<Object> get props => [];
+}
+
+class GotCurrentLessonsState extends BlocTeacherGroupsState {
+ final List lessons;
+ final String keyDate;
+ const GotCurrentLessonsState({required this.lessons, required this.keyDate});
 
   @override
   List<Object> get props => [];

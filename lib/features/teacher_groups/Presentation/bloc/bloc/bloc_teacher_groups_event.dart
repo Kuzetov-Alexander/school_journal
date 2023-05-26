@@ -41,8 +41,13 @@ class GetAllLessonsEvent extends BlocTeacherGroupsEvent {
  final String selectedDate;
 
   const GetAllLessonsEvent({required this.selectedDate});
+}
 
+class GetCurrentLessonsEvent extends BlocTeacherGroupsEvent {
+ final String selectedDate;
+ final String groupName;
 
+  const GetCurrentLessonsEvent( {required this.selectedDate, required this.groupName,});
 }
 
 

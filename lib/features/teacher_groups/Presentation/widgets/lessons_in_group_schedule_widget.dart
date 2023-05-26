@@ -1,12 +1,12 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'dart:io' show Platform;
 
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_edit_class.dart';
@@ -19,24 +19,31 @@ class LessonsInGroupSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProviderGroup>(context);
-    String providerDate = context.watch<ProviderCalendar>().day;
+     String providerDate = context.watch<ProviderCalendar>().day;
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
 
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-
-    var dataBase = FirebaseDatabase.instance
-        .ref()
-        .child('Users/$userId/Schedule/$providerDate');
-
+   
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+
+ 
+ return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is GotCurrentLessonsState) {
+          provider.saveCurrentLessons(
+              state.lessons, state.keyDate, ' $providerDate');
+          
+               print(provider.allCurrentLessons);
+        }
 
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: provider.lengthlistLesson,
+      itemCount: provider.lengthCurrentlistLesson,
       itemBuilder: (context, int index) {
+         final listLessons = provider.allCurrentLessons[' $providerDate'];
         return Padding(
           padding: EdgeInsets.only(bottom: heightScreen * 0.022),
           child: Row(
@@ -45,7 +52,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    '',
+                    provider.allCurrentLessons.isNotEmpty
+                            ? listLessons![index]['lessonTimeStart']
+                            : '',
                     style: TextStyle(
                         color: AppColors.black212525,
                         fontSize: heightScreen * 0.018),
@@ -53,7 +62,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
                   SizedBox(
                     height: heightScreen * 0.01,
                   ),
-                  Text('',
+                  Text(provider.allCurrentLessons.isNotEmpty
+                              ? listLessons![index]['lessonTimeFinish']
+                              : '',
                       style: TextStyle(
                           color: AppColors.greybcc1cd,
                           fontSize: heightScreen * 0.018))
@@ -83,7 +94,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '',
+                                  provider.allCurrentLessons.isNotEmpty
+                                          ? listLessons![index]['Group']
+                                          : '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.02,
                                     color: AppColors.black212525,
@@ -116,7 +129,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '',
+                                 provider.allCurrentLessons.isNotEmpty
+                                          ? listLessons![index]['LessonRoom']
+                                          : '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -142,7 +157,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '',
+                                 provider.allCurrentLessons.isNotEmpty
+                                          ? listLessons![index]['Subject']
+                                          : '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -166,7 +183,10 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '',
+                                   provider.allCurrentLessons.isNotEmpty
+                                          ? listLessons![index]
+                                              ['StudentAmountatLesson']
+                                          : '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -190,7 +210,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '',
+                                   provider.allCurrentLessons.isNotEmpty
+                                          ? listLessons![index]['Homework']
+                                          : '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -210,7 +232,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
           ),
         );
       },
-    );
+    );});
   }
 
   Future<dynamic> actionSheetIos(BuildContext context, double heightScreen) {

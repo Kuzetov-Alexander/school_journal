@@ -20,14 +20,14 @@ class BlocTeacherGroupsBloc
       emit(AddedLessonState());
 
       final lessonData = {
-        event.lessonTimeStart : {
-          'Subject':event.subject,
-          'LessonRoom':event.lessonRoom,
-          'lessonTimeStart':event.lessonTimeStart,
-          'lessonTimeFinish':event.lessonTimeFinish,
+        event.lessonTimeStart: {
+          'Subject': event.subject,
+          'LessonRoom': event.lessonRoom,
+          'lessonTimeStart': event.lessonTimeStart,
+          'lessonTimeFinish': event.lessonTimeFinish,
           'Group': event.groupNameforLesson,
           'Homework': 'не задано',
-          'StudentAmountatLesson':'0'
+          'StudentAmountatLesson': '0'
         }
       };
       await dataBase
@@ -57,10 +57,6 @@ class BlocTeacherGroupsBloc
 
       dataBase.update(postData);
       emit(IsCreatedGroupState());
-
-      //
-
-      //
     });
 
     on<DeleteGroupEvent>((event, emit) {
@@ -114,6 +110,8 @@ class BlocTeacherGroupsBloc
       ));
     });
 
+    // Получаем уроки для всех групп
+
     on<GetAllLessonsEvent>((event, emit) async {
       final dataShot = await dataBase
           .child('Users/$userId/Schedule/ ${event.selectedDate}')
@@ -127,6 +125,31 @@ class BlocTeacherGroupsBloc
       }
       emit(UpdateState());
       emit(GotAllLessons(allLessons: dataList, keyDate: keydata));
+    });
+
+    // Получаем уроки для определенной группы
+
+    on<GetCurrentLessonsEvent>((event, emit) async {
+      final dataShot = await dataBase
+          .child('Users/$userId/Schedule/ ${event.selectedDate}')
+          .once();
+      List dataList = [];
+      String keydata = '';
+      if (dataShot.snapshot.value is Map) {
+        Map data = dataShot.snapshot.value as Map;
+
+        dataList = data.values
+            .toList()
+            .where((e) => e['Group'] == event.groupName)
+            .toList();
+            
+           
+        keydata = dataShot.snapshot.key.toString();
+         
+      }
+
+      emit(UpdateState());
+      emit(GotCurrentLessonsState(lessons: dataList, keyDate: keydata));
     });
   }
 }
