@@ -1,7 +1,6 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,11 +22,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
     // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     String providerDate = context.watch<ProviderCalendar>().day;
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-
-    var dataBase =
-        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
-
+   
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
@@ -37,8 +32,6 @@ class LessonsInGeneralSchedule extends StatelessWidget {
         if (state is GotAllLessons) {
           provider.saveAllLessons(
               state.allLessons, state.keyDate, ' $providerDate');
-
-          // print(provider.allLessons[' $providerDate']![0]['Group'] );
         }
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -47,7 +40,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           itemCount: provider.lengthlistLesson,
           itemBuilder: (context, int index) {
             final listLessons = provider.allLessons[' $providerDate'];
-            print(listLessons![0]['Group']);
+
             return Padding(
               padding: EdgeInsets.only(bottom: heightScreen * 0.022),
               child: Row(
@@ -56,8 +49,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        listLessons.isNotEmpty
-                            ? listLessons[index]['lessonTimeStart']
+                        provider.allLessons.isNotEmpty
+                            ? listLessons![index]['lessonTimeStart']
                             : '',
                         style: TextStyle(
                             color: AppColors.black212525,
@@ -67,8 +60,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                         height: heightScreen * 0.01,
                       ),
                       Text(
-                          listLessons.isNotEmpty
-                              ? listLessons[index]['lessonTimeFinish']
+                          provider.allLessons.isNotEmpty
+                              ? listLessons![index]['lessonTimeFinish']
                               : '',
                           style: TextStyle(
                               color: AppColors.greybcc1cd,
@@ -100,8 +93,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      listLessons.isNotEmpty
-                                          ? listLessons[index]['Group']
+                                      provider.allLessons.isNotEmpty
+                                          ? listLessons![index]['Group']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.02,
@@ -135,8 +128,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      listLessons.isNotEmpty
-                                          ? listLessons[index]['LessonRoom']
+                                      provider.allLessons.isNotEmpty
+                                          ? listLessons![index]['LessonRoom']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.015,
@@ -163,8 +156,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      listLessons.isNotEmpty
-                                          ? listLessons[index]['Subject']
+                                      provider.allLessons.isNotEmpty
+                                          ? listLessons![index]['Subject']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.015,
@@ -189,8 +182,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      listLessons.isNotEmpty
-                                          ? listLessons[index]
+                                      provider.allLessons.isNotEmpty
+                                          ? listLessons![index]
                                               ['StudentAmountatLesson']
                                           : '',
                                       style: TextStyle(
@@ -216,8 +209,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      listLessons.isNotEmpty
-                                          ? listLessons[index]['Homework']
+                                      provider.allLessons.isNotEmpty
+                                          ? listLessons![index]['Homework']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.015,

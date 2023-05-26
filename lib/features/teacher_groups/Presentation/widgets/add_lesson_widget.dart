@@ -69,6 +69,11 @@ void _downloadSubjects(context,String selectedGroup) {
         subject: _controllerSubject.text,
         currentDate: currentDay));
   }
+  void _getAllLessons(context,String date) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                GetAllLessonsEvent(selectedDate: date
+                    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +91,10 @@ void _downloadSubjects(context,String selectedGroup) {
         if (state is DownloadSubjectNameState) {
           provider.addSubjectName(state.allSubjectGroup);
         }
+        // if (state is GotAllLessons) {
+        //   provider.saveAllLessons(
+        //       state.allLessons, state.keyDate, ' ${providerDate.day}');
+        // }
       },
       builder: (context, state) {
         return Column(
@@ -410,13 +419,13 @@ void _downloadSubjects(context,String selectedGroup) {
                     onPressed: () {
                      
                         _addLesson(context, provider.selectedGroup,
-                            ' ${DateFormat('d MMM y', 'ru').format(providerDate.currentDate)}');
+                            ' ${DateFormat('dd-MM-yyyy', 'ru').format(providerDate.currentDate)}');
                         setState(() {
                           _controllerSubject.text = '';
                           _controllerRoom.text = '';
                         });
                         Navigator.of(context).pop();
-                      
+                      _getAllLessons(context,providerDate.day);
                     },
                     child: Text(
                       'Добавить',

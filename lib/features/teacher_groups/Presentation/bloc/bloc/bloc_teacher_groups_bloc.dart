@@ -20,14 +20,14 @@ class BlocTeacherGroupsBloc
       emit(AddedLessonState());
 
       final lessonData = {
-        event.lessonTimeStart + event.currentDate: {
-          'Subject': event.subject,
-          'LessonRoom': event.lessonRoom,
-          'lessonTimeStart': event.lessonTimeStart,
-          'lessonTimeFinish': event.lessonTimeFinish,
+        event.lessonTimeStart : {
+          'Subject':event.subject,
+          'LessonRoom':event.lessonRoom,
+          'lessonTimeStart':event.lessonTimeStart,
+          'lessonTimeFinish':event.lessonTimeFinish,
           'Group': event.groupNameforLesson,
           'Homework': 'не задано',
-          'StudentAmountatLesson': '0'
+          'StudentAmountatLesson':'0'
         }
       };
       await dataBase

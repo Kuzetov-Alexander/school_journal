@@ -1,7 +1,7 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,35 +20,23 @@ class LessonsInGroupSchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderGroup>(context);
-      String providerDate = context.watch<ProviderCalendar>().day;
-  
+    String providerDate = context.watch<ProviderCalendar>().day;
 
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     var dataBase = FirebaseDatabase.instance
         .ref()
         .child('Users/$userId/Schedule/$providerDate');
-   
+
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
-    return FirebaseAnimatedList(
-      query: dataBase,
+    return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemBuilder: (context, DataSnapshot snapshot, Animation<double> animation,
-          int index) {
-          
-            
-              
-
-            
-
-        Map<dynamic, dynamic> lessonsInfo = snapshot.value as Map;
-
-        List<dynamic> lessonInfo = lessonsInfo.values.toList();
-      
+      itemCount: provider.lengthlistLesson,
+      itemBuilder: (context, int index) {
         return Padding(
           padding: EdgeInsets.only(bottom: heightScreen * 0.022),
           child: Row(
@@ -57,7 +45,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    '${lessonInfo[2]}',
+                    '',
                     style: TextStyle(
                         color: AppColors.black212525,
                         fontSize: heightScreen * 0.018),
@@ -65,7 +53,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                   SizedBox(
                     height: heightScreen * 0.01,
                   ),
-                  Text('${lessonInfo[4]}',
+                  Text('',
                       style: TextStyle(
                           color: AppColors.greybcc1cd,
                           fontSize: heightScreen * 0.018))
@@ -95,7 +83,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${lessonInfo[0]}',
+                                  '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.02,
                                     color: AppColors.black212525,
@@ -128,7 +116,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '${lessonInfo[1]}',
+                                  '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -154,7 +142,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '${lessonInfo[5]}',
+                                  '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -178,7 +166,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '${lessonInfo[3]}',
+                                  '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,
@@ -202,7 +190,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                   width: widthScreen * 0.025,
                                 ),
                                 Text(
-                                  '${lessonInfo[6]}',
+                                  '',
                                   style: TextStyle(
                                     fontSize: heightScreen * 0.015,
                                     color: AppColors.black212525,

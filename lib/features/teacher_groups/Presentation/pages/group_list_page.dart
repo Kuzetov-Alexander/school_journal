@@ -13,6 +13,7 @@ import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
 import '../../provider/provider.dart';
 
@@ -24,9 +25,16 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
+  
   void _deleteGroup(context, {required String? key}) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DeleteGroupEvent(key: key));
+  }
+
+   void _getAllLessons(context,String date) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                GetAllLessonsEvent(selectedDate: date
+                    ));
   }
 
   @override
@@ -38,6 +46,7 @@ class _GroupListPageState extends State<GroupListPage> {
 
     final db = FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
+    ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
@@ -93,6 +102,7 @@ class _GroupListPageState extends State<GroupListPage> {
                             ),
                             InkWell(
                               onTap: () {
+                                _getAllLessons(context,providerDate.day);
                                 context.goNamed('Shedule');
                               },
                               child: const Icon(Icons.calendar_month_outlined),
