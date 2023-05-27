@@ -60,7 +60,7 @@ void _getCurrentLessons(context, String date, String group) {
           child: SingleChildScrollView(
               primary: true,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding:  EdgeInsets.symmetric(horizontal: widthScreen*0.06),
                 child: Column(
                   children: [
                     SizedBox(height: heightScreen * 0.015),
@@ -213,7 +213,7 @@ void _getCurrentLessons(context, String date, String group) {
                                           .read<ProviderCalendar>()
                                           .getSelectedDate(index);
                                       });
-                                      
+                                    
                                       _getCurrentLessons(context,providerCalendar.day,provider.currentGroup);
                                     },
                                     child: Container(

@@ -49,8 +49,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        provider.allLessons.isNotEmpty
-                            ? listLessons![index]['lessonTimeStart']
+                        listLessons!.isNotEmpty
+                            ? listLessons[index]['lessonTimeStart']
                             : '',
                         style: TextStyle(
                             color: AppColors.black212525,
@@ -60,16 +60,16 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                         height: heightScreen * 0.01,
                       ),
                       Text(
-                          provider.allLessons.isNotEmpty
-                              ? listLessons![index]['lessonTimeFinish']
+                          listLessons.isNotEmpty
+                              ? listLessons[index]['lessonTimeFinish']
                               : '',
                           style: TextStyle(
                               color: AppColors.greybcc1cd,
                               fontSize: heightScreen * 0.018))
                     ],
                   ),
-                  const SizedBox(
-                    width: 30,
+                   SizedBox(
+                   width: widthScreen*0.07,
                   ),
                   Column(
                     children: [
@@ -93,8 +93,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      provider.allLessons.isNotEmpty
-                                          ? listLessons![index]['Group']
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['Group']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.02,
@@ -128,8 +128,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      provider.allLessons.isNotEmpty
-                                          ? listLessons![index]['LessonRoom']
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['LessonRoom']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.015,
@@ -156,8 +156,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      provider.allLessons.isNotEmpty
-                                          ? listLessons![index]['Subject']
+                                     listLessons.isNotEmpty
+                                          ? listLessons[index]['Subject']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.015,
@@ -182,8 +182,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      provider.allLessons.isNotEmpty
-                                          ? listLessons![index]
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]
                                               ['StudentAmountatLesson']
                                           : '',
                                       style: TextStyle(
@@ -209,8 +209,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                      provider.allLessons.isNotEmpty
-                                          ? listLessons![index]['Homework']
+                                      listLessons.isNotEmpty
+                                          ? listLessons[index]['Homework']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.015,

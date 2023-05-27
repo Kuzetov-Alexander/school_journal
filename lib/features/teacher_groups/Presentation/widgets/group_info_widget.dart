@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
 class MyGroupInfoWidget extends StatelessWidget {
   final Map mapGroups;
@@ -12,9 +15,15 @@ class MyGroupInfoWidget extends StatelessWidget {
   const MyGroupInfoWidget(
       {super.key, required this.mapGroups, required this.index});
 
+void _getCurrentLessons(context, String date, String group) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+                GetCurrentLessonsEvent(selectedDate: date ,groupName: group
+                    ));
+  }
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderGroup>(context);
+     final providerCalendar = Provider.of<ProviderCalendar>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -23,7 +32,7 @@ class MyGroupInfoWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           onTap: () {
              provider.currentGroup = mapGroups['GroupName'].toString();
-            
+            _getCurrentLessons(context,providerCalendar.day,provider.currentGroup);
             context.goNamed('TeacherGroup');
           },
           child: Container(
