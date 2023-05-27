@@ -35,20 +35,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   late final TextEditingController _controllerSubject = TextEditingController();
   late final TextEditingController _controllerRoom = TextEditingController();
 
- 
-
-  void _downloadNameGroups(context) {
+  void _downloadSubjects(context, String selectedGroup) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
-        .add(DownloadGroupNameEvent());
+        .add(DownloadSubjectNameEvent(selectedGroup: selectedGroup));
   }
-void _downloadSubjects(context,String selectedGroup) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
-                DownloadSubjectNameEvent(
-                    selectedGroup: selectedGroup));
-  }
-
-
-
 
   void _addLesson(context, String groupName, String currentDay) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
@@ -69,16 +59,42 @@ void _downloadSubjects(context,String selectedGroup) {
         subject: _controllerSubject.text,
         currentDate: currentDay));
   }
-  void _getAllLessons(context,String date) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
-                GetAllLessonsEvent(selectedDate: date
-                    ));
+
+  void _getAllLessons(context, String date) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(GetAllLessonsEvent(selectedDate: date));
+  }
+
+  void _downloadNameGroups(context) {
+    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+        .add(DownloadGroupNameEvent());
+  }
+
+  showTip(BuildContext context, double height, String hint) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
+      return Center(
+          child: Material(
+              color: Colors.transparent,
+              child: Padding(
+                  padding: EdgeInsets.only(top: height),
+                  child:  Text(
+                    hint,
+                    style: TextStyle(color: Colors.redAccent),
+                  ))));
+    });
+    overlayState.insert(overlayEntry);
+    await Future.delayed(const Duration(seconds: 2));
+    overlayEntry.remove();
   }
 
   @override
   Widget build(BuildContext context) {
+    int indexValueGroup = 0;
+    int indexValueSubject = 0;
     // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
     //   DateTime  timeStartAndroid =  DateTime(year)  ;
+
     ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
@@ -91,10 +107,6 @@ void _downloadSubjects(context,String selectedGroup) {
         if (state is DownloadSubjectNameState) {
           provider.addSubjectName(state.allSubjectGroup);
         }
-        // if (state is GotAllLessons) {
-        //   provider.saveAllLessons(
-        //       state.allLessons, state.keyDate, ' ${providerDate.day}');
-        // }
       },
       builder: (context, state) {
         return Column(
@@ -153,9 +165,7 @@ void _downloadSubjects(context,String selectedGroup) {
                             child: Row(
                               children: [
                                 Text(
-                                 
-                                  '${DateFormat('EEEE', 'ru').format(providerDate.currentDate).capitalize()} , ${DateFormat('d MMM', 'ru').format(providerDate.currentDate)}'
-                                  ,
+                                  '${DateFormat('EEEE', 'ru').format(providerDate.currentDate).capitalize()} , ${DateFormat('d MMM', 'ru').format(providerDate.currentDate)}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: heightScreen * 0.016,
@@ -177,60 +187,77 @@ void _downloadSubjects(context,String selectedGroup) {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(provider.listGroup.isEmpty
-                                      ? provider.selectedGroup
-                                      : provider.selectedGroup, style: TextStyle(fontSize: heightScreen*0.019),),
+                                  Text(
+                                    provider.selectedGroup,
+                                    style: TextStyle(
+                                        fontSize: heightScreen * 0.019),
+                                  ),
                                   TextButton(
-                                    onPressed: () {
-                                      _downloadNameGroups(context);
+                                    onPressed: () async {
                                       _controllerSubject.text = '';
-                                      showCupertinoModalPopup(
-                                          context: context,
-                                          builder: (context) {
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: heightScreen * 0.7),
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                    child:
-                                                        CupertinoPickerWidget(
-                                                      listWidget: provider
-                                                          .listGroup
-                                                          .map((e) => Text(e))
-                                                          .toList(),
-                                                      onSelected: (value) {
-                                                        setState(() {});
-                                                        provider.listGroup
-                                                                .isEmpty
-                                                            ? provider
-                                                                    .selectedGroup =
-                                                                ''
-                                                            : provider
-                                                                    .selectedGroup =
+                                      _downloadNameGroups(context);
+                                      
+                                      await Future.delayed(
+                                              const Duration(milliseconds: 50))
+                                          .then((_) {
+                                        if (provider.listGroup.isNotEmpty) {
+                                          showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (context) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: heightScreen * 0.7),
+                                                  child: Column(
+                                                    children: [
+                                                      Expanded(
+                                                        child:
+                                                            CupertinoPickerWidget(
+                                                          listWidget: provider
+                                                              .listGroup
+                                                              .map((e) =>
+                                                                  Text(e))
+                                                              .toList(),
+                                                          onSelected: (value) {
+                                                            setState(() {
+                                                              indexValueGroup =
+                                                                  value;
+                                                            });
+                                                            provider.selectedGroup =
                                                                 provider.listGroup[
                                                                     value];
-                                                      },
-                                                    ),
+                                                          },
+                                                        ),
+                                                      ),
+                                                      ColoredBox(
+                                                        color: Colors.white,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            CupertinoButton(
+                                                                child: const Text(
+                                                                    'Подтвердить'),
+                                                                onPressed: () {
+                                                                  provider
+                                                                      .selectedGroup = provider
+                                                                          .listGroup[
+                                                                      indexValueGroup];
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                }),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  ColoredBox(
-                                                    color: Colors.white,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        CupertinoButton(
-                                                            child: const Text(
-                                                                'Подтвердить'),
-                                                            onPressed: () {}),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          });
+                                                );
+                                              });
+                                        } else {
+                                          showTip(context, heightScreen * 0.73, 'Необходимо сначала создать группу');
+                                        }
+                                      });
                                     },
                                     child: const Text('Выбрать группу'),
                                   ),
@@ -242,41 +269,103 @@ void _downloadSubjects(context,String selectedGroup) {
                             height: heightScreen * 0.015,
                           ),
                           TextformFieldWidget(
-                            
                             controllerClass: _controllerSubject,
                             hintTextx: 'Введите предмет',
-                            labelTextx: 'Предмет', iconButton:  
-                            InkWell(
-          onTap: (){
-  _downloadSubjects(context, provider.selectedGroup);
-                    showCupertinoModalPopup(
-                context: context,
-                builder: (context) {
-                  return Padding(
-                      padding: EdgeInsets.only(top: heightScreen * 0.7),
-                      child: CupertinoPickerWidget(
-                        listWidget:
-                            provider.listSubjects.map((e) => Text(e)).toList(), onSelected:  
-                            (value) {
-                              setState(() {});
-                              provider.listSubjects.isEmpty
-                                  ? _controllerSubject.text = ''
-                                  : _controllerSubject.text =
-                                      provider.listSubjects[value]; }
-                        
-                      ));
-                }
-                );
-          },
-       
-          child: const Image(
-            height: 20,
-            image: AssetImage('assets/images/pen_icon.png'),
-            color: Colors.black,
-          ),
-        ),
-                           
-                         
+                            labelTextx: 'Предмет',
+                            iconButton: InkWell(
+                              onTap: () async {
+                                _downloadSubjects(
+                                    context, provider.selectedGroup);
+                                await Future.delayed(
+                                        const Duration(milliseconds: 50))
+                                    .then((_) {
+                                      if (provider.listSubjects.isNotEmpty) {
+                                          showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (context) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: heightScreen * 0.7),
+                                                  child: Column(
+                                                    children: [
+                                                      Expanded(
+                                                        child:
+                                                            CupertinoPickerWidget(
+                                                          listWidget: provider
+                                                              .listSubjects
+                                                              .map((e) =>
+                                                                  Text(e))
+                                                              .toList(),
+                                                          onSelected: (value) {
+                                                            setState(() {
+                                                              indexValueSubject =
+                                                                  value;
+                                                            });
+                                                            _controllerSubject.text =
+                                                                provider.listSubjects[
+                                                                    value];
+                                                          },
+                                                        ),
+                                                      ),
+                                                      ColoredBox(
+                                                        color: Colors.white,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            CupertinoButton(
+                                                                child: const Text(
+                                                                    'Подтвердить'),
+                                                                onPressed: () {
+                                                                  provider
+                                                                      .selectedGroup = provider
+                                                                          .listSubjects[
+                                                                      indexValueSubject];
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                }),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                        } else {
+                                          showTip(context, heightScreen * 0.73, 'Для данной группы предметы не найдены');
+                                        }
+                                  // showCupertinoModalPopup(
+                                  //     context: context,
+                                  //     builder: (context) {
+                                  //       return Padding(
+                                  //           padding: EdgeInsets.only(
+                                  //               top: heightScreen * 0.7),
+                                  //           child: CupertinoPickerWidget(
+                                  //               listWidget: provider
+                                  //                   .listSubjects
+                                  //                   .map((e) => Text(e))
+                                  //                   .toList(),
+                                  //               onSelected: (value) {
+                                  //                 setState(() {});
+                                  //                 provider.listSubjects.isEmpty
+                                  //                     ? _controllerSubject
+                                  //                         .text = ''
+                                  //                     : _controllerSubject
+                                  //                             .text =
+                                  //                         provider.listSubjects[
+                                  //                             value];
+                                  //               }));
+                                  //     });
+                                });
+                              },
+                              child: const Image(
+                                height: 20,
+                                image: AssetImage('assets/images/pen_icon.png'),
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -284,8 +373,8 @@ void _downloadSubjects(context,String selectedGroup) {
                           TextformFieldWidget(
                             controllerClass: _controllerRoom,
                             hintTextx: 'Введите кабинет (не обязательно)',
-                            labelTextx: 'Кабинет', iconButton: null,
-                            
+                            labelTextx: 'Кабинет',
+                            iconButton: null,
                           ),
                           SizedBox(
                             height: heightScreen * 0.015,
@@ -417,15 +506,14 @@ void _downloadSubjects(context,String selectedGroup) {
                       ),
                     ),
                     onPressed: () {
-                     
-                        _addLesson(context, provider.selectedGroup,
-                            ' ${DateFormat('dd-MM-yyyy', 'ru').format(providerDate.currentDate)}');
-                        setState(() {
-                          _controllerSubject.text = '';
-                          _controllerRoom.text = '';
-                        });
-                        Navigator.of(context).pop();
-                      _getAllLessons(context,providerDate.day);
+                      _addLesson(context, provider.selectedGroup,
+                          ' ${DateFormat('dd-MM-yyyy', 'ru').format(providerDate.currentDate)}');
+                      setState(() {
+                        _controllerSubject.text = '';
+                        _controllerRoom.text = '';
+                      });
+                      Navigator.of(context).pop();
+                      _getAllLessons(context, providerDate.day);
                     },
                     child: Text(
                       'Добавить',
@@ -450,29 +538,22 @@ void _downloadSubjects(context,String selectedGroup) {
 }
 
 class TextformFieldWidget extends StatelessWidget {
-  TextformFieldWidget({
+  const TextformFieldWidget({
     super.key,
     required TextEditingController controllerClass,
     required this.hintTextx,
     required this.labelTextx,
-  
     required this.iconButton,
   }) : _controllerClass = controllerClass;
 
+  final InkWell? iconButton;
 
-  
-  
-    final InkWell? iconButton ;
- 
   final TextEditingController _controllerClass;
   final String hintTextx;
   final String labelTextx;
 
   @override
   Widget build(BuildContext context) {
-    ProviderGroup provider = Provider.of<ProviderGroup>(context);
-    double heightScreen = MediaQuery.of(context).size.height;
-
     return TextFormField(
       keyboardType: TextInputType.name,
       autocorrect: false,
@@ -511,8 +592,7 @@ class TextformFieldWidget extends StatelessWidget {
             color: Color(0xff9D9D9D),
             fontWeight: FontWeight.w600,
             fontSize: 10),
-        suffixIcon:  iconButton ,
-       
+        suffixIcon: iconButton,
       ),
     );
   }

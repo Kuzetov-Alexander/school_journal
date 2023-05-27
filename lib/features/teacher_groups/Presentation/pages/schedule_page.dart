@@ -22,12 +22,14 @@ class SchedulePage extends StatefulWidget {
 /// Чтобы отслеживать прокрутку ListView
 ScrollController scrollController = ScrollController();
 
-void _getAllLessons(context,String date) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
-                GetAllLessonsEvent(selectedDate: date
-                    ));
-  }
+void _getAllLessons(context, String date) {
+  BlocProvider.of<BlocTeacherGroupsBloc>(context)
+      .add(GetAllLessonsEvent(selectedDate: date));
+}
 
+void _downloadNameGroups(context) {
+  BlocProvider.of<BlocTeacherGroupsBloc>(context).add(DownloadGroupNameEvent());
+}
 
 class _SchedulePageState extends State<SchedulePage> {
   @override
@@ -36,7 +38,8 @@ class _SchedulePageState extends State<SchedulePage> {
     double heightScreen = MediaQuery.of(context).size.height;
 
     DateTime curentDateTime = context.watch<ProviderCalendar>().currentDate;
-    ProviderCalendar provider= Provider.of<ProviderCalendar>(context);
+    ProviderCalendar provider = Provider.of<ProviderCalendar>(context);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -164,8 +167,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                         context
                                             .read<ProviderCalendar>()
                                             .getSelectedDate(index);
-                                           _getAllLessons(context,provider.day);
-                                           
+                                        _getAllLessons(context, provider.day);
                                       });
                                     },
                                     child: Container(
@@ -309,7 +311,6 @@ class _SchedulePageState extends State<SchedulePage> {
                           splashRadius: 20,
                           onPressed: () {
                             showModalBottomSheet(
-                              // barrierColor: Colors.transparent,
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               shape: const RoundedRectangleBorder(

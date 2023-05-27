@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProviderGroup extends ChangeNotifier {
+
   String currentGroup = '';
   bool isSelected = false;
   bool newLessonAdded = false;
@@ -12,7 +13,7 @@ class ProviderGroup extends ChangeNotifier {
   TimeOfDay finishlessonTime = TimeOfDay.now();
   String selectedGroup = 'Выберите группу';
 
-  List<String> listGroup = [];
+   List<String> listGroup = [];
   List<dynamic> listSubjects = [];
 
   Map allCurrentLessons = {}; // Map для всех уроков определенной группы
@@ -57,7 +58,7 @@ class ProviderGroup extends ChangeNotifier {
     List<String> listGroups = [];
     listGroups.addAll(newGroup);
     listGroup = listGroups.toSet().toList();
-
+   
     notifyListeners();
   }
 

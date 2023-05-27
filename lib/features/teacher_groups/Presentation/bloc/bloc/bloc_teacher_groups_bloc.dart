@@ -67,6 +67,8 @@ class BlocTeacherGroupsBloc
     });
 
     on<DownloadGroupNameEvent>((event, emit) async {
+      // final stopwatch = Stopwatch();
+      // stopwatch.start();
       final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
 
       if (dataSnapshot.exists) {
@@ -86,10 +88,12 @@ class BlocTeacherGroupsBloc
             }
           }
         }
-
+         
         emit(DownloadGroupNameState(
           allNamesGroup: groupNames,
         ));
+        // stopwatch.stop();
+        // print(stopwatch.elapsedMilliseconds);
       }
     });
 
@@ -142,10 +146,8 @@ class BlocTeacherGroupsBloc
             .toList()
             .where((e) => e['Group'] == event.groupName)
             .toList();
-            
-           
+
         keydata = dataShot.snapshot.key.toString();
-         
       }
 
       emit(UpdateState());

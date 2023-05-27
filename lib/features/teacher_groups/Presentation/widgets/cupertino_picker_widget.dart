@@ -13,7 +13,6 @@ class CupertinoPickerWidget extends StatelessWidget {
     return CupertinoPicker(
         squeeze: 1,
         backgroundColor: Colors.white,
-        scrollController: FixedExtentScrollController(initialItem: 1),
         itemExtent: 30,
         onSelectedItemChanged: onSelected,
         children: listWidget);
