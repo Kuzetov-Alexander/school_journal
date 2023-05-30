@@ -9,7 +9,6 @@ abstract class RemoteDataFirebase {
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
-  final dataBase = FirebaseDatabase.instance;
   @override
   Future<void> createGroup({required String groupName}) {
     final userId = FirebaseAuth.instance.currentUser?.uid;

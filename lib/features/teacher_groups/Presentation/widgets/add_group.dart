@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups_event.dart';
 
 class AddNewGroup extends StatefulWidget {
   const AddNewGroup({super.key});
@@ -20,7 +21,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
   void _createGroup(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+    BlocProvider.of<BlocTeacherGroups>(context)
         .add(CreateGroupEvent(groupName: _controllerClass.text.trim()));
   }
 

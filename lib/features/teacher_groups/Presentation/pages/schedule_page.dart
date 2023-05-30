@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import 'package:intl/intl.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher__groups_state.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups.dart';
+
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_schedule_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_widget.dart';
@@ -47,7 +50,7 @@ class _SchedulePageState extends State<SchedulePage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+      body: BlocConsumer<BlocTeacherGroups, BlocTeacherGroupsState>(
         listener: (context, state) {},
         builder: (context, state) {
           return SafeArea(

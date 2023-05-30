@@ -1,4 +1,6 @@
-part of 'bloc_teacher_groups_bloc.dart';
+// part of 'bloc_general_schedule_bloc.dart';
+
+import 'package:equatable/equatable.dart';
 
 abstract class BlocTeacherGroupsState extends Equatable {
   const BlocTeacherGroupsState();
@@ -28,30 +30,32 @@ class NoGroupsState extends BlocTeacherGroupsState {
 
 class UpdateState extends BlocTeacherGroupsState {}
 
-class DownloadGroupNameState extends BlocTeacherGroupsState {
-  final List<String> allNamesGroup;
+// class BlocGeneralScheduleInitial extends BlocTeacherGroupsState {}
 
-  const DownloadGroupNameState({
-    required this.allNamesGroup,
-  });
-  @override
-  List<Object> get props => [];
-}
+// class DownloadGroupNameState extends BlocTeacherGroupsState {
+//   final List<String> allNamesGroup;
 
-class DownloadSubjectNameState extends BlocTeacherGroupsState {
-  final List<dynamic> allSubjectGroup;
+//   const DownloadGroupNameState({
+//     required this.allNamesGroup,
+//   });
+//   @override
+//   List<Object> get props => [];
+// }
 
-  const DownloadSubjectNameState({
-    required this.allSubjectGroup,
-  });
-  @override
-  List<Object> get props => [];
-}
+// class DownloadSubjectNameState extends BlocTeacherGroupsState {
+//   final List<dynamic> allSubjectGroup;
 
-class AddedLessonState extends BlocTeacherGroupsState {
-  @override
-  List<Object> get props => [];
-}
+//   const DownloadSubjectNameState({
+//     required this.allSubjectGroup,
+//   });
+//   @override
+//   List<Object> get props => [];
+// }
+
+// class AddedLessonState extends BlocTeacherGroupsState {
+//   @override
+//   List<Object> get props => [];
+// }
 
 class DatabaseErrorState extends BlocTeacherGroupsState {
   final String error;

@@ -1,49 +1,19 @@
-import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher__groups_state.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups_event.dart';
+
 import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 
-part 'bloc_teacher_groups_event.dart';
-part 'bloc_teacher_groups_state.dart';
-
-class BlocTeacherGroupsBloc
+class BlocTeacherGroups
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
   final CreateGroupRepository repository;
 
-  BlocTeacherGroupsBloc({required this.repository}) : super(NoGroupsState()) {
+  BlocTeacherGroups({required this.repository}) : super(NoGroupsState()) {
     /// Создаем группу из ГЭ
     on<CreateGroupEvent>((event, emit) async {
       emit(IsCreatingGroupState());
       await repository.createGroup(groupName: event.groupName);
       emit(IsCreatedGroupState());
-    });
-
-    /// Добавляем урок в общее расписание
-    on<AddLessonEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      emit(AddedLessonState());
-
-      final lessonData = {
-        event.lessonTimeStart: {
-          'Subject': event.subject,
-          'LessonRoom': event.lessonRoom,
-          'lessonTimeStart': event.lessonTimeStart,
-          'lessonTimeFinish': event.lessonTimeFinish,
-          'Group': event.groupNameforLesson,
-          'Homework': 'не задано',
-          'StudentAmountatLesson': '0'
-        }
-      };
-      await dataBase
-          .child('Users/$userId/Schedule/${event.currentDate}')
-          .update(lessonData);
-
-      await dataBase
-          .child('Users/$userId/Groups/${event.groupNameforLesson}/allSubject')
-          .update({event.subject: ''});
     });
 
     /// Удалить группу из ГЭ
@@ -52,53 +22,79 @@ class BlocTeacherGroupsBloc
       emit(UpdateState());
     });
 
-    on<DownloadGroupNameEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
+    //   /// Добавляем урок в общее расписание
+    //   on<AddLessonEvent>((event, emit) async {
+    //     final dataBase = FirebaseDatabase.instance.ref();
+    //     final userId = FirebaseAuth.instance.currentUser?.uid;
+    //     emit(AddedLessonState());
 
-      if (dataSnapshot.exists) {
-        final Map<Object?, Object?> data =
-            dataSnapshot.value as Map<Object?, Object?>;
+    //     final lessonData = {
+    //       event.lessonTimeStart: {
+    //         'Subject': event.subject,
+    //         'LessonRoom': event.lessonRoom,
+    //         'lessonTimeStart': event.lessonTimeStart,
+    //         'lessonTimeFinish': event.lessonTimeFinish,
+    //         'Group': event.groupNameforLesson,
+    //         'Homework': 'не задано',
+    //         'StudentAmountatLesson': '0'
+    //       }
+    //     };
+    //     await dataBase
+    //         .child('Users/$userId/Schedule/${event.currentDate}')
+    //         .update(lessonData);
 
-        final List<String> groupNames =
-            []; // Здесь будут храниться все значения ключа "GroupName"
+    //     await dataBase
+    //         .child('Users/$userId/Groups/${event.groupNameforLesson}/allSubject')
+    //         .update({event.subject: ''});
+    //   });
 
-        final List<dynamic> dataList = data.values.toList();
+    //   on<DownloadGroupNameEvent>((event, emit) async {
+    //     final dataBase = FirebaseDatabase.instance.ref();
+    //     final userId = FirebaseAuth.instance.currentUser?.uid;
+    //     final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
 
-        for (final dynamic element in dataList) {
-          if (element is Map<dynamic, dynamic>) {
-            final String? groupName = element['GroupName'] as String?;
-            if (groupName != null) {
-              groupNames.add(groupName);
-            }
-          }
-        }
-        // print(groupNames);
-        emit(DownloadGroupNameState(
-          allNamesGroup: groupNames,
-        ));
-      }
-    });
+    //     if (dataSnapshot.exists) {
+    //       final Map<Object?, Object?> data =
+    //           dataSnapshot.value as Map<Object?, Object?>;
 
-    on<DownloadSubjectNameEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final dataShot = await dataBase
-          .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
-          .once();
+    //       final List<String> groupNames =
+    //           []; // Здесь будут храниться все значения ключа "GroupName"
 
-      List<dynamic> subjectNames = [];
-      final dataSubject = dataShot.snapshot.value;
+    //       final List<dynamic> dataList = data.values.toList();
 
-      if (dataSubject is Map) {
-        subjectNames = dataSubject.keys.toList();
-      }
+    //       for (final dynamic element in dataList) {
+    //         if (element is Map<dynamic, dynamic>) {
+    //           final String? groupName = element['GroupName'] as String?;
+    //           if (groupName != null) {
+    //             groupNames.add(groupName);
+    //           }
+    //         }
+    //       }
+    //       // print(groupNames);
+    //       emit(DownloadGroupNameState(
+    //         allNamesGroup: groupNames,
+    //       ));
+    //     }
+    //   });
 
-      emit(DownloadSubjectNameState(
-        allSubjectGroup: subjectNames,
-      ));
-    });
+    //   on<DownloadSubjectNameEvent>((event, emit) async {
+    //     final dataBase = FirebaseDatabase.instance.ref();
+    //     final userId = FirebaseAuth.instance.currentUser?.uid;
+    //     final dataShot = await dataBase
+    //         .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
+    //         .once();
+
+    //     List<dynamic> subjectNames = [];
+    //     final dataSubject = dataShot.snapshot.value;
+
+    //     if (dataSubject is Map) {
+    //       subjectNames = dataSubject.keys.toList();
+    //     }
+
+    //     emit(DownloadSubjectNameState(
+    //       allSubjectGroup: subjectNames,
+    //     ));
+    //   });
   }
 }
 

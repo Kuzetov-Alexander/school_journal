@@ -10,7 +10,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher__groups_state.dart';
+
+
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups_event.dart';
+
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
 
@@ -25,8 +31,7 @@ class GroupListPage extends StatefulWidget {
 
 class _GroupListPageState extends State<GroupListPage> {
   void _deleteGroup(context, {required String key}) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
-        .add(DeleteGroupEvent(key: key));
+    BlocProvider.of<BlocTeacherGroups>(context).add(DeleteGroupEvent(key: key));
   }
 
   @override
@@ -55,7 +60,7 @@ class _GroupListPageState extends State<GroupListPage> {
     final db = FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     return Scaffold(
-      body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+      body: BlocConsumer<BlocTeacherGroups, BlocTeacherGroupsState>(
         listener: (context, state) {
           if (state is IsCreatedGroupState) {
             ScaffoldMessenger.of(context).showSnackBar(

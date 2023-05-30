@@ -19,7 +19,8 @@ import 'package:school_journal/features/autentification/presentation/pages/signu
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_groups/bloc_teacher_groups.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
 
@@ -139,11 +140,17 @@ class MyApp extends StatelessWidget {
               authRepository: RepositoryProvider.of<UserRepository>(context),
             ),
           ),
-          BlocProvider<BlocTeacherGroupsBloc>(
+          BlocProvider<BlocTeacherGroups>(
             lazy: false,
-            create: (context) => BlocTeacherGroupsBloc(
+            create: (context) => BlocTeacherGroups(
               repository: RepositoryProvider.of<CreateGroupRepository>(context),
             ),
+          ),
+          BlocProvider<BlocGeneralScheduleBloc>(
+            lazy: false,
+            create: (context) => BlocGeneralScheduleBloc(
+                // repository: RepositoryProvider.of<CreateGroupRepository>(context),
+                ),
           ),
         ],
         child: MaterialApp.router(

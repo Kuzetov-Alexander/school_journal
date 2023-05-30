@@ -1,0 +1,44 @@
+part of 'bloc_general_schedule_bloc.dart';
+
+abstract class BlocGeneralScheduleState extends Equatable {
+  const BlocGeneralScheduleState();
+  
+  @override
+  List<Object> get props => [];
+}
+
+class BlocGeneralScheduleInitial extends BlocGeneralScheduleState {}
+
+class DownloadGroupNameState extends BlocGeneralScheduleState {
+  final List<String> allNamesGroup;
+
+  const DownloadGroupNameState({
+    required this.allNamesGroup,
+  });
+  @override
+  List<Object> get props => [];
+}
+
+class DownloadSubjectNameState extends BlocGeneralScheduleState {
+  final List<dynamic> allSubjectGroup;
+
+  const DownloadSubjectNameState({
+    required this.allSubjectGroup,
+  });
+  @override
+  List<Object> get props => [];
+}
+
+class AddedLessonState extends BlocGeneralScheduleState {
+  @override
+  List<Object> get props => [];
+}
+
+class DatabaseErrorState extends BlocGeneralScheduleState {
+  final String error;
+
+  const DatabaseErrorState({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

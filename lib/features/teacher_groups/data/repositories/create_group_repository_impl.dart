@@ -17,7 +17,10 @@ class CreateGroupRepositoryImpl implements CreateGroupRepository {
             .createGroup(groupName: groupName)
             .then((value) => Right(value));
       } on Object {
-        return Left<Failure, void>(ServerFailure());
+        // TODO(Sanya) Подумать как обработать ошибку для пользователя?
+
+        return Left<Failure, void>(
+            DataBaseFailure('Ошибка при создании группы в ГЭ'));
       }
     }
   }

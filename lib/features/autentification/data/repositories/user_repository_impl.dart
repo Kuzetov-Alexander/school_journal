@@ -19,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
           .signUp(email: email, password: password, fullName: fullName)
           .then((value) => Right(value));
     } on Object {
-      return Left<Failure, void>(ServerFailure());
+      return Left<Failure, void>(DataBaseFailure());
     }
   }
 
@@ -30,7 +30,7 @@ class UserRepositoryImpl implements UserRepository {
           .sendEmailVerification()
           .then((value) => Right(value));
     } on Object {
-      return Left<Failure, void>(ServerFailure());
+      return Left<Failure, void>(DataBaseFailure());
     }
   }
 
@@ -42,7 +42,7 @@ class UserRepositoryImpl implements UserRepository {
           .signIn(email: email, password: password)
           .then((value) => Right(value));
     } on Object {
-      return Left<Failure, void>(ServerFailure());
+      return Left<Failure, void>(DataBaseFailure());
     }
   }
 
@@ -53,7 +53,7 @@ class UserRepositoryImpl implements UserRepository {
             (value) => Right(value),
           );
     } on Object {
-      return Left<Failure, void>(ServerFailure());
+      return Left<Failure, void>(DataBaseFailure());
     }
   }
 }
