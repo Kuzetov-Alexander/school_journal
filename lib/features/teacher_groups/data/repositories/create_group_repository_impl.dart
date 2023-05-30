@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 
 import 'package:school_journal/core/error/failure.dart';
 import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/domain/repositories/create_group_repository.dart';
+import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 
 class CreateGroupRepositoryImpl implements CreateGroupRepository {
   RemoteDataFirebase dataBase;

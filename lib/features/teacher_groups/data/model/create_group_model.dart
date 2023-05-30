@@ -1,4 +1,5 @@
-import 'package:school_journal/features/teacher_groups/Presentation/domain/entities/create_group_entity.dart';
+
+import 'package:school_journal/features/teacher_groups/domain/entities/create_group_entity.dart';
 
 class CreateGroupModel extends CreateGroupEntity {
   const CreateGroupModel({required super.groupName});
