@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:school_journal/features/teacher_groups/data/model/schedule_model.dart';
+import 'package:school_journal/features/teacher_groups/domain/requests/schedule_request.dart';
 
 abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
 
   Future<void> removeGroup({required String keyGroup});
-  Future<void> addLesson(ScheduleEntityModel model);
+  Future<void> addLesson({required ScheduleRequest request});
   // {required String groupNameforLesson,
   // required String subject,
   // required String lessonRoom,
@@ -16,9 +16,9 @@ abstract class RemoteDataFirebase {
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
-  final userId = FirebaseAuth.instance.currentUser?.uid;
   @override
   Future<void> createGroup({required String groupName}) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBase =
         FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
 
@@ -42,20 +42,29 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   }
 
   @override
-  Future<void> addLesson(ScheduleEntityModel model) async {
+  Future<void> addLesson({required ScheduleRequest request}) async {
     // final Map<String, Map> lessonData;
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    final lessonData = model.toMap();
+    final lessonData = {
+      request.lessonTimeStart: {
+        'Subject': request.subject,
+        'LessonRoom': request.lessonRoom,
+        'lessonTimeStart': request.lessonTimeStart,
+        'lessonTimeFinish': request.lessonTimeFinish,
+        'groupNameforLesson': request.groupNameforLesson,
+        'Homework': 'не задано',
+        'StudentAmountatLesson': '0'
+      }
+    };
     await dataBase
-        .child('Users/$userId/Schedule/${model.currentDate}')
+        .child('Users/$userId/Schedule/${request.currentDate}')
         .update(lessonData);
 
     await dataBase
-        .child('Users/$userId/Groups/${model.groupNameforLesson}/allSubject')
-        .update({model.subject: ''});
-    print('asdasdasasd');
+        .child('Users/$userId/Groups/${request.groupNameforLesson}/allSubject')
+        .update({request.subject: ''});
   }
 }
 

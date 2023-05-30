@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
+import 'package:school_journal/features/teacher_groups/domain/requests/schedule_request.dart';
 
 part 'bloc_general_schedule_event.dart';
 part 'bloc_general_schedule_state.dart';
@@ -17,12 +18,15 @@ class BlocGeneralScheduleBloc
     on<AddLessonEvent>((event, emit) async {
       emit(AddedLessonState());
       repository.addLesson(
+        request: ScheduleRequest(
           groupNameforLesson: event.groupNameforLesson,
           subject: event.subject,
           lessonRoom: event.lessonRoom,
           lessonTimeStart: event.lessonTimeStart,
           lessonTimeFinish: event.lessonTimeFinish,
-          currentDate: event.currentDate);
+          currentDate: event.currentDate,
+        ),
+      );
       print(event.subject);
       // final lessonData = {
       //   event.lessonTimeStart: {
