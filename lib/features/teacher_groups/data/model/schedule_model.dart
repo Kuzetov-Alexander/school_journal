@@ -3,21 +3,14 @@ import 'package:school_journal/features/teacher_groups/domain/entities/schedule_
 
 class ScheduleEntityModel extends ScheduleEntity {
   const ScheduleEntityModel(
-      { groupNameforLesson,
-      subject,
-       lessonRoom,
-       lessonTimeStart,
-       lessonTimeFinish,
-     currentDate})
-      : super(
-            groupNameforLesson: groupNameforLesson,
-            subject: subject,
-            lessonRoom: lessonRoom,
-            lessonTimeStart: lessonTimeStart,
-            lessonTimeFinish: lessonTimeFinish,
-            currentDate: currentDate);
+      {required super.groupNameforLesson,
+      required super.subject,
+      required super.lessonRoom,
+      required super.lessonTimeStart,
+      required super.lessonTimeFinish,
+      required super.currentDate});
 
-  Map<String, Map> toMap() {
+  Map<String, Map<String, dynamic>> toMap() {
     return {
       lessonTimeStart: {
         'Subject': subject,
