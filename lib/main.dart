@@ -148,7 +148,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<BlocTeacherGroupsBloc>(
             lazy: false,
-            create: (context) => BlocTeacherGroupsBloc(),
+            create: (context) => BlocTeacherGroupsBloc(repository: RepositoryProvider.of<CreateGroupRepository>(context)),
           ),
           BlocProvider<ScoresPageBloc>(
             lazy: false,

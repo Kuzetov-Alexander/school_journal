@@ -18,7 +18,7 @@ class CreateGroupRepositoryImpl implements CreateGroupRepository {
             .createGroup(groupName: groupName)
             .then((value) => Right(value));
       } on Object {
-        return Left<Failure, void>(ServerFailure());
+        return Left<Failure, void>(DataBaseFailure());
       }
     }
   }
@@ -28,13 +28,21 @@ class CreateGroupRepositoryImpl implements CreateGroupRepository {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Either<Failure, void>> removeGroup() {
-    throw UnimplementedError();
-  }
+  
 
   @override
   Future<Either<Failure, void>> updateGroup() {
     throw UnimplementedError();
+  }
+  
+  @override
+  Future<Either<Failure, void>> removeGroup({required String keyGroup}) async {
+   
+ try {
+        return await dataBase.removeGroup(keyGroup: keyGroup)
+            .then((value) => Right(value));
+      } on Object {
+        return Left<Failure, void>(DataBaseFailure());
+      }
   }
 }

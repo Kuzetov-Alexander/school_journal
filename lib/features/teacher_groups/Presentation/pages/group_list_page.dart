@@ -29,7 +29,7 @@ class GroupListPage extends StatefulWidget {
 
 class _GroupListPageState extends State<GroupListPage> {
   
-  void _deleteGroup(context, {required String? key}) {
+  void _deleteGroup(context, {required String key}) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DeleteGroupEvent(key: key));
   }

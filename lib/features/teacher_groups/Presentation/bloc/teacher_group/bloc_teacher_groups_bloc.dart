@@ -4,41 +4,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_group_event.dart';
+import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 
 part 'bloc_teacher_groups_state.dart';
 
 class BlocTeacherGroupsBloc
     extends Bloc<BlocTeacherGroupsEvent, BlocTeacherGroupsState> {
-  // final CreateGroupRepository repository;
+  final CreateGroupRepository repository;
 
   final dataBase = FirebaseDatabase.instance.ref();
   final userId = FirebaseAuth.instance.currentUser?.uid;
 
-  BlocTeacherGroupsBloc() : super(NoGroupsStat()) {
+  BlocTeacherGroupsBloc({required this.repository}) : super(NoGroupsStat()) {
     on<CreateGroupEvent>((event, emit) async {
-      final dataBase =
-          FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-
       emit(IsCreatingGroupState());
 
-      final postData = {
-        event.groupName: {
-          'GroupName': event.groupName,
-          'amountStudents': '0',
-          'nextLesson': 'нет',
-          'allStudents': 'пусто',
-          'allSubject': 'пусто'
-        }
-      };
+      repository.createGroup(groupName: event.groupName);
 
-      dataBase.update(postData);
       emit(IsCreatedGroupState());
     });
 
     on<DeleteGroupEvent>((event, emit) {
-      final dataBase = FirebaseDatabase.instance.ref().child('${event.key}');
-
-      dataBase.remove();
+     repository.removeGroup(keyGroup: event.key);
       emit(UpdateState());
     });
   }

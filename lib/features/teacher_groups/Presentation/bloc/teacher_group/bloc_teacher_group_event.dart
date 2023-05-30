@@ -16,6 +16,6 @@ class CreateGroupEvent extends BlocTeacherGroupsEvent {
 }
 
 class DeleteGroupEvent extends BlocTeacherGroupsEvent {
-  final String? key;
+  final String key;
   const DeleteGroupEvent({required this.key});
 }

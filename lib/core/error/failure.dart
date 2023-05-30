@@ -7,6 +7,7 @@ abstract class Failure extends Equatable {
 }
 
 /// Дополнительная обработка ошибок
-class ServerFailure extends Failure {}
-
-
+class DataBaseFailure extends Failure {
+  final String? message;
+  DataBaseFailure({this.message});
+}

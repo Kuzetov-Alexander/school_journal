@@ -1,19 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
   Future<void> readGroup();
-  Future<void> removeGroup() async {}
+  Future<void> removeGroup({required String keyGroup}) async {}
   Future<void> updateGroup();
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
-  final dataBase = FirebaseDatabase.instance;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
   @override
-  Future<void> createGroup({required String groupName}) {
-    final allGroups = dataBase.ref().child('Groups/$groupName');
-    final newGroup = allGroups.set({'groupName': groupName});
-    return newGroup;
+  Future<void> createGroup({required String groupName}) async {
+    final dataBase =
+        FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
+
+    final postData = {
+      groupName: {
+        'GroupName': groupName,
+        'amountStudents': '0',
+        'nextLesson': 'нет',
+        'allStudents': 'пусто',
+        'allSubject': 'пусто'
+      }
+    };
+
+    dataBase.update(postData);
   }
 
   @override
@@ -22,13 +34,15 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   }
 
   @override
-  Future<void> removeGroup() {
+  Future<void> updateGroup() {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> updateGroup() {
-    throw UnimplementedError();
+  Future<void> removeGroup({required String keyGroup}) async {
+    final dataBase = FirebaseDatabase.instance.ref().child(keyGroup);
+
+    dataBase.remove();
   }
 }
 // class RemoteDataSourceImpl implements RemoteDataSource {
