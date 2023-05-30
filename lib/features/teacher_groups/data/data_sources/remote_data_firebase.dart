@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
   Future<void> readGroup();
-  Future<void> removeGroup({required String keyGroup}) async {}
+  Future<void> removeGroup({required String keyGroup});
   Future<void> updateGroup();
 }
 
@@ -41,10 +41,10 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   @override
   Future<void> removeGroup({required String keyGroup}) async {
     final dataBase = FirebaseDatabase.instance.ref().child(keyGroup);
-
     dataBase.remove();
   }
 }
+
 // class RemoteDataSourceImpl implements RemoteDataSource {
 //   final firebaseAuth = FirebaseAuth.instance;
 

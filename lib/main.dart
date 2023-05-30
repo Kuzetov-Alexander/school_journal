@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
@@ -21,12 +19,10 @@ import 'package:school_journal/features/autentification/presentation/provider.da
 import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/student_scores/presentation/provider/provider.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
-
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
-
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
 import 'package:school_journal/features/teacher_groups/data/repositories/create_group_repository_impl.dart';
@@ -148,7 +144,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<BlocTeacherGroupsBloc>(
             lazy: false,
-            create: (context) => BlocTeacherGroupsBloc(repository: RepositoryProvider.of<CreateGroupRepository>(context)),
+            create: (context) => BlocTeacherGroupsBloc(
+                repository:
+                    RepositoryProvider.of<CreateGroupRepository>(context)),
           ),
           BlocProvider<ScoresPageBloc>(
             lazy: false,

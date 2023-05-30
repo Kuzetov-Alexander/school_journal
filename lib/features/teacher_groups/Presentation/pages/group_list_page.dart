@@ -10,7 +10,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
+
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_group_event.dart';
 
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';

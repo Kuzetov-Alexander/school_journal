@@ -7,9 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
 
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
+
+
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
 
