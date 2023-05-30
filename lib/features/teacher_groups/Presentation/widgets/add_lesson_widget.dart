@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
+
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
 
@@ -36,12 +38,12 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   late final TextEditingController _controllerRoom = TextEditingController();
 
   void _downloadSubjects(context, String selectedGroup) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
         .add(DownloadSubjectNameEvent(selectedGroup: selectedGroup));
   }
 
   void _addLesson(context, String groupName, String currentDay) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(AddLessonEvent(
+    BlocProvider.of<BlocGeneralScheduleBloc>(context).add(AddLessonEvent(
         groupNameforLesson: groupName,
         lessonRoom: _controllerRoom.text,
         lessonTimeStart: DateFormat.Hm().format(
@@ -61,12 +63,12 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   }
 
   void _getAllLessons(context, String date) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
         .add(GetAllLessonsEvent(selectedDate: date));
   }
 
   void _downloadNameGroups(context) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context)
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
         .add(DownloadGroupNameEvent());
   }
 
@@ -78,7 +80,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
               color: Colors.transparent,
               child: Padding(
                   padding: EdgeInsets.only(top: height),
-                  child:  Text(
+                  child: Text(
                     hint,
                     style: TextStyle(color: Colors.redAccent),
                   ))));
@@ -99,7 +101,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
+    return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {
         if (state is DownloadGroupNameState) {
           provider.addGroupName(state.allNamesGroup);
@@ -196,7 +198,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     onPressed: () async {
                                       _controllerSubject.text = '';
                                       _downloadNameGroups(context);
-                                      
+
                                       await Future.delayed(
                                               const Duration(milliseconds: 50))
                                           .then((_) {
@@ -255,7 +257,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                                 );
                                               });
                                         } else {
-                                          showTip(context, heightScreen * 0.73, 'Необходимо сначала создать группу');
+                                          showTip(context, heightScreen * 0.73,
+                                              'Необходимо сначала создать группу');
                                         }
                                       });
                                     },
@@ -279,63 +282,62 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 await Future.delayed(
                                         const Duration(milliseconds: 50))
                                     .then((_) {
-                                      if (provider.listSubjects.isNotEmpty) {
-                                          showCupertinoModalPopup(
-                                              context: context,
-                                              builder: (context) {
-                                                return Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: heightScreen * 0.7),
-                                                  child: Column(
+                                  if (provider.listSubjects.isNotEmpty) {
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                top: heightScreen * 0.7),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child: CupertinoPickerWidget(
+                                                    listWidget: provider
+                                                        .listSubjects
+                                                        .map((e) => Text(e))
+                                                        .toList(),
+                                                    onSelected: (value) {
+                                                      setState(() {
+                                                        indexValueSubject =
+                                                            value;
+                                                      });
+                                                      _controllerSubject.text =
+                                                          provider.listSubjects[
+                                                              value];
+                                                    },
+                                                  ),
+                                                ),
+                                                ColoredBox(
+                                                  color: Colors.white,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
-                                                      Expanded(
-                                                        child:
-                                                            CupertinoPickerWidget(
-                                                          listWidget: provider
-                                                              .listSubjects
-                                                              .map((e) =>
-                                                                  Text(e))
-                                                              .toList(),
-                                                          onSelected: (value) {
-                                                            setState(() {
-                                                              indexValueSubject =
-                                                                  value;
-                                                            });
-                                                            _controllerSubject.text =
-                                                                provider.listSubjects[
-                                                                    value];
-                                                          },
-                                                        ),
-                                                      ),
-                                                      ColoredBox(
-                                                        color: Colors.white,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            CupertinoButton(
-                                                                child: const Text(
-                                                                    'Подтвердить'),
-                                                                onPressed: () {
-                                                                  provider
-                                                                      .selectedGroup = provider
-                                                                          .listSubjects[
-                                                                      indexValueSubject];
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                }),
-                                                          ],
-                                                        ),
-                                                      )
+                                                      CupertinoButton(
+                                                          child: const Text(
+                                                              'Подтвердить'),
+                                                          onPressed: () {
+                                                            provider
+                                                                .selectedGroup = provider
+                                                                    .listSubjects[
+                                                                indexValueSubject];
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          }),
                                                     ],
                                                   ),
-                                                );
-                                              });
-                                        } else {
-                                          showTip(context, heightScreen * 0.73, 'Для данной группы предметы не найдены');
-                                        }
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        });
+                                  } else {
+                                    showTip(context, heightScreen * 0.73,
+                                        'Для данной группы предметы не найдены');
+                                  }
                                   // showCupertinoModalPopup(
                                   //     context: context,
                                   //     builder: (context) {

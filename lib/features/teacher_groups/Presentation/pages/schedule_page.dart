@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/change_schedule_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_general_schedule_widget.dart';
@@ -23,12 +25,12 @@ class SchedulePage extends StatefulWidget {
 ScrollController scrollController = ScrollController();
 
 void _getAllLessons(context, String date) {
-  BlocProvider.of<BlocTeacherGroupsBloc>(context)
+  BlocProvider.of<BlocGeneralScheduleBloc>(context)
       .add(GetAllLessonsEvent(selectedDate: date));
 }
 
 void _downloadNameGroups(context) {
-  BlocProvider.of<BlocTeacherGroupsBloc>(context).add(DownloadGroupNameEvent());
+  BlocProvider.of<BlocGeneralScheduleBloc>(context).add(DownloadGroupNameEvent());
 }
 
 class _SchedulePageState extends State<SchedulePage> {

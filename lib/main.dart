@@ -21,7 +21,9 @@ import 'package:school_journal/features/autentification/presentation/provider.da
 import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
 import 'package:school_journal/features/student_scores/presentation/provider/provider.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
 
@@ -151,6 +153,10 @@ class MyApp extends StatelessWidget {
           BlocProvider<ScoresPageBloc>(
             lazy: false,
             create: (context) => ScoresPageBloc(),
+          ),
+          BlocProvider<BlocGeneralScheduleBloc>(
+            lazy: false,
+            create: (context) => BlocGeneralScheduleBloc(),
           ),
         ],
         child: MaterialApp.router(

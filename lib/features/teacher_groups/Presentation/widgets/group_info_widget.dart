@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/bloc/bloc/bloc_teacher_groups_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
+
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
@@ -16,7 +18,7 @@ class MyGroupInfoWidget extends StatelessWidget {
       {super.key, required this.mapGroups, required this.index});
 
 void _getCurrentLessons(context, String date, String group) {
-    BlocProvider.of<BlocTeacherGroupsBloc>(context).add(
+    BlocProvider.of<BlocGeneralScheduleBloc>(context).add(
                 GetCurrentLessonsEvent(selectedDate: date ,groupName: group
                     ));
   }
