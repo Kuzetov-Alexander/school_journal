@@ -146,15 +146,11 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<BlocTeacherGroupsBloc>(
             lazy: false,
-            create: (context) => BlocTeacherGroupsBloc(
-                // repository: RepositoryProvider.of<CreateGroupRepository>(context),
-                ),
+            create: (context) => BlocTeacherGroupsBloc(),
           ),
           BlocProvider<ScoresPageBloc>(
             lazy: false,
-            create: (context) => ScoresPageBloc(
-               
-                ),
+            create: (context) => ScoresPageBloc(),
           ),
         ],
         child: MaterialApp.router(
