@@ -1,11 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:school_journal/features/teacher_groups/data/model/schedule_model.dart';
 
 abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
-  Future<void> readGroup();
+
   Future<void> removeGroup({required String keyGroup});
-  Future<void> updateGroup();
+  Future<void> addLesson(ScheduleEntityModel model);
+  // {required String groupNameforLesson,
+  // required String subject,
+  // required String lessonRoom,
+  // required String lessonTimeStart,
+  // required String lessonTimeFinish,
+  // required String currentDate});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -25,23 +32,30 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
       }
     };
 
-    dataBase.update(postData);
-  }
-
-  @override
-  Future<void> readGroup() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateGroup() {
-    throw UnimplementedError();
+    await dataBase.update(postData);
   }
 
   @override
   Future<void> removeGroup({required String keyGroup}) async {
     final dataBase = FirebaseDatabase.instance.ref().child(keyGroup);
-    dataBase.remove();
+    await dataBase.remove();
+  }
+
+  @override
+  Future<void> addLesson(ScheduleEntityModel model) async {
+    // final Map<String, Map> lessonData;
+    final dataBase = FirebaseDatabase.instance.ref();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final lessonData = model.toMap();
+    await dataBase
+        .child('Users/$userId/Schedule/${model.currentDate}')
+        .update(lessonData);
+
+    await dataBase
+        .child('Users/$userId/Groups/${model.groupNameforLesson}/allSubject')
+        .update({model.subject: ''});
+    print('asdasdasasd');
   }
 }
 

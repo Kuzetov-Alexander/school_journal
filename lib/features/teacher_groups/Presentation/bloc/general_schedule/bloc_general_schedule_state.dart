@@ -2,14 +2,10 @@ part of 'bloc_general_schedule_bloc.dart';
 
 abstract class BlocGeneralScheduleState extends Equatable {
   const BlocGeneralScheduleState();
-  
+
   @override
   List<Object> get props => [];
 }
-
-
-
-
 
 class NoGroupsState extends BlocGeneralScheduleState {
   @override
@@ -44,18 +40,18 @@ class AddedLessonState extends BlocGeneralScheduleState {
 }
 
 class GotAllLessons extends BlocGeneralScheduleState {
- final List allLessons;
+  final List allLessons;
   final String keyDate;
-   const GotAllLessons({required this.allLessons, required this.keyDate});
+  const GotAllLessons({required this.allLessons, required this.keyDate});
 
   @override
   List<Object> get props => [];
 }
 
 class GotCurrentLessonsState extends BlocGeneralScheduleState {
- final List lessons;
- final String keyDate;
- const GotCurrentLessonsState({required this.lessons, required this.keyDate});
+  final List lessons;
+  final String keyDate;
+  const GotCurrentLessonsState({required this.lessons, required this.keyDate});
 
   @override
   List<Object> get props => [];

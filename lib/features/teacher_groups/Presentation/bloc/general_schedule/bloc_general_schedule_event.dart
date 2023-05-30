@@ -7,35 +7,29 @@ abstract class BlocGeneralScheduleEvent extends Equatable {
   List<Object> get props => [];
 }
 
-
-
-class DownloadGroupNameEvent extends BlocGeneralScheduleEvent {
-
-}
-
+class DownloadGroupNameEvent extends BlocGeneralScheduleEvent {}
 
 class DownloadSubjectNameEvent extends BlocGeneralScheduleEvent {
-final String selectedGroup;
+  final String selectedGroup;
 
-   const DownloadSubjectNameEvent({required this.selectedGroup});
+  const DownloadSubjectNameEvent({required this.selectedGroup});
 }
 
-
-
-
 class GetAllLessonsEvent extends BlocGeneralScheduleEvent {
- final String selectedDate;
+  final String selectedDate;
 
   const GetAllLessonsEvent({required this.selectedDate});
 }
 
 class GetCurrentLessonsEvent extends BlocGeneralScheduleEvent {
- final String selectedDate;
- final String groupName;
+  final String selectedDate;
+  final String groupName;
 
-  const GetCurrentLessonsEvent( {required this.selectedDate, required this.groupName,});
+  const GetCurrentLessonsEvent({
+    required this.selectedDate,
+    required this.groupName,
+  });
 }
-
 
 class AddLessonEvent extends BlocGeneralScheduleEvent {
   final String groupNameforLesson;
@@ -44,12 +38,10 @@ class AddLessonEvent extends BlocGeneralScheduleEvent {
   final String lessonTimeStart;
   final String lessonTimeFinish;
   final String currentDate;
-  
 
   const AddLessonEvent(
       {required this.subject,
-     required this.currentDate, 
-   
+      required this.currentDate,
       required this.lessonRoom,
       required this.lessonTimeStart,
       required this.lessonTimeFinish,

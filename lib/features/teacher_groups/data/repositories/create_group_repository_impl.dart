@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 
 import 'package:school_journal/core/error/failure.dart';
@@ -24,25 +23,13 @@ class CreateGroupRepositoryImpl implements CreateGroupRepository {
   }
 
   @override
-  Future<Either<Failure, void>> readGroup() {
-    throw UnimplementedError();
-  }
-
-  
-
-  @override
-  Future<Either<Failure, void>> updateGroup() {
-    throw UnimplementedError();
-  }
-  
-  @override
   Future<Either<Failure, void>> removeGroup({required String keyGroup}) async {
-   
- try {
-        return await dataBase.removeGroup(keyGroup: keyGroup)
-            .then((value) => Right(value));
-      } on Object {
-        return Left<Failure, void>(DataBaseFailure());
-      }
+    try {
+      return await dataBase
+          .removeGroup(keyGroup: keyGroup)
+          .then((value) => Right(value));
+    } on Object {
+      return Left<Failure, void>(DataBaseFailure());
+    }
   }
 }
