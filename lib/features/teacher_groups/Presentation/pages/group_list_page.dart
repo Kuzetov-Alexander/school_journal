@@ -69,7 +69,7 @@ class _GroupListPageState extends State<GroupListPage> {
                   : const CupertinoActivityIndicator(),
             );
           }
-          if (state is DatabaseErrorStat) {
+          if (state is ErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.er),

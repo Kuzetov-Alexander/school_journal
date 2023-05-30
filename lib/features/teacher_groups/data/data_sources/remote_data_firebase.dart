@@ -44,6 +44,8 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   @override
   Future<void> addLesson({required ScheduleRequest request}) async {
     // final Map<String, Map> lessonData;
+    // final model  = ScheduleEntityModel();
+    // print(model.groupNameforLesson);
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
 

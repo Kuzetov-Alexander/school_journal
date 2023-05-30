@@ -23,6 +23,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
           .addLesson(request: request)
           .then((value) => Right(value));
     } on Object {
+      print('failed');
       return Left<Failure, void>(DataBaseFailure());
     }
   }
