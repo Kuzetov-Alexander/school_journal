@@ -6,9 +6,9 @@ import 'package:school_journal/features/teacher_groups/domain/repositories/sched
 
 class ScheduleRepositoryImpl implements ScheduleRepository {
   RemoteDataFirebase dataBase;
-  final ScheduleEntityModel model;
+  // final ScheduleEntityModel model;
 
-  ScheduleRepositoryImpl({required this.dataBase, this.model});
+  ScheduleRepositoryImpl( {required this.dataBase, });
 
   @override
   Future<Either<Failure, void>> addLesson(
@@ -20,13 +20,13 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       required String currentDate}) async {
     try {
       print(groupNameforLesson);
-      print('dataRepositoryImpl');
       // final modelasd = model!.toMap();
       // print('mapa : $modelasd');
       return await dataBase
-          .addLesson(model)
+          .addLesson()
           .then((value) => Right(value));
     } on Object {
+      print('failed');
       return Left<Failure, void>(DataBaseFailure());
     }
   }

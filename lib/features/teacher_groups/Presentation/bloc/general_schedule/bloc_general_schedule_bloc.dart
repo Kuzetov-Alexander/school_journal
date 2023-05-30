@@ -23,7 +23,7 @@ class BlocGeneralScheduleBloc
           lessonTimeStart: event.lessonTimeStart,
           lessonTimeFinish: event.lessonTimeFinish,
           currentDate: event.currentDate);
-      print(event.subject);
+
       // final lessonData = {
       //   event.lessonTimeStart: {
       //     'Subject': event.subject,

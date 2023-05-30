@@ -16,17 +16,17 @@ class IsCreatedGroupState extends BlocTeacherGroupsState {
 
 }
 
-class DatabaseErrorStat extends BlocTeacherGroupsState {
+class ErrorState extends BlocTeacherGroupsState {
   final String er;
 
-  const DatabaseErrorStat({required this.er});
+  const ErrorState({required this.er});
 
   @override
   List<Object> get props => [er];
 }
 
 
-class NoGroupsStat extends BlocTeacherGroupsState {
+class InitionalState extends BlocTeacherGroupsState {
   @override
   List<Object> get props => [];
 }

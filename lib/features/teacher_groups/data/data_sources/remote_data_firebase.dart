@@ -6,7 +6,9 @@ abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
 
   Future<void> removeGroup({required String keyGroup});
-  Future<void> addLesson(ScheduleEntityModel model);
+  Future<void> addLesson(
+    // ScheduleEntityModel model
+    );
   // {required String groupNameforLesson,
   // required String subject,
   // required String lessonRoom,
@@ -42,8 +44,12 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   }
 
   @override
-  Future<void> addLesson(ScheduleEntityModel model) async {
+  Future<void> addLesson(
+    // ScheduleEntityModel model
+  ) async {
     // final Map<String, Map> lessonData;
+    final model  = ScheduleEntityModel();
+    print(model.groupNameforLesson);
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
@@ -55,7 +61,7 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     await dataBase
         .child('Users/$userId/Groups/${model.groupNameforLesson}/allSubject')
         .update({model.subject: ''});
-    print('asdasdasasd');
+  
   }
 }
 
