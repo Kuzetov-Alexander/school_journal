@@ -14,7 +14,7 @@ class BlocGeneralScheduleBloc
   BlocGeneralScheduleBloc({required this.repository}) : super(NoGroupsState()) {
     on<AddLessonEvent>((event, emit) async {
       emit(AddedLessonState());
-      repository.addLesson(
+      await repository.addLesson(
         request: ScheduleEntity(
           group: event.groupNameforLesson,
           subject: event.subject,
@@ -27,37 +27,25 @@ class BlocGeneralScheduleBloc
     });
 
     on<DownloadGroupNameEvent>((event, emit) async {
-      final stopwatch = Stopwatch();
-      stopwatch.start();
-
       final List<String> groupNames = [];
 
       await repository.downloadGroupName(request: groupNames);
+
       emit(DownloadGroupNameState(
         allNamesGroup: groupNames,
       ));
-      stopwatch.stop();
-      print(stopwatch.elapsedMilliseconds);
-      // }
     });
 
     on<DownloadSubjectNameEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final dataShot = await dataBase
-          .child('Users/$userId/Groups/${event.selectedGroup}/allSubject')
-          .once();
+      final List<dynamic> subjectNames = [];
+      await repository
+          .downloadSubjectName(
+              request: subjectNames, selectedGroup: event.selectedGroup)
+          .then((_) => emit(DownloadSubjectNameState(
+                allSubjectGroup: subjectNames,
+              )));
 
-      List<dynamic> subjectNames = [];
-      final dataSubject = dataShot.snapshot.value;
-
-      if (dataSubject is Map) {
-        subjectNames = dataSubject.keys.toList();
-      }
-
-      emit(DownloadSubjectNameState(
-        allSubjectGroup: subjectNames,
-      ));
+     
     });
 
     // Получаем уроки для всех групп

@@ -282,6 +282,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                               onTap: () async {
                                 _downloadSubjects(
                                     context, provider.selectedGroup);
+                                    
                                 await Future.delayed(
                                         const Duration(milliseconds: 50))
                                     .then((_) {
@@ -322,8 +323,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                                           child: const Text(
                                                               'Подтвердить'),
                                                           onPressed: () {
-                                                            provider
-                                                                .selectedGroup = provider
+                                                           _controllerSubject.text = provider
                                                                     .listSubjects[
                                                                 indexValueSubject];
                                                             Navigator.of(
@@ -341,28 +341,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     showTip(context, heightScreen * 0.73,
                                         'Для данной группы предметы не найдены');
                                   }
-                                  // showCupertinoModalPopup(
-                                  //     context: context,
-                                  //     builder: (context) {
-                                  //       return Padding(
-                                  //           padding: EdgeInsets.only(
-                                  //               top: heightScreen * 0.7),
-                                  //           child: CupertinoPickerWidget(
-                                  //               listWidget: provider
-                                  //                   .listSubjects
-                                  //                   .map((e) => Text(e))
-                                  //                   .toList(),
-                                  //               onSelected: (value) {
-                                  //                 setState(() {});
-                                  //                 provider.listSubjects.isEmpty
-                                  //                     ? _controllerSubject
-                                  //                         .text = ''
-                                  //                     : _controllerSubject
-                                  //                             .text =
-                                  //                         provider.listSubjects[
-                                  //                             value];
-                                  //               }));
-                                  //     });
+                          
                                 });
                               },
                               child: const Image(

@@ -8,6 +8,8 @@ abstract class RemoteDataFirebase {
   Future<void> removeGroup({required String keyGroup});
   Future<void> addLesson({required ScheduleEntity request});
   Future<void> downloadGroupName({required List<String> request});
+  Future<void> downloadSubjectName(
+      {required List<dynamic> request, required String selectedGroup});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -48,17 +50,7 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
             lessonTimeFinish: request.lessonTimeFinish,
             currentDate: request.currentDate)
         .toMap();
-    // final lessonData = {
-    //   lessonTimeStart: {
-    //     'Subject': subject,
-    //     'LessonRoom': lessonRoom,
-    //     'lessonTimeStart': lessonTimeStart,
-    //     'lessonTimeFinish': lessonTimeFinish,
-    //     'groupNameforLesson': groupNameforLesson,
-    //     'Homework': 'не задано',
-    //     'StudentAmountatLesson': '0'
-    //   }
-    // };
+
     await dataBase
         .child('Users/$userId/Schedule/${request.currentDate}')
         .update(model);
@@ -79,9 +71,6 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
 
-      // /// Здесь будут храниться все значения ключа "GroupName"
-      // final List<String> groupNames = [];
-
       final List<dynamic> dataList = data.values.toList();
 
       for (final dynamic element in dataList) {
@@ -92,6 +81,26 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
           }
         }
       }
+    }
+  }
+
+  @override
+  Future<void> downloadSubjectName(
+      {required List<dynamic> request, required String selectedGroup}) async {
+    
+    final dataBase = FirebaseDatabase.instance.ref();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final dataShot = await dataBase
+        .child('Users/$userId/Groups/$selectedGroup/allSubject')
+        .once();
+
+    final dataSubject = dataShot.snapshot.value;
+
+    if (dataSubject is Map) {
+   
+      request = dataSubject.keys.toList();
+   print(request);
     }
   }
 }
