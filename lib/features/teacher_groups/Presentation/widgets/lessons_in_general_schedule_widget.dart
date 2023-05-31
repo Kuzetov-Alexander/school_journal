@@ -3,6 +3,7 @@ import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:school_journal/features/teacher_groups/Presentation/bloc/general
 import 'dart:io' show Platform;
 
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_edit_class.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 import '../../provider/provider_calendar.dart';
@@ -20,6 +22,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String providerDate = context.watch<ProviderCalendar>().day;
+    ProviderCalendar providerCalendar = Provider.of<ProviderCalendar>(context);
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
 
     double widthScreen = MediaQuery.of(context).size.width;
@@ -111,9 +114,25 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                         onPressed: () {
                                           Platform.isAndroid
                                               ? actionSheetAndroid(
-                                                  heightScreen, context)
+                                                  heightScreen,
+                                                  context,
+                                                  '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                    providerCalendar
+                                                        .currentDate,
+                                                  )}',
+                                                  listLessons[index]
+                                                      ['LessonTimeStart'],
+                                                  listLessons[index]
+                                                      ['LessonTimeFinish'])
                                               : actionSheetIos(
-                                                  context, heightScreen);
+                                                  context, heightScreen, '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                    providerCalendar
+                                                        .currentDate,
+                                                  )}',
+                                                  listLessons[index]
+                                                      ['LessonTimeStart'],
+                                                  listLessons[index]
+                                                      ['LessonTimeFinish']);
                                         },
                                         icon: const Image(
                                             image: AssetImage(
@@ -240,7 +259,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
     );
   }
 
-  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen) {
+  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,String date, String lessonStart, String lessonFinish) {
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -249,7 +268,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                 color: AppColors.black212525,
                 fontSize: heightScreen * 0.018,
                 fontWeight: FontWeight.w600)),
-        message: Text('Среда 26.04, 9:00 -10:30',
+        message: Text('$date, $lessonStart - $lessonFinish',
             style: TextStyle(
                 color: const Color.fromRGBO(0, 0, 0, 0.5),
                 fontSize: heightScreen * 0.018,
@@ -266,17 +285,6 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                   fontSize: heightScreen * 0.022,
                   fontWeight: FontWeight.w400),
             ),
-            // onPressed: (_) {
-            //   Navigator.of(context).pop();
-            //   showModalBottomSheet(
-            //     // barrierColor:Colors.transparent ,
-            //     isScrollControlled: true,
-            //     backgroundColor: Colors.transparent,
-
-            //     context: context,
-            //     builder: (context) => const TeacherEditClass(),
-            //   );
-            // },
           ),
           CupertinoActionSheetAction(
             onPressed: () {},
@@ -305,8 +313,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
     );
   }
 
-  Future<dynamic> actionSheetAndroid(
-      double heightScreen, BuildContext context) {
+  Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
+      String date, String lessonStart, String lessonFinish) {
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -326,8 +334,9 @@ class LessonsInGeneralSchedule extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Среда 26.04, 9:00 -10:30',
+                '$date, $lessonStart - $lessonFinish',
                 style: TextStyle(
+                  wordSpacing: 1.1,
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
                     fontSize: heightScreen * 0.018,
                     fontWeight: FontWeight.w400),

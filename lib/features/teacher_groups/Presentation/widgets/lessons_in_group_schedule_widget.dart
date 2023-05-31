@@ -3,10 +3,12 @@ import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
 
 
 import 'dart:io' show Platform;
@@ -21,6 +23,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     ProviderCalendar providerCalendar = Provider.of<ProviderCalendar>(context);
     String providerDate = context.watch<ProviderCalendar>().day;
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
 
@@ -53,7 +56,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                       children: [
                         Text(
                           listLessons.isNotEmpty
-                              ? listLessons[index]['lessonTimeStart']
+                              ? listLessons[index]['LessonTimeStart']
                               : '',
                           style: TextStyle(
                               color: AppColors.black212525,
@@ -64,7 +67,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                         ),
                         Text(
                             listLessons.isNotEmpty
-                                ? listLessons[index]['lessonTimeFinish']
+                                ? listLessons[index]['LessonTimeFinish']
                                 : '',
                             style: TextStyle(
                                 color: AppColors.greybcc1cd,
@@ -110,10 +113,22 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                           splashRadius: 20,
                                           onPressed: () {
                                             Platform.isAndroid
-                                                ? actionSheetAndroid(
-                                                    heightScreen, context)
-                                                : actionSheetIos(
-                                                    context, heightScreen);
+                                                ? actionSheetAndroid(heightScreen, context, '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                    providerCalendar
+                                                        .currentDate,
+                                                  )}',
+                                                  listLessons[index]
+                                                      ['LessonTimeStart'],
+                                                  listLessons[index]
+                                                      ['LessonTimeFinish'])
+                                                : actionSheetIos(context, heightScreen, '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                    providerCalendar
+                                                        .currentDate,
+                                                  )}',
+                                                  listLessons[index]
+                                                      ['LessonTimeStart'],
+                                                  listLessons[index]
+                                                      ['LessonTimeFinish']);
                                           },
                                           icon: const Image(
                                               image: AssetImage(
@@ -239,7 +254,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
         });
   }
 
-  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen) {
+  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,String date, String lessonStart, String lessonFinish) {
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -248,7 +263,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                 color: AppColors.black212525,
                 fontSize: heightScreen * 0.018,
                 fontWeight: FontWeight.w600)),
-        message: Text('Среда 26.04, 9:00 -10:30',
+        message: Text('$date, $lessonStart - $lessonFinish',
             style: TextStyle(
                 color: const Color.fromRGBO(0, 0, 0, 0.5),
                 fontSize: heightScreen * 0.018,
@@ -265,17 +280,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
                   fontSize: heightScreen * 0.022,
                   fontWeight: FontWeight.w400),
             ),
-            // onPressed: (_) {
-            //   Navigator.of(context).pop();
-            //   showModalBottomSheet(
-            //     // barrierColor:Colors.transparent ,
-            //     isScrollControlled: true,
-            //     backgroundColor: Colors.transparent,
-
-            //     context: context,
-            //     builder: (context) => const TeacherEditClass(),
-            //   );
-            // },
+          
           ),
           CupertinoActionSheetAction(
             onPressed: () {},
@@ -305,7 +310,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
   }
 
   Future<dynamic> actionSheetAndroid(
-      double heightScreen, BuildContext context) {
+      double heightScreen, BuildContext context,String date, String lessonStart, String lessonFinish) {
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -325,7 +330,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Среда 26.04, 9:00 -10:30',
+                '$date, $lessonStart - $lessonFinish',
                 style: TextStyle(
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
                     fontSize: heightScreen * 0.018,
@@ -358,7 +363,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
           onPressed: (_) {
             Navigator.of(context).pop();
             showModalBottomSheet(
-              // barrierColor:Colors.transparent ,
+              
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               shape: const RoundedRectangleBorder(
