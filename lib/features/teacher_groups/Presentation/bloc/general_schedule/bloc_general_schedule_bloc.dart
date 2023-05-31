@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
-
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
-
 part 'bloc_general_schedule_event.dart';
 part 'bloc_general_schedule_state.dart';
 
@@ -18,7 +16,7 @@ class BlocGeneralScheduleBloc
       emit(AddedLessonState());
       repository.addLesson(
         request: ScheduleEntity(
-          groupNameforLesson: event.groupNameforLesson,
+          group: event.groupNameforLesson,
           subject: event.subject,
           lessonRoom: event.lessonRoom,
           lessonTimeStart: event.lessonTimeStart,
@@ -29,33 +27,12 @@ class BlocGeneralScheduleBloc
     });
 
     on<DownloadGroupNameEvent>((event, emit) async {
-      // final dataBase = FirebaseDatabase.instance.ref();
-      // final userId = FirebaseAuth.instance.currentUser?.uid;
       final stopwatch = Stopwatch();
       stopwatch.start();
-      // final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
 
-      // if (dataSnapshot.exists) {
-      //   final Map<Object?, Object?> data =
-      //       dataSnapshot.value as Map<Object?, Object?>;
-
-      //   final List<String> groupNames =
-      //       []; // Здесь будут храниться все значения ключа "GroupName"
-
-      //   final List<dynamic> dataList = data.values.toList();
-
-      //   for (final dynamic element in dataList) {
-      //     if (element is Map<dynamic, dynamic>) {
-      //       final String? groupName = element['GroupName'] as String?;
-      //       if (groupName != null) {
-      //         groupNames.add(groupName);
-      //       }
-      //     }
-      //   }
-      /// Здесь будут храниться все значения ключа "GroupName"
       final List<String> groupNames = [];
-      await repository.downloadGroupName(request: groupNames);
 
+      await repository.downloadGroupName(request: groupNames);
       emit(DownloadGroupNameState(
         allNamesGroup: groupNames,
       ));

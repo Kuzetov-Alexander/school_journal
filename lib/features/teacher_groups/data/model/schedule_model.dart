@@ -3,7 +3,7 @@ import 'package:school_journal/features/teacher_groups/domain/entities/schedule_
 
 class ScheduleEntityModel extends ScheduleEntity {
   const ScheduleEntityModel(
-      {required super.groupNameforLesson,
+      {required super.group,
       required super.subject,
       required super.lessonRoom,
       required super.lessonTimeStart,
@@ -15,9 +15,9 @@ class ScheduleEntityModel extends ScheduleEntity {
       lessonTimeStart: {
         'Subject': subject,
         'LessonRoom': lessonRoom,
-        'lessonTimeStart': lessonTimeStart,
-        'lessonTimeFinish': lessonTimeFinish,
-        'groupNameforLesson': groupNameforLesson,
+        'LessonTimeStart': lessonTimeStart,
+        'LessonTimeFinish': lessonTimeFinish,
+        'Group': group,
         'Homework': 'не задано',
         'StudentAmountatLesson': '0'
       }

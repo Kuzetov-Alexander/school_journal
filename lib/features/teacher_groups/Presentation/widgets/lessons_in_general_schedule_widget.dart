@@ -53,7 +53,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                       Text(
                         listLessons
                                 .isNotEmpty // есть проблема выдает иногда ошибку из-за !
-                            ? listLessons[index]['lessonTimeStart']
+                            ? listLessons[index]['LessonTimeStart']
                             : '',
                         style: TextStyle(
                             color: AppColors.black212525,
@@ -64,7 +64,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                       ),
                       Text(
                           listLessons.isNotEmpty
-                              ? listLessons[index]['lessonTimeFinish']
+                              ? listLessons[index]['LessonTimeFinish']
                               : '',
                           style: TextStyle(
                               color: AppColors.greybcc1cd,

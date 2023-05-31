@@ -2,7 +2,7 @@
 import 'package:equatable/equatable.dart';
 
 class ScheduleEntity extends Equatable {
-  final String groupNameforLesson;
+  final String group;
   final String subject;
   final String lessonRoom;
   final String lessonTimeStart;
@@ -10,7 +10,7 @@ class ScheduleEntity extends Equatable {
   final String currentDate;
 
   const ScheduleEntity({
-    required this.groupNameforLesson,
+    required this.group,
     required this.subject,
     required this.lessonRoom,
     required this.lessonTimeStart,
@@ -19,7 +19,7 @@ class ScheduleEntity extends Equatable {
   });
   @override
   List<Object?> get props => [
-        groupNameforLesson,
+        group,
         subject,
         lessonRoom,
         lessonTimeStart,

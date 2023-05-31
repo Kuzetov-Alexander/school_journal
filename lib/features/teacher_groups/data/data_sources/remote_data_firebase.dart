@@ -41,7 +41,7 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final model = ScheduleEntityModel(
-            groupNameforLesson: request.groupNameforLesson,
+            group: request.group,
             subject: request.subject,
             lessonRoom: request.lessonRoom,
             lessonTimeStart: request.lessonTimeStart,
@@ -64,7 +64,7 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
         .update(model);
 
     await dataBase
-        .child('Users/$userId/Groups/${request.groupNameforLesson}/allSubject')
+        .child('Users/$userId/Groups/${request.group}/allSubject')
         .update({request.subject: ''});
   }
 
