@@ -4,10 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/cupertino_double_button.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
-import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
+
 import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -67,6 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     double heightScreen = MediaQuery.of(context).size.height;
+  
     return Scaffold(
       body: BlocConsumer<AuthBloc, BlocAuthState>(listener: (context, state) {
         if (state is Authenticated) {
@@ -114,9 +117,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         image: AssetImage('assets/images/book.png'),
                       ),
                     ),
-                    const DoubleButton(),
+                    // const DoubleButton(),
+                    const CupertinoDoubleButton(),
                     const SizedBox(height: 24),
-                    context.watch<ProviderLoginBool>().teacher
+                    context.watch<ProviderLoginBool>().teacher 
                         ? TextFormField(
                             onFieldSubmitted: (_) {
                               _fieldFocusChange(

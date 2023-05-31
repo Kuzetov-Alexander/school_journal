@@ -99,7 +99,7 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     if (dataSubject is Map) {
       dataRequest.addAll(dataSubject.keys.toList());
       // dataRequest = dataSubject.keys.toList();
-      print(dataRequest);
+   
     }
   }
 }
@@ -118,10 +118,4 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
 
 
 
- // dataList
-      //     .where((element) =>
-      //         element is Map<dynamic, dynamic> &&
-      //         (element['GroupName'] as String?) != null)
-      //     .map((e) => e['GroupName'] as String).toList();
-
-// return [...dataRequest, ...dataSubject.keys.toList()];
+ 

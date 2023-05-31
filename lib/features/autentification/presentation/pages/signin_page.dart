@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
+import 'package:school_journal/features/autentification/presentation/widgets/cupertino_double_button.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
-import 'package:school_journal/features/autentification/presentation/widgets/double_button.dart';
+
 import 'package:school_journal/features/autentification/presentation/widgets/validator.dart';
 import 'dart:io' show Platform;
 
@@ -106,7 +107,8 @@ class _SignInPageState extends State<SignInPage> {
                         image: AssetImage('assets/images/book.png'),
                       ),
                     ),
-                    const DoubleButton(),
+                    // const DoubleButton(),
+                    const CupertinoDoubleButton(),
                     const SizedBox(height: 24),
                     Form(
                       key: _formKey,
