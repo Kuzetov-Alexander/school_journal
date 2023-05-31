@@ -31,21 +31,29 @@ class BlocGeneralScheduleBloc
 
       await repository.downloadGroupName(request: groupNames);
 
-      emit(DownloadGroupNameState(
-        allNamesGroup: groupNames,
-      ));
+      emit(
+        DownloadGroupNameState(
+          allNamesGroup: groupNames,
+        ),
+      );
     });
 
     on<DownloadSubjectNameEvent>((event, emit) async {
       final List<dynamic> subjectNames = [];
-      await repository
-          .downloadSubjectName(
-              request: subjectNames, selectedGroup: event.selectedGroup)
-          .then((_) => emit(DownloadSubjectNameState(
-                allSubjectGroup: subjectNames,
-              )));
 
-     
+      // final resultDatalist =
+      await repository.downloadSubjectName(
+          request: subjectNames, selectedGroup: event.selectedGroup);
+
+      emit(DownloadSubjectNameState(allSubjectGroup: subjectNames));
+
+      // if (resultDatalist.isRight()) {
+      //   emit(
+      //     DownloadSubjectNameState(
+      //       allSubjectGroup: resultDatalist.getOrElse(() => []),
+      //     ),
+      //   );
+      // }
     });
 
     // Получаем уроки для всех групп

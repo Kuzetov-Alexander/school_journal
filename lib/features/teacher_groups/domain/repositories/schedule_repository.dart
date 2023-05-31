@@ -6,6 +6,6 @@ abstract class ScheduleRepository {
   Future<Either<Failure, void>> addLesson({required ScheduleEntity request});
   Future<Either<Failure, void>> downloadGroupName(
       {required List<String> request});
-  Future<Either<Failure, void>> downloadSubjectName(
+  Future<Either<Failure,void>> downloadSubjectName(
       {required List<dynamic> request, required String selectedGroup});
 }

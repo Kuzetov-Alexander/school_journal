@@ -9,7 +9,7 @@ abstract class RemoteDataFirebase {
   Future<void> addLesson({required ScheduleEntity request});
   Future<void> downloadGroupName({required List<String> request});
   Future<void> downloadSubjectName(
-      {required List<dynamic> request, required String selectedGroup});
+      {required List<dynamic> dataRequest, required String selectedGroup});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -72,7 +72,6 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
           dataSnapshot.value as Map<Object?, Object?>;
 
       final List<dynamic> dataList = data.values.toList();
-
       for (final dynamic element in dataList) {
         if (element is Map<dynamic, dynamic>) {
           final String? groupName = element['GroupName'] as String?;
@@ -86,8 +85,8 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
 
   @override
   Future<void> downloadSubjectName(
-      {required List<dynamic> request, required String selectedGroup}) async {
-    
+      {required List<dynamic> dataRequest,
+      required String selectedGroup}) async {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
@@ -98,9 +97,31 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     final dataSubject = dataShot.snapshot.value;
 
     if (dataSubject is Map) {
-   
-      request = dataSubject.keys.toList();
-   print(request);
+      dataRequest.addAll(dataSubject.keys.toList());
+      // dataRequest = dataSubject.keys.toList();
+      print(dataRequest);
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // dataList
+      //     .where((element) =>
+      //         element is Map<dynamic, dynamic> &&
+      //         (element['GroupName'] as String?) != null)
+      //     .map((e) => e['GroupName'] as String).toList();
+
+// return [...dataRequest, ...dataSubject.keys.toList()];
