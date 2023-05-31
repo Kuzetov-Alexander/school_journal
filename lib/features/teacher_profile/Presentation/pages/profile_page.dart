@@ -61,14 +61,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         int? maxLength}) =>
                     null,
                 maxLength: 20,
-                // controller: _controllerClass,
-                decoration: const InputDecoration(
+                controller: fullNameController,
+                decoration: InputDecoration(
                   filled: true,
-                  fillColor: Color(0xffF3F3F3),
-                  border: OutlineInputBorder(
+                  fillColor: const Color(0xffF3F3F3),
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12.0)),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(12),
                     ),
@@ -76,23 +76,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Color(0xffF3F3F3),
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(12),
                     ),
                     borderSide: BorderSide(color: Color(0xffF3F3F3)),
                   ),
-                  hintText: 'Введите кабинет',
-                  hintStyle: TextStyle(
+                  hintText: '',
+                  hintStyle: const TextStyle(
                       color: Color(0xffB6B6B6),
                       fontWeight: FontWeight.w600,
                       fontSize: 14),
-                  labelText: 'Кабинет (не обязательно)',
-                  labelStyle: TextStyle(
+                  labelText: '${user?.displayName}',
+                  labelStyle: const TextStyle(
                       color: Color(0xffB6B6B6),
                       fontWeight: FontWeight.w600,
-                      fontSize: 10),
-                  suffixIcon: Image(
+                      fontSize: 14),
+                  suffixIcon: const Image(
                     height: 20,
                     image: AssetImage('assets/images/pen_icon.png'),
                     color: Colors.black,
@@ -176,6 +176,44 @@ class _ProfilePageState extends State<ProfilePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Выйти',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: heightScreen * 0.019,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Expanded(child: SizedBox()),
+              SizedBox(
+                height: heightScreen * 0.065,
+                width: widthScreen * 0.88,
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll<Color>(
+                        Color(0xffF3F3F3)),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  onPressed: () async {
+                    // TODO(Sanya) Подумать как cделать удаление пользователя?
+                    // FirebaseAuth.instance.currentUser?.refreshToken;
+                    // await FirebaseAuth.instance.currentUser?.delete();
+                    // _signOut(context);
+                    context.go('/');
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: widthScreen * 0.013),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Удалить профиль',
                         style: TextStyle(
                           color: Colors.red,
                           fontSize: heightScreen * 0.019,

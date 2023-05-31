@@ -1,18 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:school_journal/features/teacher_groups/domain/requests/schedule_request.dart';
+import 'package:school_journal/features/teacher_groups/data/model/schedule_model.dart';
+import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
 
 abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
-
   Future<void> removeGroup({required String keyGroup});
-  Future<void> addLesson({required ScheduleRequest request});
-  // {required String groupNameforLesson,
-  // required String subject,
-  // required String lessonRoom,
-  // required String lessonTimeStart,
-  // required String lessonTimeFinish,
-  // required String currentDate});
+  Future<void> addLesson({required ScheduleEntity request});
+  Future<void> downloadGroupName({required List<String> request});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -42,55 +37,61 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   }
 
   @override
-  Future<void> addLesson({required ScheduleRequest request}) async {
-    // final Map<String, Map> lessonData;
-    // final model  = ScheduleEntityModel();
-    // print(model.groupNameforLesson);
+  Future<void> addLesson({required ScheduleEntity request}) async {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
-
-    final lessonData = {
-      request.lessonTimeStart: {
-        'Subject': request.subject,
-        'LessonRoom': request.lessonRoom,
-        'lessonTimeStart': request.lessonTimeStart,
-        'lessonTimeFinish': request.lessonTimeFinish,
-        'groupNameforLesson': request.groupNameforLesson,
-        'Homework': 'не задано',
-        'StudentAmountatLesson': '0'
-      }
-    };
+    final model = ScheduleEntityModel(
+            groupNameforLesson: request.groupNameforLesson,
+            subject: request.subject,
+            lessonRoom: request.lessonRoom,
+            lessonTimeStart: request.lessonTimeStart,
+            lessonTimeFinish: request.lessonTimeFinish,
+            currentDate: request.currentDate)
+        .toMap();
+    // final lessonData = {
+    //   lessonTimeStart: {
+    //     'Subject': subject,
+    //     'LessonRoom': lessonRoom,
+    //     'lessonTimeStart': lessonTimeStart,
+    //     'lessonTimeFinish': lessonTimeFinish,
+    //     'groupNameforLesson': groupNameforLesson,
+    //     'Homework': 'не задано',
+    //     'StudentAmountatLesson': '0'
+    //   }
+    // };
     await dataBase
         .child('Users/$userId/Schedule/${request.currentDate}')
-        .update(lessonData);
+        .update(model);
 
     await dataBase
         .child('Users/$userId/Groups/${request.groupNameforLesson}/allSubject')
         .update({request.subject: ''});
   }
+
+  @override
+  Future<void> downloadGroupName({required List<String> request}) async {
+    final dataBase = FirebaseDatabase.instance.ref();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
+
+    if (dataSnapshot.exists) {
+      final Map<Object?, Object?> data =
+          dataSnapshot.value as Map<Object?, Object?>;
+
+      // /// Здесь будут храниться все значения ключа "GroupName"
+      // final List<String> groupNames = [];
+
+      final List<dynamic> dataList = data.values.toList();
+
+      for (final dynamic element in dataList) {
+        if (element is Map<dynamic, dynamic>) {
+          final String? groupName = element['GroupName'] as String?;
+          if (groupName != null) {
+            request.add(groupName);
+          }
+        }
+      }
+    }
+  }
 }
-
-// class RemoteDataSourceImpl implements RemoteDataSource {
-//   final firebaseAuth = FirebaseAuth.instance;
-
-//   /// Зарегистрироваться
-//   @override
-//   Future<void> signUp({
-//     required String email,
-//     required String password,
-//     required String fullName,
-//   }) async {
-//     try {
-//       final resultSignUp = await firebaseAuth.createUserWithEmailAndPassword(
-//           email: email, password: password);
-//       resultSignUp.user?.updateDisplayName(fullName);
-//     } on FirebaseAuthException catch (error) {
-//       if (error.code == 'weak-password') {
-//         throw Exception('The password provided is too weak.');
-//       } else if (error.code == 'email-already-in-use') {
-//         throw Exception('The account already exists for that email.');
-//       }
-//     } catch (e) {
-//       throw Exception(e.toString());
-//     }
-//   }

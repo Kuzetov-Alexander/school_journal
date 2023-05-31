@@ -27,7 +27,6 @@ import 'package:school_journal/features/teacher_groups/Presentation/pages/teache
 import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
 import 'package:school_journal/features/teacher_groups/data/repositories/create_group_repository_impl.dart';
 import 'package:school_journal/features/teacher_groups/data/repositories/schedule_repository_impl.dart';
-import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
 import 'package:school_journal/features/teacher_groups/domain/repositories/create_group_repository.dart';
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';

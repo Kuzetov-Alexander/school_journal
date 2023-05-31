@@ -10,7 +10,6 @@ import 'package:school_journal/common/color.dart';
 
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 
-
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
 
@@ -77,14 +76,17 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
       return Center(
-          child: Material(
-              color: Colors.transparent,
-              child: Padding(
-                  padding: EdgeInsets.only(top: height),
-                  child: Text(
-                    hint,
-                    style: TextStyle(color: Colors.redAccent),
-                  ))));
+        child: Material(
+          color: Colors.transparent,
+          child: Padding(
+            padding: EdgeInsets.only(top: height),
+            child: Text(
+              hint,
+              style: const TextStyle(color: Colors.redAccent),
+            ),
+          ),
+        ),
+      );
     });
     overlayState.insert(overlayEntry);
     await Future.delayed(const Duration(seconds: 2));

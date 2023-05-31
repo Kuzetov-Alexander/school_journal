@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_journal/features/autentification/domain/entities/user_entity.dart';
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 part 'bloc_auth_event.dart';
 part 'bloc_auth_state.dart';
@@ -16,7 +17,12 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
       (event, emit) async {
         emit(AuthLoading());
         final authMethod = await authRepository.signIn(
-            email: event.email, password: event.password);
+          request: UserEntity(
+            email: event.email,
+            password: event.password,
+          ),
+        );
+        // email: event.email, password: event.password);
         if (authMethod.isRight()) {
           emit(Authenticated());
         } else {
@@ -32,9 +38,12 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
       (event, emit) async {
         emit(AuthLoading());
         final authMethod = await authRepository.signUp(
+          request: UserEntity(
+            fullName: event.fullName,
             email: event.email,
             password: event.password,
-            fullName: event.fullName);
+          ),
+        );
         if (authMethod.isRight()) {
           await authRepository.sendEmailVerification();
           // emit(UnEmailVerification());

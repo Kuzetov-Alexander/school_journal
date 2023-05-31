@@ -1,13 +1,11 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
-
 
 import 'dart:io' show Platform;
 
@@ -23,17 +21,16 @@ class LessonsInGeneralSchedule extends StatelessWidget {
   Widget build(BuildContext context) {
     String providerDate = context.watch<ProviderCalendar>().day;
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
-   
+
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
 
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is GotAllLessons) {
+        if (state is GotAllLessonsState) {
           provider.saveAllLessons(
               state.allLessons, state.keyDate, ' $providerDate');
-             
         }
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -42,9 +39,9 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           itemCount: provider.lengthlistLesson,
           itemBuilder: (context, int index) {
             var listLessons = [];
-            if (provider.allLessons.containsKey(' $providerDate')){
-
-           listLessons= provider.allLessons[' $providerDate']!;}
+            if (provider.allLessons.containsKey(' $providerDate')) {
+              listLessons = provider.allLessons[' $providerDate']!;
+            }
 
             return Padding(
               padding: EdgeInsets.only(bottom: heightScreen * 0.022),
@@ -54,7 +51,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        listLessons.isNotEmpty                           // есть проблема выдает иногда ошибку из-за !
+                        listLessons
+                                .isNotEmpty // есть проблема выдает иногда ошибку из-за !
                             ? listLessons[index]['lessonTimeStart']
                             : '',
                         style: TextStyle(
@@ -73,8 +71,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                               fontSize: heightScreen * 0.018))
                     ],
                   ),
-                   SizedBox(
-                   width: widthScreen*0.07,
+                  SizedBox(
+                    width: widthScreen * 0.07,
                   ),
                   Column(
                     children: [
@@ -99,7 +97,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                   children: [
                                     Text(
                                       listLessons.isNotEmpty
-                                          ? listLessons[index]['Group']
+                                          ? listLessons[index][
+                                              'Group'] // есть проблема выдает иногда ошибку из-за !
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.02,
@@ -161,7 +160,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       width: widthScreen * 0.025,
                                     ),
                                     Text(
-                                     listLessons.isNotEmpty
+                                      listLessons.isNotEmpty
                                           ? listLessons[index]['Subject']
                                           : '',
                                       style: TextStyle(

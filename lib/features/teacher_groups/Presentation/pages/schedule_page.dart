@@ -31,7 +31,8 @@ void _getAllLessons(context, String date) {
 }
 
 void _downloadNameGroups(context) {
-  BlocProvider.of<BlocGeneralScheduleBloc>(context).add(DownloadGroupNameEvent());
+  BlocProvider.of<BlocGeneralScheduleBloc>(context)
+      .add(DownloadGroupNameEvent());
 }
 
 class _SchedulePageState extends State<SchedulePage> {
@@ -150,10 +151,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                 curentDateTime.month, 0)
                                             .day -
                                         1
-                                    : 1 +
-                                        DateTime(curentDateTime.year,
+                                    : DateTime(curentDateTime.year,
                                                 curentDateTime.month, 0)
-                                            .day,
+                                            .day +
+                                        1,
 
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
@@ -206,19 +207,6 @@ class _SchedulePageState extends State<SchedulePage> {
                                                     ? Colors.black
                                                     : Colors.white),
                                           ),
-
-                                          ///День недели выводит
-                                          // Text(
-                                          //   providerDays[DateTime.now()
-                                          //           .add(Duration(days: index))
-                                          //           .weekday -
-                                          //       1],
-                                          //   style: TextStyle(
-                                          //       color: providerSelectedIndex ==
-                                          //               index
-                                          //           ? Colors.black
-                                          //           : Colors.white),
-                                          // ),
 
                                           /// Выводит актуальный день
                                           Text(

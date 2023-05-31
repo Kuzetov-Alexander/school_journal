@@ -1,34 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:school_journal/features/autentification/domain/entities/user_entity.dart';
 
 final db = FirebaseDatabase.instance.ref();
 final firebaseAuth = FirebaseAuth.instance;
 
 /// Контракт для инициализации, входа, выхода, регистрации в firebase
 abstract class RemoteDataSource {
-  Future<void> signUp(
-      {required String email,
-      required String password,
-      required String fullName});
-  Future<void> signIn({required String email, required String password});
-  Future<void> signOut() async {}
+  Future<void> signUp({required UserEntity request});
+  Future<void> signIn({required UserEntity request});
+  Future<void> signOut();
   Future<void> sendEmailVerification();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
   /// Зарегистрироваться
   @override
-  Future<void> signUp({
-    required String email,
-    required String password,
-    required String fullName,
-  }) async {
+  Future<void> signUp({required UserEntity request}) async {
     try {
       final resultSignUp = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      resultSignUp.user?.updateDisplayName(fullName);
+          email: request.email, password: request.password);
+      resultSignUp.user?.updateDisplayName(request.fullName);
 
-      final authData = {'name': fullName, 'email': email};
+      final authData = {'name': request.fullName, 'email': request.email};
       final userId = FirebaseAuth.instance.currentUser?.uid;
       await db.child('Users/$userId').update(authData);
     } on FirebaseAuthException catch (error) {
@@ -44,13 +38,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   /// Войти
   @override
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required UserEntity request}) async {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: request.email, password: request.password);
     } on FirebaseAuthException catch (error) {
       if (error.code == 'user-not-found') {
         throw Exception('No user found for that email.');

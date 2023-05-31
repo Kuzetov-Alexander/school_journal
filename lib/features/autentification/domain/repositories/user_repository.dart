@@ -2,6 +2,7 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:school_journal/core/error/failure.dart';
+import 'package:school_journal/features/autentification/domain/entities/user_entity.dart';
 
 /// Уровень хранилища представляет собой оболочку вокруг одного или
 /// нескольких поставщиков данных, с которыми связывается уровень Bloc.
@@ -17,13 +18,12 @@ import 'package:school_journal/core/error/failure.dart';
 /// Для вызова в репозитории
 abstract class UserRepository {
   Future<Either<Failure, void>> signUp({
-    required String email,
-    required String password,
-    required String fullName,
+    required UserEntity request,
   });
 
-  Future<Either<Failure, void>> signIn(
-      {required String email, required String password});
+  Future<Either<Failure, void>> signIn({
+    required UserEntity request,
+  });
 
   Future<Either<Failure, void>> sendEmailVerification();
   Future<Either<Failure, void>> signOut();

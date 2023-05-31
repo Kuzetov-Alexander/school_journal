@@ -10,7 +10,7 @@ class ScheduleEntityModel extends ScheduleEntity {
       required super.lessonTimeFinish,
       required super.currentDate});
 
-  Map<String, Map<String, dynamic>> toMap() {
+  Map<String, Map<Object?, Object?>> toMap() {
     return {
       lessonTimeStart: {
         'Subject': subject,

@@ -39,10 +39,10 @@ class AddedLessonState extends BlocGeneralScheduleState {
   List<Object> get props => [];
 }
 
-class GotAllLessons extends BlocGeneralScheduleState {
+class GotAllLessonsState extends BlocGeneralScheduleState {
   final List allLessons;
   final String keyDate;
-  const GotAllLessons({required this.allLessons, required this.keyDate});
+  const GotAllLessonsState({required this.allLessons, required this.keyDate});
 
   @override
   List<Object> get props => [];

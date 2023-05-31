@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:school_journal/core/error/failure.dart';
 import 'package:school_journal/features/autentification/data/datasources/remote_data_source.dart';
+import 'package:school_journal/features/autentification/domain/entities/user_entity.dart';
 import 'package:school_journal/features/autentification/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -9,14 +10,10 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, void>> signUp({
-    required String email,
-    required String password,
-    required String fullName,
-  }) async {
+  Future<Either<Failure, void>> signUp({required UserEntity request}) async {
     try {
       return await remoteDataSource
-          .signUp(email: email, password: password, fullName: fullName)
+          .signUp(request: request)
           .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(DataBaseFailure());
@@ -35,11 +32,10 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, void>> signIn(
-      {required String email, required String password}) async {
+  Future<Either<Failure, void>> signIn({required UserEntity request}) async {
     try {
       return await remoteDataSource
-          .signIn(email: email, password: password)
+          .signIn(request: request)
           .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(DataBaseFailure());
