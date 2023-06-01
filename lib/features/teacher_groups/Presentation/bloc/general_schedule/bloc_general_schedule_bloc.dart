@@ -38,13 +38,13 @@ class BlocGeneralScheduleBloc
     on<DownloadSubjectNameEvent>((event, emit) async {
       final resultSubjectGroup = await repository.downloadSubjectName(
           selectedGroup: event.selectedGroup);
-      if (resultSubjectGroup.isRight()) {
-        emit(
-          DownloadSubjectNameState(
-            allSubjectGroup: resultSubjectGroup.getOrElse(() => []),
-          ),
-        );
-      }
+      // if (resultSubjectGroup.isRight()) {
+      emit(
+        DownloadSubjectNameState(
+          allSubjectGroup: resultSubjectGroup.getOrElse(() => []),
+        ),
+      );
+      // }
     });
 
     // Получаем уроки для всех групп

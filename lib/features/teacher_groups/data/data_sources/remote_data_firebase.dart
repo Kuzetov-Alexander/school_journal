@@ -127,7 +127,7 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataShot =
-        await dataBase.child('Users/$userId/Schedule/ $selectedDate').once();
+        await dataBase.child('Users/$userId/Schedule/$selectedDate').once();
 
     String keydata = '';
     if (dataShot.snapshot.value is Map) {
@@ -148,15 +148,16 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataShot =
-        await dataBase.child('Users/$userId/Schedule/ $selectedDate').once();
-
+        await dataBase.child('Users/$userId/Schedule/$selectedDate').once();
+    String keydata = '';
     if (dataShot.snapshot.value is Map) {
       Map data = dataShot.snapshot.value as Map;
-
-      dataList =
+      final resultData =
           data.values.toList().where((e) => e['Group'] == groupName).toList();
+
+      dataList.addAll(resultData);
     }
-    final keydata = dataShot.snapshot.key.toString();
+    keydata = dataShot.snapshot.key.toString();
     return keydata;
   }
 }

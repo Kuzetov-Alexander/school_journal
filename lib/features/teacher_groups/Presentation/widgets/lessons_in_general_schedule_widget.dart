@@ -33,7 +33,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
       builder: (context, state) {
         if (state is GotAllLessonsState) {
           provider.saveAllLessons(
-              state.allLessons, state.keyDate, ' $providerDate');
+              state.allLessons, state.keyDate, providerDate);
         }
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -42,8 +42,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           itemCount: provider.lengthlistLesson,
           itemBuilder: (context, int index) {
             var listLessons = [];
-            if (provider.allLessons.containsKey(' $providerDate')) {
-              listLessons = provider.allLessons[' $providerDate']!;
+            if (provider.allLessons.containsKey(providerDate)) {
+              listLessons = provider.allLessons[providerDate]!;
             }
 
             return Padding(
@@ -125,7 +125,9 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                                   listLessons[index]
                                                       ['LessonTimeFinish'])
                                               : actionSheetIos(
-                                                  context, heightScreen, '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                  context,
+                                                  heightScreen,
+                                                  '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
                                                     providerCalendar
                                                         .currentDate,
                                                   )}',
@@ -259,7 +261,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
     );
   }
 
-  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,String date, String lessonStart, String lessonFinish) {
+  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,
+      String date, String lessonStart, String lessonFinish) {
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -336,7 +339,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
               Text(
                 '$date, $lessonStart - $lessonFinish',
                 style: TextStyle(
-                  wordSpacing: 1.1,
+                    wordSpacing: 1.1,
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
                     fontSize: heightScreen * 0.018,
                     fontWeight: FontWeight.w400),

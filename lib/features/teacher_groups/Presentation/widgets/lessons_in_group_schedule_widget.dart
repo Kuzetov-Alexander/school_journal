@@ -10,7 +10,6 @@ import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
 
-
 import 'dart:io' show Platform;
 
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_edit_class.dart';
@@ -23,7 +22,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     ProviderCalendar providerCalendar = Provider.of<ProviderCalendar>(context);
+    ProviderCalendar providerCalendar = Provider.of<ProviderCalendar>(context);
     String providerDate = context.watch<ProviderCalendar>().day;
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
 
@@ -35,7 +34,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
         builder: (context, state) {
           if (state is GotCurrentLessonsState) {
             provider.saveCurrentLessons(
-                state.lessons, state.keyDate, ' $providerDate');
+                state.lessons, state.keyDate, providerDate);
           }
 
           return ListView.builder(
@@ -44,7 +43,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
             shrinkWrap: true,
             itemCount: provider.lengthCurrentlistLesson,
             itemBuilder: (context, int index) {
-              final listLessons = provider.allCurrentLessons[' $providerDate'];
+              final listLessons = provider.allCurrentLessons[providerDate];
               return Padding(
                 padding: EdgeInsets.only(
                   bottom: heightScreen * 0.022,
@@ -113,22 +112,28 @@ class LessonsInGroupSchedule extends StatelessWidget {
                                           splashRadius: 20,
                                           onPressed: () {
                                             Platform.isAndroid
-                                                ? actionSheetAndroid(heightScreen, context, '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
-                                                    providerCalendar
-                                                        .currentDate,
-                                                  )}',
-                                                  listLessons[index]
-                                                      ['LessonTimeStart'],
-                                                  listLessons[index]
-                                                      ['LessonTimeFinish'])
-                                                : actionSheetIos(context, heightScreen, '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
-                                                    providerCalendar
-                                                        .currentDate,
-                                                  )}',
-                                                  listLessons[index]
-                                                      ['LessonTimeStart'],
-                                                  listLessons[index]
-                                                      ['LessonTimeFinish']);
+                                                ? actionSheetAndroid(
+                                                    heightScreen,
+                                                    context,
+                                                    '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                      providerCalendar
+                                                          .currentDate,
+                                                    )}',
+                                                    listLessons[index]
+                                                        ['LessonTimeStart'],
+                                                    listLessons[index]
+                                                        ['LessonTimeFinish'])
+                                                : actionSheetIos(
+                                                    context,
+                                                    heightScreen,
+                                                    '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                      providerCalendar
+                                                          .currentDate,
+                                                    )}',
+                                                    listLessons[index]
+                                                        ['LessonTimeStart'],
+                                                    listLessons[index]
+                                                        ['LessonTimeFinish']);
                                           },
                                           icon: const Image(
                                               image: AssetImage(
@@ -254,7 +259,8 @@ class LessonsInGroupSchedule extends StatelessWidget {
         });
   }
 
-  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,String date, String lessonStart, String lessonFinish) {
+  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,
+      String date, String lessonStart, String lessonFinish) {
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -280,10 +286,9 @@ class LessonsInGroupSchedule extends StatelessWidget {
                   fontSize: heightScreen * 0.022,
                   fontWeight: FontWeight.w400),
             ),
-          
           ),
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: () async {},
             child: Text(
               'Удалить',
               style: TextStyle(
@@ -309,8 +314,8 @@ class LessonsInGroupSchedule extends StatelessWidget {
     );
   }
 
-  Future<dynamic> actionSheetAndroid(
-      double heightScreen, BuildContext context,String date, String lessonStart, String lessonFinish) {
+  Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
+      String date, String lessonStart, String lessonFinish) {
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -343,15 +348,14 @@ class LessonsInGroupSchedule extends StatelessWidget {
       context: context,
       actions: <BottomSheetAction>[
         BottomSheetAction(
-          title: Text(
-            'Удалить',
-            style: TextStyle(
-                color: const Color(0xFFFF3B30),
-                fontSize: heightScreen * 0.022,
-                fontWeight: FontWeight.w400),
-          ),
-          onPressed: (_) {},
-        ),
+            title: Text(
+              'Удалить',
+              style: TextStyle(
+                  color: const Color(0xFFFF3B30),
+                  fontSize: heightScreen * 0.022,
+                  fontWeight: FontWeight.w400),
+            ),
+            onPressed: (_) async {}),
         BottomSheetAction(
           title: Text(
             'Изменить',
@@ -363,7 +367,6 @@ class LessonsInGroupSchedule extends StatelessWidget {
           onPressed: (_) {
             Navigator.of(context).pop();
             showModalBottomSheet(
-              
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               shape: const RoundedRectangleBorder(

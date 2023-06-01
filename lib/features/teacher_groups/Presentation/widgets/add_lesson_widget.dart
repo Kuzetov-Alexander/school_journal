@@ -282,7 +282,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                               onTap: () async {
                                 _downloadSubjects(
                                     context, provider.selectedGroup);
-                                    
+
                                 await Future.delayed(
                                         const Duration(milliseconds: 50))
                                     .then((_) {
@@ -323,7 +323,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                                           child: const Text(
                                                               'Подтвердить'),
                                                           onPressed: () {
-                                                           _controllerSubject.text = provider
+                                                            _controllerSubject
+                                                                .text = provider
                                                                     .listSubjects[
                                                                 indexValueSubject];
                                                             Navigator.of(
@@ -341,7 +342,6 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     showTip(context, heightScreen * 0.73,
                                         'Для данной группы предметы не найдены');
                                   }
-                          
                                 });
                               },
                               child: const Image(
@@ -490,8 +490,11 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                       ),
                     ),
                     onPressed: () {
-                      _addLesson(context, provider.selectedGroup,
-                          ' ${DateFormat('dd-MM-yyyy', 'ru').format(providerDate.currentDate)}');
+                      _addLesson(
+                          context,
+                          provider.selectedGroup,
+                          DateFormat('dd-MM-yyyy', 'ru')
+                              .format(providerDate.currentDate));
                       setState(() {
                         _controllerSubject.text = '';
                         _controllerRoom.text = '';
