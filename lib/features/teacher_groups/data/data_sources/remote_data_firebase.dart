@@ -7,9 +7,8 @@ abstract class RemoteDataFirebase {
   Future<void> createGroup({required String groupName});
   Future<void> removeGroup({required String keyGroup});
   Future<void> addLesson({required ScheduleEntity request});
-  Future<void> downloadGroupName({required List<String> request});
-  Future<void> downloadSubjectName(
-      {required List<dynamic> dataRequest, required String selectedGroup});
+  Future<List<String>> downloadGroupName();
+  Future<List<dynamic>> downloadSubjectName({required String selectedGroup});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -61,46 +60,63 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   }
 
   @override
-  Future<void> downloadGroupName({required List<String> request}) async {
+  Future<List<String>> downloadGroupName() async {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     final dataSnapshot = await dataBase.child('Users/$userId/Groups').get();
-
+    final List<String> resultDataGroup = [];
     if (dataSnapshot.exists) {
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
-
       final List<dynamic> dataList = data.values.toList();
+      //   dataList
+      //       .where((element) =>
+      //           element is Map<dynamic, dynamic> &&
+      //           (element['GroupName'] as String?) != null)
+      //       .map((e) {
+      //     // return resultDataGroup.addAll(e['GroupName'] );
+      //     // e['GroupName'] as String;
+      //     return resultDataGroup.addAll(e['GroupName']);
+      //   }).toList();
+
+      //   return [...resultDataGroup];
+      // } else {
+      //   return [];
+      // }
+
+      // ...dataSubject.keys.toList()];
+
       for (final dynamic element in dataList) {
         if (element is Map<dynamic, dynamic>) {
           final String? groupName = element['GroupName'] as String?;
           if (groupName != null) {
-            request.add(groupName);
+            resultDataGroup.add(groupName);
           }
         }
       }
+      return resultDataGroup;
+    } else {
+      return [];
     }
   }
 
   @override
-  Future<void> downloadSubjectName(
-      {required List<dynamic> dataRequest,
-      required String selectedGroup}) async {
+  Future<List<dynamic>> downloadSubjectName(
+      {required String selectedGroup}) async {
     final dataBase = FirebaseDatabase.instance.ref();
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     final dataShot = await dataBase
         .child('Users/$userId/Groups/$selectedGroup/allSubject')
         .once();
-
+    final List<dynamic> dataRequest = [];
     final dataSubject = dataShot.snapshot.value;
 
     if (dataSubject is Map) {
       dataRequest.addAll(dataSubject.keys.toList());
-      // dataRequest = dataSubject.keys.toList();
-   
     }
+    return dataRequest;
   }
 }
 
@@ -108,7 +124,13 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
 
 
 
+// dataList
+      //     .where((element) =>
+      //         element is Map<dynamic, dynamic> &&
+      //         (element['GroupName'] as String?) != null)
+      //     .map((e) => e['GroupName'] as String).toList();
 
+// return [...dataRequest, ...dataSubject.keys.toList()];
 
 
 

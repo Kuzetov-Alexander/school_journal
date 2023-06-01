@@ -58,7 +58,6 @@ class ProviderGroup extends ChangeNotifier {
     List<String> listGroups = [];
     listGroups.addAll(newGroup);
     listGroup = listGroups.toSet().toList();
-
     notifyListeners();
   }
 

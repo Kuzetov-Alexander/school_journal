@@ -4,8 +4,7 @@ import 'package:school_journal/features/teacher_groups/domain/entities/schedule_
 
 abstract class ScheduleRepository {
   Future<Either<Failure, void>> addLesson({required ScheduleEntity request});
-  Future<Either<Failure, void>> downloadGroupName(
-      {required List<String> request});
-  Future<Either<Failure,void>> downloadSubjectName(
-      {required List<dynamic> request, required String selectedGroup});
+  Future<Either<Failure, List<String>>> downloadGroupName();
+  Future<Either<Failure, List<dynamic>>> downloadSubjectName(
+      {required String selectedGroup});
 }

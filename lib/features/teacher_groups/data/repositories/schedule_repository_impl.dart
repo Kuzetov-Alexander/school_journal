@@ -26,25 +26,25 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }
 
   @override
-  Future<Either<Failure, void>> downloadGroupName(
-      {required List<String> request}) async {
+  Future<Either<Failure, List<String>>> downloadGroupName(
+      ) async {
     try {
-      return await dataBase.downloadGroupName(request: request).then(
+      return await dataBase.downloadGroupName().then(
             (value) => Right(value),
           );
     } on Object {
       print('failed downloadGroupName');
-      return Left<Failure, void>(DataBaseFailure());
+      return Left<Failure, List<String>>(DataBaseFailure());
     }
   }
 
   @override
-  Future<Either<Failure, void>> downloadSubjectName(
-      {required List<dynamic> request, required String selectedGroup}) async {
+  Future<Either<Failure, List<dynamic>>> downloadSubjectName(
+      { required String selectedGroup}) async {
     try {
       return await dataBase
           .downloadSubjectName(
-              dataRequest: request, selectedGroup: selectedGroup)
+               selectedGroup: selectedGroup)
           .then(
             (value) => Right(value),
           );
