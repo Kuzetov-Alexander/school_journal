@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
@@ -66,26 +64,20 @@ class BlocGeneralScheduleBloc
 
     // Получаем уроки для определенной группы
     on<GetCurrentLessonsEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final dataShot = await dataBase
-          .child('Users/$userId/Schedule/ ${event.selectedDate}')
-          .once();
       List dataList = [];
-      String keydata = '';
-      if (dataShot.snapshot.value is Map) {
-        Map data = dataShot.snapshot.value as Map;
-
-        dataList = data.values
-            .toList()
-            .where((e) => e['Group'] == event.groupName)
-            .toList();
-
-        keydata = dataShot.snapshot.key.toString();
+      final resultCurrentLessons = await repository.getCurrentLessons(
+          dataList: dataList,
+          selectedDate: event.selectedDate,
+          groupName: event.groupName);
+      if (resultCurrentLessons.isRight()) {
+        emit(UpdateState());
+        emit(
+          GotCurrentLessonsState(
+            lessons: dataList,
+            keyDate: resultCurrentLessons.getOrElse(() => ''),
+          ),
+        );
       }
-
-      emit(UpdateState());
-      emit(GotCurrentLessonsState(lessons: dataList, keyDate: keydata));
     });
   }
 }
