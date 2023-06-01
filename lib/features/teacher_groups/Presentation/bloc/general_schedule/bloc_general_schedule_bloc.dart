@@ -50,26 +50,21 @@ class BlocGeneralScheduleBloc
     });
 
     // Получаем уроки для всех групп
-
     on<GetAllLessonsEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final dataShot = await dataBase
-          .child('Users/$userId/Schedule/ ${event.selectedDate}')
-          .once();
       List dataList = [];
-      String keydata = '';
-      if (dataShot.snapshot.value is Map) {
-        Map data = dataShot.snapshot.value as Map;
-        dataList = data.values.toList();
-        keydata = dataShot.snapshot.key.toString();
+      final resultAllLessons = await repository.getAllLessons(
+          selectedDate: event.selectedDate, dataList: dataList);
+      if (resultAllLessons.isRight()) {
+        emit(
+          GotAllLessonsState(
+            allLessons: dataList,
+            keyDate: resultAllLessons.getOrElse(() => ''),
+          ),
+        );
       }
-      // emit(UpdateState());
-      emit(GotAllLessonsState(allLessons: dataList, keyDate: keydata));
     });
 
     // Получаем уроки для определенной группы
-
     on<GetCurrentLessonsEvent>((event, emit) async {
       final dataBase = FirebaseDatabase.instance.ref();
       final userId = FirebaseAuth.instance.currentUser?.uid;

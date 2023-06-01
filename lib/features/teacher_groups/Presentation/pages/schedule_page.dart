@@ -30,11 +30,6 @@ void _getAllLessons(context, String date) {
       .add(GetAllLessonsEvent(selectedDate: date));
 }
 
-void _downloadNameGroups(context) {
-  BlocProvider.of<BlocGeneralScheduleBloc>(context)
-      .add(DownloadGroupNameEvent());
-}
-
 class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {

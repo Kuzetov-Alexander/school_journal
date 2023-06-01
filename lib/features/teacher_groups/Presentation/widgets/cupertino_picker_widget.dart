@@ -11,7 +11,7 @@ class CupertinoPickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPicker(
-      scrollController: FixedExtentScrollController(initialItem: 1),
+        scrollController: FixedExtentScrollController(initialItem: 1),
         squeeze: 1,
         backgroundColor: Colors.white,
         itemExtent: 30,

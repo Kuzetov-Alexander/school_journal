@@ -24,7 +24,7 @@ class ScheduleEntity extends Equatable {
         lessonRoom,
         lessonTimeStart,
         lessonTimeFinish,
-        currentDate
+        currentDate,
       ];
 }
 

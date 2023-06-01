@@ -20,37 +20,65 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
           .addLesson(request: request)
           .then((value) => Right(value));
     } on Object {
-      print('failed addLesson');
       return Left<Failure, void>(DataBaseFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<String>>> downloadGroupName(
-      ) async {
+  Future<Either<Failure, List<String>>> downloadGroupName() async {
     try {
       return await dataBase.downloadGroupName().then(
             (value) => Right(value),
           );
     } on Object {
-      print('failed downloadGroupName');
       return Left<Failure, List<String>>(DataBaseFailure());
     }
   }
 
   @override
   Future<Either<Failure, List<dynamic>>> downloadSubjectName(
-      { required String selectedGroup}) async {
+      {required String selectedGroup}) async {
     try {
       return await dataBase
-          .downloadSubjectName(
-               selectedGroup: selectedGroup)
+          .downloadSubjectName(selectedGroup: selectedGroup)
           .then(
             (value) => Right(value),
           );
     } on Object {
-      print('failed downloadSubjectName');
       return Left<Failure, List<dynamic>>(DataBaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getAllLessons(
+      {required List<dynamic> dataList, required String selectedDate}) async {
+    try {
+      return await dataBase
+          .getAllLessons(selectedDate: selectedDate, dataList: dataList)
+          .then(
+            (value) => Right(value),
+          );
+    } on Object {
+      return Left<Failure, String>(DataBaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getCurrentLessons(
+      {required List dataList,
+      required String selectedDate,
+      required String groupName}) async {
+    try {
+      return await dataBase
+          .getCurrentLessons(
+              dataList: dataList,
+              selectedDate: selectedDate,
+              groupName: groupName)
+          .then(
+            (value) => Right(value),
+          );
+    } on Object {
+      return Left<Failure, String>(DataBaseFailure());
     }
   }
 }

@@ -9,6 +9,12 @@ abstract class RemoteDataFirebase {
   Future<void> addLesson({required ScheduleEntity request});
   Future<List<String>> downloadGroupName();
   Future<List<dynamic>> downloadSubjectName({required String selectedGroup});
+  Future<String> getAllLessons(
+      {required List<dynamic> dataList, required String selectedDate});
+  Future<String> getCurrentLessons(
+      {required List<dynamic> dataList,
+      required String selectedDate,
+      required String groupName});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -75,17 +81,13 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
       //           element is Map<dynamic, dynamic> &&
       //           (element['GroupName'] as String?) != null)
       //       .map((e) {
-      //     // return resultDataGroup.addAll(e['GroupName'] );
-      //     // e['GroupName'] as String;
-      //     return resultDataGroup.addAll(e['GroupName']);
+      //     e['GroupName'] as String;
       //   }).toList();
-
+      //   resultDataGroup.addAll(dataList);
       //   return [...resultDataGroup];
       // } else {
       //   return [];
       // }
-
-      // ...dataSubject.keys.toList()];
 
       for (final dynamic element in dataList) {
         if (element is Map<dynamic, dynamic>) {
@@ -118,26 +120,43 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     }
     return dataRequest;
   }
+
+  @override
+  Future<String> getAllLessons(
+      {required List<dynamic> dataList, required String selectedDate}) async {
+    final dataBase = FirebaseDatabase.instance.ref();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataShot =
+        await dataBase.child('Users/$userId/Schedule/ $selectedDate').once();
+
+    String keydata = '';
+    if (dataShot.snapshot.value is Map) {
+      Map data = dataShot.snapshot.value as Map;
+      dataList.addAll(data.values.toList());
+      keydata = dataShot.snapshot.key.toString();
+      return keydata;
+    } else {
+      return '';
+    }
+  }
+
+  @override
+  Future<String> getCurrentLessons(
+      {required List dataList,
+      required String selectedDate,
+      required String groupName}) async {
+    final dataBase = FirebaseDatabase.instance.ref();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataShot =
+        await dataBase.child('Users/$userId/Schedule/ $selectedDate').once();
+
+    if (dataShot.snapshot.value is Map) {
+      Map data = dataShot.snapshot.value as Map;
+
+      dataList =
+          data.values.toList().where((e) => e['Group'] == groupName).toList();
+    }
+    final keydata = dataShot.snapshot.key.toString();
+    return keydata;
+  }
 }
-
-
-
-
-
-// dataList
-      //     .where((element) =>
-      //         element is Map<dynamic, dynamic> &&
-      //         (element['GroupName'] as String?) != null)
-      //     .map((e) => e['GroupName'] as String).toList();
-
-// return [...dataRequest, ...dataSubject.keys.toList()];
-
-
-
-
-
-
-
-
-
- 
