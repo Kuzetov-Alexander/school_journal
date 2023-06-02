@@ -38,12 +38,15 @@ class ProviderGroup extends ChangeNotifier {
   void saveAllLessons(List lessons, String date, String currentDate) {
     if (date != '') {
       allLessons[date] = lessons;
+     
       if (allLessons.containsKey(currentDate)) {
         lengthlistLesson = allLessons[currentDate]!.length;
+        
       } else {
         lengthlistLesson = 0;
       }
     }
+    
   }
 
   void addSubjectName(List<dynamic> newSubject) {

@@ -42,10 +42,11 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           itemCount: provider.lengthlistLesson,
           itemBuilder: (context, int index) {
             var listLessons = [];
+            
             if (provider.allLessons.containsKey(providerDate)) {
               listLessons = provider.allLessons[providerDate]!;
             }
-
+           
             return Padding(
               padding: EdgeInsets.only(bottom: heightScreen * 0.022),
               child: Row(
@@ -54,8 +55,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        listLessons
-                                .isNotEmpty // есть проблема выдает иногда ошибку из-за !
+                        listLessons.isNotEmpty
                             ? listLessons[index]['LessonTimeStart']
                             : '',
                         style: TextStyle(

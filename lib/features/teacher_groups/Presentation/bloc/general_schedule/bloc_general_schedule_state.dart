@@ -45,7 +45,7 @@ class GotAllLessonsState extends BlocGeneralScheduleState {
   const GotAllLessonsState({required this.allLessons, required this.keyDate});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [allLessons,keyDate];
 }
 
 class GotCurrentLessonsState extends BlocGeneralScheduleState {
@@ -54,7 +54,7 @@ class GotCurrentLessonsState extends BlocGeneralScheduleState {
   const GotCurrentLessonsState({required this.lessons, required this.keyDate});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [lessons,keyDate];
 }
 
 class DatabaseErrorState extends BlocGeneralScheduleState {

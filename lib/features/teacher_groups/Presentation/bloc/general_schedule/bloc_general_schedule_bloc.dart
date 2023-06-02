@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
@@ -52,13 +53,17 @@ class BlocGeneralScheduleBloc
       List dataList = [];
       final resultAllLessons = await repository.getAllLessons(
           selectedDate: event.selectedDate, dataList: dataList);
+    // print(dataList);
+    // print(event.selectedDate);
       if (resultAllLessons.isRight()) {
         emit(
           GotAllLessonsState(
             allLessons: dataList,
             keyDate: resultAllLessons.getOrElse(() => ''),
           ),
+        
         );
+        
       }
     });
 

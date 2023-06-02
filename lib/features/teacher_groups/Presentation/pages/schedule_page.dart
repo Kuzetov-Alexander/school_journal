@@ -25,12 +25,14 @@ class SchedulePage extends StatefulWidget {
 /// Чтобы отслеживать прокрутку ListView
 ScrollController scrollController = ScrollController();
 
-void _getAllLessons(context, String date) {
-  BlocProvider.of<BlocGeneralScheduleBloc>(context)
-      .add(GetAllLessonsEvent(selectedDate: date));
-}
+
 
 class _SchedulePageState extends State<SchedulePage> {
+ void _getAllLessons(context, String date) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
+        .add(GetAllLessonsEvent(selectedDate: date));
+  }
+
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
@@ -166,6 +168,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                         context
                                             .read<ProviderCalendar>()
                                             .getSelectedDate(index);
+                                           
                                         _getAllLessons(context, provider.day);
                                       });
                                     },
