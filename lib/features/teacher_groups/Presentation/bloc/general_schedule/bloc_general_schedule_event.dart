@@ -44,6 +44,8 @@ class DeleteLessonsEvent extends BlocGeneralScheduleEvent {
     required this.selectedDate,
     required this.lessonTimeStart,
   });
+     @override
+  List<Object> get props => [selectedDate,lessonTimeStart];
 }
 
 class AddLessonEvent extends BlocGeneralScheduleEvent {
