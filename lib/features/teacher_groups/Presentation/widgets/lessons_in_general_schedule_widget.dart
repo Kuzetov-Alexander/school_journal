@@ -35,6 +35,10 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           provider.saveAllLessons(
               state.allLessons, state.keyDate, providerDate);
         }
+        if (state is UpdateState) {
+          provider.deleteLessonfromSchedule(
+              state.selectedDate, state.lessonTimeStart);
+        }
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -42,11 +46,11 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           itemCount: provider.lengthlistLesson,
           itemBuilder: (context, int index) {
             var listLessons = [];
-            
+
             if (provider.allLessons.containsKey(providerDate)) {
               listLessons = provider.allLessons[providerDate]!;
             }
-           
+
             return Padding(
               padding: EdgeInsets.only(bottom: heightScreen * 0.022),
               child: Row(
@@ -263,6 +267,8 @@ class LessonsInGeneralSchedule extends StatelessWidget {
 
   Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,
       String date, String lessonStart, String lessonFinish) {
+    ProviderCalendar providerCalendar =
+        Provider.of<ProviderCalendar>(context, listen: false);
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -290,7 +296,13 @@ class LessonsInGeneralSchedule extends StatelessWidget {
             ),
           ),
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: () {
+              BlocProvider.of<BlocGeneralScheduleBloc>(context).add(
+                  DeleteLessonsEvent(
+                      selectedDate: providerCalendar.day,
+                      lessonTimeStart: lessonStart));
+              Navigator.of(context).pop();
+            },
             child: Text(
               'Удалить',
               style: TextStyle(
@@ -318,6 +330,9 @@ class LessonsInGeneralSchedule extends StatelessWidget {
 
   Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
       String date, String lessonStart, String lessonFinish) {
+    ProviderCalendar providerCalendar =
+        Provider.of<ProviderCalendar>(context, listen: false);
+
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -358,7 +373,13 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                 fontSize: heightScreen * 0.022,
                 fontWeight: FontWeight.w400),
           ),
-          onPressed: (_) {},
+          onPressed: (context) {
+            BlocProvider.of<BlocGeneralScheduleBloc>(context).add(
+                DeleteLessonsEvent(
+                    selectedDate: providerCalendar.day,
+                    lessonTimeStart: lessonStart));
+            Navigator.of(context).pop();
+          },
         ),
         BottomSheetAction(
           title: Text(

@@ -107,10 +107,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {
         if (state is DownloadGroupNameState) {
-          provider.addGroupName(state.allNamesGroup);
+          provider.updateGroupNameList(state.allNamesGroup);
         }
         if (state is DownloadSubjectNameState) {
-          provider.addSubjectName(state.allSubjectGroup);
+          provider.updateSubjectList(state.allSubjectGroup);
         }
       },
       builder: (context, state) {

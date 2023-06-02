@@ -9,12 +9,17 @@ abstract class RemoteDataFirebase {
   Future<void> addLesson({required ScheduleEntity request});
   Future<List<String>> downloadGroupName();
   Future<List<dynamic>> downloadSubjectName({required String selectedGroup});
+
   Future<String> getAllLessons(
       {required List<dynamic> dataList, required String selectedDate});
+
   Future<String> getCurrentLessons(
       {required List<dynamic> dataList,
       required String selectedDate,
       required String groupName});
+
+  Future<void> deleteLesson(
+      {required String selectedDate, required String lessonTimeStart});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -159,5 +164,17 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     }
     keydata = dataShot.snapshot.key.toString();
     return keydata;
+  }
+
+  @override
+  Future<void> deleteLesson(
+      {required String selectedDate, required String lessonTimeStart}) async {
+    final dataBase = FirebaseDatabase.instance.ref();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final dataShot =
+        dataBase.child('Users/$userId/Schedule/$selectedDate/$lessonTimeStart');
+
+    await dataShot.remove();
   }
 }

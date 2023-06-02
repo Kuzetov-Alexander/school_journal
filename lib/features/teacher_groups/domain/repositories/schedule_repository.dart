@@ -19,4 +19,8 @@ abstract class ScheduleRepository {
     required String selectedDate,
     required String groupName,
   });
+  Future<Either<Failure, void>> deleteLesson({
+    required String selectedDate,
+    required String lessonTimeStart,
+  });
 }

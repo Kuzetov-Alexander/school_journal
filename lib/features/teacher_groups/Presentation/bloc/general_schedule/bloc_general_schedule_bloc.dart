@@ -85,12 +85,9 @@ class BlocGeneralScheduleBloc
 
 // Удаляем урок в общем расписании
     on<DeleteLessonsEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance.ref();
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      final dataShot = dataBase.child(
-          'Users/$userId/Schedule/${event.selectedDate}/${event.lessonTimeStart}');
-
-      await dataShot.remove();
+      repository.deleteLesson(
+          selectedDate: event.selectedDate,
+          lessonTimeStart: event.lessonTimeStart);
 
       emit(
         UpdateState(

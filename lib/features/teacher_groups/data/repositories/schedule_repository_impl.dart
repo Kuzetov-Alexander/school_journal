@@ -81,4 +81,19 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       return Left<Failure, String>(DataBaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteLesson(
+      {required String selectedDate, required String lessonTimeStart}) async {
+    try {
+      return await dataBase
+          .deleteLesson(
+              selectedDate: selectedDate, lessonTimeStart: lessonTimeStart)
+          .then(
+            (value) => Right(value),
+          );
+    } on Object {
+      return Left<Failure, String>(DataBaseFailure());
+    }
+  }
 }

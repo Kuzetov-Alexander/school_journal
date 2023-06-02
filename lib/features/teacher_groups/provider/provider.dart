@@ -19,7 +19,7 @@ class ProviderGroup extends ChangeNotifier {
   int lengthCurrentlistLesson = 0;
 
 // функция для сохранения уроков определенной группы
-  void saveCurrentLessons(List lesson, String key, String date) {
+  void saveLessonForSelectedGroup(List lesson, String key, String date) {
     if (date != '') {
       allCurrentLessons[key] = lesson;
 
@@ -47,28 +47,23 @@ class ProviderGroup extends ChangeNotifier {
     }
   }
 
+// удаляем выбранный урок из расписания
   void deleteLessonfromSchedule(String currentDate, String lessonStartTime) {
-    
-      if (allLessons[currentDate] is List<Map<String, dynamic>>) {
-        List<Map<String, dynamic>> newList =
-            allLessons[currentDate] as List<Map<String, dynamic>>;
-        newList.removeWhere((map) {
-          if (map.containsKey('LessonTimeStart') &&
-              map['LessonTimeStart'] == lessonStartTime) {
-            return true; // Удаляем текущий Map из списка
-          } else {
-            return false; // Сохраняем текущий Map в списке
-          }
-        });
-      } else {
-        // List<dynamic>? lesson = allLessons[currentDate];
-        //   lesson!.contains(lessonStartTime);
-        // print();
-      
+    if (currentDate != '') {
+      allLessons[currentDate]!.removeWhere((map) {
+        if (map.containsKey('LessonTimeStart') &&
+            map['LessonTimeStart'] == lessonStartTime) {
+          lengthlistLesson--;
+          return true; // Удаляем текущий Map из списка
+        } else {
+          return false; // Сохраняем текущий Map в списке
+        }
+      });
     }
   }
 
-  void addSubjectName(List<dynamic> newSubject) {
+// Обновляем лист предметов
+  void updateSubjectList(List<dynamic> newSubject) {
     List<dynamic> list = [];
     list.addAll(newSubject);
     listSubjects = list.toSet().toList();
@@ -76,29 +71,33 @@ class ProviderGroup extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addGroupName(List<String> newGroup) {
+// Обновляем лист названия групп
+  void updateGroupNameList(List<String> newGroup) {
     List<String> listGroups = [];
     listGroups.addAll(newGroup);
     listGroup = listGroups.toSet().toList();
     notifyListeners();
   }
 
+// удаляем название удаленной группы из списка названий групп
   void deleteGroupName(String name) {
     listGroup.removeWhere((e) => e == name);
   }
 
+// функция для свитчера на странице 'Изменить расписание'
   void saveScheduleFunc(switcherSchedule) {
     saveSchedule = switcherSchedule;
     notifyListeners();
   }
 
+// функция для свитчера на странице 'Добавить урок'
   void addNewLesson(switcher) {
     newLessonAdded = switcher;
     notifyListeners();
   }
 
-  void changeColor() {
-    isSelected = !isSelected;
-    notifyListeners();
-  }
+  // void changeColor() {
+  //   isSelected = !isSelected;
+  //   notifyListeners();
+  // }
 }
