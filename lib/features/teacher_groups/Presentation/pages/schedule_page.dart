@@ -25,10 +25,8 @@ class SchedulePage extends StatefulWidget {
 /// Чтобы отслеживать прокрутку ListView
 ScrollController scrollController = ScrollController();
 
-
-
 class _SchedulePageState extends State<SchedulePage> {
- void _getAllLessons(context, String date) {
+  void _getAllLessons(context, String date) {
     BlocProvider.of<BlocGeneralScheduleBloc>(context)
         .add(GetAllLessonsEvent(selectedDate: date));
   }
@@ -143,32 +141,19 @@ class _SchedulePageState extends State<SchedulePage> {
                                 controller: scrollController,
                                 // формула для вывода дней в текущем месяце,
                                 // все что вне текущего месяца не учитывается
-                                itemCount: curentDateTime.month % 2 == 0
-                                    ? DateTime(curentDateTime.year,
-                                                curentDateTime.month, 0)
-                                            .day -
-                                        1
-                                    : DateTime(curentDateTime.year,
-                                                curentDateTime.month, 0)
-                                            .day +
-                                        1,
+                                itemCount: context
+                                    .read<ProviderCalendar>()
+                                    .setNumberDaysMonth(),
 
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
-                                        curentDateTime.day - 1 == index;
-                                        // curentDateTime.day == index;
-
-                                        // curentDateTime = DateTime.now().add(
-                                        //     Duration(
-                                        //         days: index -
-                                        //             DateTime.now().day +
-                                        //             1));
+                                        // curentDateTime.day - 1 == index;
                                         context
                                             .read<ProviderCalendar>()
                                             .getSelectedDate(index);
-                                           
+
                                         _getAllLessons(context, provider.day);
                                       });
                                     },
@@ -208,8 +193,8 @@ class _SchedulePageState extends State<SchedulePage> {
 
                                           /// Выводит актуальный день
                                           Text(
-                                            DateTime(DateTime.now().year,
-                                                    DateTime.now().month, 1)
+                                            DateTime(curentDateTime.year,
+                                                    curentDateTime.month, 1)
                                                 .add(Duration(days: index))
                                                 .day
                                                 .toString(),
