@@ -31,7 +31,11 @@ import 'package:school_journal/features/teacher_groups/domain/repositories/creat
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
+import 'package:school_journal/features/teacher_profile/Presentation/bloc/bloc_user_profile_bloc.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/pages/profile_page.dart';
+import 'package:school_journal/features/teacher_profile/data/datasources/remote_data_profile.dart';
+import 'package:school_journal/features/teacher_profile/data/repositories/user_profile_repository_impl.dart';
+import 'package:school_journal/features/teacher_profile/domain/repositories/user_profile_repository.dart';
 import 'dart:io' show Platform;
 
 import 'package:school_journal/firebase_options.dart';
@@ -140,6 +144,11 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               ScheduleRepositoryImpl(dataBase: RemoteDataFirebaseImpl()),
         ),
+        RepositoryProvider<UserProfileRepository>(
+          lazy: false,
+          create: (context) =>
+              UserProfileRepositoryImpl(dataBase: RemoteDataProfileImpl()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -162,8 +171,13 @@ class MyApp extends StatelessWidget {
           BlocProvider<BlocGeneralScheduleBloc>(
             lazy: false,
             create: (context) => BlocGeneralScheduleBloc(
+                repository: RepositoryProvider.of<ScheduleRepository>(context)),
+          ),
+          BlocProvider<BlocUserProfileBloc>(
+            lazy: false,
+            create: (context) => BlocUserProfileBloc(
                 repository:
-                    RepositoryProvider.of<ScheduleRepository>(context)),
+                    RepositoryProvider.of<UserProfileRepository>(context)),
           ),
         ],
         child: MaterialApp.router(

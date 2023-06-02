@@ -37,7 +37,7 @@ class _SignInPageState extends State<SignInPage> {
       return;
     } else {
       BlocProvider.of<AuthBloc>(context).add(
-        SignInRequested(
+        SignInRequestedEvent(
           _emailController.text.trim(),
           _passwordController.text.trim(),
         ),
@@ -73,9 +73,10 @@ class _SignInPageState extends State<SignInPage> {
         },
         builder: (context, state) {
           if (state is AuthLoading) {
-            
-             Center(
-              child: Platform.isAndroid? const CircularProgressIndicator() :const CupertinoActivityIndicator() ,
+            Center(
+              child: Platform.isAndroid
+                  ? const CircularProgressIndicator()
+                  : const CupertinoActivityIndicator(),
             );
           }
           return SafeArea(

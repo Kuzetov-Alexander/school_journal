@@ -7,6 +7,7 @@ abstract class BlocGeneralScheduleState extends Equatable {
   List<Object> get props => [];
 }
 
+
 class NoGroupsState extends BlocGeneralScheduleState {
   @override
   List<Object> get props => [];
@@ -21,7 +22,7 @@ class DownloadGroupNameState extends BlocGeneralScheduleState {
     required this.allNamesGroup,
   });
   @override
-  List<Object> get props => [];
+  List<Object> get props => [allNamesGroup];
 }
 
 class DownloadSubjectNameState extends BlocGeneralScheduleState {
@@ -31,7 +32,7 @@ class DownloadSubjectNameState extends BlocGeneralScheduleState {
     required this.allSubjectGroup,
   });
   @override
-  List<Object> get props => [];
+  List<Object> get props => [allSubjectGroup];
 }
 
 class AddedLessonState extends BlocGeneralScheduleState {
@@ -45,7 +46,7 @@ class GotAllLessonsState extends BlocGeneralScheduleState {
   const GotAllLessonsState({required this.allLessons, required this.keyDate});
 
   @override
-  List<Object> get props => [allLessons,keyDate];
+  List<Object> get props => [];
 }
 
 class GotCurrentLessonsState extends BlocGeneralScheduleState {
@@ -54,7 +55,7 @@ class GotCurrentLessonsState extends BlocGeneralScheduleState {
   const GotCurrentLessonsState({required this.lessons, required this.keyDate});
 
   @override
-  List<Object> get props => [lessons,keyDate];
+  List<Object> get props => [];
 }
 
 class DatabaseErrorState extends BlocGeneralScheduleState {

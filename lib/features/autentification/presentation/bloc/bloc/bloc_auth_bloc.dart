@@ -13,7 +13,7 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     // отправится событие SignInRequested в bloc,
     // чтобы обработать его и передать состоянии входа,
     // если вход выполнен успешно
-    on<SignInRequested>(
+    on<SignInRequestedEvent>(
       (event, emit) async {
         emit(AuthLoading());
         final authMethod = await authRepository.signIn(
@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     // Когда пользователь нажмет кнопку регистрации,
     // отправится событие SignUрRequested в bloc,
     // чтобы обработать его и передать состоянию, если регистрация выполнена успешно
-    on<SignUpRequested>(
+    on<SignUpRequestedEvent>(
       (event, emit) async {
         emit(AuthLoading());
         final authMethod = await authRepository.signUp(
@@ -58,7 +58,7 @@ class AuthBloc extends Bloc<BlocAuthEvent, BlocAuthState> {
     // Когда пользователь нажмет кнопку выйти,
     // отправится событие SignOutRequested в bloc,
     // чтобы обработать его и передать состоянию
-    on<SignOutRequested>(
+    on<SignOutRequestedEvent>(
       (event, emit) async {
         emit(AuthLoading());
         final authMethod = await authRepository.signOut();

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:school_journal/features/autentification/domain/entities/user_entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final db = FirebaseDatabase.instance.ref();
 final firebaseAuth = FirebaseAuth.instance;
@@ -25,6 +26,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final authData = {'name': request.fullName, 'email': request.email};
       final userId = FirebaseAuth.instance.currentUser?.uid;
       await db.child('Users/$userId').update(authData);
+      final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+      final sharedPreferences = await prefs;
+      sharedPreferences.setString('password', request.password);
+      sharedPreferences.setString('email', request.email);
     } on FirebaseAuthException catch (error) {
       if (error.code == 'weak-password') {
         throw Exception('The password provided is too weak.');

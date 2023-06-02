@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     } else {
       BlocProvider.of<AuthBloc>(context).add(
-        SignUpRequested(
+        SignUpRequestedEvent(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
             fullName: _fullNameController.text.trim()),
@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     double heightScreen = MediaQuery.of(context).size.height;
-  
+
     return Scaffold(
       body: BlocConsumer<AuthBloc, BlocAuthState>(listener: (context, state) {
         if (state is Authenticated) {
@@ -120,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     // const DoubleButton(),
                     const CupertinoDoubleButton(),
                     const SizedBox(height: 24),
-                    context.watch<ProviderLoginBool>().teacher 
+                    context.watch<ProviderLoginBool>().teacher
                         ? TextFormField(
                             onFieldSubmitted: (_) {
                               _fieldFocusChange(
