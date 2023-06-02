@@ -30,6 +30,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final sharedPreferences = await prefs;
       sharedPreferences.setString('password', request.password);
       sharedPreferences.setString('email', request.email);
+      //privet
     } on FirebaseAuthException catch (error) {
       if (error.code == 'weak-password') {
         throw Exception('The password provided is too weak.');
