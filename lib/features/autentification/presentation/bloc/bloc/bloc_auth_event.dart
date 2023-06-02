@@ -5,23 +5,23 @@ abstract class BlocAuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SignInRequested extends BlocAuthEvent {
+class SignInRequestedEvent extends BlocAuthEvent {
   final String email;
   final String password;
 
-  SignInRequested(this.email, this.password);
+  SignInRequestedEvent(this.email, this.password);
 }
 
-class SignUpRequested extends BlocAuthEvent {
+class SignUpRequestedEvent extends BlocAuthEvent {
   final String email;
   final String password;
   final String fullName;
 
-  SignUpRequested({
+  SignUpRequestedEvent({
     required this.email,
     required this.password,
     required this.fullName,
   });
 }
 
-class SignOutRequested extends BlocAuthEvent {}
+class SignOutRequestedEvent extends BlocAuthEvent {}

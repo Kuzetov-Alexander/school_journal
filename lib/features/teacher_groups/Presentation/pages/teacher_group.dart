@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 
-
-
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/lessons_in_group_schedule_widget.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -23,15 +21,14 @@ class TeacherGroupPage extends StatefulWidget {
 }
 
 class _TeacherGroupPageState extends State<TeacherGroupPage> {
-void _getCurrentLessons(context, String date, String group) {
+  void _getCurrentLessons(context, String date, String group) {
     BlocProvider.of<BlocGeneralScheduleBloc>(context).add(
-                GetCurrentLessonsEvent(selectedDate: date ,groupName: group
-                    ));
+      GetCurrentLessonsEvent(selectedDate: date, groupName: group),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     ScrollController scrollController = ScrollController();
@@ -62,7 +59,7 @@ void _getCurrentLessons(context, String date, String group) {
           child: SingleChildScrollView(
               primary: true,
               child: Padding(
-                padding:  EdgeInsets.symmetric(horizontal: widthScreen*0.06),
+                padding: EdgeInsets.symmetric(horizontal: widthScreen * 0.06),
                 child: Column(
                   children: [
                     SizedBox(height: heightScreen * 0.015),
@@ -150,18 +147,16 @@ void _getCurrentLessons(context, String date, String group) {
                                     splashRadius: 1,
                                     onPressed: () {
                                       setState(() {
-                                         context
-                                          .read<ProviderCalendar>()
-                                          .getPreviousMonth();
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getPreviousMonth();
                                       });
-                                     
                                     },
                                     icon: const Image(
                                       image: AssetImage(
                                           'assets/images/arrow_left_white.png'),
                                     ),
                                   ),
-                             
                                   Text(
                                     '${DateFormat('MMMM', 'ru').format(curentDateTime)} ${DateFormat('yyyy', 'ru').format(curentDateTime)}',
                                     style: TextStyle(
@@ -169,16 +164,14 @@ void _getCurrentLessons(context, String date, String group) {
                                         fontSize: heightScreen * 0.024,
                                         fontWeight: FontWeight.w600),
                                   ),
-
                                   IconButton(
                                     splashRadius: 1,
                                     onPressed: () {
                                       setState(() {
-                                          context
-                                          .read<ProviderCalendar>()
-                                          .getNextMonth();
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getNextMonth();
                                       });
-                                    
                                     },
                                     icon: const Image(
                                       image: AssetImage(
@@ -210,13 +203,16 @@ void _getCurrentLessons(context, String date, String group) {
                                     onTap: () {
                                       setState(() {
                                         curentDateTime.day - 1 == index;
-                                   
-                                      context
-                                          .read<ProviderCalendar>()
-                                          .getSelectedDate(index);
+
+                                        context
+                                            .read<ProviderCalendar>()
+                                            .getSelectedDate(index);
                                       });
-                                    
-                                      _getCurrentLessons(context,providerCalendar.day,provider.currentGroup);
+
+                                      _getCurrentLessons(
+                                          context,
+                                          providerCalendar.day,
+                                          provider.currentGroup);
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(

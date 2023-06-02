@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:school_journal/features/autentification/presentation/bloc/bloc/bloc_auth_bloc.dart';
 import 'package:school_journal/features/autentification/presentation/widgets/decoration.dart';
+import 'package:school_journal/features/teacher_profile/Presentation/bloc/bloc_user_profile_bloc.dart';
 import 'package:school_journal/features/teacher_profile/Presentation/widgets/edit_certificate_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -34,7 +35,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _signOut(context) {
     BlocProvider.of<AuthBloc>(context).add(
-      SignOutRequested(),
+      SignOutRequestedEvent(),
+    );
+  }
+
+  void _deleteUserProfile() {
+    BlocProvider.of<BlocUserProfileBloc>(context).add(
+      DeleteUserProfileEvent(),
     );
   }
 
@@ -201,11 +208,27 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-                  onPressed: () async {
-                    // TODO(Sanya) Подумать как cделать удаление пользователя?
-                    // FirebaseAuth.instance.currentUser?.refreshToken;
-                    // await FirebaseAuth.instance.currentUser?.delete();
-                    // _signOut(context);
+                  onPressed: () {
+                    // Future deleteUserProfile() async {
+                    //   final Future<SharedPreferences> prefs =
+                    //       SharedPreferences.getInstance();
+                    //   final sharedPreferences = await prefs;
+                    //   final String passwordUser =
+                    //       sharedPreferences.getString('password').toString();
+                    //   final String emailUser =
+                    //       sharedPreferences.getString('email').toString();
+                    //   AuthCredential credentials = EmailAuthProvider.credential(
+                    //       email: emailUser, password: passwordUser);
+                    //   await user?.reauthenticateWithCredential(credentials);
+                    //   final userId = FirebaseAuth.instance.currentUser?.uid;
+                    //   final dataBase = FirebaseDatabase.instance.ref();
+                    //   final userDB = dataBase.child('Users/$userId');
+                    //   userDB.set({});
+                    //   await user?.delete();
+                    // }
+
+                    // await deleteUserProfile();
+                    _deleteUserProfile();
                     context.go('/');
                   },
                   child: Padding(
