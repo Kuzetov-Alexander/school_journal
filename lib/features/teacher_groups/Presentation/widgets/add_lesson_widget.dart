@@ -61,7 +61,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         subject: _controllerSubject.text,
         currentDate: currentDay));
   }
-
+//
   void _getAllLessons(context, String date) {
     BlocProvider.of<BlocGeneralScheduleBloc>(context)
         .add(GetAllLessonsEvent(selectedDate: date));
@@ -107,6 +107,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {
         if (state is DownloadGroupNameState) {
+          
           provider.updateGroupNameList(state.allNamesGroup);
         }
         if (state is DownloadSubjectNameState) {
