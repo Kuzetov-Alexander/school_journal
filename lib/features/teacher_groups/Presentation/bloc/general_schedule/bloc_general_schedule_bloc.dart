@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -88,6 +88,7 @@ class BlocGeneralScheduleBloc
     on<DeleteLessonsEvent>((event, emit) async {
       final dataBase = FirebaseDatabase.instance.ref();
       final userId = FirebaseAuth.instance.currentUser?.uid;
+      
       final dataShot = dataBase.child(
           'Users/$userId/Schedule/${event.selectedDate}/${event.lessonTimeStart}');
 

@@ -11,6 +11,7 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
   final userId = FirebaseAuth.instance.currentUser?.uid;
 
   ScoresPageBloc() : super(ScoresPageInitial()) {
+    
     on<AddNewStudentEvent>((event, emit) async {
       final dataBase = FirebaseDatabase.instance
           .ref()

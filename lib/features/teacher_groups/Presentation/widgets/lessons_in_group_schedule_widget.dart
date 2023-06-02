@@ -33,10 +33,13 @@ class LessonsInGroupSchedule extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is GotCurrentLessonsState) {
-            provider.saveCurrentLessons(
+            provider.saveLessonForSelectedGroup(
                 state.lessons, state.keyDate, providerDate);
           }
-
+          if (state is UpdateState) {
+            provider.deleteLessonfromSchedule(
+                state.selectedDate, state.lessonTimeStart);
+          }
           return ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
@@ -316,6 +319,10 @@ class LessonsInGroupSchedule extends StatelessWidget {
 
   Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
       String date, String lessonStart, String lessonFinish) {
+    ProviderCalendar providerCalendar =
+        Provider.of<ProviderCalendar>(context, listen: false);
+    ProviderGroup provider = Provider.of<ProviderGroup>(context, listen: false);
+    print(provider.currentGroup);
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -355,7 +362,18 @@ class LessonsInGroupSchedule extends StatelessWidget {
                   fontSize: heightScreen * 0.022,
                   fontWeight: FontWeight.w400),
             ),
-            onPressed: (_) async {}),
+            onPressed: (context) async {
+              _deleteLesson(context, providerCalendar, lessonStart);
+
+              await Future.delayed(const Duration(milliseconds: 50)).then(
+                (_) {
+                  _getAllLessons(context, providerCalendar);
+                  _getCurrentLessons(
+                      context, providerCalendar.day, provider.currentGroup);
+                  Navigator.of(context).pop();
+                },
+              );
+            }),
         BottomSheetAction(
           title: Text(
             'Изменить',
@@ -395,5 +413,21 @@ class LessonsInGroupSchedule extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _getAllLessons(BuildContext context, ProviderCalendar providerCalendar) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
+        .add(GetAllLessonsEvent(selectedDate: providerCalendar.day));
+  }
+
+  void _getCurrentLessons(context, String date, String group) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
+        .add(GetCurrentLessonsEvent(selectedDate: date, groupName: group));
+  }
+
+  void _deleteLesson(BuildContext context, ProviderCalendar providerCalendar,
+      String lessonStart) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context).add(DeleteLessonsEvent(
+        selectedDate: providerCalendar.day, lessonTimeStart: lessonStart));
   }
 }
