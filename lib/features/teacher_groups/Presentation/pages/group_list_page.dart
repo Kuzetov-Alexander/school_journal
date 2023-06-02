@@ -29,21 +29,18 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
-  
   void _deleteGroup(context, {required String key}) {
     BlocProvider.of<BlocTeacherGroupsBloc>(context)
         .add(DeleteGroupEvent(key: key));
   }
 
-   void _getAllLessons(context,String date) {
-    BlocProvider.of<BlocGeneralScheduleBloc>(context).add(
-                GetAllLessonsEvent(selectedDate: date
-                    ));
+  void _getAllLessons(context, String date) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
+        .add(GetAllLessonsEvent(selectedDate: date));
   }
 
   @override
   Widget build(BuildContext context) {
-  
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -105,9 +102,11 @@ class _GroupListPageState extends State<GroupListPage> {
                               iconSize: 35,
                             ),
                             InkWell(
-                              onTap: () {
-                                _getAllLessons(context,providerDate.day);
-                                context.goNamed('Shedule');
+                              onTap: () async {
+                                _getAllLessons(context, providerDate.day);
+                                await Future.delayed(
+                                        const Duration(milliseconds: 30))
+                                    .then((_) => context.goNamed('Shedule'));
                               },
                               child: const Icon(Icons.calendar_month_outlined),
                             ),
@@ -179,7 +178,7 @@ class _GroupListPageState extends State<GroupListPage> {
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
                         snapshot.key;
-                       
+
                         return Column(
                           children: [
                             Padding(
@@ -195,6 +194,7 @@ class _GroupListPageState extends State<GroupListPage> {
                                           _deleteGroup(context,
                                               key:
                                                   'Users/$userId/Groups/${snapshot.key}');
+
                                           provider.deleteGroupName(snapshot
                                               .children.first.value
                                               .toString());
@@ -217,7 +217,6 @@ class _GroupListPageState extends State<GroupListPage> {
                     ),
                   ),
                 ),
-                
               ],
             ),
           );

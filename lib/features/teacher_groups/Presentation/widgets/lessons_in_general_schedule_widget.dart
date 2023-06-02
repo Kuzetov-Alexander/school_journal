@@ -104,8 +104,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                   children: [
                                     Text(
                                       listLessons.isNotEmpty
-                                          ? listLessons[index][
-                                              'Group'] // есть проблема выдает иногда ошибку из-за !
+                                          ? listLessons[index]['Group']
                                           : '',
                                       style: TextStyle(
                                         fontSize: heightScreen * 0.02,
@@ -116,6 +115,11 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                     IconButton(
                                         splashRadius: 20,
                                         onPressed: () {
+                                          provider.lessonStart = listLessons[index]
+                                                      ['LessonTimeStart'];
+                                          provider.lessonFinish = listLessons[index]
+                                                      ['LessonTimeFinish'];
+                                                      provider.setTime();
                                           Platform.isAndroid
                                               ? actionSheetAndroid(
                                                   heightScreen,
@@ -330,6 +334,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
 
   Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
       String date, String lessonStart, String lessonFinish) {
+
     ProviderCalendar providerCalendar =
         Provider.of<ProviderCalendar>(context, listen: false);
 
@@ -389,10 +394,10 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                 fontSize: heightScreen * 0.022,
                 fontWeight: FontWeight.w400),
           ),
-          onPressed: (_) {
+          onPressed: (context) {
             Navigator.of(context).pop();
+            
             showModalBottomSheet(
-              // barrierColor:Colors.transparent ,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               shape: const RoundedRectangleBorder(
@@ -401,7 +406,9 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                 ),
               ),
               context: context,
-              builder: (context) => const TeacherEditClass(),
+              builder: (context) 
+            => const TeacherEditClass(),
+              
             );
           },
         ),

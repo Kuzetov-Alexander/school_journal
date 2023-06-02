@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProviderGroup extends ChangeNotifier {
   String currentGroup = '';
@@ -18,7 +19,7 @@ class ProviderGroup extends ChangeNotifier {
   Map allCurrentLessons = {}; // Map для всех уроков определенной группы
   int lengthCurrentlistLesson = 0;
 
-// функция для сохранения уроков определенной группы
+  /// функция для сохранения уроков определенной группы
   void saveLessonForSelectedGroup(List lesson, String key, String date) {
     if (date != '') {
       allCurrentLessons[key] = lesson;
@@ -47,7 +48,7 @@ class ProviderGroup extends ChangeNotifier {
     }
   }
 
-// удаляем выбранный урок из расписания
+  /// удаляем выбранный урок из расписания
   void deleteLessonfromSchedule(String currentDate, String lessonStartTime) {
     if (currentDate != '') {
       allLessons[currentDate]!.removeWhere((map) {
@@ -62,7 +63,7 @@ class ProviderGroup extends ChangeNotifier {
     }
   }
 
-// Обновляем лист предметов
+  /// Обновляем лист предметов
   void updateSubjectList(List<dynamic> newSubject) {
     List<dynamic> list = [];
     list.addAll(newSubject);
@@ -71,7 +72,7 @@ class ProviderGroup extends ChangeNotifier {
     notifyListeners();
   }
 
-// Обновляем лист названия групп
+  /// Обновляем лист названия групп
   void updateGroupNameList(List<String> newGroup) {
     List<String> listGroups = [];
     listGroups.addAll(newGroup);
@@ -79,18 +80,18 @@ class ProviderGroup extends ChangeNotifier {
     notifyListeners();
   }
 
-// удаляем название удаленной группы из списка названий групп
+  /// удаляем название удаленной группы из списка названий групп
   void deleteGroupName(String name) {
     listGroup.removeWhere((e) => e == name);
   }
 
-// функция для свитчера на странице 'Изменить расписание'
+  /// функция для свитчера на странице 'Изменить расписание'
   void saveScheduleFunc(switcherSchedule) {
     saveSchedule = switcherSchedule;
     notifyListeners();
   }
 
-// функция для свитчера на странице 'Добавить урок'
+  /// функция для свитчера на странице 'Добавить урок'
   void addNewLesson(switcher) {
     newLessonAdded = switcher;
     notifyListeners();
@@ -100,4 +101,26 @@ class ProviderGroup extends ChangeNotifier {
   //   isSelected = !isSelected;
   //   notifyListeners();
   // }
+
+// Сохраненные переменные времени для экрана Изменить урок
+
+  String lessonStart = '';
+  String lessonFinish = '';
+
+   DateTime dateTimefinish =DateTime( DateTime.now().hour, DateTime.now().minute);
+   DateTime dateTimestart = DateTime( DateTime.now().hour, DateTime.now().minute);
+
+  void setTime() {
+    dateTimestart = DateTime(DateTime.now().hour, DateTime.now().minute).add(
+        Duration(
+            hours: DateFormat('HH:mm').parse(lessonStart).hour,
+            minutes: DateFormat('HH:mm').parse(lessonStart).minute));
+
+    dateTimefinish = DateTime(DateTime.now().hour, DateTime.now().minute).add(
+        Duration(
+            hours: DateFormat('HH:mm').parse(lessonFinish).hour,
+            minutes: DateFormat('HH:mm').parse(lessonFinish).minute));
+
+    notifyListeners();
+  }
 }

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 
-
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
@@ -17,25 +16,28 @@ class MyGroupInfoWidget extends StatelessWidget {
   const MyGroupInfoWidget(
       {super.key, required this.mapGroups, required this.index});
 
-void _getCurrentLessons(context, String date, String group) {
-    BlocProvider.of<BlocGeneralScheduleBloc>(context).add(
-                GetCurrentLessonsEvent(selectedDate: date ,groupName: group
-                    ));
+  void _getCurrentLessons(context, String date, String group) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
+        .add(GetCurrentLessonsEvent(selectedDate: date, groupName: group));
   }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderGroup>(context);
-     final providerCalendar = Provider.of<ProviderCalendar>(context);
+    final providerCalendar = Provider.of<ProviderCalendar>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
       children: [
         InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: () {
-             provider.currentGroup = mapGroups['GroupName'].toString();
-            _getCurrentLessons(context,providerCalendar.day,provider.currentGroup);
-            context.goNamed('TeacherGroup');
+          onTap: () async {
+            provider.currentGroup = mapGroups['GroupName'].toString();
+
+            _getCurrentLessons(
+                context, providerCalendar.day, provider.currentGroup);
+            await Future.delayed(const Duration(milliseconds: 30))
+                .then((_) => context.goNamed('TeacherGroup'));
           },
           child: Container(
             decoration: BoxDecoration(

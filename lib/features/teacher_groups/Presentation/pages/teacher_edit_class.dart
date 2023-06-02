@@ -2,12 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
+
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherEditClass extends StatefulWidget {
-  const TeacherEditClass({super.key});
+  // final String lessonStartTime;
+  // final String lessonFinishTime;
+  // final String date;
+  const TeacherEditClass({super.key, 
+  // required this.lessonStartTime, required this.lessonFinishTime, required this.date
+  }
+  );
 
   @override
   State<TeacherEditClass> createState() => _TeacherEditClassState();
@@ -18,11 +26,16 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
-  DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+ 
+  DateTime dateTimefinish = DateTime( DateTime.now().hour, DateTime.now().minute);
+DateTime parsedDateTime = DateFormat('HH:mm').parse('14:02');
 
   @override
   Widget build(BuildContext context) {
+    
+ProviderGroup provider = Provider.of<ProviderGroup>(context);
+      
+      print(provider.lessonStart);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -80,7 +93,7 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                           child: Row(
                             children: [
                               Text(
-                                '${DateFormat('EEEE', 'ru').format(DateTime.now()).capitalize()} , ${DateFormat('d MMM', 'ru').format(DateTime.now())}',
+                                '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: heightScreen * 0.016,
@@ -154,13 +167,13 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                             // Platform.isIOS
                             //     ? 
                                 IosTimePicker(
-                                    time: dateTimestart,
+                                    time: provider.dateTimestart,
                                     textTime:
-                                        '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                       '${provider.dateTimestart.hour.toString().padLeft(2, '0')}:${provider.dateTimestart.minute.toString().padLeft(2, '0')}',
                                     onTimeSelected: (DateTime newTime) {
                                       setState(() {
-                                        dateTimestart =
-                                            newTime; // делать через блок или провайдер лучше?
+                                         provider.dateTimestart =
+                                            newTime; 
                                       });
                                     },
                                   )
@@ -184,13 +197,13 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                             // Platform.isIOS
                             //     ? 
                                 IosTimePicker(
-                                    time: dateTimefinish,
+                                    time: provider.dateTimefinish,
                                     textTime:
-                                        '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                        '${provider.dateTimefinish.hour.toString().padLeft(2, '0')}:${provider.dateTimefinish.minute.toString().padLeft(2, '0')}',
                                     onTimeSelected: (DateTime newTime) {
                                       setState(() {
-                                        dateTimefinish =
-                                            newTime; // делать через блок или провайдер лучше?
+                                        provider.dateTimefinish =
+                                            newTime; 
                                       });
                                     },
                                   )

@@ -29,29 +29,25 @@ class ProviderCalendar extends ChangeNotifier {
     if (currentDate.month % 2 == 0) {
       if (DateTime(currentDate.year, currentDate.month, 0).day == 30) {
         // месяцы по 30 дней
-        print(
-            '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     30');
+       
         return numberDays =
             DateTime(currentDate.year, currentDate.month, 0).day;
       } else {
         // февраль
 
         if (DateTime(currentDate.year, currentDate.month, 0).day < 29) {
-          print(
-              '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     28');
+         
           return numberDays =
               DateTime(currentDate.year, currentDate.month, 0).day - 3;
         } else {
-          print(
-              '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     29');
+         
           return numberDays =
               DateTime(currentDate.year, currentDate.month, 0).day - 2;
         }
       }
     } else {
       // месяцы по 31 дню
-      print(
-          '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     31');
+ 
       return DateTime(currentDate.year, currentDate.month, 0).day;
     }
   }
