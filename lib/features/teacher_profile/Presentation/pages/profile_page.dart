@@ -209,27 +209,56 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   onPressed: () {
-                    // Future deleteUserProfile() async {
-                    //   final Future<SharedPreferences> prefs =
-                    //       SharedPreferences.getInstance();
-                    //   final sharedPreferences = await prefs;
-                    //   final String passwordUser =
-                    //       sharedPreferences.getString('password').toString();
-                    //   final String emailUser =
-                    //       sharedPreferences.getString('email').toString();
-                    //   AuthCredential credentials = EmailAuthProvider.credential(
-                    //       email: emailUser, password: passwordUser);
-                    //   await user?.reauthenticateWithCredential(credentials);
-                    //   final userId = FirebaseAuth.instance.currentUser?.uid;
-                    //   final dataBase = FirebaseDatabase.instance.ref();
-                    //   final userDB = dataBase.child('Users/$userId');
-                    //   userDB.set({});
-                    //   await user?.delete();
-                    // }
-
-                    // await deleteUserProfile();
-                    _deleteUserProfile();
-                    context.go('/');
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Удалить профиль',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: heightScreen * 0.026,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        content: const Text(
+                          'Вы собираетесь удалить учетную запись. Все ваши данные будут безвозвратно удалены.\nУверены, что хотите это сделать?',
+                          textAlign: TextAlign.center,
+                        ),
+                        actionsAlignment: MainAxisAlignment.spaceBetween,
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              _deleteUserProfile();
+                              context.go('/');
+                            },
+                            style: TextButton.styleFrom(
+                              fixedSize:
+                                  Size(widthScreen * 0.3, heightScreen * 0.07),
+                              foregroundColor: Colors.red,
+                              textStyle:
+                                  TextStyle(fontSize: heightScreen * 0.026),
+                            ),
+                            child: const Text('Да'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            style: TextButton.styleFrom(
+                              fixedSize:
+                                  Size(widthScreen * 0.3, heightScreen * 0.07),
+                              foregroundColor: Colors.black,
+                              textStyle:
+                                  TextStyle(fontSize: heightScreen * 0.026),
+                            ),
+                            child: const Text('Нет'),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   child: Padding(
                     padding: EdgeInsets.only(left: widthScreen * 0.013),

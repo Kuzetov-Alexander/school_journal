@@ -12,6 +12,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<Failure, void>> signUp({required UserEntity request}) async {
     try {
+      // TODO(Sanya) Если вход не выполнился сделать удаление пользователя?
       return await remoteDataSource
           .signUp(request: request)
           .then((value) => Right(value));
