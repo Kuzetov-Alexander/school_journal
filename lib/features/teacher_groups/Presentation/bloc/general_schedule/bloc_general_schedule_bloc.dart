@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
@@ -53,17 +55,15 @@ class BlocGeneralScheduleBloc
       List dataList = [];
       final resultAllLessons = await repository.getAllLessons(
           selectedDate: event.selectedDate, dataList: dataList);
-    // print(dataList);
-    // print(event.selectedDate);
+      // print(dataList);
+      // print(event.selectedDate);
       if (resultAllLessons.isRight()) {
         emit(
           GotAllLessonsState(
             allLessons: dataList,
             keyDate: resultAllLessons.getOrElse(() => ''),
           ),
-        
         );
-        
       }
     });
 
@@ -75,7 +75,6 @@ class BlocGeneralScheduleBloc
           selectedDate: event.selectedDate,
           groupName: event.groupName);
       if (resultCurrentLessons.isRight()) {
-        emit(UpdateState());
         emit(
           GotCurrentLessonsState(
             lessons: dataList,
@@ -83,6 +82,22 @@ class BlocGeneralScheduleBloc
           ),
         );
       }
+    });
+
+// Удаляем урок в общем расписании
+    on<DeleteLessonsEvent>((event, emit) async {
+      final dataBase = FirebaseDatabase.instance.ref();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      final dataShot = dataBase.child(
+          'Users/$userId/Schedule/${event.selectedDate}/${event.lessonTimeStart}');
+
+      await dataShot.remove();
+
+      emit(
+        UpdateState(
+            selectedDate: event.selectedDate,
+            lessonTimeStart: event.lessonTimeStart),
+      );
     });
   }
 }

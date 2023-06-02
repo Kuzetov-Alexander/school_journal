@@ -38,15 +38,34 @@ class ProviderGroup extends ChangeNotifier {
   void saveAllLessons(List lessons, String date, String currentDate) {
     if (date != '') {
       allLessons[date] = lessons;
-     
+
       if (allLessons.containsKey(currentDate)) {
         lengthlistLesson = allLessons[currentDate]!.length;
-        
       } else {
         lengthlistLesson = 0;
       }
     }
+  }
+
+  void deleteLessonfromSchedule(String currentDate, String lessonStartTime) {
     
+      if (allLessons[currentDate] is List<Map<String, dynamic>>) {
+        List<Map<String, dynamic>> newList =
+            allLessons[currentDate] as List<Map<String, dynamic>>;
+        newList.removeWhere((map) {
+          if (map.containsKey('LessonTimeStart') &&
+              map['LessonTimeStart'] == lessonStartTime) {
+            return true; // Удаляем текущий Map из списка
+          } else {
+            return false; // Сохраняем текущий Map в списке
+          }
+        });
+      } else {
+        // List<dynamic>? lesson = allLessons[currentDate];
+        //   lesson!.contains(lessonStartTime);
+        // print();
+      
+    }
   }
 
   void addSubjectName(List<dynamic> newSubject) {

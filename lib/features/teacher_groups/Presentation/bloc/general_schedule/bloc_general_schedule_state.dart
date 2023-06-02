@@ -13,7 +13,15 @@ class NoGroupsState extends BlocGeneralScheduleState {
   List<Object> get props => [];
 }
 
-class UpdateState extends BlocGeneralScheduleState {}
+class UpdateState extends BlocGeneralScheduleState {
+  final String selectedDate;
+  final String lessonTimeStart;
+  const UpdateState({required this.selectedDate, required this.lessonTimeStart});
+
+  @override
+  List<Object> get props => [selectedDate,lessonTimeStart];
+
+}
 
 class DownloadGroupNameState extends BlocGeneralScheduleState {
   final List<String> allNamesGroup;
@@ -46,7 +54,7 @@ class GotAllLessonsState extends BlocGeneralScheduleState {
   const GotAllLessonsState({required this.allLessons, required this.keyDate});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [allLessons,keyDate];
 }
 
 class GotCurrentLessonsState extends BlocGeneralScheduleState {
