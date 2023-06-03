@@ -289,7 +289,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
         actions: [
           CupertinoActionSheetAction(
             onPressed: () {
-              const TeacherEditClass();
+               TeacherEditClass(date: date, lessonFinishTime: lessonStart, lessonStartTime: lessonFinish,);
             },
             child: Text(
               'Изменить',
@@ -407,7 +407,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
               ),
               context: context,
               builder: (context) 
-            => const TeacherEditClass(),
+            =>  TeacherEditClass(date: date, lessonFinishTime: lessonFinish, lessonStartTime: lessonStart,),
               
             );
           },

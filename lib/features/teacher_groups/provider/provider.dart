@@ -109,6 +109,7 @@ class ProviderGroup extends ChangeNotifier {
 
    DateTime dateTimefinish =DateTime( DateTime.now().hour, DateTime.now().minute);
    DateTime dateTimestart = DateTime( DateTime.now().hour, DateTime.now().minute);
+  String finishTime = '';
 
   void setTime() {
     dateTimestart = DateTime(DateTime.now().hour, DateTime.now().minute).add(
@@ -120,6 +121,8 @@ class ProviderGroup extends ChangeNotifier {
         Duration(
             hours: DateFormat('HH:mm').parse(lessonFinish).hour,
             minutes: DateFormat('HH:mm').parse(lessonFinish).minute));
+
+     
 
     notifyListeners();
   }

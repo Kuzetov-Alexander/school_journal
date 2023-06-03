@@ -35,18 +35,18 @@ class ProviderCalendar extends ChangeNotifier {
     if (currentMoths % 2 == 0) {
       if (numberOfDays == 30) {
         // месяцы по 30 дней
-        print('-----------${currentMoths}--${numberOfDays}     30');
+        // print('-----------${currentMoths}--${numberOfDays}     30');
         return result = numberOfDays;
       } else {
         if (numberOfDays == 31) {
-          print('-----------$currentMoths--${numberOfDays}    31');
+          // print('-----------$currentMoths--${numberOfDays}    31');
           return numberOfDays;
           // февраль
         } else if (numberOfDays == 29) {
-          print('-----------${currentMoths}--${numberOfDays}     28');
+          // print('-----------${currentMoths}--${numberOfDays}     28');
           return result = numberOfDays - 3;
         } else {
-          print('-----------${currentMoths}--${numberOfDays}     29');
+          // print('-----------${currentMoths}--${numberOfDays}     29');
           return result = numberOfDays - 2;
         }
       }
@@ -54,17 +54,17 @@ class ProviderCalendar extends ChangeNotifier {
     // месяцы по 31 дню
     if (numberOfDays == 30) {
       // месяцы по 30 дней
-      print('-----------${currentMoths}--${numberOfDays}    1 30');
+      // print('-----------${currentMoths}--${numberOfDays}    1 30');
       return result = numberOfDays + 1;
     } else if (numberOfDays == 31) {
-      print(
-          '---------${currentDate.year}--$currentMoths--${numberOfDays}    1 31');
+      // print(
+      //     '---------${currentDate.year}--$currentMoths--${numberOfDays}    1 31');
       return result = numberOfDays + 1;
     } else if (numberOfDays == 28) {
-      print('-----------${currentMoths}--${numberOfDays}    1 28');
+      // print('-----------${currentMoths}--${numberOfDays}    1 28');
       return result = numberOfDays;
     } else {
-      print('-----------${currentMoths}--${numberOfDays}    1 29');
+      // print('-----------${currentMoths}--${numberOfDays}    1 29');
       return result = numberOfDays;
     }
   }

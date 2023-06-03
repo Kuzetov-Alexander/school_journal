@@ -96,28 +96,20 @@ class BlocGeneralScheduleBloc
       );
     });
 
-
 // Изменяем урок в расписании
     on<ChangeLessonEvent>((event, emit) async {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
 
+      final dataBase = FirebaseDatabase.instance.ref().child(
+          'Users/$userId/Schedule/${event.selectedDate}/${event.lessonTimeStart}');
 
-final userId = FirebaseAuth.instance.currentUser?.uid;
-    final dataBase =
-        FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
+      final postData = {
+        "LessonRoom": event.room,
+        "LessonTimeStart": event.changedlessonTimeStart,
+        "LessonTimeFinish": event.changedlessonTimeFinish,
+      };
 
-
-    // final postData = {
-    //   groupName: {
-    //     'GroupName': groupName,
-    //     'amountStudents': '0',
-    //     'nextLesson': 'нет',
-    //     'allStudents': 'пусто',
-    //     'allSubject': 'пусто'
-    //   }
-    // };
-
-    // await dataBase.update(postData);
-
+      await dataBase.update(postData);
 
       emit(
         UpdateState(

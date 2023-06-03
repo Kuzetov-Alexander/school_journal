@@ -31,11 +31,11 @@ class GetCurrentLessonsEvent extends BlocGeneralScheduleEvent {
     required this.selectedDate,
     required this.groupName,
   });
-    @override
-  List<Object> get props => [selectedDate,groupName];
+  @override
+  List<Object> get props => [selectedDate, groupName];
 }
 
-// удаляем урок из расписания 
+// удаляем урок из расписания
 class DeleteLessonsEvent extends BlocGeneralScheduleEvent {
   final String selectedDate;
   final String lessonTimeStart;
@@ -44,29 +44,30 @@ class DeleteLessonsEvent extends BlocGeneralScheduleEvent {
     required this.selectedDate,
     required this.lessonTimeStart,
   });
-     @override
-  List<Object> get props => [selectedDate,lessonTimeStart];
+  @override
+  List<Object> get props => [selectedDate, lessonTimeStart];
 }
 
-
-// изменяем урок в расписании 
+// изменяем урок в расписании
 class ChangeLessonEvent extends BlocGeneralScheduleEvent {
   final String room;
   final String lessonTimeStart;
-   final String lessonTimeFinish;
-   final String selectedDate;
+  final String lessonTimeFinish;
+  final String changedlessonTimeStart;
+  final String changedlessonTimeFinish;
+  final String selectedDate;
 
   const ChangeLessonEvent({
     required this.room,
     required this.lessonTimeStart,
     required this.lessonTimeFinish,
+    required this.changedlessonTimeStart,
+    required this.changedlessonTimeFinish,
     required this.selectedDate,
   });
-     @override
+  @override
   List<Object> get props => [room, lessonTimeStart, lessonTimeFinish];
 }
-
-
 
 class AddLessonEvent extends BlocGeneralScheduleEvent {
   final String groupNameforLesson;
