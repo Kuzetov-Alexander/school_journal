@@ -33,6 +33,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is GotCurrentLessonsState) {
+           
             provider.saveLessonForSelectedGroup(
                 state.lessons, state.keyDate, providerDate);
           }
@@ -322,7 +323,7 @@ class LessonsInGroupSchedule extends StatelessWidget {
     ProviderCalendar providerCalendar =
         Provider.of<ProviderCalendar>(context, listen: false);
     ProviderGroup provider = Provider.of<ProviderGroup>(context, listen: false);
-    print(provider.currentGroup);
+   
     return showAdaptiveActionSheet(
       title: Column(
         children: [

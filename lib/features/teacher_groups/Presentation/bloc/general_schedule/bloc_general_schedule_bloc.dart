@@ -83,7 +83,7 @@ class BlocGeneralScheduleBloc
       }
     });
 
-// Удаляем урок в общем расписании
+// Удаляем урок в расписании
     on<DeleteLessonsEvent>((event, emit) async {
       repository.deleteLesson(
           selectedDate: event.selectedDate,
@@ -93,6 +93,37 @@ class BlocGeneralScheduleBloc
         UpdateState(
             selectedDate: event.selectedDate,
             lessonTimeStart: event.lessonTimeStart),
+      );
+    });
+
+
+// Изменяем урок в расписании
+    on<ChangeLessonEvent>((event, emit) async {
+
+
+final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataBase =
+        FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
+
+
+    // final postData = {
+    //   groupName: {
+    //     'GroupName': groupName,
+    //     'amountStudents': '0',
+    //     'nextLesson': 'нет',
+    //     'allStudents': 'пусто',
+    //     'allSubject': 'пусто'
+    //   }
+    // };
+
+    // await dataBase.update(postData);
+
+
+      emit(
+        UpdateState(
+            lessonTimeStart: event.lessonTimeStart,
+            room: event.room,
+            lessonTimeFinish: event.lessonTimeFinish),
       );
     });
   }
