@@ -101,14 +101,6 @@ class _SchedulePageState extends State<SchedulePage> {
                                           'assets/images/arrow_left_white.png'),
                                     ),
                                   ),
-                                  // Text(
-                                  //   DateFormat('MMM', 'ru')
-                                  //       .format(DateTime.now()),
-                                  //   style: TextStyle(
-                                  //       color: Colors.white,
-                                  //       fontSize: heightScreen * 0.024,
-                                  //       fontWeight: FontWeight.w600),
-                                  // ),
                                   Text(
                                     '${DateFormat('MMMM', 'ru').format(curentDateTime)} ${DateFormat('yyyy', 'ru').format(curentDateTime)}',
                                     style: TextStyle(
@@ -116,7 +108,6 @@ class _SchedulePageState extends State<SchedulePage> {
                                         fontSize: heightScreen * 0.024,
                                         fontWeight: FontWeight.w600),
                                   ),
-
                                   IconButton(
                                     splashRadius: 1,
                                     onPressed: () {
@@ -146,7 +137,6 @@ class _SchedulePageState extends State<SchedulePage> {
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
-                                        // curentDateTime.day - 1 == index;
                                         context
                                             .read<ProviderCalendar>()
                                             .getSelectedDate(index);
@@ -175,7 +165,6 @@ class _SchedulePageState extends State<SchedulePage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          // TODO(Sanya) Подумать как внедрить по другому?
                                           Text(
                                             context
                                                 .read<ProviderCalendar>()
@@ -187,21 +176,16 @@ class _SchedulePageState extends State<SchedulePage> {
                                                     ? Colors.black
                                                     : Colors.white),
                                           ),
-
-                                          /// Выводит актуальный день
                                           Text(
-                                            DateTime(curentDateTime.year,
-                                                    curentDateTime.month, 1)
-                                                .add(Duration(days: index))
-                                                .day
-                                                .toString(),
+                                            context
+                                                .read<ProviderCalendar>()
+                                                .createNumberWidgetDays(index),
                                             style: TextStyle(
                                                 color: curentDateTime.day - 1 ==
                                                         index
                                                     ? Colors.black
                                                     : Colors.white),
                                           ),
-
                                           Icon(
                                             Icons.circle_rounded,
                                             color:
