@@ -20,7 +20,7 @@ class ProviderCalendar extends ChangeNotifier {
   /// Перейти на предыдущий месяц в календаре.
   void getPreviousMonth() {
     currentDate =
-        DateTime(currentDate.year, currentDate.month - 1, DateTime.now().day);
+        DateTime(currentDate.year, currentDate.month - 1, currentDate.day);
     day = DateFormat('dd-MM-yyyy', 'ru').format(currentDate);
     notifyListeners();
   }

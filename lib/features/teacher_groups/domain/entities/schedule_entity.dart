@@ -7,15 +7,17 @@ class ScheduleEntity extends Equatable {
   final String lessonRoom;
   final String lessonTimeStart;
   final String lessonTimeFinish;
-  final String currentDate;
+   final String changedtimeStart;
+   final String changedtimeFinish;
+  final String selectedDate;
 
-  const ScheduleEntity({
+  const ScheduleEntity({this.changedtimeFinish='',this.changedtimeStart='',
     required this.group,
     required this.subject,
     required this.lessonRoom,
-    required this.lessonTimeStart,
-    required this.lessonTimeFinish,
-    required this.currentDate,
+     this.lessonTimeStart ='',
+     this.lessonTimeFinish ='',
+    required this.selectedDate,
   });
   @override
   List<Object?> get props => [
@@ -24,7 +26,9 @@ class ScheduleEntity extends Equatable {
         lessonRoom,
         lessonTimeStart,
         lessonTimeFinish,
-        currentDate,
+        selectedDate,
+        changedtimeStart,
+        changedtimeFinish
       ];
 }
 

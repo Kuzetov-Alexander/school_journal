@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_journal/features/teacher_groups/domain/entities/schedule_entity.dart';
 import 'package:school_journal/features/teacher_groups/domain/repositories/schedule_repository.dart';
@@ -16,12 +14,12 @@ class BlocGeneralScheduleBloc
       emit(AddedLessonState());
       await repository.addLesson(
         request: ScheduleEntity(
-          group: event.groupNameforLesson,
+          group: event.groupName,
           subject: event.subject,
           lessonRoom: event.lessonRoom,
           lessonTimeStart: event.lessonTimeStart,
           lessonTimeFinish: event.lessonTimeFinish,
-          currentDate: event.currentDate,
+          selectedDate: event.selectedDate,
         ),
       );
     });
@@ -98,18 +96,18 @@ class BlocGeneralScheduleBloc
 
 // Изменяем урок в расписании
     on<ChangeLessonEvent>((event, emit) async {
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-
-      final dataBase = FirebaseDatabase.instance.ref().child(
-          'Users/$userId/Schedule/${event.selectedDate}/${event.lessonTimeStart}');
-
-      final postData = {
-        "LessonRoom": event.room,
-        "LessonTimeStart": event.changedlessonTimeStart,
-        "LessonTimeFinish": event.changedlessonTimeFinish,
-      };
-
-      await dataBase.update(postData);
+      await repository.changeLesson(
+        request: ScheduleEntity(
+          group: event.groupName,
+          subject: event.subject,
+          lessonRoom: event.room,
+          lessonTimeStart: event.lessonTimeStart,
+          // lessonTimeFinish: event.lessonTimeFinish,
+          selectedDate: event.selectedDate,
+          changedtimeStart: event.changedlessonTimeStart,
+          changedtimeFinish: event.changedlessonTimeFinish
+        ),
+      );
 
       emit(
         UpdateState(

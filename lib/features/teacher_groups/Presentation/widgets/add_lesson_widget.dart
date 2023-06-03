@@ -44,7 +44,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   void _addLesson(context, String groupName, String currentDay) {
     BlocProvider.of<BlocGeneralScheduleBloc>(context).add(AddLessonEvent(
-        groupNameforLesson: groupName,
+        groupName: groupName,
         lessonRoom: _controllerRoom.text,
         lessonTimeStart: DateFormat.Hm().format(
             // Platform.isIOS
@@ -59,7 +59,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
             // : timeFinishAndroid
             ),
         subject: _controllerSubject.text,
-        currentDate: currentDay));
+        selectedDate: currentDay));
   }
 //
   void _getAllLessons(context, String date) {

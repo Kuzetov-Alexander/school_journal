@@ -13,17 +13,23 @@ class TeacherEditClass extends StatefulWidget {
   final String lessonStartTime;
   final String lessonFinishTime;
   final String date;
-  const TeacherEditClass({
-    super.key,
-     required this.date,required this.lessonStartTime,required this.lessonFinishTime
-  });
+  final String group;
+  final String subject;
+
+  const TeacherEditClass(
+      {super.key,
+      required this.date,
+      required this.group,
+      required this.subject,
+      required this.lessonStartTime,
+      required this.lessonFinishTime});
 
   @override
   State<TeacherEditClass> createState() => _TeacherEditClassState();
 }
 
 class _TeacherEditClassState extends State<TeacherEditClass> {
-   final TextEditingController _controllerRoom = TextEditingController();
+  final TextEditingController _controllerRoom = TextEditingController();
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
@@ -31,24 +37,39 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
       DateTime(DateTime.now().hour, DateTime.now().minute);
   DateTime parsedDateTime = DateFormat('HH:mm').parse('14:02');
 
-  void _changeLesson(context, String date, String startTime, String finishTime, String room,String changedFinishTime,String changedStartTime ) {
-    BlocProvider.of<BlocGeneralScheduleBloc>(context)
-        .add(ChangeLessonEvent(selectedDate: date, lessonTimeStart: startTime, lessonTimeFinish: finishTime, room: room, changedlessonTimeStart: changedStartTime, changedlessonTimeFinish: changedFinishTime,));
+  void _changeLesson(
+      context,
+      String date,
+      String startTime,
+      String finishTime,
+      String room,
+      String changedFinishTime,
+      String changedStartTime,
+      String group,
+      String subject) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context).add(ChangeLessonEvent(
+      selectedDate: date,
+      lessonTimeStart: startTime,
+      lessonTimeFinish: finishTime,
+      room: room,
+      changedlessonTimeStart: changedStartTime,
+      changedlessonTimeFinish: changedFinishTime,
+      groupName: group,
+      subject: subject,
+    ));
   }
+
   @override
   Widget build(BuildContext context) {
+   
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     ProviderCalendar providerCalendar = Provider.of<ProviderCalendar>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
-
-        if (state is UpdateState) {
-         
-        }
+        if (state is UpdateState) {}
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -250,12 +271,23 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                           ),
                         ),
                       ),
-                      onPressed: () {
-                        print(providerCalendar.day);
-                        _changeLesson(context,providerCalendar.day, widget.lessonStartTime, widget.lessonFinishTime, _controllerRoom.text,
-                        '${provider.dateTimefinish.hour.toString().padLeft(2, '0')}:${provider.dateTimefinish.minute.toString().padLeft(2, '0')}',
-                        '${provider.dateTimestart.hour.toString().padLeft(2, '0')}:${provider.dateTimestart.minute.toString().padLeft(2, '0')}'
-                        );
+                      onPressed: ()  async {
+                       
+                        _changeLesson(
+                            context,
+                            providerCalendar.day,
+                            widget.lessonStartTime,
+                            widget.lessonFinishTime,
+                            _controllerRoom.text,
+                            '${provider.dateTimefinish.hour.toString().padLeft(2, '0')}:${provider.dateTimefinish.minute.toString().padLeft(2, '0')}',
+                            '${provider.dateTimestart.hour.toString().padLeft(2, '0')}:${provider.dateTimestart.minute.toString().padLeft(2, '0')}',
+                            widget.group,
+                            widget.subject);
+                              await Future.delayed(const Duration(milliseconds: 100)).then((_) {
+                                 _getAllLessons(context,providerCalendar.day);
+                                 Navigator.of(context).pop();
+                              },);
+                           
                       },
                       child: Text(
                         'Изменить',
@@ -277,5 +309,10 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
         );
       },
     );
+    
+  }
+  void _getAllLessons(context, String date) {
+    BlocProvider.of<BlocGeneralScheduleBloc>(context)
+        .add(GetAllLessonsEvent(selectedDate: date));
   }
 }

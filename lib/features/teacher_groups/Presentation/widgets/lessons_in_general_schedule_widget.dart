@@ -131,7 +131,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                                   listLessons[index]
                                                       ['LessonTimeStart'],
                                                   listLessons[index]
-                                                      ['LessonTimeFinish'])
+                                                      ['LessonTimeFinish'],listLessons[index]['Group'],listLessons[index]['Subject'])
                                               : actionSheetIos(
                                                   context,
                                                   heightScreen,
@@ -142,7 +142,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                                   listLessons[index]
                                                       ['LessonTimeStart'],
                                                   listLessons[index]
-                                                      ['LessonTimeFinish']);
+                                                      ['LessonTimeFinish'],listLessons[index]['Group'],listLessons[index]['Subject']);
                                         },
                                         icon: const Image(
                                             image: AssetImage(
@@ -270,7 +270,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
   }
 
   Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,
-      String date, String lessonStart, String lessonFinish) {
+      String date, String lessonStart, String lessonFinish, String group, String subject) {
     ProviderCalendar providerCalendar =
         Provider.of<ProviderCalendar>(context, listen: false);
     return showCupertinoModalPopup(
@@ -289,7 +289,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
         actions: [
           CupertinoActionSheetAction(
             onPressed: () {
-               TeacherEditClass(date: date, lessonFinishTime: lessonStart, lessonStartTime: lessonFinish,);
+               TeacherEditClass(date: date, lessonFinishTime: lessonStart, lessonStartTime: lessonFinish, group: group, subject: subject);
             },
             child: Text(
               'Изменить',
@@ -333,11 +333,11 @@ class LessonsInGeneralSchedule extends StatelessWidget {
   }
 
   Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
-      String date, String lessonStart, String lessonFinish) {
+      String date, String lessonStart, String lessonFinish,String group, String subject) {
 
     ProviderCalendar providerCalendar =
         Provider.of<ProviderCalendar>(context, listen: false);
-
+ 
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -406,8 +406,10 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                 ),
               ),
               context: context,
+
+
               builder: (context) 
-            =>  TeacherEditClass(date: date, lessonFinishTime: lessonFinish, lessonStartTime: lessonStart,),
+            =>  TeacherEditClass(date: date, lessonFinishTime: lessonFinish, lessonStartTime: lessonStart, group: group, subject: subject,),
               
             );
           },

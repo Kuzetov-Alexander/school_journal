@@ -96,4 +96,15 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       return Left<Failure, String>(DataBaseFailure());
     }
   }
+  
+  @override
+  Future<Either<Failure, void>> changeLesson( {required ScheduleEntity request}) async {
+    try {
+      return await dataBase
+          .changeLesson(request: request)
+          .then((value) => Right(value));
+    } on Object {
+      return Left<Failure, void>(DataBaseFailure());
+    }
+  }
 }

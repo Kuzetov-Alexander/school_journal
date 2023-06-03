@@ -23,4 +23,7 @@ abstract class ScheduleRepository {
     required String selectedDate,
     required String lessonTimeStart,
   });
+  Future<Either<Failure, void>> changeLesson({
+    required ScheduleEntity request,
+  });
 }

@@ -20,6 +20,8 @@ abstract class RemoteDataFirebase {
 
   Future<void> deleteLesson(
       {required String selectedDate, required String lessonTimeStart});
+
+  Future<void> changeLesson({required ScheduleEntity request});
 }
 
 class RemoteDataFirebaseImpl implements RemoteDataFirebase {
@@ -58,11 +60,11 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
             lessonRoom: request.lessonRoom,
             lessonTimeStart: request.lessonTimeStart,
             lessonTimeFinish: request.lessonTimeFinish,
-            currentDate: request.currentDate)
-        .toMap();
+            selectedDate: request.selectedDate)
+        .addLessontoMap();
 
     await dataBase
-        .child('Users/$userId/Schedule/${request.currentDate}')
+        .child('Users/$userId/Schedule/${request.selectedDate}')
         .update(model);
 
     await dataBase
@@ -176,5 +178,32 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
         dataBase.child('Users/$userId/Schedule/$selectedDate/$lessonTimeStart');
 
     await dataShot.remove();
+  }
+
+  @override
+  Future<void> changeLesson({required ScheduleEntity request}) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final dataBase = FirebaseDatabase.instance
+        .ref()
+        .child('Users/$userId/Schedule/${request.selectedDate}');
+
+await dataBase.child(request.lessonTimeStart).remove();
+
+    final model = ScheduleEntityModel(
+            group: request.group,
+            subject: request.subject,
+            lessonRoom: request.lessonRoom,
+            changedtimeStart: request.changedtimeStart,
+            changedtimeFinish: request.changedtimeFinish,
+            // lessonTimeStart: request.lessonTimeStart,
+            // lessonTimeFinish: request.lessonTimeFinish,
+            selectedDate: request.selectedDate)
+        .changeLessontoMap();
+
+    
+
+    await dataBase
+        .update(model);
   }
 }

@@ -3,20 +3,36 @@ import 'package:school_journal/features/teacher_groups/domain/entities/schedule_
 
 class ScheduleEntityModel extends ScheduleEntity {
   const ScheduleEntityModel(
-      {required super.group,
+      {super.changedtimeFinish = '',
+      super.changedtimeStart = '',
+      required super.group,
       required super.subject,
       required super.lessonRoom,
-      required super.lessonTimeStart,
-      required super.lessonTimeFinish,
-      required super.currentDate});
+       super.lessonTimeStart ='',
+       super.lessonTimeFinish ='',
+      required super.selectedDate});
 
-  Map<String, Map<Object?, Object?>> toMap() {
+  Map<String, Map<Object?, Object?>> addLessontoMap() {
     return {
       lessonTimeStart: {
         'Subject': subject,
         'LessonRoom': lessonRoom,
         'LessonTimeStart': lessonTimeStart,
         'LessonTimeFinish': lessonTimeFinish,
+        'Group': group,
+        'Homework': 'не задано',
+        'StudentAmountatLesson': '0'
+      }
+    };
+  }
+
+  Map<String, Map<Object?, Object?>> changeLessontoMap() {
+    return {
+      changedtimeStart: {
+        'Subject': subject,
+        'LessonRoom': lessonRoom,
+        'LessonTimeStart': changedtimeStart,
+        'LessonTimeFinish': changedtimeFinish,
         'Group': group,
         'Homework': 'не задано',
         'StudentAmountatLesson': '0'

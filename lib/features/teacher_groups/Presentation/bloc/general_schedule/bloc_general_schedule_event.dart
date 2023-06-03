@@ -56,6 +56,8 @@ class ChangeLessonEvent extends BlocGeneralScheduleEvent {
   final String changedlessonTimeStart;
   final String changedlessonTimeFinish;
   final String selectedDate;
+  final String groupName;
+  final String subject;
 
   const ChangeLessonEvent({
     required this.room,
@@ -64,24 +66,35 @@ class ChangeLessonEvent extends BlocGeneralScheduleEvent {
     required this.changedlessonTimeStart,
     required this.changedlessonTimeFinish,
     required this.selectedDate,
+    required this.groupName,
+    required this.subject,
   });
   @override
-  List<Object> get props => [room, lessonTimeStart, lessonTimeFinish];
+  List<Object> get props => [
+        room,
+        lessonTimeStart,
+        lessonTimeFinish,
+        changedlessonTimeStart,
+        changedlessonTimeFinish,
+        selectedDate,
+        groupName,
+        subject
+      ];
 }
 
 class AddLessonEvent extends BlocGeneralScheduleEvent {
-  final String groupNameforLesson;
+  final String groupName;
   final String subject;
   final String lessonRoom;
   final String lessonTimeStart;
   final String lessonTimeFinish;
-  final String currentDate;
+  final String selectedDate;
 
   const AddLessonEvent(
       {required this.subject,
-      required this.currentDate,
+      required this.selectedDate,
       required this.lessonRoom,
       required this.lessonTimeStart,
       required this.lessonTimeFinish,
-      required this.groupNameforLesson});
+      required this.groupName});
 }
