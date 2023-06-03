@@ -33,9 +33,9 @@ class ScoresWidget extends StatelessWidget {
             builder: (context) => const EditScoresWidget(),
           );
         },
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Text(
               '4',
               maxLines: 1,
