@@ -139,12 +139,9 @@ class _SchedulePageState extends State<SchedulePage> {
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
                                 controller: scrollController,
-                                // формула для вывода дней в текущем месяце,
-                                // все что вне текущего месяца не учитывается
                                 itemCount: context
                                     .read<ProviderCalendar>()
                                     .setNumberDaysMonth(),
-
                                 itemBuilder: (BuildContext context, index) {
                                   return InkWell(
                                     onTap: () {

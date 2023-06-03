@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,53 +8,64 @@ class ProviderCalendar extends ChangeNotifier {
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   String day = DateFormat('dd-MM-yyyy', 'ru').format(DateTime.now());
-
+// c присвоением косяки
   /// Перейти на следующий месяц в календаре.
   void getNextMonth() {
-    currentDate =
-        DateTime(currentDate.year, currentDate.month + 1, DateTime.now().day);
+    final int currentMoths = currentDate.month + 1;
+    currentDate = DateTime(currentDate.year, currentMoths, currentDate.day);
+    // currentDate =
+    //     DateTime(currentDate.year, currentDate.month + 1, currentDate.day);
     day = DateFormat('dd-MM-yyyy', 'ru').format(currentDate);
     notifyListeners();
   }
 
   /// Перейти на предыдущий месяц в календаре.
   void getPreviousMonth() {
-    currentDate =
-        DateTime(currentDate.year, currentDate.month - 1, DateTime.now().day);
+    final int currentMoths = currentDate.month - 1;
+    currentDate = DateTime(currentDate.year, currentMoths, DateTime.now().day);
     day = DateFormat('dd-MM-yyyy', 'ru').format(currentDate);
     notifyListeners();
   }
 
   /// Вывод дней в текущем месяце, все что вне текущего месяца не учитывается.
   int setNumberDaysMonth() {
-    final int numberDays;
-    if (currentDate.month % 2 == 0) {
-      if (DateTime(currentDate.year, currentDate.month, 0).day == 30) {
+    final int result;
+    final int currentMoths = currentDate.month;
+    final int numberOfDays = DateTime(currentDate.year, currentMoths, 0).day;
+    if (currentMoths % 2 == 0) {
+      if (numberOfDays == 30) {
         // месяцы по 30 дней
-        print(
-            '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     30');
-        return numberDays =
-            DateTime(currentDate.year, currentDate.month, 0).day;
+        print('-----------${currentMoths}--${numberOfDays}     30');
+        return result = numberOfDays;
       } else {
-        // февраль
-
-        if (DateTime(currentDate.year, currentDate.month, 0).day < 29) {
-          print(
-              '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     28');
-          return numberDays =
-              DateTime(currentDate.year, currentDate.month, 0).day - 3;
+        if (numberOfDays == 31) {
+          print('-----------$currentMoths--${numberOfDays}    31');
+          return numberOfDays;
+          // февраль
+        } else if (numberOfDays == 29) {
+          print('-----------${currentMoths}--${numberOfDays}     28');
+          return result = numberOfDays - 3;
         } else {
-          print(
-              '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     29');
-          return numberDays =
-              DateTime(currentDate.year, currentDate.month, 0).day - 2;
+          print('-----------${currentMoths}--${numberOfDays}     29');
+          return result = numberOfDays - 2;
         }
       }
-    } else {
-      // месяцы по 31 дню
+    }
+    // месяцы по 31 дню
+    if (numberOfDays == 30) {
+      // месяцы по 30 дней
+      print('-----------${currentMoths}--${numberOfDays}    1 30');
+      return result = numberOfDays + 1;
+    } else if (numberOfDays == 31) {
       print(
-          '-----------${DateTime(currentDate.year, currentDate.month, 0).day}     31');
-      return DateTime(currentDate.year, currentDate.month, 0).day;
+          '---------${currentDate.year}--$currentMoths--${numberOfDays}    1 31');
+      return result = numberOfDays + 1;
+    } else if (numberOfDays == 28) {
+      print('-----------${currentMoths}--${numberOfDays}    1 28');
+      return result = numberOfDays;
+    } else {
+      print('-----------${currentMoths}--${numberOfDays}    1 29');
+      return result = numberOfDays;
     }
   }
 
