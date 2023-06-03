@@ -46,7 +46,6 @@ dependencies:
   adaptive_action_sheet: ^2.0.2
   firebase_database: ^10.1.2
   flutter_slidable: ^3.0.0
-  table_calendar: ^3.0.8
   shared_preferences: ^2.1.1
  
 
