@@ -11,7 +11,7 @@ class ProviderGroup extends ChangeNotifier {
   bool switcherSchedule = false;
   TimeOfDay startlessonTime = TimeOfDay.now();
   TimeOfDay finishlessonTime = TimeOfDay.now();
-  String selectedGroup = 'Выберите группу';
+  String selectedGroup = 'Название группы';
 
   List<String> listGroup = [];
   List<dynamic> listSubjects = [];

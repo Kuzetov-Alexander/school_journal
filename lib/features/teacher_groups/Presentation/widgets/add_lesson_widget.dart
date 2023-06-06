@@ -61,6 +61,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         subject: _controllerSubject.text,
         selectedDate: currentDay));
   }
+
 //
   void _getAllLessons(context, String date) {
     BlocProvider.of<BlocGeneralScheduleBloc>(context)
@@ -95,11 +96,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
   @override
   Widget build(BuildContext context) {
-    int indexValueGroup = 0;
-    int indexValueSubject = 0;
     // TimeOfDay timeStart = context.watch<ProviderGroup>().startlessonTime;
     //   DateTime  timeStartAndroid =  DateTime(year)  ;
-
+    int indexValueGroup = 0;
+    int indexValueSubject = 0;
     ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
@@ -107,7 +107,6 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {
         if (state is DownloadGroupNameState) {
-          
           provider.updateGroupNameList(state.allNamesGroup);
         }
         if (state is DownloadSubjectNameState) {
@@ -528,15 +527,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 class TextformFieldWidget extends StatelessWidget {
   const TextformFieldWidget({
     super.key,
-    required TextEditingController controllerClass,
+     TextEditingController? controllerClass ,
     required this.hintTextx,
     required this.labelTextx,
-    required this.iconButton,
+     this.iconButton,
   }) : _controllerClass = controllerClass;
 
   final InkWell? iconButton;
 
-  final TextEditingController _controllerClass;
+  final TextEditingController? _controllerClass;
   final String hintTextx;
   final String labelTextx;
 
@@ -551,6 +550,7 @@ class TextformFieldWidget extends StatelessWidget {
       maxLength: 20,
       controller: _controllerClass,
       decoration: InputDecoration(
+        
         filled: true,
         fillColor: const Color(0xffFAFAFA),
         border: const OutlineInputBorder(
