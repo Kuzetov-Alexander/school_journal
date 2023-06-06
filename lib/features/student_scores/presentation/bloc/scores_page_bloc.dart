@@ -1,57 +1,27 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_journal/features/student_scores/domain/entities/entity_student_scores.dart';
+import 'package:school_journal/features/student_scores/domain/repositories/repository_scores.dart';
 
 part 'scores_page_event.dart';
 part 'scores_page_state.dart';
 
 class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
+  final RepositoryScores repositoryScores;
   final dataBase = FirebaseDatabase.instance.ref();
-  final userId = FirebaseAuth.instance.currentUser?.uid;
 
-  ScoresPageBloc() : super(ScoresPageInitial()) {
-    
+  ScoresPageBloc({required this.repositoryScores})
+      : super(ScoresPageInitial()) {
     on<AddNewStudentEvent>((event, emit) async {
-      final dataBase = FirebaseDatabase.instance
-          .ref()
-          .child('Users/$userId/Groups/${event.groupName}');
-
-      final allSubjects = await dataBase.child('allSubject').once();
-      late dynamic data;
-      Map<String, Object> studentData = {};
-
-      if (allSubjects.snapshot.value is String) {
-        data = allSubjects.snapshot.value as String;
-        studentData = {
-          event.studentName: {
-            'Email': event.email,
-            'Subjects': '',
-          }
-        };
-      } else {
-        data = allSubjects.snapshot.value as Map<Object?, Object?>;
-
-        final List<dynamic> dataList = data.keys.toList();
-
-        Map<String?, Object?> mapSubjects = {};
-        Map generalMap = {
-          'data': {'grade': '', 'visit': ''}
-        };
-
-        for (var item in dataList) {
-          mapSubjects[item] = generalMap;
-        }
-
-        studentData = {
-          event.studentName: {
-            'Email': event.email,
-            'Subjects': mapSubjects,
-          }
-        };
-      }
-
-      dataBase.child('allStudents').update(studentData);
+      repositoryScores.addStudent(
+        request: EntityStudentScores(
+          fullName: event.studentName,
+          groupName: event.groupName,
+          email: event.email,
+        ),
+      );
       emit(AddedNewStudent());
     });
   }

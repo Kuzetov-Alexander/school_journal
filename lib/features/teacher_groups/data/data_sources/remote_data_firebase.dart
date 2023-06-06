@@ -183,12 +183,11 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
   @override
   Future<void> changeLesson({required ScheduleEntity request}) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
-
     final dataBase = FirebaseDatabase.instance
         .ref()
         .child('Users/$userId/Schedule/${request.selectedDate}');
 
-await dataBase.child(request.lessonTimeStart).remove();
+    await dataBase.child(request.lessonTimeStart).remove();
 
     final model = ScheduleEntityModel(
             group: request.group,
@@ -201,9 +200,6 @@ await dataBase.child(request.lessonTimeStart).remove();
             selectedDate: request.selectedDate)
         .changeLessontoMap();
 
-    
-
-    await dataBase
-        .update(model);
+    await dataBase.update(model);
   }
 }

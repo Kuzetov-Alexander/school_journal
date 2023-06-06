@@ -43,11 +43,10 @@ class LandingPageState extends State<LandingPage> {
     double heightScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-         leading: InkWell(
+        leading: InkWell(
           onTap: () => context.goNamed('TeacherGroup'),
           child: const Image(
-            image: AssetImage(
-                'assets/images/arrow_left.png'), 
+            image: AssetImage('assets/images/arrow_left.png'),
           ),
         ),
         automaticallyImplyLeading: false,
@@ -105,12 +104,13 @@ class LandingPageState extends State<LandingPage> {
                 ColoredBox(
                   color: const Color(0xffFAFAFA),
                   child: SizedBox(
-                    width: widthScreen * 0.3,
+                    width: widthScreen * 0.31,
                     child: DataTable(
                       horizontalMargin: 8,
                       checkboxHorizontalMargin: 0,
                       headingRowHeight: heightScreen * 0.07,
-                      dataRowHeight: heightScreen * 0.06,
+                      dataRowMinHeight: heightScreen * 0.06,
+                      dataRowMaxHeight: heightScreen * 0.06,
                       border: const TableBorder(
                         top: BorderSide(
                           color: AppColors.greyForTable,
@@ -171,13 +171,14 @@ class LandingPageState extends State<LandingPage> {
                   ),
                 ),
                 SizedBox(
-                  width: widthScreen * 0.5,
+                  width: widthScreen * 0.49,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
                       headingRowHeight: heightScreen * 0.07,
                       horizontalMargin: 10,
-                      dataRowHeight: heightScreen * 0.06,
+                      dataRowMinHeight: heightScreen * 0.06,
+                      dataRowMaxHeight: heightScreen * 0.06,
                       border: const TableBorder(
                         top: BorderSide(
                           color: AppColors.greyForTable,
@@ -230,7 +231,8 @@ class LandingPageState extends State<LandingPage> {
                     headingRowHeight: heightScreen * 0.07,
                     horizontalMargin: 7,
                     clipBehavior: Clip.hardEdge,
-                    dataRowHeight: heightScreen * 0.06,
+                    dataRowMinHeight: heightScreen * 0.06,
+                    dataRowMaxHeight: heightScreen * 0.06,
                     border: const TableBorder(
                       top: BorderSide(
                         color: AppColors.greyForTable,
@@ -273,7 +275,8 @@ class LandingPageState extends State<LandingPage> {
                   child: DataTable(
                     headingRowHeight: heightScreen * 0.07,
                     horizontalMargin: 7,
-                    dataRowHeight: heightScreen * 0.06,
+                    dataRowMinHeight: heightScreen * 0.06,
+                    dataRowMaxHeight: heightScreen * 0.06,
                     border: const TableBorder(
                       top: BorderSide(
                         color: AppColors.greyForTable,

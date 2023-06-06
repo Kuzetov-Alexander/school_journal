@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 
 class AddStudentWidget extends StatefulWidget {
   const AddStudentWidget({super.key});
@@ -15,19 +17,23 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
 
-void addNewstudent(context) {
+  void _addNewStudent(context, {required groupName}) {
     BlocProvider.of<ScoresPageBloc>(context).add(AddNewStudentEvent(
-      studentName: _controllerName.text, groupName: '4b Class', email: _controllerEmail.text
-        ));
+        studentName: _controllerName.text.trim(),
+        groupName: groupName,
+        email: _controllerEmail.text.trim()));
   }
+
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.of(context).size.width;
-    double heightScreen = MediaQuery.of(context).size.height;
-    return Column(mainAxisSize: MainAxisSize.min,
+    final double widthScreen = MediaQuery.of(context).size.width;
+    final double heightScreen = MediaQuery.of(context).size.height;
+    final providerScores = Provider.of<ProviderScores>(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: heightScreen*0.95,
+          height: heightScreen * 0.95,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(
@@ -107,7 +113,7 @@ void addNewstudent(context) {
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        labelText: 'фИО',
+                        labelText: 'ФИО',
                         labelStyle: TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
@@ -186,7 +192,8 @@ void addNewstudent(context) {
                     ),
                   ),
                   onPressed: () {
-                    addNewstudent(context);
+                    _addNewStudent(context,
+                        groupName: providerScores.currentGroup);
                     Navigator.of(context).pop();
                   },
                   child: Text(

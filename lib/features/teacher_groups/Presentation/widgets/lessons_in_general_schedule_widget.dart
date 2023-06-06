@@ -113,40 +113,46 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                                       ),
                                     ),
                                     IconButton(
-                                        splashRadius: 20,
-                                        onPressed: () {
-                                          provider.lessonStart = listLessons[index]
-                                                      ['LessonTimeStart'];
-                                          provider.lessonFinish = listLessons[index]
-                                                      ['LessonTimeFinish'];
-                                                      provider.setTime();
-                                          Platform.isAndroid
-                                              ? actionSheetAndroid(
-                                                  heightScreen,
-                                                  context,
-                                                  '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
-                                                    providerCalendar
-                                                        .currentDate,
-                                                  )}',
-                                                  listLessons[index]
-                                                      ['LessonTimeStart'],
-                                                  listLessons[index]
-                                                      ['LessonTimeFinish'],listLessons[index]['Group'],listLessons[index]['Subject'])
-                                              : actionSheetIos(
-                                                  context,
-                                                  heightScreen,
-                                                  '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
-                                                    providerCalendar
-                                                        .currentDate,
-                                                  )}',
-                                                  listLessons[index]
-                                                      ['LessonTimeStart'],
-                                                  listLessons[index]
-                                                      ['LessonTimeFinish'],listLessons[index]['Group'],listLessons[index]['Subject']);
-                                        },
-                                        icon: const Image(
-                                            image: AssetImage(
-                                                'assets/images/settings_icon.png')))
+                                      splashRadius: 20,
+                                      onPressed: () {
+                                        provider.lessonStart =
+                                            listLessons[index]
+                                                ['LessonTimeStart'];
+                                        provider.lessonFinish =
+                                            listLessons[index]
+                                                ['LessonTimeFinish'];
+                                        provider.setTime();
+                                        Platform.isAndroid
+                                            ? actionSheetAndroid(
+                                                heightScreen,
+                                                context,
+                                                '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                  providerCalendar.currentDate,
+                                                )}',
+                                                listLessons[index]
+                                                    ['LessonTimeStart'],
+                                                listLessons[index]
+                                                    ['LessonTimeFinish'],
+                                                listLessons[index]['Group'],
+                                                listLessons[index]['Subject'])
+                                            : actionSheetIos(
+                                                context,
+                                                heightScreen,
+                                                '${DateFormat('EEEE', 'ru').format(providerCalendar.currentDate).capitalize()} ${DateFormat('d.M', 'ru').format(
+                                                  providerCalendar.currentDate,
+                                                )}',
+                                                listLessons[index]
+                                                    ['LessonTimeStart'],
+                                                listLessons[index]
+                                                    ['LessonTimeFinish'],
+                                                listLessons[index]['Group'],
+                                                listLessons[index]['Subject']);
+                                      },
+                                      icon: const Image(
+                                        image: AssetImage(
+                                            'assets/images/settings_icon.png'),
+                                      ),
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -269,8 +275,14 @@ class LessonsInGeneralSchedule extends StatelessWidget {
     );
   }
 
-  Future<dynamic> actionSheetIos(BuildContext context, double heightScreen,
-      String date, String lessonStart, String lessonFinish, String group, String subject) {
+  Future<dynamic> actionSheetIos(
+      BuildContext context,
+      double heightScreen,
+      String date,
+      String lessonStart,
+      String lessonFinish,
+      String group,
+      String subject) {
     ProviderCalendar providerCalendar =
         Provider.of<ProviderCalendar>(context, listen: false);
     return showCupertinoModalPopup(
@@ -289,7 +301,12 @@ class LessonsInGeneralSchedule extends StatelessWidget {
         actions: [
           CupertinoActionSheetAction(
             onPressed: () {
-               TeacherEditClass(date: date, lessonFinishTime: lessonStart, lessonStartTime: lessonFinish, group: group, subject: subject);
+              TeacherEditClass(
+                  date: date,
+                  lessonFinishTime: lessonStart,
+                  lessonStartTime: lessonFinish,
+                  group: group,
+                  subject: subject);
             },
             child: Text(
               'Изменить',
@@ -332,12 +349,17 @@ class LessonsInGeneralSchedule extends StatelessWidget {
     );
   }
 
-  Future<dynamic> actionSheetAndroid(double heightScreen, BuildContext context,
-      String date, String lessonStart, String lessonFinish,String group, String subject) {
-
+  Future<dynamic> actionSheetAndroid(
+      double heightScreen,
+      BuildContext context,
+      String date,
+      String lessonStart,
+      String lessonFinish,
+      String group,
+      String subject) {
     ProviderCalendar providerCalendar =
         Provider.of<ProviderCalendar>(context, listen: false);
- 
+
     return showAdaptiveActionSheet(
       title: Column(
         children: [
@@ -396,7 +418,7 @@ class LessonsInGeneralSchedule extends StatelessWidget {
           ),
           onPressed: (context) {
             Navigator.of(context).pop();
-            
+
             showModalBottomSheet(
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
@@ -406,11 +428,13 @@ class LessonsInGeneralSchedule extends StatelessWidget {
                 ),
               ),
               context: context,
-
-
-              builder: (context) 
-            =>  TeacherEditClass(date: date, lessonFinishTime: lessonFinish, lessonStartTime: lessonStart, group: group, subject: subject,),
-              
+              builder: (context) => TeacherEditClass(
+                date: date,
+                lessonFinishTime: lessonFinish,
+                lessonStartTime: lessonStart,
+                group: group,
+                subject: subject,
+              ),
             );
           },
         ),

@@ -16,9 +16,12 @@ import 'package:school_journal/features/autentification/presentation/pages/signi
 import 'package:school_journal/features/autentification/presentation/pages/signup_page.dart';
 import 'package:school_journal/features/autentification/presentation/pages/welcome_page.dart';
 import 'package:school_journal/features/autentification/presentation/provider.dart/provider.dart';
+import 'package:school_journal/features/student_scores/data/data_sources/remote_data_sources.dart';
+import 'package:school_journal/features/student_scores/data/repositories/repository_scores_impl.dart';
+import 'package:school_journal/features/student_scores/domain/repositories/repository_scores.dart';
 import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores.dart';
-import 'package:school_journal/features/student_scores/presentation/provider/provider.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
@@ -61,8 +64,8 @@ Future<void> main() async {
         ChangeNotifierProvider<ProviderCalendar>(
           create: (context) => ProviderCalendar(),
         ),
-        ChangeNotifierProvider<ProviderScorePage>(
-          create: (context) => ProviderScorePage(),
+        ChangeNotifierProvider<ProviderScores>(
+          create: (context) => ProviderScores(),
         ),
       ],
       child: MyApp(),
@@ -149,6 +152,12 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               UserProfileRepositoryImpl(dataBase: RemoteDataProfileImpl()),
         ),
+        // RepositoryScores
+        RepositoryProvider<RepositoryScores>(
+          lazy: false,
+          create: (context) =>
+              RepositoryScoresImpl(dataBase: RemoteDataScoresImpl()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -166,7 +175,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<ScoresPageBloc>(
             lazy: false,
-            create: (context) => ScoresPageBloc(),
+            create: (context) => ScoresPageBloc(
+                repositoryScores:
+                    RepositoryProvider.of<RepositoryScores>(context)),
           ),
           BlocProvider<BlocGeneralScheduleBloc>(
             lazy: false,

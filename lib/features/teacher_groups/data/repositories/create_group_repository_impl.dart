@@ -11,14 +11,12 @@ class CreateGroupRepositoryImpl implements CreateGroupRepository {
 
   @override
   Future<Either<Failure, void>> createGroup({required String groupName}) async {
-    {
-      try {
-        return await dataBase
-            .createGroup(groupName: groupName)
-            .then((value) => Right(value));
-      } on Object {
-        return Left<Failure, void>(DataBaseFailure());
-      }
+    try {
+      return await dataBase
+          .createGroup(groupName: groupName)
+          .then((value) => Right(value));
+    } on Object {
+      return Left<Failure, void>(DataBaseFailure());
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -24,6 +25,7 @@ class MyGroupInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProviderGroup>(context);
+    final providerScores = Provider.of<ProviderScores>(context);
     final providerCalendar = Provider.of<ProviderCalendar>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
@@ -33,6 +35,7 @@ class MyGroupInfoWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           onTap: () async {
             provider.currentGroup = mapGroups['GroupName'].toString();
+            providerScores.currentGroup = mapGroups['GroupName'].toString();
 
             _getCurrentLessons(
                 context, providerCalendar.day, provider.currentGroup);

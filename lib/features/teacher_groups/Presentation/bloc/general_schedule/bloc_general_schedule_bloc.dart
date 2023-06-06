@@ -38,7 +38,6 @@ class BlocGeneralScheduleBloc
     on<DownloadSubjectNameEvent>((event, emit) async {
       final resultSubjectGroup = await repository.downloadSubjectName(
           selectedGroup: event.selectedGroup);
-      // if (resultSubjectGroup.isRight()) {
       emit(
         DownloadSubjectNameState(
           allSubjectGroup: resultSubjectGroup.getOrElse(() => []),
@@ -98,15 +97,14 @@ class BlocGeneralScheduleBloc
     on<ChangeLessonEvent>((event, emit) async {
       await repository.changeLesson(
         request: ScheduleEntity(
-          group: event.groupName,
-          subject: event.subject,
-          lessonRoom: event.room,
-          lessonTimeStart: event.lessonTimeStart,
-          // lessonTimeFinish: event.lessonTimeFinish,
-          selectedDate: event.selectedDate,
-          changedtimeStart: event.changedlessonTimeStart,
-          changedtimeFinish: event.changedlessonTimeFinish
-        ),
+            group: event.groupName,
+            subject: event.subject,
+            lessonRoom: event.room,
+            lessonTimeStart: event.lessonTimeStart,
+            // lessonTimeFinish: event.lessonTimeFinish,
+            selectedDate: event.selectedDate,
+            changedtimeStart: event.changedlessonTimeStart,
+            changedtimeFinish: event.changedlessonTimeFinish),
       );
 
       emit(

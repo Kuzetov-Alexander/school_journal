@@ -21,7 +21,6 @@ class ScoresWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         onLongPress: () {
           showModalBottomSheet(
-            // barrierColor:Colors.transparent ,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
             shape: const RoundedRectangleBorder(
