@@ -49,8 +49,13 @@ class LessonsInGeneralSchedule extends StatelessWidget {
 
             if (provider.allLessons.containsKey(providerDate)) {
               listLessons = provider.allLessons[providerDate]!;
+              listLessons.sort((a, b) {
+                String timeA =a['LessonTimeStart'];
+                String timeB =b['LessonTimeStart'];
+                return timeA.compareTo(timeB);
+              },);
             }
-
+          
             return Padding(
               padding: EdgeInsets.only(bottom: heightScreen * 0.022),
               child: Row(
