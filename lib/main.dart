@@ -176,8 +176,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<ScoresPageBloc>(
             lazy: false,
             create: (context) => ScoresPageBloc(
-                repositoryScores:
-                    RepositoryProvider.of<RepositoryScores>(context)),
+                repository: RepositoryProvider.of<RepositoryScores>(context)),
           ),
           BlocProvider<BlocGeneralScheduleBloc>(
             lazy: false,

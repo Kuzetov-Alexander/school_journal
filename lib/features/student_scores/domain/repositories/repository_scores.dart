@@ -6,4 +6,8 @@ abstract class RepositoryScores {
   ///Добавление нового студента
   Future<Either<Failure, void>> addStudent(
       {required EntityStudentScores request});
+
+  ///Получение из базы данных лист всех студентов
+  Future<Either<Failure, List<String>>> getAllStudent(
+      {required EntityStudentScores request});
 }

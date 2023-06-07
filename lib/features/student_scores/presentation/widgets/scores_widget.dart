@@ -3,7 +3,7 @@ import 'package:school_journal/features/student_scores/presentation/widgets/edit
 
 class ScoresWidget extends StatelessWidget {
   const ScoresWidget({super.key, required this.list});
-  final List<String> list;
+  final List<dynamic> list;
 
   @override
   Widget build(BuildContext context) {

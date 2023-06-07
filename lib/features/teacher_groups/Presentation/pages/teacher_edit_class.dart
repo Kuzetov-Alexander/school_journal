@@ -61,11 +61,11 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
 
   @override
   Widget build(BuildContext context) {
-   
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     ProviderCalendar providerCalendar = Provider.of<ProviderCalendar>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+    // TODO(Sanya) Не нужный BlocConsumer!
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -271,8 +271,7 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                           ),
                         ),
                       ),
-                      onPressed: ()  async {
-                       
+                      onPressed: () async {
                         _changeLesson(
                             context,
                             providerCalendar.day,
@@ -283,11 +282,13 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
                             '${provider.dateTimestart.hour.toString().padLeft(2, '0')}:${provider.dateTimestart.minute.toString().padLeft(2, '0')}',
                             widget.group,
                             widget.subject);
-                              await Future.delayed(const Duration(milliseconds: 100)).then((_) {
-                                 _getAllLessons(context,providerCalendar.day);
-                                 Navigator.of(context).pop();
-                              },);
-                           
+                        await Future.delayed(const Duration(milliseconds: 100))
+                            .then(
+                          (_) {
+                            _getAllLessons(context, providerCalendar.day);
+                            Navigator.of(context).pop();
+                          },
+                        );
                       },
                       child: Text(
                         'Изменить',
@@ -309,8 +310,8 @@ class _TeacherEditClassState extends State<TeacherEditClass> {
         );
       },
     );
-    
   }
+
   void _getAllLessons(context, String date) {
     BlocProvider.of<BlocGeneralScheduleBloc>(context)
         .add(GetAllLessonsEvent(selectedDate: date));

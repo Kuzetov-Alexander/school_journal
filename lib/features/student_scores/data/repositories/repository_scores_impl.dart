@@ -19,4 +19,16 @@ class RepositoryScoresImpl implements RepositoryScores {
       return Left<Failure, void>(DataBaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getAllStudent(
+      {required EntityStudentScores request}) async {
+    try {
+      return await dataBase
+          .getAllStudent(request: request)
+          .then((value) => Right(value));
+    } on Object {
+      return Left<Failure, List<String>>(DataBaseFailure());
+    }
+  }
 }

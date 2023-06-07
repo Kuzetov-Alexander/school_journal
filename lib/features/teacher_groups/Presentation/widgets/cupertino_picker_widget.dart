@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CupertinoPickerWidget extends StatelessWidget {
-  List<Widget> listWidget;
-  void Function(int)? onSelected;
+  final List<Widget> listWidget;
+  final ValueChanged<int> onSelected;
 
-  CupertinoPickerWidget(
-      {super.key, required this.listWidget, required this.onSelected});
+  const CupertinoPickerWidget({
+    super.key,
+    required this.listWidget,
+    required this.onSelected,
+  });
 
   @override
   Widget build(BuildContext context) {

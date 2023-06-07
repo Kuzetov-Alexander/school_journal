@@ -58,6 +58,7 @@ class _SchedulePageState extends State<SchedulePage> {
         ),
         automaticallyImplyLeading: false,
       ),
+      // TODO(Sanya) Не нужный BlocConsumer!
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {},
         builder: (context, state) {

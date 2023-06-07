@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/add_student_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/attestation_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/date_widget.dart';
@@ -37,10 +41,12 @@ class LandingPage extends StatefulWidget {
 
 class LandingPageState extends State<LandingPage> {
   String selectedSubject = '';
+
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+    final provider = Provider.of<ProviderScores>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -94,7 +100,19 @@ class LandingPageState extends State<LandingPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body:
+          // BlocListener(
+          //   listener: (context, state) {
+          //     if (state is GetAllStudentState) {
+          //       provider.updateFullNameList(studentData: state.allStudentData);
+          //     }
+          //   },
+          //   BlocBuilder(
+          // builder: (context, state) {
+          //   if (state is GetAllStudentState) {
+          //     provider.updateFullNameList(studentData: state.allStudentData);
+          //   }
+          SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -132,6 +150,7 @@ class LandingPageState extends State<LandingPage> {
                         ),
                       ],
                       rows: List<DataRow>.generate(
+                        // provider.allStudentDataList.length,
                         widget.allUsers.length,
                         (int index) => DataRow(
                           cells: [
@@ -139,7 +158,6 @@ class LandingPageState extends State<LandingPage> {
                               InkWell(
                                 onTap: () {
                                   showModalBottomSheet(
-                                    // barrierColor:Colors.transparent ,
                                     isScrollControlled: true,
                                     backgroundColor: Colors.transparent,
                                     shape: const RoundedRectangleBorder(

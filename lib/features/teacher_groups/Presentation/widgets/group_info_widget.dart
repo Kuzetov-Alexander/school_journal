@@ -11,7 +11,6 @@ import 'package:school_journal/features/teacher_groups/provider/provider_calenda
 
 class MyGroupInfoWidget extends StatelessWidget {
   final Map mapGroups;
-
   final int index;
 
   const MyGroupInfoWidget(
@@ -36,7 +35,6 @@ class MyGroupInfoWidget extends StatelessWidget {
           onTap: () async {
             provider.currentGroup = mapGroups['GroupName'].toString();
             providerScores.currentGroup = mapGroups['GroupName'].toString();
-
             _getCurrentLessons(
                 context, providerCalendar.day, provider.currentGroup);
             await Future.delayed(const Duration(milliseconds: 30))

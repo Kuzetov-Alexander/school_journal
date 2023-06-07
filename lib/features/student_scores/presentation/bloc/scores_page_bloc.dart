@@ -9,20 +9,42 @@ part 'scores_page_event.dart';
 part 'scores_page_state.dart';
 
 class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
-  final RepositoryScores repositoryScores;
+  final RepositoryScores repository;
   final dataBase = FirebaseDatabase.instance.ref();
 
-  ScoresPageBloc({required this.repositoryScores})
-      : super(ScoresPageInitial()) {
-    on<AddNewStudentEvent>((event, emit) async {
-      repositoryScores.addStudent(
-        request: EntityStudentScores(
-          fullName: event.studentName,
-          groupName: event.groupName,
-          email: event.email,
-        ),
-      );
-      emit(AddedNewStudent());
-    });
+  ScoresPageBloc({required this.repository}) : super(ScoresPageInitial()) {
+    on<AddNewStudentEvent>(
+      (event, emit) async {
+        repository.addStudent(
+          request: EntityStudentScores(
+            fullName: event.studentName,
+            groupName: event.groupName,
+            email: event.email,
+          ),
+        );
+        emit(AddedNewStudentState());
+      },
+    );
+
+    on<GetAllStudentEvent>(
+      (event, emit) async {
+        // TODO(Sanya) Сущность отредачить!
+        final resultRequestBloc = await repository.getAllStudent(
+          request: EntityStudentScores(
+            fullName: '',
+            groupName: event.groupName,
+          ),
+        );
+        if (resultRequestBloc.isRight()) {
+          print('все выполнилось');
+
+          emit(
+            GetAllStudentState(
+              allStudentData: resultRequestBloc.getOrElse(() => []),
+            ),
+          );
+        }
+      },
+    );
   }
 }

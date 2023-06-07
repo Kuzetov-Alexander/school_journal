@@ -93,22 +93,23 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             ElevatedButton(
-                                onPressed: () {
-                                  context.goNamed('StudentScores');
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
+                              onPressed: () {
+                                context.goNamed('StudentScores');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: Text(
-                                  'Все',
-                                  style: TextStyle(
-                                      color: AppColors.black212525,
-                                      fontSize: heightScreen * 0.019,
-                                      fontWeight: FontWeight.w600),
-                                ))
+                              ),
+                              child: Text(
+                                'Все',
+                                style: TextStyle(
+                                    color: AppColors.black212525,
+                                    fontSize: heightScreen * 0.019,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ],
                         ),
                       ),

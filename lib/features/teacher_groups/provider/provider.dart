@@ -68,7 +68,6 @@ class ProviderGroup extends ChangeNotifier {
     List<dynamic> list = [];
     list.addAll(newSubject);
     listSubjects = list.toSet().toList();
-
     notifyListeners();
   }
 
@@ -107,8 +106,9 @@ class ProviderGroup extends ChangeNotifier {
   String lessonStart = '';
   String lessonFinish = '';
 
-   DateTime dateTimefinish =DateTime( DateTime.now().hour, DateTime.now().minute);
-   DateTime dateTimestart = DateTime( DateTime.now().hour, DateTime.now().minute);
+  DateTime dateTimefinish =
+      DateTime(DateTime.now().hour, DateTime.now().minute);
+  DateTime dateTimestart = DateTime(DateTime.now().hour, DateTime.now().minute);
   String finishTime = '';
 
   void setTime() {
@@ -121,8 +121,6 @@ class ProviderGroup extends ChangeNotifier {
         Duration(
             hours: DateFormat('HH:mm').parse(lessonFinish).hour,
             minutes: DateFormat('HH:mm').parse(lessonFinish).minute));
-
-     
 
     notifyListeners();
   }
