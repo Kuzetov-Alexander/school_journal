@@ -1,8 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
+import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
 
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherChangeDaySchedule extends StatefulWidget {
   const TeacherChangeDaySchedule({super.key});
@@ -12,7 +19,34 @@ class TeacherChangeDaySchedule extends StatefulWidget {
       _TeacherChangeDayScheduleState();
 }
 
-final TextEditingController _controllerClass = TextEditingController();
+final TextEditingController _controllerroom = TextEditingController();
+final TextEditingController _controllerSubject = TextEditingController();
+
+void _downloadNameGroups(context) {
+  BlocProvider.of<BlocGeneralScheduleBloc>(context)
+      .add(DownloadGroupNameEvent());
+}
+
+showTip(BuildContext context, double height, String hint) async {
+  OverlayState? overlayState = Overlay.of(context);
+  OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
+    return Center(
+      child: Material(
+        color: Colors.transparent,
+        child: Padding(
+          padding: EdgeInsets.only(top: height),
+          child: Text(
+            hint,
+            style: const TextStyle(color: Colors.redAccent),
+          ),
+        ),
+      ),
+    );
+  });
+  overlayState.insert(overlayEntry);
+  await Future.delayed(const Duration(seconds: 2));
+  overlayEntry.remove();
+}
 
 class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
   DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
@@ -21,8 +55,16 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
+
+  _removeLessonfromListView() {
+    
+  }
   @override
   Widget build(BuildContext context) {
+    int indexValueGroup = 0;
+
+    // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
+    ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     return Column(
@@ -66,7 +108,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: SizedBox(
                   width: widthScreen * 0.9,
-                  height: heightScreen * 0.6,
+                  height: heightScreen * 0.65,
                   child: ListView.separated(
                       separatorBuilder: (context, index) {
                         return SizedBox(
@@ -75,194 +117,259 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                       },
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: AppColors.greyLight,
-                            ),
-                            height: heightScreen * 0.28,
-                            width: widthScreen * 0.88,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Column(
-                                children: [
-                                  Padding(
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.greyLight,
+                          ),
+                          height: heightScreen * 0.40,
+                          width: widthScreen * 0.88,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 19.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Урок ${index + 1}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: heightScreen * 0.016,
+                                            // letterSpacing: 1,
+                                            color: AppColors.gray5a5a5a),
+                                      ),
+                                      InkWell(
+                                        onTap: () {},
+                                        child: const Image(
+                                          height: 20,
+                                          image: AssetImage(
+                                              'assets/images/delete_icon.png'),
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: const Color(0xffFAFAFA)),
+                                  width: double.infinity,
+                                  height: heightScreen * 0.06,
+                                  child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 19.0),
+                                        horizontal: 15.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Урок 1',
+                                          provider.selectedGroup,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: heightScreen * 0.016,
-                                              // letterSpacing: 1,
-                                              color: AppColors.gray5a5a5a),
+                                              fontSize: heightScreen * 0.019),
                                         ),
-                                        InkWell(
-                                          onTap: () {},
-                                          child: const Image(
-                                            height: 20,
-                                            image: AssetImage(
-                                                'assets/images/delete_icon.png'),
-                                            color: Colors.black,
-                                          ),
-                                        )
+                                        TextButton(
+                                          onPressed: () async {
+                                            _controllerSubject.text = '';
+                                            _downloadNameGroups(context);
+
+                                            await Future.delayed(const Duration(
+                                                    milliseconds: 50))
+                                                .then((_) {
+                                              if (provider
+                                                  .listGroup.isNotEmpty) {
+                                                showCupertinoModalPopup(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Padding(
+                                                        padding: EdgeInsets.only(
+                                                            top: heightScreen *
+                                                                0.7),
+                                                        child: Column(
+                                                          children: [
+                                                            Expanded(
+                                                              child:
+                                                                  CupertinoPickerWidget(
+                                                                listWidget: provider
+                                                                    .listGroup
+                                                                    .map((e) =>
+                                                                        Text(e))
+                                                                    .toList(),
+                                                                onSelected:
+                                                                    (value) {
+                                                                  setState(() {
+                                                                    indexValueGroup =
+                                                                        value;
+                                                                  });
+                                                                  provider.selectedGroup =
+                                                                      provider.listGroup[
+                                                                          value];
+                                                                },
+                                                              ),
+                                                            ),
+                                                            ColoredBox(
+                                                              color:
+                                                                  Colors.white,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  CupertinoButton(
+                                                                      child: const Text(
+                                                                          'Подтвердить'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        provider
+                                                                            .selectedGroup = provider
+                                                                                .listGroup[
+                                                                            indexValueGroup];
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      }),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              } else {
+                                                showTip(
+                                                    context,
+                                                    heightScreen * 0.73,
+                                                    'Необходимо сначала создать группу');
+                                              }
+                                            });
+                                          },
+                                          child: const Text('Выбрать группу'),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  TextFormField(
-                                    keyboardType: TextInputType.name,
-                                    autocorrect: false,
-                                    buildCounter: (BuildContext context,
-                                            {int? currentLength,
-                                            required bool isFocused,
-                                            int? maxLength}) =>
-                                        null,
-                                    maxLength: 20,
-                                    controller: _controllerClass,
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      fillColor: Color(0xffFAFAFA),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12.0)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(12),
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: Color(0xffFAFAFA),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(12),
-                                        ),
-                                        borderSide: BorderSide(
-                                            color: Color(0xffFAFAFA)),
-                                      ),
-                                      hintText: 'Введите кабинет',
-                                      hintStyle: TextStyle(
-                                          color: Color(0xff9D9D9D),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14),
-                                      labelText: 'Кабинет (не обязательно)',
-                                      labelStyle: TextStyle(
-                                          color: Color(0xff9D9D9D),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12),
-                                      suffixIcon: Image(
-                                        height: 20,
-                                        image: AssetImage(
-                                            'assets/images/pen_icon.png'),
-                                        color: Colors.black,
-                                      ),
+                                ),
+                                SizedBox(
+                                  height: heightScreen * 0.015,
+                                ),
+                                SizedBox(
+                                  height: heightScreen * 0.06,
+                                  child: TextformFieldWidget(
+                                    controllerClass: _controllerSubject,
+                                    hintTextx: 'Введите предмет',
+                                    labelTextx: 'Предмет',
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightScreen * 0.015,
+                                ),
+                                SizedBox(
+                                  height: heightScreen * 0.06,
+                                  child: TextformFieldWidget(
+                                    controllerClass: _controllerroom,
+                                    hintTextx: 'Введите кабинет',
+                                    labelTextx: 'Кабинет (не обязательно)',
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightScreen * 0.01,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Начало',
+                                      style: TextStyle(
+                                          fontSize: heightScreen * 0.02,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.black212525),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: heightScreen * 0.01,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Начало',
-                                        style: TextStyle(
-                                            fontSize: heightScreen * 0.02,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.black212525),
-                                      ),
-                                      // Platform.isIOS
-                                      //     ?
-                                      IosTimePicker(
-                                        time: dateTimestart,
-                                        textTime:
-                                            '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                        onTimeSelected: (DateTime newTime) {
-                                          setState(() {
-                                            dateTimefinish =
-                                                newTime; // делать через блок или провайдер лучше?
-                                          });
-                                        },
-                                      )
-                                      //       :  TimerPickerAndroid(
-                                      //   onTimeSelected: () async {
-                                      //     final TimeOfDay? timeStartLesson =
-                                      //         await showTimePicker(
-                                      //             context: context,
-                                      //             initialTime:
-                                      //                 selectedTimeAndroid,
-                                      //             initialEntryMode:
-                                      //                 TimePickerEntryMode.dial);
-                                      //     if (timeStartLesson != null) {
-                                      //       setState(() {
-                                      //         selectedTimeAndroid =
-                                      //             timeStartLesson;
-                                      //       });
-                                      //     }
-                                      //   },
-                                      //   textTime:
-                                      //       '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
-                                      //   time: dateTimestart,
-                                      // )
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Конец',
-                                        style: TextStyle(
-                                            fontSize: heightScreen * 0.02,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.black212525),
-                                      ),
-                                      // Platform.isIOS
-                                      //     ?
-                                      IosTimePicker(
-                                        time: dateTimefinish,
-                                        textTime:
-                                            '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                        onTimeSelected: (DateTime newTime) {
-                                          setState(() {
-                                            dateTimefinish =
-                                                newTime; // делать через блок или провайдер лучше?
-                                          });
-                                        },
-                                      )
-                                      //       : TimerPickerAndroid(
-                                      //   onTimeSelected: () async {
-                                      //     final TimeOfDay? timeFinishLesson =
-                                      //         await showTimePicker(
-                                      //             context: context,
-                                      //             initialTime:
-                                      //                 selectedTimeAndroid,
-                                      //             initialEntryMode:
-                                      //                 TimePickerEntryMode.dial);
-                                      //     if (timeFinishLesson != null) {
-                                      //       setState(() {
-                                      //         selectedTimeAndroid =
-                                      //             timeFinishLesson;
-                                      //       });
-                                      //     }
-                                      //   },
-                                      //   textTime:
-                                      //       '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                      //   time: dateTimefinish,
-                                      // )
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    // Platform.isIOS
+                                    //     ?
+                                    IosTimePicker(
+                                      time: dateTimestart,
+                                      textTime:
+                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                      onTimeSelected: (DateTime newTime) {
+                                        setState(() {
+                                          dateTimefinish = newTime;
+                                        });
+                                      },
+                                    )
+                                    //       :  TimerPickerAndroid(
+                                    //   onTimeSelected: () async {
+                                    //     final TimeOfDay? timeStartLesson =
+                                    //         await showTimePicker(
+                                    //             context: context,
+                                    //             initialTime:
+                                    //                 selectedTimeAndroid,
+                                    //             initialEntryMode:
+                                    //                 TimePickerEntryMode.dial);
+                                    //     if (timeStartLesson != null) {
+                                    //       setState(() {
+                                    //         selectedTimeAndroid =
+                                    //             timeStartLesson;
+                                    //       });
+                                    //     }
+                                    //   },
+                                    //   textTime:
+                                    //       '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                    //   time: dateTimestart,
+                                    // )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Конец',
+                                      style: TextStyle(
+                                          fontSize: heightScreen * 0.02,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.black212525),
+                                    ),
+                                    // Platform.isIOS
+                                    //     ?
+                                    IosTimePicker(
+                                      time: dateTimefinish,
+                                      textTime:
+                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                      onTimeSelected: (DateTime newTime) {
+                                        setState(() {
+                                          dateTimefinish = newTime;
+                                        });
+                                      },
+                                    )
+                                    //       : TimerPickerAndroid(
+                                    //   onTimeSelected: () async {
+                                    //     final TimeOfDay? timeFinishLesson =
+                                    //         await showTimePicker(
+                                    //             context: context,
+                                    //             initialTime:
+                                    //                 selectedTimeAndroid,
+                                    //             initialEntryMode:
+                                    //                 TimePickerEntryMode.dial);
+                                    //     if (timeFinishLesson != null) {
+                                    //       setState(() {
+                                    //         selectedTimeAndroid =
+                                    //             timeFinishLesson;
+                                    //       });
+                                    //     }
+                                    //   },
+                                    //   textTime:
+                                    //       '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                    //   time: dateTimefinish,
+                                    // )
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         );
@@ -287,13 +394,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 color: AppColors.black212525,
                                 fontWeight: FontWeight.w600)),
                         InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    alertDialogCreateLesson(
-                                        widthScreen, heightScreen));
-                          },
+                          onTap: () {},
                           child: const Image(
                               image: AssetImage(
                                   'assets/images/blackplus_icon.png')),
@@ -302,7 +403,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                     ),
                   )),
               SizedBox(
-                height: heightScreen * 0.05,
+                height: heightScreen * 0.04,
               ),
               SizedBox(
                 height: 56,
@@ -336,48 +437,6 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
           ),
         ),
       ],
-    );
-  }
-
-  AlertDialog alertDialogCreateLesson(double widthScreen, double heightScreen) {
-    return AlertDialog(
-      contentPadding: const EdgeInsets.all(10),
-      content: SizedBox(
-        width: widthScreen * 0.5,
-        height: heightScreen * 0.25,
-        child: StatefulBuilder(
-          builder: (context, setState) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '',
-                  style: TextStyle(
-                      fontSize: heightScreen * 0.025,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black212525),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('Выбрать предмет'),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('Выгрузить в Excel'),
-                ),
-                ElevatedButton(
-                    style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(AppColors.greybcc1cd)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Ок"))
-              ],
-            );
-          },
-        ),
-      ),
     );
   }
 }

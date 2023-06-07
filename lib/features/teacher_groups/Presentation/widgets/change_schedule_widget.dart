@@ -115,7 +115,8 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                                 title: Text(
                                     DateFormat('EEEE', 'ru_RU')
                                         .format(DateTime.now()
-                                            .add(Duration(days: 7+index ))
+                                            .add(Duration(days: index+DateTime.now().day
+                                             ))
                                             )
                                         .capitalize(),
                                     style: const TextStyle(
@@ -128,7 +129,7 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 trailing: const Padding(
-                                  padding: EdgeInsets.only(top: 5.0),
+                                  padding: EdgeInsets.only(top: 15.0),
                                   child: Image(
                                       image: AssetImage(
                                           'assets/images/arrow.png')),
@@ -188,7 +189,7 @@ class _TeacherChangeScheduleState extends State<TeacherChangeSchedule> {
                     ),
                   ),
                   SizedBox(
-              height: heightScreen * 0.015,
+              height: heightScreen * 0.025,
             ),
                 ],
               ),
