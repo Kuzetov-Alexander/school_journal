@@ -2,18 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_lesson_widget.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/cupertino_picker_widget.dart';
-
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/timer_picker_ios.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
 class TeacherChangeDaySchedule extends StatefulWidget {
-  const TeacherChangeDaySchedule({super.key});
-
+  const TeacherChangeDaySchedule({super.key, required this.index});
+  final int index;
   @override
   State<TeacherChangeDaySchedule> createState() =>
       _TeacherChangeDayScheduleState();
@@ -55,14 +53,10 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
   DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
       DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
-
-  _removeLessonfromListView() {
-    
-  }
   @override
   Widget build(BuildContext context) {
+   
     int indexValueGroup = 0;
-
     // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
     double widthScreen = MediaQuery.of(context).size.width;
@@ -78,27 +72,31 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Image(
-                            image: AssetImage('assets/images/arrow_left.png'))),
-                    SizedBox(
-                      width: widthScreen / 4,
+                child: Stack(children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: widthScreen * 0.05, top: 4),
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Image(
+                          image: AssetImage('assets/images/arrow_left.png')),
                     ),
-                    Text(
-                      'Понедельник',
-                      style: TextStyle(
-                          color: AppColors.black212525,
-                          fontSize: heightScreen * 0.023,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: Text(
+                          provider.weekdays[widget.index],
+                          style: TextStyle(
+                              color: AppColors.black212525,
+                              fontSize: heightScreen * 0.023,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  ),
+                ]),
               ),
               Container(
                 color: Colors.grey,
@@ -115,7 +113,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                           height: heightScreen * 0.02,
                         );
                       },
-                      itemCount: 3,
+                      itemCount: provider.lengthWeeklyLessonsList,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           decoration: BoxDecoration(
@@ -394,7 +392,9 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 color: AppColors.black212525,
                                 fontWeight: FontWeight.w600)),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            provider.increaseLength(widget.index);
+                          },
                           child: const Image(
                               image: AssetImage(
                                   'assets/images/blackplus_icon.png')),

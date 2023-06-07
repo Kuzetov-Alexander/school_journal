@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
+
 import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/add_student_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/attestation_widget.dart';
@@ -47,6 +47,7 @@ class LandingPageState extends State<LandingPage> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final provider = Provider.of<ProviderScores>(context, listen: false);
+    
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(

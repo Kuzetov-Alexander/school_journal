@@ -96,11 +96,7 @@ class ProviderGroup extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void changeColor() {
-  //   isSelected = !isSelected;
-  //   notifyListeners();
-  // }
-
+ 
 // Сохраненные переменные времени для экрана Изменить урок
 
   String lessonStart = '';
@@ -124,4 +120,34 @@ class ProviderGroup extends ChangeNotifier {
 
     notifyListeners();
   }
+
+
+
+// weekly Schedule
+List <String> weekdays = ['Понедельник','Вторник',"Среда","Четверг","Пятница","Суббота","Воскресенье"];
+int lengthWeeklyLessonsList =0;
+Map weeklySchedule = {
+  0:[],
+  1:0,
+  2:0,
+  3:0,
+  4:0,
+  5:0,
+  6:0,
+} ;
+
+void getCurrentlenght (int mapIndex) {
+lengthWeeklyLessonsList = weeklySchedule[mapIndex];
+
+}
+void increaseLength (int mapIndex) {
+  weeklySchedule[mapIndex]++;
+ lengthWeeklyLessonsList = weeklySchedule[mapIndex];
+ lengthWeeklyLessonsList;
+
+  notifyListeners();
+}
+
+
+
 }
