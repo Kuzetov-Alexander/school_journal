@@ -127,27 +127,36 @@ class ProviderGroup extends ChangeNotifier {
 List <String> weekdays = ['Понедельник','Вторник',"Среда","Четверг","Пятница","Суббота","Воскресенье"];
 int lengthWeeklyLessonsList =0;
 Map weeklySchedule = {
-  0:[],
-  1:0,
-  2:0,
-  3:0,
-  4:0,
-  5:0,
-  6:0,
-} ;
+  0:[0],
+  1:[],
+  2:[],
+  3:[],
+  4:[],
+  5:[],
+  6:[],
+};
 
 void getCurrentlenght (int mapIndex) {
-lengthWeeklyLessonsList = weeklySchedule[mapIndex];
+
+ lengthWeeklyLessonsList =weeklySchedule[mapIndex].length;
 
 }
-void increaseLength (int mapIndex) {
-  weeklySchedule[mapIndex]++;
- lengthWeeklyLessonsList = weeklySchedule[mapIndex];
- lengthWeeklyLessonsList;
 
+void increaseLength (int mapIndex) {
+  weeklySchedule[mapIndex].add(0);
+ lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
   notifyListeners();
 }
 
+void reduceLength (int mapIndex,int index) {
+  weeklySchedule[mapIndex].removeAt(index);
+ lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
+  notifyListeners();
+}
+  DateTime timestart = DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
+  DateTime timefinish = DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
 }

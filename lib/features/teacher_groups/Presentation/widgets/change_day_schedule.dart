@@ -17,12 +17,18 @@ class TeacherChangeDaySchedule extends StatefulWidget {
       _TeacherChangeDayScheduleState();
 }
 
-final TextEditingController _controllerroom = TextEditingController();
-final TextEditingController _controllerSubject = TextEditingController();
-
 void _downloadNameGroups(context) {
   BlocProvider.of<BlocGeneralScheduleBloc>(context)
       .add(DownloadGroupNameEvent());
+}
+
+// функция добавления нового экземпляра урока
+void _handleTap(context, ProviderGroup provider, int index) {
+  if (provider.lengthWeeklyLessonsList > 7) {
+    return; // Ничего не делаем, если условие выполняется
+  }
+
+  provider.increaseLength(index);
 }
 
 showTip(BuildContext context, double height, String hint) async {
@@ -47,15 +53,8 @@ showTip(BuildContext context, double height, String hint) async {
 }
 
 class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
-  DateTime dateTimestart = DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-
-  DateTime dateTimefinish = DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-
   @override
   Widget build(BuildContext context) {
-   
     int indexValueGroup = 0;
     // ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
     ProviderGroup provider = Provider.of<ProviderGroup>(context);
@@ -103,10 +102,10 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                 height: heightScreen * 0.001,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: SizedBox(
                   width: widthScreen * 0.9,
-                  height: heightScreen * 0.65,
+                  height: heightScreen * 0.7,
                   child: ListView.separated(
                       separatorBuilder: (context, index) {
                         return SizedBox(
@@ -143,7 +142,10 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                             color: AppColors.gray5a5a5a),
                                       ),
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          provider.reduceLength(
+                                              widget.index, index);
+                                        },
                                         child: const Image(
                                           height: 20,
                                           image: AssetImage(
@@ -174,7 +176,6 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                         ),
                                         TextButton(
                                           onPressed: () async {
-                                            _controllerSubject.text = '';
                                             _downloadNameGroups(context);
 
                                             await Future.delayed(const Duration(
@@ -257,8 +258,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 ),
                                 SizedBox(
                                   height: heightScreen * 0.06,
-                                  child: TextformFieldWidget(
-                                    controllerClass: _controllerSubject,
+                                  child: const TextformFieldWidget(
                                     hintTextx: 'Введите предмет',
                                     labelTextx: 'Предмет',
                                   ),
@@ -268,8 +268,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 ),
                                 SizedBox(
                                   height: heightScreen * 0.06,
-                                  child: TextformFieldWidget(
-                                    controllerClass: _controllerroom,
+                                  child: const TextformFieldWidget(
                                     hintTextx: 'Введите кабинет',
                                     labelTextx: 'Кабинет (не обязательно)',
                                   ),
@@ -291,15 +290,18 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                     // Platform.isIOS
                                     //     ?
                                     IosTimePicker(
-                                      time: dateTimestart,
+                                      time: provider.timestart,
                                       textTime:
-                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                          '${provider.timestart.hour.toString().padLeft(2, '0')}:${provider.timestart.minute.toString().padLeft(2, '0')}',
                                       onTimeSelected: (DateTime newTime) {
-                                        setState(() {
-                                          dateTimefinish = newTime;
-                                        });
+                                        setState(
+                                          () {
+                                            provider.timestart = newTime;
+                                          },
+                                        );
                                       },
                                     )
+                                    // : const TimerPickerAndroidStart()
                                     //       :  TimerPickerAndroid(
                                     //   onTimeSelected: () async {
                                     //     final TimeOfDay? timeStartLesson =
@@ -336,15 +338,17 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                     // Platform.isIOS
                                     //     ?
                                     IosTimePicker(
-                                      time: dateTimefinish,
+                                      time: provider.timefinish,
                                       textTime:
-                                          '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                      onTimeSelected: (DateTime newTime) {
+                                          '${provider.timefinish.hour.toString().padLeft(2, '0')}:${provider.timefinish.minute.toString().padLeft(2, '0')}',
+                                      onTimeSelected: (DateTime newTimefinish) {
                                         setState(() {
-                                          dateTimefinish = newTime;
+                                          provider.timefinish =
+                                              newTimefinish; // делать через блок или провайдер лучше?
                                         });
                                       },
                                     )
+                                    // : const TimerPickerAndroidFinish()
                                     //       : TimerPickerAndroid(
                                     //   onTimeSelected: () async {
                                     //     final TimeOfDay? timeFinishLesson =
@@ -380,7 +384,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                     color: AppColors.greyLight,
                   ),
                   width: widthScreen * 0.88,
-                  height: heightScreen * 0.075,
+                  height: heightScreen * 0.055,
                   child: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: widthScreen * 0.05),
@@ -392,9 +396,8 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                 color: AppColors.black212525,
                                 fontWeight: FontWeight.w600)),
                         InkWell(
-                          onTap: () {
-                            provider.increaseLength(widget.index);
-                          },
+                          onTap: () =>
+                              _handleTap(context, provider, widget.index),
                           child: const Image(
                               image: AssetImage(
                                   'assets/images/blackplus_icon.png')),
@@ -403,7 +406,7 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                     ),
                   )),
               SizedBox(
-                height: heightScreen * 0.04,
+                height: heightScreen * 0.03,
               ),
               SizedBox(
                 height: 56,

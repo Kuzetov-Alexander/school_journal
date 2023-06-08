@@ -46,7 +46,7 @@ class LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final provider = Provider.of<ProviderScores>(context, listen: false);
+   
     
     return Scaffold(
       appBar: AppBar(
