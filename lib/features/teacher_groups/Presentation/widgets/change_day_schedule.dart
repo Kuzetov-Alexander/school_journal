@@ -290,13 +290,13 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                     // Platform.isIOS
                                     //     ?
                                     IosTimePicker(
-                                      time: provider.timestart,
+                                      time: provider.timeListstart[index],
                                       textTime:
-                                          '${provider.timestart.hour.toString().padLeft(2, '0')}:${provider.timestart.minute.toString().padLeft(2, '0')}',
+                                          '${provider.timeListstart[widget.index].hour.toString().padLeft(2, '0')}:${provider.timeListstart[index].minute.toString().padLeft(2, '0')}',
                                       onTimeSelected: (DateTime newTime) {
                                         setState(
                                           () {
-                                            provider.timestart = newTime;
+                                            provider.timeListstart[index] = newTime;
                                           },
                                         );
                                       },
@@ -338,12 +338,12 @@ class _TeacherChangeDayScheduleState extends State<TeacherChangeDaySchedule> {
                                     // Platform.isIOS
                                     //     ?
                                     IosTimePicker(
-                                      time: provider.timefinish,
+                                      time: provider.timeListfinish[index],
                                       textTime:
-                                          '${provider.timefinish.hour.toString().padLeft(2, '0')}:${provider.timefinish.minute.toString().padLeft(2, '0')}',
+                                          '${provider.timeListfinish[index].hour.toString().padLeft(2, '0')}:${provider.timeListfinish[widget.index].minute.toString().padLeft(2, '0')}',
                                       onTimeSelected: (DateTime newTimefinish) {
                                         setState(() {
-                                          provider.timefinish =
+                                          provider.timeListfinish[index] =
                                               newTimefinish; // делать через блок или провайдер лучше?
                                         });
                                       },

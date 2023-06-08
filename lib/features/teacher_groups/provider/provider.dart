@@ -153,10 +153,23 @@ void reduceLength (int mapIndex,int index) {
  lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
   notifyListeners();
 }
-  DateTime timestart = DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
-  DateTime timefinish = DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+  List<DateTime> timeListstart = List.generate(
+    7,
+    (index) => DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, DateTime.now().hour, DateTime.now().minute
+  ));
+
+   List<DateTime> timeListfinish = List.generate(
+    7,
+    (index) => DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, DateTime.now().hour, DateTime.now().minute
+  ));
+
+  // DateTime timestart = DateTime(DateTime.now().year, DateTime.now().month,
+  //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+
+  // DateTime timefinish = DateTime(DateTime.now().year, DateTime.now().month,
+  //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
 }
