@@ -35,24 +35,24 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                 SizedBox(height: heightScreen * 0.08),
                 const SizedBox(
                   child: Image(
                     image: AssetImage('assets/images/notebook.png'),
                   ),
                 ),
                 SizedBox(
-                  height: heightScreen * 0.02,
+                  height: heightScreen * 0.08,
                 ),
                 SizedBox(
                   height: heightScreen * 0.15,
                   child: Text(
-                    'Это ваш личный электронный журнал. Он позволит Вам формировать группы, добавлять в них учеников, проставлять оценки, создавать расписание занятий...',
-                    style: TextStyle(fontSize: heightScreen * 0.02),
+                    'Это ваш личный электронный журнал. Он позволит Вам формировать группы, добавлять в них учеников, проставлять оценки, создавать расписание занятий и многое другое.',
+                    style: TextStyle(fontSize: heightScreen * 0.02, ),
                   ),
                 ),
                 SizedBox(
-                  height: heightScreen * 0.015,
+                  height: heightScreen * 0.1,
                 ),
                 SizedBox(
                   height: 56,

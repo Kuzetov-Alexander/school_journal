@@ -542,6 +542,8 @@ class TextformFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorHeight: 15,
+  
       keyboardType: TextInputType.name,
       autocorrect: false,
       buildCounter: (BuildContext context,
