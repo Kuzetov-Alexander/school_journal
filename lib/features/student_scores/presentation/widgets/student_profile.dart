@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 
 class StudentProfile extends StatefulWidget {
-  const StudentProfile({super.key});
+  final int index;
+  const StudentProfile({super.key, required this.index});
 
   @override
   State<StudentProfile> createState() => _StudentProfileState();
@@ -17,10 +20,12 @@ class _StudentProfileState extends State<StudentProfile> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    return Column(mainAxisSize: MainAxisSize.min,
+    final provider = Provider.of<ProviderScores>(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: heightScreen*0.95,
+          height: heightScreen * 0.95,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(
@@ -73,13 +78,13 @@ class _StudentProfileState extends State<StudentProfile> {
                           null,
                       maxLength: 20,
                       controller: _controllerName,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color(0xffF3F3F3),
-                        border: OutlineInputBorder(
+                        fillColor: const Color(0xffF3F3F3),
+                        border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12.0)),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(12),
                           ),
@@ -87,23 +92,23 @@ class _StudentProfileState extends State<StudentProfile> {
                             color: Color(0xffF3F3F3),
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(12),
                           ),
                           borderSide: BorderSide(color: Color(0xffF3F3F3)),
                         ),
                         hintText: 'Введите ФИО',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        labelText: 'фИО',
-                        labelStyle: TextStyle(
+                        labelText: provider.allStudentDataList[widget.index],
+                        labelStyle: const TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        suffixIcon: Image(
+                        suffixIcon: const Image(
                           height: 20,
                           image: AssetImage('assets/images/pen_icon.png'),
                           color: Colors.black,
@@ -212,8 +217,9 @@ class _StudentProfileState extends State<StudentProfile> {
                       width: double.infinity,
                       child: TextButton(
                         style: ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll<Color>(
-                              Color(0xffF3F3F3)),
+                          backgroundColor:
+                              const MaterialStatePropertyAll<Color>(
+                                  Color(0xffF3F3F3)),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(

@@ -10,4 +10,19 @@ abstract class RepositoryScores {
   ///Получение из базы данных лист всех студентов
   Future<Either<Failure, List<String>>> getAllStudent(
       {required EntityStudentScores request});
+
+  Future<Either<Failure, void>> editScore(
+      {required EntityStudentScores request});
+
+  //     void _editScore(context,
+  //     {required String subject,
+  //     required String studentName,
+  //     required String score,
+  //     required String currentDay}) {
+  //   BlocProvider.of<ScoresPageBloc>(context).add(EditScoreEvent(
+  //       subject: subject,
+  //       studentName: studentName,
+  //       score: score,
+  //       currentDay: currentDay));
+  // }
 }

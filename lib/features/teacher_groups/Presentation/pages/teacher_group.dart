@@ -66,7 +66,7 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
                     Row(
                       children: [
                         Text(
-                          'Ученики',
+                          'Электронный журнал',
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: heightScreen * 0.024,
@@ -88,22 +88,24 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              '27 учеников',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                            // const Text(
+                            //   'Электронный журнал',
+                            //   style: TextStyle(color: Colors.white),
+                            // ),
                             ElevatedButton(
                               onPressed: () {
-                                context.goNamed('StudentScores');
+                                context.goNamed('Journal');
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
+                                minimumSize: Size(
+                                    widthScreen * 0.795, heightScreen * 0.05),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
                               child: Text(
-                                'Все',
+                                'Открыть',
                                 style: TextStyle(
                                     color: AppColors.black212525,
                                     fontSize: heightScreen * 0.019,

@@ -2,11 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
+import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
 class EditScoresWidget extends StatefulWidget {
   const EditScoresWidget({super.key});
@@ -18,11 +22,30 @@ class EditScoresWidget extends StatefulWidget {
 class _EditScoresWidgetState extends State<EditScoresWidget> {
   String selectedSubject = 'Математика';
 
+  void _editScore(context,
+      {required String subject,
+      required String studentName,
+      // required String groupName,
+      required int score,
+      required String currentDay}) {
+    BlocProvider.of<ScoresPageBloc>(context).add(EditScoreEvent(
+        subject: subject,
+        studentName: studentName,
+        groupName:
+            Provider.of<ProviderScores>(context, listen: false).currentGroup,
+        score: score,
+        currentDay: currentDay));
+  }
+
   @override
   Widget build(BuildContext context) {
     final dayofweek = DateFormat('dd.MM').format(DateTime.now());
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
+    final provider = Provider.of<ProviderScores>(context);
+    // TODO(Sanya) Чужой провайдер!
+
+    final providerDate = Provider.of<ProviderCalendar>(context);
     return Container(
       height: heightScreen * 0.5,
       decoration: const BoxDecoration(
@@ -42,7 +65,8 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
                   width: 24,
                 ),
                 Text(
-                  'Kuzetov Alexander, $dayofweek',
+                  // print('не доходит student');
+                  '${provider.currentStudent}, $dayofweek',
                   style: TextStyle(
                       color: AppColors.black212525,
                       fontSize: heightScreen * 0.02,
@@ -183,7 +207,16 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
                   ),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                _editScore(context,
+                    subject: '${provider.currentsubject}',
+                    studentName: provider.currentStudent,
+                    // groupName: provider.currentGroup,
+                    score: 5,
+                    currentDay: DateFormat('dd-MM-yyyy', 'ru')
+                        .format(providerDate.currentDate));
+                context.pop();
+              },
               child: Text(
                 'Сохранить',
                 style: TextStyle(

@@ -25,3 +25,19 @@ class GetAllStudentEvent extends ScoresPageEvent {
     required this.groupName,
   });
 }
+
+class EditScoreEvent extends ScoresPageEvent {
+  final String subject;
+  final String studentName;
+  final String groupName;
+  final int score;
+  final String currentDay;
+
+  const EditScoreEvent({
+    required this.subject,
+    required this.studentName,
+    required this.groupName,
+    required this.score,
+    required this.currentDay,
+  });
+}

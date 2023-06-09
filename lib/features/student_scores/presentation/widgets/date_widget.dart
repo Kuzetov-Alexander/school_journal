@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:school_journal/common/color.dart';
 
 class DateWidget extends StatelessWidget {
-  const DateWidget({super.key});
+  final int index;
+  const DateWidget({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class DateWidget extends StatelessWidget {
             ),
           ),
           Text(
-            DateFormat('d').format(DateTime.now()),
+            DateFormat('d').format(DateTime.now().add(Duration(days: index))),
             maxLines: 1,
             style:
                 TextStyle(color: Colors.white, fontSize: heightScreen * 0.018),

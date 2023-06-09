@@ -24,14 +24,6 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
         email: _controllerEmail.text.trim()));
   }
 
-  void _getAllStudent(context, {required groupName}) {
-    BlocProvider.of<ScoresPageBloc>(context).add(
-      GetAllStudentEvent(
-        groupName: groupName,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
@@ -201,8 +193,6 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
                   ),
                   onPressed: () {
                     _addNewStudent(context,
-                        groupName: providerScores.currentGroup);
-                    _getAllStudent(context,
                         groupName: providerScores.currentGroup);
                     Navigator.of(context).pop();
                   },

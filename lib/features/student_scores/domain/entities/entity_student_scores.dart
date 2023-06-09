@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class EntityStudentScores extends Equatable {
   final String fullName;
-  final String groupName;
+  final String? groupName;
   final int? score;
   final double? averageScore;
   final double? attestationScore;
@@ -11,11 +11,11 @@ class EntityStudentScores extends Equatable {
   final bool? isDeleted;
   final bool? visitedLesson;
   final String? subject;
-  final DateTime? currentDay;
+  final String? currentDay;
 
   const EntityStudentScores({
     required this.fullName,
-    required this.groupName,
+    this.groupName,
     this.score,
     this.averageScore,
     this.attestationScore,

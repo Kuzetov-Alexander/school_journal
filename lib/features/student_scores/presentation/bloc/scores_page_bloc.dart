@@ -36,8 +36,6 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
           ),
         );
         if (resultRequestBloc.isRight()) {
-          print('все выполнилось');
-
           emit(
             GetAllStudentState(
               allStudentData: resultRequestBloc.getOrElse(() => []),
@@ -46,5 +44,16 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
         }
       },
     );
+
+    on<EditScoreEvent>((event, emit) async {
+      await repository.editScore(
+          request: EntityStudentScores(
+              fullName: event.studentName,
+              subject: event.subject,
+              score: event.score,
+              currentDay: event.currentDay));
+
+      emit(EditScoreState());
+    });
   }
 }

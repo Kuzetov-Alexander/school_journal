@@ -7,6 +7,8 @@ abstract class RemoteDataScores {
   Future<void> addStudent({required EntityStudentScores request});
 
   Future<List<String>> getAllStudent({required EntityStudentScores request});
+
+  Future<void> editScore({required EntityStudentScores request});
 }
 
 class RemoteDataScoresImpl implements RemoteDataScores {
@@ -17,11 +19,31 @@ class RemoteDataScoresImpl implements RemoteDataScores {
         .ref()
         .child('Users/$userId/Groups/${request.groupName}/allStudents');
 
+    // TODO(Sanya) испрвить добавление предметов в студента и придумать как обновлять каждому при добавлении нового предмета
+    // final waySubjectsDataBase = FirebaseDatabase.instance
+    //     .ref()
+    //     .child('Users/$userId/Groups/${request.groupName}/allSubject');
+    // final dataSnapshot = await waySubjectsDataBase.once();
+    // final dataSubject = dataSnapshot.snapshot.value;
+    // final List<dynamic> resultDataGroup = [];
+    //  if (dataSubject is Map) {
+    //   resultDataGroup.addAll(dataSubject.keys.toList());
+    // }
+
+    // ///для отслеживания предметов
+    // waySubjectsDataBase.onChildChanged.listen((DatabaseEvent event) {
+    //   var dataSubject = event.snapshot.value;
+    //   print('onChildChanged ------------------$dataSubject');
+
+    //   if (event.snapshot.value is Map) {
+    //     resultDataGroup.addAll(dataSubject);
+    //   }
+    // });
+
     final addData = {
       request.fullName: {
         'FullName': request.fullName,
         'email': request.email,
-        'Subjects': 'пусто',
       }
     };
     await dataBase.update(addData);
@@ -34,9 +56,14 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     final dataBase = FirebaseDatabase.instance
         .ref()
         .child('Users/$userId/Groups/${request.groupName}/allStudents');
+
+    final wayAmountStudentDatabase = FirebaseDatabase.instance
+        .ref()
+        .child('Users/$userId/Groups/${request.groupName}/amountStudents');
     final dataSnapshot = await dataBase.get();
     final List<String> resultDataGroup = [];
     if (dataSnapshot.exists) {
+      // print(dataSnapshot.value);
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
       final List<dynamic> dataList = data.values.toList();
@@ -48,10 +75,26 @@ class RemoteDataScoresImpl implements RemoteDataScores {
           }
         }
       }
+      // подсчет студентов - amountStudent
+      await wayAmountStudentDatabase.set(resultDataGroup.length);
       return resultDataGroup;
     } else {
       return [];
     }
+  }
+
+  @override
+  Future<void> editScore({required EntityStudentScores request}) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataBase = FirebaseDatabase.instance.ref().child(
+        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students/rty');
+    final addData = {
+      '${request.currentDay}': {
+        'score': request.score,
+        'visit': 'пусто',
+      }
+    };
+    await dataBase.update(addData);
   }
 }
 

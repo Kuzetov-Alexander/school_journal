@@ -17,3 +17,5 @@ class GetAllStudentState extends ScoresPageState {
   @override
   List<Object> get props => allStudentData;
 }
+
+class EditScoreState extends ScoresPageState {}

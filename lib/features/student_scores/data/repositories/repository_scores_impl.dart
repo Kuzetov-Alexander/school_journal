@@ -8,6 +8,7 @@ import 'package:school_journal/features/student_scores/domain/repositories/repos
 class RepositoryScoresImpl implements RepositoryScores {
   final RemoteDataScores dataBase;
   RepositoryScoresImpl({required this.dataBase});
+
   @override
   Future<Either<Failure, void>> addStudent(
       {required EntityStudentScores request}) async {
@@ -29,6 +30,18 @@ class RepositoryScoresImpl implements RepositoryScores {
           .then((value) => Right(value));
     } on Object {
       return Left<Failure, List<String>>(DataBaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> editScore(
+      {required EntityStudentScores request}) async {
+    try {
+      return await dataBase
+          .editScore(request: request)
+          .then((value) => Right(value));
+    } on Object {
+      return Left<Failure, void>(DataBaseFailure());
     }
   }
 }
