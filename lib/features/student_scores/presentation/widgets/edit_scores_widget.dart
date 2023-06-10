@@ -13,7 +13,13 @@ import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider_calendar.dart';
 
 class EditScoresWidget extends StatefulWidget {
-  const EditScoresWidget({super.key});
+  final String studentName;
+  final String group;
+  const EditScoresWidget({
+    super.key,
+    required this.studentName,
+    required this.group,
+  });
 
   @override
   State<EditScoresWidget> createState() => _EditScoresWidgetState();
@@ -25,7 +31,7 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
   void _editScore(context,
       {required String subject,
       required String studentName,
-      // required String groupName,
+      required String groupName,
       required int score,
       required String currentDay}) {
     BlocProvider.of<ScoresPageBloc>(context).add(EditScoreEvent(
@@ -44,7 +50,6 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
     double heightScreen = MediaQuery.of(context).size.height;
     final provider = Provider.of<ProviderScores>(context);
     // TODO(Sanya) Чужой провайдер!
-
     final providerDate = Provider.of<ProviderCalendar>(context);
     return Container(
       height: heightScreen * 0.5,
@@ -65,8 +70,7 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
                   width: 24,
                 ),
                 Text(
-                  // print('не доходит student');
-                  '${provider.currentStudent}, $dayofweek',
+                  '${widget.studentName}, ${widget.group},  $dayofweek',
                   style: TextStyle(
                       color: AppColors.black212525,
                       fontSize: heightScreen * 0.02,
@@ -208,14 +212,15 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
                 ),
               ),
               onPressed: () {
+                print(widget.studentName);
                 _editScore(context,
                     subject: '${provider.currentsubject}',
-                    studentName: provider.currentStudent,
-                    // groupName: provider.currentGroup,
+                    studentName: widget.studentName,
+                    groupName: widget.group,
                     score: 5,
                     currentDay: DateFormat('dd-MM-yyyy', 'ru')
                         .format(providerDate.currentDate));
-                context.pop();
+                Navigator.of(context).pop();
               },
               child: Text(
                 'Сохранить',

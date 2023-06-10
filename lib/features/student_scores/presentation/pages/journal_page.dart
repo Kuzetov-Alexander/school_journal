@@ -82,7 +82,7 @@ class _JournalPageState extends State<JournalPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          context.goNamed('StudentScores');
+                          context.goNamed('EditStudents');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -194,37 +194,6 @@ class _JournalPageState extends State<JournalPage> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: heightScreen * 0.6,
-              //   child: ListView.separated(
-              //     separatorBuilder: (context, index) {
-              //       return SizedBox(height: heightScreen * 0.01);
-              //     },
-              //     itemCount: 2,
-              //     itemBuilder: (context, index) {
-              //       return ElevatedButton(
-              //         onPressed: () {
-              //           context.goNamed('StudentScores');
-              //         },
-              //         style: ElevatedButton.styleFrom(
-              //           minimumSize:
-              //               Size(widthScreen * 0.8, heightScreen * 0.08),
-              //           backgroundColor: Colors.yellow,
-              //           shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(24),
-              //           ),
-              //         ),
-              //         child: Text(
-              //           'Все',
-              //           style: TextStyle(
-              //               color: AppColors.black212525,
-              //               fontSize: heightScreen * 0.019,
-              //               fontWeight: FontWeight.w600),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // )
             ],
           ),
         ),

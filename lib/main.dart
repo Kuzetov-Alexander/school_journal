@@ -20,12 +20,13 @@ import 'package:school_journal/features/student_scores/data/data_sources/remote_
 import 'package:school_journal/features/student_scores/data/repositories/repository_scores_impl.dart';
 import 'package:school_journal/features/student_scores/domain/repositories/repository_scores.dart';
 import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
+import 'package:school_journal/features/student_scores/presentation/pages/edit_students.page.dart';
 import 'package:school_journal/features/student_scores/presentation/pages/student_scores_page.dart';
 import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/group_list_page.dart';
-import 'package:school_journal/features/teacher_groups/Presentation/pages/journal_page.dart';
+import 'package:school_journal/features/student_scores/presentation/pages/journal_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/schedule_page.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/pages/teacher_group.dart';
 import 'package:school_journal/features/teacher_groups/data/data_sources/remote_data_firebase.dart';
@@ -120,6 +121,11 @@ class MyApp extends StatelessWidget {
             builder: (context, state) => const JournalPage(),
           ),
           GoRoute(
+            path: 'EditStudents',
+            name: 'EditStudents',
+            builder: (context, state) => const EditStudentsPage(),
+          ),
+          GoRoute(
             path: 'Profile',
             name: 'Profile',
             builder: (context, state) => const ProfilePage(),
@@ -158,7 +164,6 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               UserProfileRepositoryImpl(dataBase: RemoteDataProfileImpl()),
         ),
-       
         RepositoryProvider<RepositoryScores>(
           lazy: false,
           create: (context) =>

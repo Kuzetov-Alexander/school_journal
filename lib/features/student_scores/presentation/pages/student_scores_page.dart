@@ -6,11 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
-import 'package:school_journal/features/student_scores/presentation/widgets/add_student_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/attestation_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/date_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/scores_widget.dart';
-import 'package:school_journal/features/student_scores/presentation/widgets/student_profile.dart';
 
 class StudentScoresPage extends StatefulWidget {
   const StudentScoresPage({super.key});
@@ -34,8 +32,6 @@ class StudentScoresPageState extends State<StudentScoresPage> {
     _getAllStudent(context,
         groupName: Provider.of<ProviderScores>(context).currentGroup);
   }
-
-  // String selectedSubject = '';
 
   @override
   Widget build(BuildContext context) {
@@ -81,17 +77,17 @@ class StudentScoresPageState extends State<StudentScoresPage> {
               IconButton(
                 splashRadius: 20,
                 onPressed: () {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
-                      ),
-                    ),
-                    context: context,
-                    builder: (context) => const AddStudentWidget(),
-                  );
+                  // showModalBottomSheet(
+                  //   isScrollControlled: true,
+                  //   backgroundColor: Colors.transparent,
+                  //   shape: const RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.vertical(
+                  //       top: Radius.circular(20),
+                  //     ),
+                  //   ),
+                  //   context: context,
+                  //   builder: (context) => const AddStudentWidget(),
+                  // );
                 },
                 icon: const Image(
                   image: AssetImage('assets/images/plus.png'),
@@ -142,30 +138,13 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                             (int index) => DataRow(
                               cells: [
                                 DataCell(
-                                  InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(20),
-                                          ),
-                                        ),
-                                        context: context,
-                                        builder: (context) =>
-                                            StudentProfile(index: index),
-                                      );
-                                    },
-                                    // ------------------------------------
-                                    child: SizedBox(
-                                      width: widthScreen * 0.26,
-                                      child: Text(
-                                        provider.allStudentDataList[index],
-                                        style: const TextStyle(
-                                            overflow: TextOverflow.ellipsis),
-                                        maxLines: 2,
-                                      ),
+                                  SizedBox(
+                                    width: widthScreen * 0.26,
+                                    child: Text(
+                                      provider.allStudentDataList[index],
+                                      style: const TextStyle(
+                                          overflow: TextOverflow.ellipsis),
+                                      maxLines: 2,
                                     ),
                                   ),
                                 ),
@@ -216,27 +195,49 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                             (int index) => DataRow(
                               cells: [
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                                 DataCell(ScoresWidget(
-                                    list: provider.allStudentDataList)),
+                                    listStudentTable:
+                                        provider.allStudentDataList,
+                                    index: index)),
                               ],
                             ),
                           ),

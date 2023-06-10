@@ -86,7 +86,7 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
                               required bool isFocused,
                               int? maxLength}) =>
                           null,
-                      maxLength: 20,
+                      maxLength: 50,
                       controller: _controllerName,
                       decoration: const InputDecoration(
                         filled: true,

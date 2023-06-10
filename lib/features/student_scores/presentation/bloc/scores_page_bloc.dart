@@ -49,6 +49,7 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
       await repository.editScore(
           request: EntityStudentScores(
               fullName: event.studentName,
+              groupName: event.groupName,
               subject: event.subject,
               score: event.score,
               currentDay: event.currentDay));

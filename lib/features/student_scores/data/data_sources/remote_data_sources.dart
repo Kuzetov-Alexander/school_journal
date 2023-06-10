@@ -87,7 +87,7 @@ class RemoteDataScoresImpl implements RemoteDataScores {
   Future<void> editScore({required EntityStudentScores request}) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBase = FirebaseDatabase.instance.ref().child(
-        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students/rty');
+        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students/${request.fullName}');
     final addData = {
       '${request.currentDay}': {
         'score': request.score,

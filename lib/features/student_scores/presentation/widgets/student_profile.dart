@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
+import 'package:school_journal/features/student_scores/domain/entities/entity_student_scores.dart';
 
 class StudentProfile extends StatefulWidget {
-  final int index;
-  const StudentProfile({super.key, required this.index});
+  final EntityStudentScores student;
+
+  const StudentProfile({
+    super.key,
+    required this.student,
+  });
 
   @override
   State<StudentProfile> createState() => _StudentProfileState();
@@ -20,7 +23,6 @@ class _StudentProfileState extends State<StudentProfile> {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final provider = Provider.of<ProviderScores>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -103,7 +105,7 @@ class _StudentProfileState extends State<StudentProfile> {
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        labelText: provider.allStudentDataList[widget.index],
+                        labelText: widget.student.fullName,
                         labelStyle: const TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
@@ -126,13 +128,13 @@ class _StudentProfileState extends State<StudentProfile> {
                           null,
                       maxLength: 20,
                       controller: _controllerEmail,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color(0xffF3F3F3),
-                        border: OutlineInputBorder(
+                        fillColor: const Color(0xffF3F3F3),
+                        border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12.0)),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(12),
                           ),
@@ -140,23 +142,23 @@ class _StudentProfileState extends State<StudentProfile> {
                             color: Color(0xffF3F3F3),
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(12),
                           ),
                           borderSide: BorderSide(color: Color(0xffF3F3F3)),
                         ),
                         hintText: 'Введите почту',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        labelText: 'Почта (не обязательно)',
-                        labelStyle: TextStyle(
+                        labelText: widget.student.email,
+                        labelStyle: const TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        suffixIcon: Image(
+                        suffixIcon: const Image(
                           height: 20,
                           image: AssetImage('assets/images/pen_icon.png'),
                           color: Colors.black,
