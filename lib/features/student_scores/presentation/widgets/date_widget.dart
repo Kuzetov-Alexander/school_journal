@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 
 class DateWidget extends StatelessWidget {
   final int index;
@@ -12,6 +14,7 @@ class DateWidget extends StatelessWidget {
     double heightScreen = MediaQuery.of(context).size.height;
     String text = DateFormat('E', 'ru').format(DateTime.now());
     String textDate = text[0].toUpperCase() + text.substring(1).toLowerCase();
+    final providerScore = Provider.of<ProviderScores>(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -32,7 +35,7 @@ class DateWidget extends StatelessWidget {
             ),
           ),
           Text(
-            DateFormat('d').format(DateTime.now().add(Duration(days: index))),
+            DateFormat('d').format(DateTime.now()),
             maxLines: 1,
             style:
                 TextStyle(color: Colors.white, fontSize: heightScreen * 0.018),

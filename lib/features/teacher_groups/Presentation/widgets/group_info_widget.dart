@@ -91,7 +91,7 @@ class MyGroupInfoWidget extends StatelessWidget {
                     const SizedBox(
                       width: 10,
                     ),
-                    Text('${mapGroups['amountStudents']} учеников'),
+                    Text('${provider.listGroup.length} учеников'),
                   ],
                 ),
               )

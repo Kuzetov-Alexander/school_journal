@@ -24,7 +24,7 @@ class _EditStudentsPageState extends State<EditStudentsPage> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final provider = Provider.of<ProviderGroup>(context);
-    // final providerScores = Provider.of<ProviderScores>(context);
+
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final db = FirebaseDatabase.instance
         .ref()
@@ -74,7 +74,6 @@ class _EditStudentsPageState extends State<EditStudentsPage> {
                   itemBuilder: (context, DataSnapshot snapshot,
                       Animation<double> animation, int index) {
                     Map mapDataStudent = snapshot.value as Map;
-
                     return Column(
                       children: [
                         Slidable(

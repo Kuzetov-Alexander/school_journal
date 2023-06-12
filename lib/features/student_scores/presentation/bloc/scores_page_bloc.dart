@@ -28,10 +28,8 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
 
     on<GetAllStudentEvent>(
       (event, emit) async {
-        // TODO(Sanya) Сущность отредачить!
         final resultRequestBloc = await repository.getAllStudent(
           request: EntityStudentScores(
-            fullName: '',
             groupName: event.groupName,
           ),
         );
@@ -39,6 +37,23 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
           emit(
             GetAllStudentState(
               allStudentData: resultRequestBloc.getOrElse(() => []),
+            ),
+          );
+        }
+      },
+    );
+
+    on<GetInfoSubjectEvent>(
+      (event, emit) async {
+        final resultRequestBloc = await repository.getInfoSubject(
+            request: EntityStudentScores(
+          groupName: event.groupName,
+          subject: event.subject,
+        ));
+        if (resultRequestBloc.isRight()) {
+          emit(
+            GetInfoSubjectState(
+              data: resultRequestBloc.getOrElse(() => {}),
             ),
           );
         }

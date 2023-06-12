@@ -76,7 +76,6 @@ class ProviderGroup extends ChangeNotifier {
     List<String> listGroups = [];
     listGroups.addAll(newGroup);
     listGroup = listGroups.toSet().toList();
-    notifyListeners();
   }
 
   /// удаляем название удаленной группы из списка названий групп
@@ -96,7 +95,6 @@ class ProviderGroup extends ChangeNotifier {
     notifyListeners();
   }
 
- 
 // Сохраненные переменные времени для экрана Изменить урок
 
   String lessonStart = '';
@@ -121,55 +119,56 @@ class ProviderGroup extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
 // weekly Schedule
-List <String> weekdays = ['Понедельник','Вторник',"Среда","Четверг","Пятница","Суббота","Воскресенье"];
-int lengthWeeklyLessonsList =0;
-Map weeklySchedule = {
-  0:[0],
-  1:[],
-  2:[],
-  3:[],
-  4:[],
-  5:[],
-  6:[],
-};
+  List<String> weekdays = [
+    'Понедельник',
+    'Вторник',
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота",
+    "Воскресенье"
+  ];
+  int lengthWeeklyLessonsList = 0;
+  Map weeklySchedule = {
+    0: [0],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+  };
 
-void getCurrentlenght (int mapIndex) {
+  void getCurrentlenght(int mapIndex) {
+    lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
+  }
 
- lengthWeeklyLessonsList =weeklySchedule[mapIndex].length;
+  void increaseLength(int mapIndex) {
+    weeklySchedule[mapIndex].add(0);
+    lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
+    notifyListeners();
+  }
 
-}
-
-void increaseLength (int mapIndex) {
-  weeklySchedule[mapIndex].add(0);
- lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
-  notifyListeners();
-}
-
-void reduceLength (int mapIndex,int index) {
-  weeklySchedule[mapIndex].removeAt(index);
- lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
-  notifyListeners();
-}
+  void reduceLength(int mapIndex, int index) {
+    weeklySchedule[mapIndex].removeAt(index);
+    lengthWeeklyLessonsList = weeklySchedule[mapIndex].length;
+    notifyListeners();
+  }
 
   List<DateTime> timeListstart = List.generate(
-    7,
-    (index) => DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute
-  ));
+      7,
+      (index) => DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute));
 
-   List<DateTime> timeListfinish = List.generate(
-    7,
-    (index) => DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, DateTime.now().hour, DateTime.now().minute
-  ));
+  List<DateTime> timeListfinish = List.generate(
+      7,
+      (index) => DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute));
 
   // DateTime timestart = DateTime(DateTime.now().year, DateTime.now().month,
   //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
 
   // DateTime timefinish = DateTime(DateTime.now().year, DateTime.now().month,
   //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-
 }

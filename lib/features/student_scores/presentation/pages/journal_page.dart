@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/provider/provider_scores.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
 
@@ -16,6 +18,20 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
+  void _getAllStudent(context, {required groupName}) {
+    BlocProvider.of<ScoresPageBloc>(context).add(
+      GetAllStudentEvent(groupName: groupName),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllStudent(context,
+        groupName:
+            Provider.of<ProviderScores>(context, listen: false).currentGroup);
+  }
+
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
@@ -23,9 +39,8 @@ class _JournalPageState extends State<JournalPage> {
     final provider = Provider.of<ProviderGroup>(context);
     final providerScores = Provider.of<ProviderScores>(context);
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    final db = FirebaseDatabase.instance
-        .ref()
-        .child('Users/$userId/Groups/${provider.currentGroup}/allSubject');
+    final db = FirebaseDatabase.instance.ref().child(
+        'Users/$userId/Groups/${providerScores.currentGroup}/allSubject');
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +52,7 @@ class _JournalPageState extends State<JournalPage> {
           ),
         ),
         title: Text(
-          'Группа  ${provider.currentGroup}',
+          'Группа  ${providerScores.currentGroup}',
           style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: heightScreen * 0.022,
@@ -76,10 +91,18 @@ class _JournalPageState extends State<JournalPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        '27 учеников',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      BlocBuilder<ScoresPageBloc, ScoresPageState>(
+                          builder: (context, state) {
+                        if (state is GetAllStudentState) {
+                          providerScores.updateFullNameList(
+                              studentData: state.allStudentData);
+                          provider.updateGroupNameList(state.allStudentData);
+                        }
+                        return Text(
+                          '${providerScores.allStudentDataList.length} учеников',
+                          style: const TextStyle(color: Colors.white),
+                        );
+                      }),
                       ElevatedButton(
                         onPressed: () {
                           context.goNamed('EditStudents');

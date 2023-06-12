@@ -19,3 +19,9 @@ class GetAllStudentState extends ScoresPageState {
 }
 
 class EditScoreState extends ScoresPageState {}
+
+class GetInfoSubjectState extends ScoresPageState {
+  final Map<Object?, Object?> data;
+
+  const GetInfoSubjectState({required this.data});
+}

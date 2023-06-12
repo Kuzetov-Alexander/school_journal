@@ -212,7 +212,7 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
                 ),
               ),
               onPressed: () {
-                print(widget.studentName);
+                // print(widget.studentName);
                 _editScore(context,
                     subject: '${provider.currentsubject}',
                     studentName: widget.studentName,

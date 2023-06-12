@@ -18,31 +18,42 @@ class StudentScoresPage extends StatefulWidget {
 }
 
 class StudentScoresPageState extends State<StudentScoresPage> {
-  void _getAllStudent(context, {required groupName}) {
+  void _getInfoSubject(context, {required groupName, required subject}) {
     BlocProvider.of<ScoresPageBloc>(context).add(
-      GetAllStudentEvent(
+      GetInfoSubjectEvent(
         groupName: groupName,
+        subject: subject,
       ),
     );
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _getAllStudent(context,
-        groupName: Provider.of<ProviderScores>(context).currentGroup);
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getInfoSubject(context,
+          groupName:
+              Provider.of<ProviderScores>(context, listen: false).currentGroup,
+          subject: Provider.of<ProviderScores>(context, listen: false)
+              .currentsubject);
+    });
+    // TODO(Sanya) Метод подгрузки всех студентов по предмету а тех которых нет, добавить с null значением {qqqq: null, alex : {...}}
   }
+  // Колонки формириуем и сходя из дат уроков
 
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    final provider = Provider.of<ProviderScores>(context);
+    final providerScores = Provider.of<ProviderScores>(context);
     return BlocBuilder<ScoresPageBloc, ScoresPageState>(
       builder: (context, state) {
-        if (state is GetAllStudentState) {
-          provider.updateFullNameList(studentData: state.allStudentData);
+        if (state is GetInfoSubjectState) {
+          providerScores.updateDataMap(studentData: state.data);
+          // print('${providerScores.mapData}');
         }
+
         return Scaffold(
           appBar: AppBar(
             leading: InkWell(
@@ -53,7 +64,7 @@ class StudentScoresPageState extends State<StudentScoresPage> {
             ),
             automaticallyImplyLeading: false,
             title: Text(
-              '${provider.currentsubject}',
+              '${providerScores.currentsubject}',
             ),
             centerTitle: true,
             backgroundColor: Colors.white,
@@ -95,28 +106,130 @@ class StudentScoresPageState extends State<StudentScoresPage> {
               ),
             ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ColoredBox(
-                      color: const Color(0xffFAFAFA),
-                      child: SizedBox(
-                        width: widthScreen * 0.31,
+          body: Builder(builder: (context) {
+            if (providerScores.allStudentDataList.isEmpty) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ColoredBox(
+                        color: const Color(0xffFAFAFA),
+                        child: SizedBox(
+                          width: widthScreen * 0.31,
+                          child: DataTable(
+                            horizontalMargin: 8,
+                            checkboxHorizontalMargin: 0,
+                            headingRowHeight: heightScreen * 0.07,
+                            dataRowMinHeight: heightScreen * 0.06,
+                            dataRowMaxHeight: heightScreen * 0.06,
+                            border: const TableBorder(
+                              top: BorderSide(
+                                color: AppColors.greyForTable,
+                              ),
+                              right: BorderSide(
+                                color: AppColors.greyForTable,
+                              ),
+                              bottom: BorderSide(
+                                color: AppColors.greyForTable,
+                              ),
+                            ),
+                            columns: const [
+                              DataColumn(
+                                label: Text(
+                                  'Имя',
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
+                            // Имена студентов
+                            rows: List<DataRow>.generate(
+                              providerScores.allStudentDataList.length,
+                              (int index) => DataRow(
+                                cells: [
+                                  DataCell(
+                                    SizedBox(
+                                      width: widthScreen * 0.26,
+                                      child: Text(
+                                        providerScores
+                                            .allStudentDataList[index],
+                                        style: const TextStyle(
+                                            overflow: TextOverflow.ellipsis),
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: widthScreen * 0.49,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            headingRowHeight: heightScreen * 0.07,
+                            horizontalMargin: 10,
+                            dataRowMinHeight: heightScreen * 0.06,
+                            dataRowMaxHeight: heightScreen * 0.06,
+                            border: const TableBorder(
+                              top: BorderSide(
+                                color: AppColors.greyForTable,
+                              ),
+                              verticalInside: BorderSide(
+                                color: AppColors.greyForTable,
+                              ),
+                              bottom: BorderSide(
+                                color: AppColors.greyForTable,
+                              ),
+                            ),
+                            columnSpacing: widthScreen * 0.05,
+                            // TODO(Sanya) надо сделать генерацию виджетов даты нормальную!
+                            columns: List.generate(
+                              providerScores.allStudentDataList.length,
+                              (index) =>
+                                  DataColumn(label: DateWidget(index: index)),
+                            ),
+
+                            // оценки
+                            rows: List<DataRow>.generate(
+                              // сюда нужно указать количество дат с уроками по предмету
+                              providerScores.allStudentDataList.length,
+                              (int index) => DataRow(
+                                cells: List.generate(
+                                  providerScores.allStudentDataList.length,
+                                  (index) => DataCell(
+                                    ScoresWidget(
+                                        listStudentTable:
+                                            providerScores.allStudentDataList,
+                                        index: index),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: widthScreen * 0.1,
                         child: DataTable(
-                          horizontalMargin: 8,
-                          checkboxHorizontalMargin: 0,
                           headingRowHeight: heightScreen * 0.07,
+                          horizontalMargin: 7,
+                          clipBehavior: Clip.hardEdge,
                           dataRowMinHeight: heightScreen * 0.06,
                           dataRowMaxHeight: heightScreen * 0.06,
                           border: const TableBorder(
                             top: BorderSide(
                               color: AppColors.greyForTable,
                             ),
-                            right: BorderSide(
+                            left: BorderSide(
                               color: AppColors.greyForTable,
                             ),
                             bottom: BorderSide(
@@ -125,27 +238,24 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                           ),
                           columns: const [
                             DataColumn(
-                              label: Text(
-                                'Имя',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 16),
+                              label: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  'Ср',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ),
                           ],
-                          // Имена студентов
                           rows: List<DataRow>.generate(
-                            provider.allStudentDataList.length,
-                            (int index) => DataRow(
+                            providerScores.allStudentDataList.length,
+                            (int index) => const DataRow(
                               cells: [
                                 DataCell(
-                                  SizedBox(
-                                    width: widthScreen * 0.26,
-                                    child: Text(
-                                      provider.allStudentDataList[index],
-                                      style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis),
-                                      maxLines: 2,
-                                    ),
+                                  AttestationWidget(
+                                    grade: '2',
                                   ),
                                 ),
                               ],
@@ -153,191 +263,57 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: widthScreen * 0.49,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
+                      SizedBox(
+                        width: widthScreen * 0.1,
                         child: DataTable(
                           headingRowHeight: heightScreen * 0.07,
-                          horizontalMargin: 10,
+                          horizontalMargin: 7,
                           dataRowMinHeight: heightScreen * 0.06,
                           dataRowMaxHeight: heightScreen * 0.06,
                           border: const TableBorder(
                             top: BorderSide(
                               color: AppColors.greyForTable,
                             ),
-                            verticalInside: BorderSide(
+                            left: BorderSide(
                               color: AppColors.greyForTable,
                             ),
                             bottom: BorderSide(
                               color: AppColors.greyForTable,
                             ),
                           ),
-                          columnSpacing: widthScreen * 0.05,
-                          // TODO(Sanya) надо сделать генерацию виджетов даты нормальную!
                           columns: const [
-                            DataColumn(label: DateWidget(index: 0)),
-                            DataColumn(label: DateWidget(index: 1)),
-                            DataColumn(label: DateWidget(index: 2)),
-                            DataColumn(label: DateWidget(index: 3)),
-                            DataColumn(label: DateWidget(index: 4)),
-                            DataColumn(label: DateWidget(index: 5)),
-                            DataColumn(label: DateWidget(index: 6)),
-                            DataColumn(label: DateWidget(index: 7)),
-                            DataColumn(label: DateWidget(index: 8)),
-                            DataColumn(label: DateWidget(index: 9)),
-                            DataColumn(label: DateWidget(index: 10)),
+                            DataColumn(
+                              label: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  'Ат',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
                           ],
-                          // оценки
                           rows: List<DataRow>.generate(
-                            provider.allStudentDataList.length,
-                            (int index) => DataRow(
+                            providerScores.allStudentDataList.length,
+                            (int index) => const DataRow(
                               cells: [
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
-                                DataCell(ScoresWidget(
-                                    listStudentTable:
-                                        provider.allStudentDataList,
-                                    index: index)),
+                                DataCell(
+                                  AttestationWidget(
+                                    grade: '5',
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: widthScreen * 0.1,
-                      child: DataTable(
-                        headingRowHeight: heightScreen * 0.07,
-                        horizontalMargin: 7,
-                        clipBehavior: Clip.hardEdge,
-                        dataRowMinHeight: heightScreen * 0.06,
-                        dataRowMaxHeight: heightScreen * 0.06,
-                        border: const TableBorder(
-                          top: BorderSide(
-                            color: AppColors.greyForTable,
-                          ),
-                          left: BorderSide(
-                            color: AppColors.greyForTable,
-                          ),
-                          bottom: BorderSide(
-                            color: AppColors.greyForTable,
-                          ),
-                        ),
-                        columns: const [
-                          DataColumn(
-                            label: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                'Ср',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        ],
-                        rows: List<DataRow>.generate(
-                          provider.allStudentDataList.length,
-                          (int index) => const DataRow(
-                            cells: [
-                              DataCell(
-                                AttestationWidget(
-                                  grade: '2',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: widthScreen * 0.1,
-                      child: DataTable(
-                        headingRowHeight: heightScreen * 0.07,
-                        horizontalMargin: 7,
-                        dataRowMinHeight: heightScreen * 0.06,
-                        dataRowMaxHeight: heightScreen * 0.06,
-                        border: const TableBorder(
-                          top: BorderSide(
-                            color: AppColors.greyForTable,
-                          ),
-                          left: BorderSide(
-                            color: AppColors.greyForTable,
-                          ),
-                          bottom: BorderSide(
-                            color: AppColors.greyForTable,
-                          ),
-                        ),
-                        columns: const [
-                          DataColumn(
-                            label: Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                'Ат',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        ],
-                        rows: List<DataRow>.generate(
-                          provider.allStudentDataList.length,
-                          (int index) => const DataRow(
-                            cells: [
-                              DataCell(
-                                AttestationWidget(
-                                  grade: '5',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
         );
       },
     );

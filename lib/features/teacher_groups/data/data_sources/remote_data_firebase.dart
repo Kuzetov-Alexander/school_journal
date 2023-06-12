@@ -67,9 +67,9 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
         .child('Users/$userId/Schedule/${request.selectedDate}')
         .update(model);
 
-    await dataBase
-        .child('Users/$userId/Groups/${request.group}/allSubject')
-        .update({request.subject: ''});
+    // await dataBase
+    //     .child('Users/$userId/Groups/${request.group}/allSubject')
+    //     .update({request.subject: ''});
   }
 
   @override
@@ -83,19 +83,6 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
       final List<dynamic> dataList = data.values.toList();
-      //   dataList
-      //       .where((element) =>
-      //           element is Map<dynamic, dynamic> &&
-      //           (element['GroupName'] as String?) != null)
-      //       .map((e) {
-      //     e['GroupName'] as String;
-      //   }).toList();
-      //   resultDataGroup.addAll(dataList);
-      //   return [...resultDataGroup];
-      // } else {
-      //   return [];
-      // }
-
       for (final dynamic element in dataList) {
         if (element is Map<dynamic, dynamic>) {
           final String? groupName = element['GroupName'] as String?;

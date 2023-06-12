@@ -9,6 +9,9 @@ abstract class RemoteDataScores {
   Future<List<String>> getAllStudent({required EntityStudentScores request});
 
   Future<void> editScore({required EntityStudentScores request});
+
+  Future<Map<Object?, Object?>> getInfoSubject(
+      {required EntityStudentScores request});
 }
 
 class RemoteDataScoresImpl implements RemoteDataScores {
@@ -19,30 +22,9 @@ class RemoteDataScoresImpl implements RemoteDataScores {
         .ref()
         .child('Users/$userId/Groups/${request.groupName}/allStudents');
 
-    // TODO(Sanya) испрвить добавление предметов в студента и придумать как обновлять каждому при добавлении нового предмета
-    // final waySubjectsDataBase = FirebaseDatabase.instance
-    //     .ref()
-    //     .child('Users/$userId/Groups/${request.groupName}/allSubject');
-    // final dataSnapshot = await waySubjectsDataBase.once();
-    // final dataSubject = dataSnapshot.snapshot.value;
-    // final List<dynamic> resultDataGroup = [];
-    //  if (dataSubject is Map) {
-    //   resultDataGroup.addAll(dataSubject.keys.toList());
-    // }
-
-    // ///для отслеживания предметов
-    // waySubjectsDataBase.onChildChanged.listen((DatabaseEvent event) {
-    //   var dataSubject = event.snapshot.value;
-    //   print('onChildChanged ------------------$dataSubject');
-
-    //   if (event.snapshot.value is Map) {
-    //     resultDataGroup.addAll(dataSubject);
-    //   }
-    // });
-
     final addData = {
-      request.fullName: {
-        'FullName': request.fullName,
+      '${request.fullName}': {
+        'FullName': '${request.fullName}',
         'email': request.email,
       }
     };
@@ -57,13 +39,9 @@ class RemoteDataScoresImpl implements RemoteDataScores {
         .ref()
         .child('Users/$userId/Groups/${request.groupName}/allStudents');
 
-    final wayAmountStudentDatabase = FirebaseDatabase.instance
-        .ref()
-        .child('Users/$userId/Groups/${request.groupName}/amountStudents');
     final dataSnapshot = await dataBase.get();
-    final List<String> resultDataGroup = [];
+    final List<String> resultDataName = [];
     if (dataSnapshot.exists) {
-      // print(dataSnapshot.value);
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
       final List<dynamic> dataList = data.values.toList();
@@ -71,13 +49,11 @@ class RemoteDataScoresImpl implements RemoteDataScores {
         if (element is Map<dynamic, dynamic>) {
           final String? groupName = element['FullName'] as String?;
           if (groupName != null) {
-            resultDataGroup.add(groupName);
+            resultDataName.add(groupName);
           }
         }
       }
-      // подсчет студентов - amountStudent
-      await wayAmountStudentDatabase.set(resultDataGroup.length);
-      return resultDataGroup;
+      return resultDataName;
     } else {
       return [];
     }
@@ -87,14 +63,42 @@ class RemoteDataScoresImpl implements RemoteDataScores {
   Future<void> editScore({required EntityStudentScores request}) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBase = FirebaseDatabase.instance.ref().child(
-        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students/${request.fullName}');
+        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students/${request.fullName}/${request.currentDay}');
     final addData = {
-      '${request.currentDay}': {
-        'score': request.score,
-        'visit': 'пусто',
-      }
+      'score': request.score,
+      'visit': 'пусто',
     };
     await dataBase.update(addData);
+  }
+
+  @override
+  Future<Map<Object?, Object?>> getInfoSubject(
+      {required EntityStudentScores request}) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataBase = FirebaseDatabase.instance.ref().child(
+        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students');
+
+    final dataSnapshot = await dataBase.get();
+    // final Map<Object?, Object?> result = {};
+    if (dataSnapshot.exists) {
+      final Map<Object?, Object?> data =
+          dataSnapshot.value as Map<Object?, Object?>;
+      // print(data);
+
+      // final List<dynamic> dataList = data.values.toList();
+      // print(dataList);
+      // for (final dynamic element in dataList) {
+      //   if (element is Map<dynamic, dynamic>) {
+      //     final String? groupName = element['FullName'] as String?;
+      //     if (groupName != null) {
+      //       result.add(groupName);
+      //     }
+      //   }
+      // }
+      return data;
+    } else {
+      return {};
+    }
   }
 }
 

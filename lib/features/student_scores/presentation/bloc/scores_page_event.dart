@@ -26,6 +26,16 @@ class GetAllStudentEvent extends ScoresPageEvent {
   });
 }
 
+class GetInfoSubjectEvent extends ScoresPageEvent {
+  final String groupName;
+  final String subject;
+
+  const GetInfoSubjectEvent({
+    required this.groupName,
+    required this.subject,
+  });
+}
+
 class EditScoreEvent extends ScoresPageEvent {
   final String subject;
   final String studentName;
