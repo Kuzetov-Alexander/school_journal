@@ -60,6 +60,17 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
       },
     );
 
+    on<GetInfoScheduleEvent>((event, emit) async {
+      final resultRequestBloc = await repository.getInfoSchedule();
+      if (resultRequestBloc.isRight()) {
+        emit(
+          GetInfoScheduleState(
+            data: resultRequestBloc.getOrElse(() => {}),
+          ),
+        );
+      }
+    });
+
     on<EditScoreEvent>((event, emit) async {
       await repository.editScore(
           request: EntityStudentScores(

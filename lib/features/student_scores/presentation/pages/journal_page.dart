@@ -91,6 +91,8 @@ class _JournalPageState extends State<JournalPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // TODO(Sanya) Убрать блок отсюда и внедреть через провайдер лист
+
                       BlocBuilder<ScoresPageBloc, ScoresPageState>(
                           builder: (context, state) {
                         if (state is GetAllStudentState) {
@@ -105,6 +107,7 @@ class _JournalPageState extends State<JournalPage> {
                       }),
                       ElevatedButton(
                         onPressed: () {
+                          print(providerScores.allStudentDataList);
                           context.goNamed('EditStudents');
                         },
                         style: ElevatedButton.styleFrom(
@@ -191,7 +194,7 @@ class _JournalPageState extends State<JournalPage> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              providerScores.currentsubject = dataSubjects;
+                              providerScores.currentSubject = dataSubjects;
                               context.goNamed('StudentScores');
                             },
                             style: ElevatedButton.styleFrom(

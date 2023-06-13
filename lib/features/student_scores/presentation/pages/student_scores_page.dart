@@ -27,6 +27,12 @@ class StudentScoresPageState extends State<StudentScoresPage> {
     );
   }
 
+  void _getInfoSchedule(context) {
+    BlocProvider.of<ScoresPageBloc>(context).add(
+      GetInfoScheduleEvent(),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -36,9 +42,15 @@ class StudentScoresPageState extends State<StudentScoresPage> {
           groupName:
               Provider.of<ProviderScores>(context, listen: false).currentGroup,
           subject: Provider.of<ProviderScores>(context, listen: false)
-              .currentsubject);
+              .currentSubject);
+      // _getInfoSchedule(context);
     });
-    // TODO(Sanya) Метод подгрузки всех студентов по предмету а тех которых нет, добавить с null значением {qqqq: null, alex : {...}}
+  }
+
+  @override
+  void didChangeDependencies() {
+    _getInfoSchedule(context);
+    super.didChangeDependencies();
   }
   // Колонки формириуем и сходя из дат уроков
 
@@ -47,11 +59,21 @@ class StudentScoresPageState extends State<StudentScoresPage> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final providerScores = Provider.of<ProviderScores>(context);
+    // final List list = [
+    //   [4, 5, 6]
+    // ];
     return BlocBuilder<ScoresPageBloc, ScoresPageState>(
       builder: (context, state) {
         if (state is GetInfoSubjectState) {
           providerScores.updateDataMap(studentData: state.data);
           // print('${providerScores.mapData}');
+        }
+        if (state is GetInfoScheduleState) {
+          providerScores.updateLessonsMap(
+              lessonData: state.data,
+              subject: Provider.of<ProviderScores>(context, listen: false)
+                  .currentSubject);
+          print(providerScores.dataForDateWidget());
         }
 
         return Scaffold(
@@ -64,7 +86,7 @@ class StudentScoresPageState extends State<StudentScoresPage> {
             ),
             automaticallyImplyLeading: false,
             title: Text(
-              '${providerScores.currentsubject}',
+              '${providerScores.currentSubject}',
             ),
             centerTitle: true,
             backgroundColor: Colors.white,
@@ -193,19 +215,36 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                             columnSpacing: widthScreen * 0.05,
                             // TODO(Sanya) надо сделать генерацию виджетов даты нормальную!
                             columns: List.generate(
-                              providerScores.allStudentDataList.length,
+                              providerScores.listLessons.length,
                               (index) =>
                                   DataColumn(label: DateWidget(index: index)),
                             ),
 
                             // оценки
-                            rows: List<DataRow>.generate(
+                            rows:
+                                // list
+                                //     .map(
+                                //       (element) => DataRow(
+                                //         cells: List.generate(
+                                //           list.length,
+                                //           (index) => DataCell(
+                                //             Text(
+                                //               element.toString(),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     )
+                                //     .toList()
+                                List<DataRow>.generate(
                               // сюда нужно указать количество дат с уроками по предмету
+                              // ряд оценки у ученика
                               providerScores.allStudentDataList.length,
                               (int index) => DataRow(
                                 cells: List.generate(
-                                  providerScores.allStudentDataList.length,
+                                  providerScores.listLessons.length,
                                   (index) => DataCell(
+                                    // Text('${list[index][index]}'),
                                     ScoresWidget(
                                         listStudentTable:
                                             providerScores.allStudentDataList,
@@ -332,7 +371,7 @@ class StudentScoresPageState extends State<StudentScoresPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${provider.currentsubject}',
+                  '${provider.currentSubject}',
                   style: TextStyle(
                       fontSize: heightScreen * 0.025,
                       fontWeight: FontWeight.w600,

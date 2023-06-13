@@ -12,10 +12,11 @@ class DateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    String text = DateFormat('E', 'ru').format(DateTime.now());
-    String textDate = text[0].toUpperCase() + text.substring(1).toLowerCase();
-    final providerScore = Provider.of<ProviderScores>(context);
 
+    final providerScore = Provider.of<ProviderScores>(context);
+    String text =
+        DateFormat('E', 'ru').format(providerScore.dataForDateWidget()[index]);
+    String textDate = text[0].toUpperCase() + text.substring(1).toLowerCase();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -35,7 +36,7 @@ class DateWidget extends StatelessWidget {
             ),
           ),
           Text(
-            DateFormat('d').format(DateTime.now()),
+            DateFormat('d').format(providerScore.dataForDateWidget()[index]),
             maxLines: 1,
             style:
                 TextStyle(color: Colors.white, fontSize: heightScreen * 0.018),

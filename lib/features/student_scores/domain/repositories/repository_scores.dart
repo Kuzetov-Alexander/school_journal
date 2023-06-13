@@ -15,7 +15,10 @@ abstract class RepositoryScores {
   Future<Either<Failure, void>> editScore(
       {required EntityStudentScores request});
 
-  /// Получение из базы данных лист по предметам
+  /// Получение из базы данных мапы по предметам
   Future<Either<Failure, Map<Object?, Object?>>> getInfoSubject(
       {required EntityStudentScores request});
+
+  /// Получение из базы данных мапы по расписанию с датами уроков
+  Future<Either<Failure, Map<Object?, Object?>>> getInfoSchedule();
 }

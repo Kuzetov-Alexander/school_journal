@@ -25,3 +25,9 @@ class GetInfoSubjectState extends ScoresPageState {
 
   const GetInfoSubjectState({required this.data});
 }
+
+class GetInfoScheduleState extends ScoresPageState {
+  final Map<Object?, Object?> data;
+
+  const GetInfoScheduleState({required this.data});
+}

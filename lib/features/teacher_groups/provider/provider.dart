@@ -19,6 +19,15 @@ class ProviderGroup extends ChangeNotifier {
   Map allCurrentLessons = {}; // Map для всех уроков определенной группы
   int lengthCurrentlistLesson = 0;
 
+  Widget amountStudent(Map mapData) {
+    final mapStudentName = mapData['allStudents'];
+    if (mapStudentName is Map) {
+      final nunberStudetns = mapStudentName.keys;
+      return Text('${nunberStudetns.length} учеников');
+    }
+    return const Text('ошибка в подсчете студентов');
+  }
+
   /// функция для сохранения уроков определенной группы
   void saveLessonForSelectedGroup(List lesson, String key, String date) {
     if (date != '') {

@@ -35,6 +35,7 @@ class MyGroupInfoWidget extends StatelessWidget {
           onTap: () async {
             provider.currentGroup = mapGroups['GroupName'].toString();
             providerScores.currentGroup = mapGroups['GroupName'].toString();
+            // print('${mapGroups['allStudents']}');
             _getCurrentLessons(
                 context, providerCalendar.day, provider.currentGroup);
             await Future.delayed(const Duration(milliseconds: 30))
@@ -91,7 +92,7 @@ class MyGroupInfoWidget extends StatelessWidget {
                     const SizedBox(
                       width: 10,
                     ),
-                    Text('${provider.listGroup.length} учеников'),
+                    provider.amountStudent(mapGroups),
                   ],
                 ),
               )

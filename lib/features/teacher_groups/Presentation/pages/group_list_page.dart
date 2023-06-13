@@ -178,6 +178,7 @@ class _GroupListPageState extends State<GroupListPage> {
                           Animation<double> animation, int index) {
                         Map<dynamic, dynamic> student = snapshot.value as Map;
                         snapshot.key;
+                        // print(student);
 
                         return Column(
                           children: [

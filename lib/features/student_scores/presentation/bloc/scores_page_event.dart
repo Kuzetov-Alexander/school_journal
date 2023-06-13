@@ -36,6 +36,8 @@ class GetInfoSubjectEvent extends ScoresPageEvent {
   });
 }
 
+class GetInfoScheduleEvent extends ScoresPageEvent {}
+
 class EditScoreEvent extends ScoresPageEvent {
   final String subject;
   final String studentName;

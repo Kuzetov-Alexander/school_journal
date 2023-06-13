@@ -12,6 +12,8 @@ abstract class RemoteDataScores {
 
   Future<Map<Object?, Object?>> getInfoSubject(
       {required EntityStudentScores request});
+
+  Future<Map<Object?, Object?>> getInfoSchedule();
 }
 
 class RemoteDataScoresImpl implements RemoteDataScores {
@@ -95,6 +97,25 @@ class RemoteDataScoresImpl implements RemoteDataScores {
       //     }
       //   }
       // }
+      return data;
+    } else {
+      return {};
+    }
+  }
+
+  @override
+  Future<Map<Object?, Object?>> getInfoSchedule() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataBase =
+        FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
+
+    final dataSnapshot = await dataBase.get();
+    // final Map<Object?, Object?> result = {};
+    // print(dataSnapshot.value);
+    if (dataSnapshot.exists) {
+      final Map<Object?, Object?> data =
+          dataSnapshot.value as Map<Object?, Object?>;
+
       return data;
     } else {
       return {};

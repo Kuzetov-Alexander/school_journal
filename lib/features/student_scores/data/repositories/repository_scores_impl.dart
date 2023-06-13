@@ -56,4 +56,13 @@ class RepositoryScoresImpl implements RepositoryScores {
       return Left<Failure, Map<Object?, Object?>>(DataBaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Map<Object?, Object?>>> getInfoSchedule() async {
+    try {
+      return await dataBase.getInfoSchedule().then((value) => Right(value));
+    } on Object {
+      return Left<Failure, Map<Object?, Object?>>(DataBaseFailure());
+    }
+  }
 }
