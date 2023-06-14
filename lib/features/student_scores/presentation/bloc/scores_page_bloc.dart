@@ -82,5 +82,11 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
 
       emit(EditScoreState());
     });
+
+    on<DeleteStudentEvent>((event, emit) async {
+      await repository.deleteStudent(
+          request: EntityStudentScores(
+              fullName: event.studentName, groupName: event.groupName));
+    });
   }
 }

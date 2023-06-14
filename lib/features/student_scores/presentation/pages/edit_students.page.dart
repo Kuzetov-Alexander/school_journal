@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/student_scores/domain/entities/entity_student_scores.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/add_student_widget.dart';
 import 'package:school_journal/features/student_scores/presentation/widgets/student_profile.dart';
 import 'package:school_journal/features/teacher_groups/provider/provider.dart';
@@ -19,6 +21,18 @@ class EditStudentsPage extends StatefulWidget {
 }
 
 class _EditStudentsPageState extends State<EditStudentsPage> {
+  void _deleteStudent({
+    required String studentName,
+    required String groupName,
+  }) {
+    BlocProvider.of<ScoresPageBloc>(context).add(
+      DeleteStudentEvent(
+        studentName: studentName,
+        groupName: groupName,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
@@ -83,13 +97,10 @@ class _EditStudentsPageState extends State<EditStudentsPage> {
                               children: [
                                 SlidableAction(
                                   onPressed: (context) {
-                                    // _deleteGroup(context,
-                                    //     key:
-                                    //         'Users/$userId/Groups/${snapshot.key}');
-
-                                    // provider.deleteGroupName(snapshot
-                                    //     .children.first.value
-                                    //     .toString());
+                                    _deleteStudent(
+                                        studentName:
+                                            '${mapDataStudent['FullName'][index]}',
+                                        groupName: provider.currentGroup);
                                   },
                                   backgroundColor: Colors.red,
                                   foregroundColor: Colors.white,
@@ -112,7 +123,8 @@ class _EditStudentsPageState extends State<EditStudentsPage> {
                                 builder: (context) => StudentProfile(
                                   student: EntityStudentScores(
                                       fullName: '${mapDataStudent['FullName']}',
-                                      email: '${mapDataStudent['email']}'),
+                                      email: '${mapDataStudent['email']}',
+                                      groupName: provider.currentGroup),
                                 ),
                               );
                             },

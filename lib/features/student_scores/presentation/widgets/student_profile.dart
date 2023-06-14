@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_journal/common/color.dart';
 import 'package:school_journal/features/student_scores/domain/entities/entity_student_scores.dart';
+import 'package:school_journal/features/student_scores/presentation/bloc/scores_page_bloc.dart';
 
 class StudentProfile extends StatefulWidget {
   final EntityStudentScores student;
@@ -18,6 +20,18 @@ class StudentProfile extends StatefulWidget {
 class _StudentProfileState extends State<StudentProfile> {
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
+
+  void _deleteStudent({
+    required String studentName,
+    required String groupName,
+  }) {
+    BlocProvider.of<ScoresPageBloc>(context).add(
+      DeleteStudentEvent(
+        studentName: studentName,
+        groupName: groupName,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +278,11 @@ class _StudentProfileState extends State<StudentProfile> {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _deleteStudent(
+                              studentName: '${widget.student.fullName}',
+                              groupName: '${widget.student.groupName}');
+                        },
                         child: Row(
                           children: [
                             SizedBox(width: widthScreen * 0.011),

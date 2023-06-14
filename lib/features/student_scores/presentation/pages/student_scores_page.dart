@@ -52,16 +52,12 @@ class StudentScoresPageState extends State<StudentScoresPage> {
     _getInfoSchedule(context);
     super.didChangeDependencies();
   }
-  // Колонки формириуем и сходя из дат уроков
 
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final providerScores = Provider.of<ProviderScores>(context);
-    // final List list = [
-    //   [4, 5, 6]
-    // ];
     return BlocBuilder<ScoresPageBloc, ScoresPageState>(
       builder: (context, state) {
         if (state is GetInfoSubjectState) {
@@ -73,7 +69,7 @@ class StudentScoresPageState extends State<StudentScoresPage> {
               lessonData: state.data,
               subject: Provider.of<ProviderScores>(context, listen: false)
                   .currentSubject);
-          print(providerScores.dataForDateWidget());
+          // print(providerScores.dataForDateWidget());
         }
 
         return Scaffold(
@@ -109,19 +105,7 @@ class StudentScoresPageState extends State<StudentScoresPage> {
               ),
               IconButton(
                 splashRadius: 20,
-                onPressed: () {
-                  // showModalBottomSheet(
-                  //   isScrollControlled: true,
-                  //   backgroundColor: Colors.transparent,
-                  //   shape: const RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.vertical(
-                  //       top: Radius.circular(20),
-                  //     ),
-                  //   ),
-                  //   context: context,
-                  //   builder: (context) => const AddStudentWidget(),
-                  // );
-                },
+                onPressed: () {},
                 icon: const Image(
                   image: AssetImage('assets/images/plus.png'),
                 ),

@@ -21,4 +21,8 @@ abstract class RepositoryScores {
 
   /// Получение из базы данных мапы по расписанию с датами уроков
   Future<Either<Failure, Map<Object?, Object?>>> getInfoSchedule();
+
+  /// Удалить студента
+  Future<Either<Failure, void>> deleteStudent(
+      {required EntityStudentScores request});
 }

@@ -8,7 +8,6 @@ class ProviderScores extends ChangeNotifier {
   String currentStudent = '';
   Map<Object, Object?> mapData = {};
   String day = DateFormat('dd-MM-yyyy', 'ru').format(DateTime.now());
-  // Map<Object, Object?> mapLessons = {};
   List listLessons = [];
 
   /// Обновляем лист Студентов
@@ -38,7 +37,6 @@ class ProviderScores extends ChangeNotifier {
   List updateLessonsMap(
       {required Map<Object?, Object?> lessonData, required String? subject}) {
     listLessons.clear();
-    // print(object)
     final listDate = lessonData.keys.toList();
     for (var data in listDate) {
       final m1 = lessonData[data];
@@ -50,15 +48,6 @@ class ProviderScores extends ChangeNotifier {
           if (group == currentGroup && subject == currentSubject) {
             listLessons.add(data);
           }
-
-          // if (group == currentGroup && subject == currentSubject) {
-          //   final lesson = {'groupName': '$group', 'subject': '$subject'};
-          //   if (mapLessons.containsKey('$data')) {
-          //     (mapLessons['$data'] as List<Map<String, String>>).add(lesson);
-          //   } else {
-          //     mapLessons['$data'] = [lesson];
-          //   }
-          // }
         }
       }
     }
@@ -78,6 +67,8 @@ class ProviderScores extends ChangeNotifier {
 
   Widget getWidgetScore({required String currentStudent}) {
     final dataScore = mapData[currentStudent];
+    // print(dataScore);
+    //проверяет оценку только сегодняшнего дня!!!! косяк
     if (dataScore is Map && dataScore.containsKey(day)) {
       final mapScore = dataScore[day];
       final score = mapScore['score'];

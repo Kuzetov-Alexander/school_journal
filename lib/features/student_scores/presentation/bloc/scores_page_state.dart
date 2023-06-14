@@ -7,6 +7,8 @@ abstract class ScoresPageState extends Equatable {
   List<Object> get props => [];
 }
 
+class DeleteStudent extends ScoresPageState {}
+
 class ScoresPageInitial extends ScoresPageState {}
 
 class AddedNewStudentState extends ScoresPageState {}

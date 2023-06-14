@@ -7,6 +7,16 @@ abstract class ScoresPageEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class DeleteStudentEvent extends ScoresPageEvent {
+  final String groupName;
+  final String studentName;
+
+  const DeleteStudentEvent({
+    required this.studentName,
+    required this.groupName,
+  });
+}
+
 class AddNewStudentEvent extends ScoresPageEvent {
   final String groupName;
   final String email;

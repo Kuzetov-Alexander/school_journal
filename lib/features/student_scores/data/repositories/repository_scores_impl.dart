@@ -65,4 +65,16 @@ class RepositoryScoresImpl implements RepositoryScores {
       return Left<Failure, Map<Object?, Object?>>(DataBaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteStudent(
+      {required EntityStudentScores request}) async {
+    try {
+      return await dataBase
+          .deleteStudent(request: request)
+          .then((value) => Right(value));
+    } on Object {
+      return Left<Failure, void>(DataBaseFailure());
+    }
+  }
 }

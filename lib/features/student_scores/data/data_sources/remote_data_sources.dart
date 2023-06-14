@@ -14,6 +14,8 @@ abstract class RemoteDataScores {
       {required EntityStudentScores request});
 
   Future<Map<Object?, Object?>> getInfoSchedule();
+
+  Future<void> deleteStudent({required EntityStudentScores request});
 }
 
 class RemoteDataScoresImpl implements RemoteDataScores {
@@ -121,41 +123,22 @@ class RemoteDataScoresImpl implements RemoteDataScores {
       return {};
     }
   }
+
+  @override
+  Future<void> deleteStudent({required EntityStudentScores request}) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataBaseStudent = FirebaseDatabase.instance.ref().child(
+        'Users/$userId/Groups/${request.groupName}/allStudents/${request.fullName}');
+
+    final dataBaseSubject = FirebaseDatabase.instance
+        .ref()
+        .child('Users/$userId/Groups/${request.groupName}/allSubject');
+    // .orderByChild('allSubject')
+    // .equalTo('${request.fullName}');
+
+    final snapshot = await dataBaseSubject.once();
+    print(snapshot.snapshot.value);
+
+    // await dataBaseStudent.remove();
+  }
 }
-
-
-
-
-    // final allSubjects = await dataBase.child('allSubject').once();
-    // late dynamic data;
-    // Map<String, Object> studentData = {};
-
-    // if (allSubjects.snapshot.value is String) {
-    //   data = allSubjects.snapshot.value as String;
-    //   studentData = {
-    //     request.fullName: {
-    //       'Email': request.email,
-    //       'Subjects': '',
-    //     }
-    //   };
-    // } else {
-    //   data = allSubjects.snapshot.value as Map<Object?, Object?>;
-
-    //   final List<dynamic> dataList = data.keys.toList();
-
-    //   Map<String?, Object?> mapSubjects = {};
-    //   Map generalMap = {
-    //     'data': {'grade': '', 'visit': ''}
-    //   };
-
-    //   for (var item in dataList) {
-    //     mapSubjects[item] = generalMap;
-    //   }
-
-    //   studentData = {
-    //     request.fullName: {
-    //       'Email': request.email,
-    //       'Subjects': mapSubjects,
-    //     }
-    //   };
-    // }
