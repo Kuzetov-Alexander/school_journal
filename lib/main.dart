@@ -42,7 +42,6 @@ import 'package:school_journal/features/teacher_profile/data/datasources/remote_
 import 'package:school_journal/features/teacher_profile/data/repositories/user_profile_repository_impl.dart';
 import 'package:school_journal/features/teacher_profile/domain/repositories/user_profile_repository.dart';
 import 'dart:io' show Platform;
-
 import 'package:school_journal/firebase_options.dart';
 
 Future<void> main() async {

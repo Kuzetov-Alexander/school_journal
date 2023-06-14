@@ -36,10 +36,11 @@ class DateWidget extends StatelessWidget {
             ),
           ),
           Text(
-            DateFormat('d').format(providerScore.dataForDateWidget()[index]),
+            DateFormat('dd.MM')
+                .format(providerScore.dataForDateWidget()[index]),
             maxLines: 1,
             style:
-                TextStyle(color: Colors.white, fontSize: heightScreen * 0.018),
+                TextStyle(color: Colors.white, fontSize: heightScreen * 0.016),
           ),
         ],
       ),

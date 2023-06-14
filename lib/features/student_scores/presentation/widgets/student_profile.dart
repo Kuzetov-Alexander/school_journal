@@ -153,7 +153,9 @@ class _StudentProfileState extends State<StudentProfile> {
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
-                        labelText: widget.student.email,
+                        labelText: widget.student.email == ''
+                            ? 'Почта не внесена'
+                            : widget.student.email,
                         labelStyle: const TextStyle(
                             color: Color(0xff9D9D9D),
                             fontWeight: FontWeight.w600,
@@ -210,6 +212,39 @@ class _StudentProfileState extends State<StudentProfile> {
                           height: 20,
                           image: AssetImage('assets/images/import.png'),
                           color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: heightScreen * 0.03),
+                    SizedBox(
+                      height: heightScreen * 0.07,
+                      width: double.infinity,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              const MaterialStatePropertyAll<Color>(
+                                  Color(0xffF3F3F3)),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            SizedBox(width: widthScreen * 0.011),
+                            Text(
+                              'Сохранить изменения',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: AppColors.purple,
+                                fontSize: heightScreen * 0.017,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

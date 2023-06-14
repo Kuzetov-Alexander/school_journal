@@ -47,7 +47,7 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
           ),
         ),
         title: Text(
-          ' ${provider.currentGroup}',
+          provider.currentGroup,
           style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: heightScreen * 0.022,

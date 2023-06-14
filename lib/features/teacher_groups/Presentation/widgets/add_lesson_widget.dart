@@ -122,400 +122,411 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                   color: Colors.white,
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(20))),
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Image(
-                              image:
-                                  AssetImage('assets/images/cross_icon.png'))),
-                      SizedBox(
-                        width: widthScreen / 4,
-                      ),
-                      Text(
-                        'Добавить урок',
-                        style: TextStyle(
-                            color: AppColors.black212525,
-                            fontSize: heightScreen * 0.023,
-                            fontWeight: FontWeight.w600),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.grey,
-                  height: heightScreen * 0.001,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(heightScreen * 0.03),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppColors.greyLight,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Image(
+                                image: AssetImage(
+                                    'assets/images/cross_icon.png'))),
+                        SizedBox(
+                          width: widthScreen / 4,
+                        ),
+                        Text(
+                          'Добавить урок',
+                          style: TextStyle(
+                              color: AppColors.black212525,
+                              fontSize: heightScreen * 0.023,
+                              fontWeight: FontWeight.w600),
+                        )
+                      ],
                     ),
-                    height: heightScreen * 0.5,
-                    width: widthScreen * 0.88,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 19.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${DateFormat('EEEE', 'ru').format(providerDate.currentDate).capitalize()} , ${DateFormat('d MMM', 'ru').format(providerDate.currentDate)}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: heightScreen * 0.016,
-                                      color: AppColors.gray5a5a5a),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: const Color(0xffFAFAFA)),
-                            width: double.infinity,
-                            height: heightScreen * 0.08,
-                            child: Padding(
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    height: heightScreen * 0.001,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(heightScreen * 0.03),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.greyLight,
+                      ),
+                      height: heightScreen * 0.5,
+                      width: widthScreen * 0.88,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          children: [
+                            Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(vertical: 19.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    provider.selectedGroup,
+                                    '${DateFormat('EEEE', 'ru').format(providerDate.currentDate).capitalize()} , ${DateFormat('d MMM', 'ru').format(providerDate.currentDate)}',
                                     style: TextStyle(
-                                        fontSize: heightScreen * 0.019),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      _controllerSubject.text = '';
-                                      _downloadNameGroups(context);
-
-                                      await Future.delayed(
-                                              const Duration(milliseconds: 50))
-                                          .then((_) {
-                                        if (provider.listGroup.isNotEmpty) {
-                                          showCupertinoModalPopup(
-                                              context: context,
-                                              builder: (context) {
-                                                return Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: heightScreen * 0.7),
-                                                  child: Column(
-                                                    children: [
-                                                      Expanded(
-                                                        child:
-                                                            CupertinoPickerWidget(
-                                                          listWidget: provider
-                                                              .listGroup
-                                                              .map((e) =>
-                                                                  Text(e))
-                                                              .toList(),
-                                                          onSelected: (value) {
-                                                            setState(() {
-                                                              indexValueGroup =
-                                                                  value;
-                                                            });
-                                                            provider.selectedGroup =
-                                                                provider.listGroup[
-                                                                    value];
-                                                          },
-                                                        ),
-                                                      ),
-                                                      ColoredBox(
-                                                        color: Colors.white,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            CupertinoButton(
-                                                                child: const Text(
-                                                                    'Подтвердить'),
-                                                                onPressed: () {
-                                                                  provider
-                                                                      .selectedGroup = provider
-                                                                          .listGroup[
-                                                                      indexValueGroup];
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                }),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              });
-                                        } else {
-                                          showTip(context, heightScreen * 0.73,
-                                              'Необходимо сначала создать группу');
-                                        }
-                                      });
-                                    },
-                                    child: const Text('Выбрать группу'),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: heightScreen * 0.016,
+                                        color: AppColors.gray5a5a5a),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: heightScreen * 0.015,
-                          ),
-                          TextformFieldWidget(
-                            controllerClass: _controllerSubject,
-                            hintTextx: 'Введите предмет',
-                            labelTextx: 'Предмет',
-                            iconButton: InkWell(
-                              onTap: () async {
-                                _downloadSubjects(
-                                    context, provider.selectedGroup);
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: const Color(0xffFAFAFA)),
+                              width: double.infinity,
+                              height: heightScreen * 0.08,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      provider.selectedGroup,
+                                      style: TextStyle(
+                                          fontSize: heightScreen * 0.019),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        _controllerSubject.text = '';
+                                        _downloadNameGroups(context);
 
-                                await Future.delayed(
-                                        const Duration(milliseconds: 50))
-                                    .then((_) {
-                                  if (provider.listSubjects.isNotEmpty) {
-                                    showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(
-                                                top: heightScreen * 0.7),
-                                            child: Column(
-                                              children: [
-                                                Expanded(
-                                                  child: CupertinoPickerWidget(
-                                                    listWidget: provider
-                                                        .listSubjects
-                                                        .map((e) => Text(e))
-                                                        .toList(),
-                                                    onSelected: (value) {
-                                                      setState(() {
-                                                        indexValueSubject =
-                                                            value;
-                                                      });
-                                                      _controllerSubject.text =
-                                                          provider.listSubjects[
-                                                              value];
-                                                    },
-                                                  ),
-                                                ),
-                                                ColoredBox(
-                                                  color: Colors.white,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      CupertinoButton(
-                                                          child: const Text(
-                                                              'Подтвердить'),
-                                                          onPressed: () {
-                                                            _controllerSubject
-                                                                .text = provider
-                                                                    .listSubjects[
-                                                                indexValueSubject];
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          }),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
+                                        await Future.delayed(const Duration(
+                                                milliseconds: 50))
+                                            .then((_) {
+                                          if (provider.listGroup.isNotEmpty) {
+                                            showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top:
+                                                            heightScreen * 0.7),
+                                                    child: Column(
+                                                      children: [
+                                                        Expanded(
+                                                          child:
+                                                              CupertinoPickerWidget(
+                                                            listWidget: provider
+                                                                .listGroup
+                                                                .map((e) =>
+                                                                    Text(e))
+                                                                .toList(),
+                                                            onSelected:
+                                                                (value) {
+                                                              setState(() {
+                                                                indexValueGroup =
+                                                                    value;
+                                                              });
+                                                              provider.selectedGroup =
+                                                                  provider.listGroup[
+                                                                      value];
+                                                            },
+                                                          ),
+                                                        ),
+                                                        ColoredBox(
+                                                          color: Colors.white,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              CupertinoButton(
+                                                                  child: const Text(
+                                                                      'Подтвердить'),
+                                                                  onPressed:
+                                                                      () {
+                                                                    provider
+                                                                        .selectedGroup = provider
+                                                                            .listGroup[
+                                                                        indexValueGroup];
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  }),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                });
+                                          } else {
+                                            showTip(
+                                                context,
+                                                heightScreen * 0.73,
+                                                'Необходимо сначала создать группу');
+                                          }
                                         });
-                                  } else {
-                                    showTip(context, heightScreen * 0.73,
-                                        'Для данной группы предметы не найдены');
-                                  }
-                                });
-                              },
-                              child: const Image(
-                                height: 20,
-                                image: AssetImage('assets/images/pen_icon.png'),
-                                color: Colors.black,
+                                      },
+                                      child: const Text('Выбрать группу'),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: heightScreen * 0.015,
-                          ),
-                          TextformFieldWidget(
-                            controllerClass: _controllerRoom,
-                            hintTextx: 'Введите кабинет (не обязательно)',
-                            labelTextx: 'Кабинет',
-                            iconButton: null,
-                          ),
-                          SizedBox(
-                            height: heightScreen * 0.015,
-                          ),
-                          SizedBox(
-                            height: heightScreen * 0.01,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Начало',
-                                style: TextStyle(
-                                    fontSize: heightScreen * 0.02,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.black212525),
-                              ),
-                              // Platform.isIOS
-                              //     ?
-                              IosTimePicker(
-                                time: dateTimestart,
-                                textTime:
-                                    '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
-                                onTimeSelected: (DateTime newTime) {
-                                  setState(
-                                    () {
-                                      dateTimestart = newTime;
-                                    },
-                                  );
-                                },
-                              )
-                              // : const TimerPickerAndroidStart()
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Конец',
-                                style: TextStyle(
-                                    fontSize: heightScreen * 0.02,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.black212525),
-                              ),
-                              // Platform.isIOS
-                              //     ?
-                              IosTimePicker(
-                                time: dateTimefinish,
-                                textTime:
-                                    '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
-                                onTimeSelected: (DateTime newTimefinish) {
-                                  setState(() {
-                                    dateTimefinish =
-                                        newTimefinish; // делать через блок или провайдер лучше?
+                            SizedBox(
+                              height: heightScreen * 0.015,
+                            ),
+                            TextformFieldWidget(
+                              controllerClass: _controllerSubject,
+                              hintTextx: 'Введите предмет',
+                              labelTextx: 'Предмет',
+                              iconButton: InkWell(
+                                onTap: () async {
+                                  _downloadSubjects(
+                                      context, provider.selectedGroup);
+
+                                  await Future.delayed(
+                                          const Duration(milliseconds: 50))
+                                      .then((_) {
+                                    if (provider.listSubjects.isNotEmpty) {
+                                      showCupertinoModalPopup(
+                                          context: context,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: heightScreen * 0.7),
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child:
+                                                        CupertinoPickerWidget(
+                                                      listWidget: provider
+                                                          .listSubjects
+                                                          .map((e) => Text(e))
+                                                          .toList(),
+                                                      onSelected: (value) {
+                                                        setState(() {
+                                                          indexValueSubject =
+                                                              value;
+                                                        });
+                                                        _controllerSubject
+                                                            .text = provider
+                                                                .listSubjects[
+                                                            value];
+                                                      },
+                                                    ),
+                                                  ),
+                                                  ColoredBox(
+                                                    color: Colors.white,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        CupertinoButton(
+                                                            child: const Text(
+                                                                'Подтвердить'),
+                                                            onPressed: () {
+                                                              _controllerSubject
+                                                                  .text = provider
+                                                                      .listSubjects[
+                                                                  indexValueSubject];
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            }),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                    } else {
+                                      showTip(context, heightScreen * 0.73,
+                                          'Для данной группы предметы не найдены');
+                                    }
                                   });
                                 },
-                              )
-                              // : const TimerPickerAndroidFinish()
-                            ],
+                                child: const Image(
+                                  height: 20,
+                                  image:
+                                      AssetImage('assets/images/pen_icon.png'),
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.015,
+                            ),
+                            TextformFieldWidget(
+                              controllerClass: _controllerRoom,
+                              hintTextx: 'Введите кабинет (не обязательно)',
+                              labelTextx: 'Кабинет',
+                              iconButton: null,
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.015,
+                            ),
+                            SizedBox(
+                              height: heightScreen * 0.01,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Начало',
+                                  style: TextStyle(
+                                      fontSize: heightScreen * 0.02,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.black212525),
+                                ),
+                                // Platform.isIOS
+                                //     ?
+                                IosTimePicker(
+                                  time: dateTimestart,
+                                  textTime:
+                                      '${dateTimestart.hour.toString().padLeft(2, '0')}:${dateTimestart.minute.toString().padLeft(2, '0')}',
+                                  onTimeSelected: (DateTime newTime) {
+                                    setState(
+                                      () {
+                                        dateTimestart = newTime;
+                                      },
+                                    );
+                                  },
+                                )
+                                // : const TimerPickerAndroidStart()
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Конец',
+                                  style: TextStyle(
+                                      fontSize: heightScreen * 0.02,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.black212525),
+                                ),
+                                // Platform.isIOS
+                                //     ?
+                                IosTimePicker(
+                                  time: dateTimefinish,
+                                  textTime:
+                                      '${dateTimefinish.hour.toString().padLeft(2, '0')}:${dateTimefinish.minute.toString().padLeft(2, '0')}',
+                                  onTimeSelected: (DateTime newTimefinish) {
+                                    setState(() {
+                                      dateTimefinish =
+                                          newTimefinish; // делать через блок или провайдер лучше?
+                                    });
+                                  },
+                                )
+                                // : const TimerPickerAndroidFinish()
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: AppColors.greyLight,
+                    ),
+                    height: heightScreen * 0.08,
+                    width: widthScreen * 0.88,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Добавить в еженедельное расписание',
+                              style: TextStyle(
+                                  fontSize: heightScreen * 0.018,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
+                          Platform.isIOS
+                              ? CupertinoSwitch(
+                                  activeColor: AppColors.purple,
+                                  value: context
+                                      .watch<ProviderGroup>()
+                                      .newLessonAdded,
+                                  onChanged: (value) {
+                                    context
+                                        .read<ProviderGroup>()
+                                        .addNewLesson(value);
+                                    provider.newLessonSaved = value;
+                                  },
+                                )
+                              : Switch(
+                                  value: context
+                                      .watch<ProviderGroup>()
+                                      .newLessonAdded,
+                                  onChanged: (value) {
+                                    context
+                                        .read<ProviderGroup>()
+                                        .addNewLesson(value);
+                                    provider.newLessonSaved = value;
+                                  },
+                                ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: AppColors.greyLight,
+                  SizedBox(
+                    height: heightScreen * 0.1,
                   ),
-                  height: heightScreen * 0.08,
-                  width: widthScreen * 0.88,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Добавить в еженедельное расписание',
-                            style: TextStyle(
-                                fontSize: heightScreen * 0.018,
-                                fontWeight: FontWeight.w600),
+                  SizedBox(
+                    height: 56,
+                    width: widthScreen * 0.88,
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: const MaterialStatePropertyAll<Color>(
+                            AppColors.purple),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        Platform.isIOS
-                            ? CupertinoSwitch(
-                                activeColor: AppColors.purple,
-                                value: context
-                                    .watch<ProviderGroup>()
-                                    .newLessonAdded,
-                                onChanged: (value) {
-                                  context
-                                      .read<ProviderGroup>()
-                                      .addNewLesson(value);
-                                  provider.newLessonSaved = value;
-                                },
-                              )
-                            : Switch(
-                                value: context
-                                    .watch<ProviderGroup>()
-                                    .newLessonAdded,
-                                onChanged: (value) {
-                                  context
-                                      .read<ProviderGroup>()
-                                      .addNewLesson(value);
-                                  provider.newLessonSaved = value;
-                                },
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: heightScreen * 0.1,
-                ),
-                SizedBox(
-                  height: 56,
-                  width: widthScreen * 0.88,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll<Color>(
-                          AppColors.purple),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
+                      ),
+                      onPressed: () {
+                        _addLesson(
+                            context,
+                            provider.selectedGroup,
+                            DateFormat('dd-MM-yyyy', 'ru')
+                                .format(providerDate.currentDate));
+                        setState(() {
+                          _controllerSubject.text = '';
+                          _controllerRoom.text = '';
+                        });
+                        Navigator.of(context).pop();
+                        _getAllLessons(context, providerDate.day);
+                      },
+                      child: Text(
+                        'Добавить',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: heightScreen * 0.022,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      _addLesson(
-                          context,
-                          provider.selectedGroup,
-                          DateFormat('dd-MM-yyyy', 'ru')
-                              .format(providerDate.currentDate));
-                      setState(() {
-                        _controllerSubject.text = '';
-                        _controllerRoom.text = '';
-                      });
-                      Navigator.of(context).pop();
-                      _getAllLessons(context, providerDate.day);
-                    },
-                    child: Text(
-                      'Добавить',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: heightScreen * 0.022,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
                   ),
-                ),
-                SizedBox(
-                  height: heightScreen * 0.015,
-                ),
-              ]),
+                  SizedBox(
+                    height: heightScreen * 0.015,
+                  ),
+                ],
+              ),
             ),
           ],
         );
@@ -527,10 +538,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 class TextformFieldWidget extends StatelessWidget {
   const TextformFieldWidget({
     super.key,
-     TextEditingController? controllerClass ,
+    TextEditingController? controllerClass,
     required this.hintTextx,
     required this.labelTextx,
-     this.iconButton,
+    this.iconButton,
   }) : _controllerClass = controllerClass;
 
   final InkWell? iconButton;
@@ -543,7 +554,6 @@ class TextformFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       cursorHeight: 15,
-  
       keyboardType: TextInputType.name,
       autocorrect: false,
       buildCounter: (BuildContext context,
@@ -552,7 +562,6 @@ class TextformFieldWidget extends StatelessWidget {
       maxLength: 20,
       controller: _controllerClass,
       decoration: InputDecoration(
-        
         filled: true,
         fillColor: const Color(0xffFAFAFA),
         border: const OutlineInputBorder(

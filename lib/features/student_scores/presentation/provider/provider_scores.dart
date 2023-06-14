@@ -71,6 +71,8 @@ class ProviderScores extends ChangeNotifier {
       DateTime dateTime = DateFormat('dd-MM-yyyy').parse(dayLesson);
       dateTimes.add(dateTime);
     });
+    dateTimes.sort((a, b) =>
+        DateTime.parse(a.toString()).compareTo(DateTime.parse(b.toString())));
     return dateTimes;
   }
 

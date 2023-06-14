@@ -107,7 +107,6 @@ class _JournalPageState extends State<JournalPage> {
                       }),
                       ElevatedButton(
                         onPressed: () {
-                          print(providerScores.allStudentDataList);
                           context.goNamed('EditStudents');
                         },
                         style: ElevatedButton.styleFrom(
@@ -117,7 +116,7 @@ class _JournalPageState extends State<JournalPage> {
                           ),
                         ),
                         child: Text(
-                          'Все',
+                          'Редактировать',
                           style: TextStyle(
                               color: AppColors.black212525,
                               fontSize: heightScreen * 0.019,
