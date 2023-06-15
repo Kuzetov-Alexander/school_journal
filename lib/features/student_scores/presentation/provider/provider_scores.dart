@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,6 +11,8 @@ class ProviderScores extends ChangeNotifier {
   Map<Object, Object?> mapData = {};
   String day = DateFormat('dd-MM-yyyy', 'ru').format(DateTime.now());
   List listLessons = [];
+
+  Map<String, dynamic> extendedMapData = {};
 
   /// Обновляем лист Студентов
   void updateFullNameList({required List<String> studentData}) {
@@ -34,8 +38,10 @@ class ProviderScores extends ChangeNotifier {
   }
 
   /// Обновляем мапу данных по урокам, формируем мапу дней со значениями группы и предмета.
-  List updateLessonsMap(
-      {required Map<Object?, Object?> lessonData, required String? subject}) {
+  void updateLessonsMap({
+    required Map<Object?, Object?> lessonData,
+    required String? subject,
+  }) {
     listLessons.clear();
     final listDate = lessonData.keys.toList();
     for (var data in listDate) {
@@ -51,15 +57,29 @@ class ProviderScores extends ChangeNotifier {
         }
       }
     }
-    return listLessons;
+
+    extendedMapData = jsonDecode(jsonEncode(mapData));
+    final setDateLessons = listLessons.toSet().cast<String>();
+
+    for (final entry in extendedMapData.entries) {
+      var dateMap = entry.value as Map<String, dynamic>;
+      final newObjects = setDateLessons.difference(dateMap.keys.toSet()).map(
+            (e) => MapEntry(e, null),
+          );
+      dateMap.addEntries(newObjects);
+      dateMap = Map.fromEntries(
+          dateMap.entries.toList()..sort((a, b) => a.key.compareTo(b.key)));
+      extendedMapData[entry.key] = dateMap;
+    }
+    print(extendedMapData);
   }
 
   List<DateTime> dataForDateWidget() {
     List<DateTime> dateTimes = [];
-    listLessons.forEach((dayLesson) {
+    for (var dayLesson in listLessons) {
       DateTime dateTime = DateFormat('dd-MM-yyyy').parse(dayLesson);
       dateTimes.add(dateTime);
-    });
+    }
     dateTimes.sort((a, b) =>
         DateTime.parse(a.toString()).compareTo(DateTime.parse(b.toString())));
     return dateTimes;

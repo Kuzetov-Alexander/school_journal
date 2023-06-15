@@ -58,8 +58,8 @@ class StudentScoresPageState extends State<StudentScoresPage> {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
     final providerScores = Provider.of<ProviderScores>(context);
-    return BlocBuilder<ScoresPageBloc, ScoresPageState>(
-      builder: (context, state) {
+    return BlocConsumer<ScoresPageBloc, ScoresPageState>(
+      listener: (context, state) {
         if (state is GetInfoSubjectState) {
           providerScores.updateDataMap(studentData: state.data);
           // print('${providerScores.mapData}');
@@ -71,7 +71,8 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                   .currentSubject);
           // print(providerScores.dataForDateWidget());
         }
-
+      },
+      builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
             leading: InkWell(
@@ -205,35 +206,33 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                             ),
 
                             // оценки
-                            rows:
-                                // list
-                                //     .map(
-                                //       (element) => DataRow(
-                                //         cells: List.generate(
-                                //           list.length,
-                                //           (index) => DataCell(
-                                //             Text(
-                                //               element.toString(),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     )
-                                //     .toList()
-                                List<DataRow>.generate(
+                            rows: List<DataRow>.generate(
                               // сюда нужно указать количество дат с уроками по предмету
                               // ряд оценки у ученика
-                              providerScores.allStudentDataList.length,
-                              (int index) => DataRow(
+                              providerScores.extendedMapData.length,
+                              (studentIndex) => DataRow(
                                 cells: List.generate(
-                                  providerScores.listLessons.length,
-                                  (index) => DataCell(
-                                    // Text('${list[index][index]}'),
-                                    ScoresWidget(
+                                  providerScores.extendedMapData.entries
+                                      .elementAt(studentIndex)
+                                      .value
+                                      .length,
+                                  (dateIndex) {
+                                    final cellData = providerScores
+                                        .extendedMapData.entries
+                                        .elementAt(studentIndex)
+                                        .value
+                                        .entries
+                                        .elementAt(dateIndex)
+                                        .value as Map<String, dynamic>?;
+                                    return DataCell(
+                                      ScoresWidget(
                                         listStudentTable:
                                             providerScores.allStudentDataList,
-                                        index: index),
-                                  ),
+                                        index: dateIndex,
+                                        score: cellData?['score'] as int?,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),

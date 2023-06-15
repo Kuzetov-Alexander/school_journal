@@ -4,9 +4,14 @@ import 'package:school_journal/features/student_scores/presentation/provider/pro
 import 'package:school_journal/features/student_scores/presentation/widgets/edit_scores_widget.dart';
 
 class ScoresWidget extends StatelessWidget {
-  const ScoresWidget(
-      {super.key, required this.listStudentTable, required this.index});
+  const ScoresWidget({
+    super.key,
+    required this.listStudentTable,
+    required this.index,
+    this.score,
+  });
   final List<dynamic> listStudentTable;
+  final int? score;
   final int index;
 
   @override
@@ -45,8 +50,7 @@ class ScoresWidget extends StatelessWidget {
             ),
           );
         },
-        child: providerScores.getWidgetScore(
-            currentStudent: listStudentTable[index]),
+        child: score == null ? const SizedBox() : Center(child: Text('$score')),
       ),
     );
   }
