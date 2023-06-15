@@ -117,8 +117,8 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBaseStudent = FirebaseDatabase.instance.ref().child(
         'Users/$userId/Groups/${request.groupName}/allStudents/${request.fullName}');
-    ;
 
+    /// лист предметов по for пробегать и каждый предмет вставлять в путь и удалять
     final dataBaseSubject = FirebaseDatabase.instance
         .ref()
         .child('Users/$userId/Groups/${request.groupName}/allSubject/');

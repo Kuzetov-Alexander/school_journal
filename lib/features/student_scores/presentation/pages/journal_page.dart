@@ -91,8 +91,6 @@ class _JournalPageState extends State<JournalPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // TODO(Sanya) Убрать блок отсюда и внедреть через провайдер лист
-
                       BlocBuilder<ScoresPageBloc, ScoresPageState>(
                           builder: (context, state) {
                         if (state is GetAllStudentState) {

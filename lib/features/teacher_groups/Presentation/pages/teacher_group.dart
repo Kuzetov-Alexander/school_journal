@@ -238,7 +238,6 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          // TODO(Sanya) Подумать как внедрить по другому?
                                           Text(
                                             context
                                                 .read<ProviderCalendar>()
@@ -250,7 +249,6 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
                                                     ? Colors.black
                                                     : Colors.white),
                                           ),
-
                                           Text(
                                             DateTime(DateTime.now().year,
                                                     DateTime.now().month, 1)
@@ -263,7 +261,6 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
                                                     ? Colors.black
                                                     : Colors.white),
                                           ),
-
                                           Icon(
                                             Icons.circle_rounded,
                                             color:
