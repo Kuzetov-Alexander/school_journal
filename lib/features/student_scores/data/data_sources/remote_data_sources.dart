@@ -87,18 +87,6 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     if (dataSnapshot.exists) {
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
-      // print(data);
-
-      // final List<dynamic> dataList = data.values.toList();
-      // print(dataList);
-      // for (final dynamic element in dataList) {
-      //   if (element is Map<dynamic, dynamic>) {
-      //     final String? groupName = element['FullName'] as String?;
-      //     if (groupName != null) {
-      //       result.add(groupName);
-      //     }
-      //   }
-      // }
       return data;
     } else {
       return {};
@@ -129,15 +117,16 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBaseStudent = FirebaseDatabase.instance.ref().child(
         'Users/$userId/Groups/${request.groupName}/allStudents/${request.fullName}');
+    ;
 
     final dataBaseSubject = FirebaseDatabase.instance
         .ref()
-        .child('Users/$userId/Groups/${request.groupName}/allSubject');
+        .child('Users/$userId/Groups/${request.groupName}/allSubject/');
     // .orderByChild('allSubject')
     // .equalTo('${request.fullName}');
 
-    final snapshot = await dataBaseSubject.once();
-    print(snapshot.snapshot.value);
+    // final snapshot = await dataBaseSubject.once();
+    // print(snapshot.snapshot.value);
 
     // await dataBaseStudent.remove();
   }
