@@ -121,13 +121,20 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     /// лист предметов по for пробегать и каждый предмет вставлять в путь и удалять
     final dataBaseSubject = FirebaseDatabase.instance
         .ref()
-        .child('Users/$userId/Groups/${request.groupName}/allSubject/');
-    // .orderByChild('allSubject')
-    // .equalTo('${request.fullName}');
+        .child('Users/$userId/Groups/${request.groupName}/allSubject');
 
-    // final snapshot = await dataBaseSubject.once();
-    // print(snapshot.snapshot.value);
+    final snapshot = await dataBaseSubject.get();
+    Map mapSnapshot = snapshot.value as Map;
 
-    // await dataBaseStudent.remove();
+    for (String subject in mapSnapshot.keys) {
+      final requestStudent = FirebaseDatabase.instance.ref().child(
+          'Users/$userId/Groups/${request.groupName}/allSubject/$subject/Students/${request.fullName}');
+      final snapshotRequest = await requestStudent.get();
+      if (snapshotRequest.value != null) {
+        requestStudent.remove();
+      }
+    }
+
+    await dataBaseStudent.remove();
   }
 }

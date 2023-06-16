@@ -62,7 +62,7 @@ class ProviderScores extends ChangeNotifier {
     final setDateLessons = listLessons.toSet().cast<String>();
 
     for (final entry in extendedMapData.entries) {
-      var dateMap = entry.value as Map<String, dynamic>;
+      var dateMap = entry.value as Map<dynamic, dynamic>;
       final newObjects = setDateLessons.difference(dateMap.keys.toSet()).map(
             (e) => MapEntry(e, null),
           );
@@ -71,7 +71,6 @@ class ProviderScores extends ChangeNotifier {
           dateMap.entries.toList()..sort((a, b) => a.key.compareTo(b.key)));
       extendedMapData[entry.key] = dateMap;
     }
-    print(extendedMapData);
   }
 
   List<DateTime> dataForDateWidget() {
@@ -83,18 +82,5 @@ class ProviderScores extends ChangeNotifier {
     dateTimes.sort((a, b) =>
         DateTime.parse(a.toString()).compareTo(DateTime.parse(b.toString())));
     return dateTimes;
-  }
-
-  Widget getWidgetScore({required String currentStudent}) {
-    final dataScore = mapData[currentStudent];
-    // print(dataScore);
-    //проверяет оценку только сегодняшнего дня!!!! косяк
-    if (dataScore is Map && dataScore.containsKey(day)) {
-      final mapScore = dataScore[day];
-      final score = mapScore['score'];
-
-      return Text('$score');
-    }
-    return const Text('null');
   }
 }

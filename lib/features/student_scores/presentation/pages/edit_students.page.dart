@@ -97,10 +97,12 @@ class _EditStudentsPageState extends State<EditStudentsPage> {
                               children: [
                                 SlidableAction(
                                   onPressed: (context) {
-                                    _deleteStudent(
-                                        studentName:
-                                            '${mapDataStudent['FullName'][index]}',
-                                        groupName: provider.currentGroup);
+                                    setState(() {
+                                      _deleteStudent(
+                                          studentName:
+                                              '${mapDataStudent['FullName'][index]}',
+                                          groupName: provider.currentGroup);
+                                    });
                                   },
                                   backgroundColor: Colors.red,
                                   foregroundColor: Colors.white,

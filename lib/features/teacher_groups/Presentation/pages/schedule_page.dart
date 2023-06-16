@@ -53,7 +53,6 @@ class _SchedulePageState extends State<SchedulePage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      // TODO(Sanya) Не нужный BlocConsumer!
       body: SafeArea(
         child: SingleChildScrollView(
           primary: true,

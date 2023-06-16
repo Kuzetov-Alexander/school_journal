@@ -36,15 +36,15 @@ class StudentScoresPageState extends State<StudentScoresPage> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _getInfoSubject(context,
-          groupName:
-              Provider.of<ProviderScores>(context, listen: false).currentGroup,
-          subject: Provider.of<ProviderScores>(context, listen: false)
-              .currentSubject);
-      // _getInfoSchedule(context);
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        _getInfoSubject(context,
+            groupName: Provider.of<ProviderScores>(context, listen: false)
+                .currentGroup,
+            subject: Provider.of<ProviderScores>(context, listen: false)
+                .currentSubject);
+      },
+    );
   }
 
   @override
@@ -114,7 +114,9 @@ class StudentScoresPageState extends State<StudentScoresPage> {
             ],
           ),
           body: Builder(builder: (context) {
-            if (providerScores.allStudentDataList.isEmpty) {
+            if (providerScores.allStudentDataList.isEmpty &&
+                providerScores.extendedMapData.isEmpty &&
+                providerScores.listLessons.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
             return SingleChildScrollView(
@@ -198,16 +200,12 @@ class StudentScoresPageState extends State<StudentScoresPage> {
                               ),
                             ),
                             columnSpacing: widthScreen * 0.05,
-                            // TODO(Sanya) надо сделать генерацию виджетов даты нормальную!
                             columns: List.generate(
                               providerScores.listLessons.length,
                               (index) =>
                                   DataColumn(label: DateWidget(index: index)),
                             ),
-
-                            // оценки
                             rows: List<DataRow>.generate(
-                              // сюда нужно указать количество дат с уроками по предмету
                               // ряд оценки у ученика
                               providerScores.extendedMapData.length,
                               (studentIndex) => DataRow(

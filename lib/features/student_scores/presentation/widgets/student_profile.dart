@@ -279,9 +279,11 @@ class _StudentProfileState extends State<StudentProfile> {
                           ),
                         ),
                         onPressed: () {
-                          _deleteStudent(
-                              studentName: '${widget.student.fullName}',
-                              groupName: '${widget.student.groupName}');
+                          setState(() {
+                            _deleteStudent(
+                                studentName: '${widget.student.fullName}',
+                                groupName: '${widget.student.groupName}');
+                          });
                         },
                         child: Row(
                           children: [

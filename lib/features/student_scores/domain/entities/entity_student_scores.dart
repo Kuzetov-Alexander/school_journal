@@ -12,6 +12,7 @@ class EntityStudentScores extends Equatable {
   final bool? visitedLesson;
   final String? subject;
   final String? currentDay;
+  final List<String>? subjectList;
 
   const EntityStudentScores({
     this.fullName,
@@ -25,6 +26,7 @@ class EntityStudentScores extends Equatable {
     this.visitedLesson,
     this.subject,
     this.currentDay,
+    this.subjectList,
   });
 
   @override
@@ -38,6 +40,7 @@ class EntityStudentScores extends Equatable {
         studentLink,
         isDeleted,
         visitedLesson,
-        subject
+        subject,
+        subjectList,
       ];
 }
