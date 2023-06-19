@@ -81,10 +81,11 @@ class ProviderGroup extends ChangeNotifier {
   }
 
   /// Обновляем лист названия групп
-  void updateGroupNameList(List<String> newGroup) {
-    List<String> listGroups = [];
-    listGroups.addAll(newGroup);
-    listGroup = listGroups.toSet().toList();
+  void updateGroupNameList(Map snapshotData) {
+    listGroup.clear();
+    final groupsName = snapshotData.keys;
+    final res = groupsName.cast<String>().toList();
+    listGroup.addAll(res);
   }
 
   /// удаляем название удаленной группы из списка названий групп

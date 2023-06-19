@@ -7,6 +7,8 @@ abstract class ScoresPageEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class GetSnapshotEvent extends ScoresPageEvent {}
+
 class DeleteStudentEvent extends ScoresPageEvent {
   final String groupName;
   final String studentName;
@@ -26,24 +28,6 @@ class AddNewStudentEvent extends ScoresPageEvent {
       {required this.groupName,
       required this.email,
       required this.studentName});
-}
-
-class GetAllStudentEvent extends ScoresPageEvent {
-  final String groupName;
-
-  const GetAllStudentEvent({
-    required this.groupName,
-  });
-}
-
-class GetInfoSubjectEvent extends ScoresPageEvent {
-  final String groupName;
-  final String subject;
-
-  const GetInfoSubjectEvent({
-    required this.groupName,
-    required this.subject,
-  });
 }
 
 class GetInfoScheduleEvent extends ScoresPageEvent {}

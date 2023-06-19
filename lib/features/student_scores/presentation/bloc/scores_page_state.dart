@@ -7,26 +7,20 @@ abstract class ScoresPageState extends Equatable {
   List<Object> get props => [];
 }
 
+class GetSnapshotState extends ScoresPageState {
+  final Map data;
+  const GetSnapshotState({required this.data});
+  @override
+  List<Object> get props => [data];
+}
+
 class DeleteStudent extends ScoresPageState {}
 
 class ScoresPageInitial extends ScoresPageState {}
 
 class AddedNewStudentState extends ScoresPageState {}
 
-class GetAllStudentState extends ScoresPageState {
-  final List<String> allStudentData;
-  const GetAllStudentState({required this.allStudentData});
-  @override
-  List<Object> get props => allStudentData;
-}
-
 class EditScoreState extends ScoresPageState {}
-
-class GetInfoSubjectState extends ScoresPageState {
-  final Map<Object?, Object?> data;
-
-  const GetInfoSubjectState({required this.data});
-}
 
 class GetInfoScheduleState extends ScoresPageState {
   final Map<Object?, Object?> data;

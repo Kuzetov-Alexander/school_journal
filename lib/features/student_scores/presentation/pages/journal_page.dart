@@ -18,18 +18,17 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  void _getAllStudent(context, {required groupName}) {
+  /// Выгрузка всего расписания
+  void _getInfoSchedule(context) {
     BlocProvider.of<ScoresPageBloc>(context).add(
-      GetAllStudentEvent(groupName: groupName),
+      GetInfoScheduleEvent(),
     );
   }
 
   @override
   void initState() {
     super.initState();
-    _getAllStudent(context,
-        groupName:
-            Provider.of<ProviderScores>(context, listen: false).currentGroup);
+    _getInfoSchedule(context);
   }
 
   @override
@@ -93,13 +92,12 @@ class _JournalPageState extends State<JournalPage> {
                     children: [
                       BlocBuilder<ScoresPageBloc, ScoresPageState>(
                           builder: (context, state) {
-                        if (state is GetAllStudentState) {
-                          providerScores.updateFullNameList(
-                              studentData: state.allStudentData);
-                          provider.updateGroupNameList(state.allStudentData);
+                        if (state is GetSnapshotState) {
+                          providerScores.updateStudentsNameList();
+                          provider.updateGroupNameList(state.data);
                         }
                         return Text(
-                          '${providerScores.allStudentDataList.length} учеников',
+                          '${providerScores.studentsNameList.length} учеников',
                           style: const TextStyle(color: Colors.white),
                         );
                       }),
@@ -157,6 +155,10 @@ class _JournalPageState extends State<JournalPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          //           providerScores.updateLessonsMap(
+                          // lessonData: state.data,
+                          // subject: Provider.of<ProviderScores>(context, listen: false)
+                          //     .currentSubject);
                           context.goNamed('StudentScores');
                         },
                         style: ElevatedButton.styleFrom(

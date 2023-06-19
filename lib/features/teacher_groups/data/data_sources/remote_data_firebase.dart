@@ -122,7 +122,6 @@ class RemoteDataFirebaseImpl implements RemoteDataFirebase {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataShot =
         await dataBase.child('Users/$userId/Schedule/$selectedDate').once();
-
     String keydata = '';
     if (dataShot.snapshot.value is Map) {
       Map data = dataShot.snapshot.value as Map;

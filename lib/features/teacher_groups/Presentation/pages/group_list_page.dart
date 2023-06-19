@@ -10,10 +10,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:school_journal/common/color.dart';
-
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/general_schedule/bloc_general_schedule_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_group_event.dart';
-
 import 'package:school_journal/features/teacher_groups/Presentation/bloc/teacher_group/bloc_teacher_groups_bloc.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/add_group.dart';
 import 'package:school_journal/features/teacher_groups/Presentation/widgets/group_info_widget.dart';
@@ -46,8 +44,8 @@ class _GroupListPageState extends State<GroupListPage> {
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     final db = FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
-    ProviderGroup provider = Provider.of<ProviderGroup>(context);
-    ProviderCalendar providerDate = Provider.of<ProviderCalendar>(context);
+    final provider = Provider.of<ProviderGroup>(context);
+    final providerDate = Provider.of<ProviderCalendar>(context);
     return Scaffold(
       body: BlocConsumer<BlocTeacherGroupsBloc, BlocTeacherGroupsState>(
         listener: (context, state) {
@@ -95,8 +93,8 @@ class _GroupListPageState extends State<GroupListPage> {
                             IconButton(
                               onPressed: () {
                                 //
-                                final firebaseAuth = FirebaseAuth.instance;
-                                firebaseAuth.currentUser!.displayName;
+                                // final firebaseAuth = FirebaseAuth.instance;
+                                // firebaseAuth.currentUser!.displayName;
                               },
                               icon: const Icon(Icons.arrow_left),
                               iconSize: 35,
@@ -105,7 +103,7 @@ class _GroupListPageState extends State<GroupListPage> {
                               onTap: () async {
                                 _getAllLessons(context, providerDate.day);
                                 await Future.delayed(
-                                        const Duration(milliseconds: 30))
+                                        const Duration(milliseconds: 50))
                                     .then((_) => context.goNamed('Shedule'));
                               },
                               child: const Icon(Icons.calendar_month_outlined),
@@ -176,9 +174,8 @@ class _GroupListPageState extends State<GroupListPage> {
                       query: db,
                       itemBuilder: (context, DataSnapshot snapshot,
                           Animation<double> animation, int index) {
-                        Map<dynamic, dynamic> student = snapshot.value as Map;
-                        snapshot.key;
-                        // print(student);
+                        Map<dynamic, dynamic> infoByGroups =
+                            snapshot.value as Map;
 
                         return Column(
                           children: [
@@ -208,7 +205,7 @@ class _GroupListPageState extends State<GroupListPage> {
                                       ),
                                     ]),
                                 child: MyGroupInfoWidget(
-                                    mapGroups: student, index: index),
+                                    mapGroups: infoByGroups, index: index),
                               ),
                             ),
                             SizedBox(height: heightScreen * 0.02)

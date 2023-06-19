@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ProviderScores extends ChangeNotifier {
+  Map snapshotData = {};
   String currentGroup = '';
-  List<dynamic> allStudentDataList = [];
+  List<dynamic> studentsNameList = [];
   String? currentSubject = '';
   String currentStudent = '';
   Map<Object, Object?> mapData = {};
@@ -14,23 +15,42 @@ class ProviderScores extends ChangeNotifier {
 
   Map<String, dynamic> extendedMapData = {};
 
+  /// Получаем мапу данных по группам
+  Map getSnapshotData({required Map<dynamic, dynamic> query}) {
+    snapshotData.clear();
+    query.forEach((key, value) {
+      if (key != null && value != null) {
+        snapshotData[key] = value;
+      }
+    });
+    return snapshotData;
+  }
+
   /// Обновляем лист Студентов
-  void updateFullNameList({required List<String> studentData}) {
-    allStudentDataList.clear();
-    List<String> listStudent = [];
-    listStudent.addAll(studentData);
-    allStudentDataList = listStudent.toSet().toList();
+  void updateStudentsNameList() {
+    studentsNameList.clear();
+    if (snapshotData.containsKey(currentGroup)) {
+      final groupdata = snapshotData[currentGroup] as Map;
+      final studentsdata = groupdata['allStudents'] as Map;
+      final result = studentsdata.keys.toSet().toList();
+      studentsNameList.addAll(result);
+    } else {
+      print('Ошибка обновления списка List студентов');
+    }
   }
 
   /// Обновляем мапу данных по предмету
-  void updateDataMap({required Map<Object?, Object?> studentData}) {
+  void updateDataMap() {
     mapData.clear();
-    studentData.forEach((key, value) {
+    final way =
+        snapshotData[currentGroup]['allSubject'][currentSubject]['Students'];
+
+    way.forEach((key, value) {
       if (key != null && value != null) {
         mapData[key] = value;
       }
     });
-    for (String name in allStudentDataList) {
+    for (String name in studentsNameList) {
       if (!mapData.containsKey(name)) {
         mapData[name] = null;
       }
@@ -42,6 +62,7 @@ class ProviderScores extends ChangeNotifier {
     required Map<Object?, Object?> lessonData,
     required String? subject,
   }) {
+    print('++++++++$lessonData');
     listLessons.clear();
     final listDate = lessonData.keys.toList();
     for (var data in listDate) {

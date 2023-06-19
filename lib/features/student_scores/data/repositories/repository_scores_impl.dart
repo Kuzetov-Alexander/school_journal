@@ -22,18 +22,6 @@ class RepositoryScoresImpl implements RepositoryScores {
   }
 
   @override
-  Future<Either<Failure, List<String>>> getAllStudent(
-      {required EntityStudentScores request}) async {
-    try {
-      return await dataBase
-          .getAllStudent(request: request)
-          .then((value) => Right(value));
-    } on Object {
-      return Left<Failure, List<String>>(DataBaseFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, void>> editScore(
       {required EntityStudentScores request}) async {
     try {
@@ -42,18 +30,6 @@ class RepositoryScoresImpl implements RepositoryScores {
           .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(DataBaseFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, Map<Object?, Object?>>> getInfoSubject(
-      {required EntityStudentScores request}) async {
-    try {
-      return await dataBase
-          .getInfoSubject(request: request)
-          .then((value) => Right(value));
-    } on Object {
-      return Left<Failure, Map<Object?, Object?>>(DataBaseFailure());
     }
   }
 
@@ -75,6 +51,15 @@ class RepositoryScoresImpl implements RepositoryScores {
           .then((value) => Right(value));
     } on Object {
       return Left<Failure, void>(DataBaseFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map>> getSnapshot() async {
+    try {
+      return await dataBase.getSnapshot().then((value) => Right(value));
+    } on Object {
+      return Left<Failure, Map>(DataBaseFailure());
     }
   }
 }

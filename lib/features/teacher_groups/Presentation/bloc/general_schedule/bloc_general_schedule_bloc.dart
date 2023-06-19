@@ -46,13 +46,11 @@ class BlocGeneralScheduleBloc
       // }
     });
 
-    // Получаем уроки для всех групп
+    // Получаем уроки для всех групп в листе, а возвращаем даты String
     on<GetAllLessonsEvent>((event, emit) async {
       List dataList = [];
       final resultAllLessons = await repository.getAllLessons(
           selectedDate: event.selectedDate, dataList: dataList);
-      // print(dataList);
-      // print(event.selectedDate);
       if (resultAllLessons.isRight()) {
         emit(
           GotAllLessonsState(

@@ -26,40 +26,6 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
       },
     );
 
-    on<GetAllStudentEvent>(
-      (event, emit) async {
-        final resultRequestBloc = await repository.getAllStudent(
-          request: EntityStudentScores(
-            groupName: event.groupName,
-          ),
-        );
-        if (resultRequestBloc.isRight()) {
-          emit(
-            GetAllStudentState(
-              allStudentData: resultRequestBloc.getOrElse(() => []),
-            ),
-          );
-        }
-      },
-    );
-
-    on<GetInfoSubjectEvent>(
-      (event, emit) async {
-        final resultRequestBloc = await repository.getInfoSubject(
-            request: EntityStudentScores(
-          groupName: event.groupName,
-          subject: event.subject,
-        ));
-        if (resultRequestBloc.isRight()) {
-          emit(
-            GetInfoSubjectState(
-              data: resultRequestBloc.getOrElse(() => {}),
-            ),
-          );
-        }
-      },
-    );
-
     on<GetInfoScheduleEvent>((event, emit) async {
       final resultRequestBloc = await repository.getInfoSchedule();
       if (resultRequestBloc.isRight()) {
@@ -88,5 +54,18 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
           request: EntityStudentScores(
               fullName: event.studentName, groupName: event.groupName));
     });
+
+    on<GetSnapshotEvent>(
+      (event, emit) async {
+        final method = await repository.getSnapshot();
+        if (method.isRight()) {
+          emit(
+            GetSnapshotState(
+              data: method.getOrElse(() => {}),
+            ),
+          );
+        }
+      },
+    );
   }
 }

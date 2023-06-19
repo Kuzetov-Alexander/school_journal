@@ -6,16 +6,13 @@ import 'package:school_journal/features/student_scores/domain/entities/entity_st
 abstract class RemoteDataScores {
   Future<void> addStudent({required EntityStudentScores request});
 
-  Future<List<String>> getAllStudent({required EntityStudentScores request});
-
   Future<void> editScore({required EntityStudentScores request});
-
-  Future<Map<Object?, Object?>> getInfoSubject(
-      {required EntityStudentScores request});
 
   Future<Map<Object?, Object?>> getInfoSchedule();
 
   Future<void> deleteStudent({required EntityStudentScores request});
+
+  Future<Map> getSnapshot();
 }
 
 class RemoteDataScoresImpl implements RemoteDataScores {
@@ -36,34 +33,6 @@ class RemoteDataScoresImpl implements RemoteDataScores {
   }
 
   @override
-  Future<List<String>> getAllStudent(
-      {required EntityStudentScores request}) async {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-    final dataBase = FirebaseDatabase.instance
-        .ref()
-        .child('Users/$userId/Groups/${request.groupName}/allStudents');
-
-    final dataSnapshot = await dataBase.get();
-    final List<String> resultDataName = [];
-    if (dataSnapshot.exists) {
-      final Map<Object?, Object?> data =
-          dataSnapshot.value as Map<Object?, Object?>;
-      final List<dynamic> dataList = data.values.toList();
-      for (final dynamic element in dataList) {
-        if (element is Map<dynamic, dynamic>) {
-          final String? groupName = element['FullName'] as String?;
-          if (groupName != null) {
-            resultDataName.add(groupName);
-          }
-        }
-      }
-      return resultDataName;
-    } else {
-      return [];
-    }
-  }
-
-  @override
   Future<void> editScore({required EntityStudentScores request}) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBase = FirebaseDatabase.instance.ref().child(
@@ -76,32 +45,12 @@ class RemoteDataScoresImpl implements RemoteDataScores {
   }
 
   @override
-  Future<Map<Object?, Object?>> getInfoSubject(
-      {required EntityStudentScores request}) async {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-    final dataBase = FirebaseDatabase.instance.ref().child(
-        'Users/$userId/Groups/${request.groupName}/allSubject/${request.subject}/Students');
-
-    final dataSnapshot = await dataBase.get();
-    // final Map<Object?, Object?> result = {};
-    if (dataSnapshot.exists) {
-      final Map<Object?, Object?> data =
-          dataSnapshot.value as Map<Object?, Object?>;
-      return data;
-    } else {
-      return {};
-    }
-  }
-
-  @override
   Future<Map<Object?, Object?>> getInfoSchedule() async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final dataBase =
         FirebaseDatabase.instance.ref().child('Users/$userId/Schedule');
 
     final dataSnapshot = await dataBase.get();
-    // final Map<Object?, Object?> result = {};
-    // print(dataSnapshot.value);
     if (dataSnapshot.exists) {
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
@@ -136,5 +85,23 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     }
 
     await dataBaseStudent.remove();
+  }
+
+  @override
+  Future<Map> getSnapshot() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final dataBase =
+        FirebaseDatabase.instance.ref().child('Users/$userId/Groups');
+    Map mapData = {};
+
+    final snapshot = await dataBase.get();
+    if (snapshot.exists) {
+      final snapshotData = snapshot.value as Map;
+
+      mapData.addAll(snapshotData);
+      return mapData;
+    } else {
+      return {};
+    }
   }
 }

@@ -106,9 +106,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
     double heightScreen = MediaQuery.of(context).size.height;
     return BlocConsumer<BlocGeneralScheduleBloc, BlocGeneralScheduleState>(
       listener: (context, state) {
-        if (state is DownloadGroupNameState) {
-          provider.updateGroupNameList(state.allNamesGroup);
-        }
+        // TODO(Sanya) Добавить обновление групп, если надо?!
+        // if (state is DownloadGroupNameState) {
+        //   provider.updateGroupNameList(state.allNamesGroup);
+        // }
         if (state is DownloadSubjectNameState) {
           provider.updateSubjectList(state.allSubjectGroup);
         }
