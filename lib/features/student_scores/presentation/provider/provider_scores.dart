@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 class ProviderScores extends ChangeNotifier {
   Map snapshotData = {};
+  Map<Object?, Object?> snapshotSchedule = {};
   String currentGroup = '';
   List<dynamic> studentsNameList = [];
   String? currentSubject = '';
@@ -15,7 +16,7 @@ class ProviderScores extends ChangeNotifier {
 
   Map<String, dynamic> extendedMapData = {};
 
-  /// Получаем мапу данных по группам
+  /// Получаем мапу данных по Groups
   Map getSnapshotData({required Map<dynamic, dynamic> query}) {
     snapshotData.clear();
     query.forEach((key, value) {
@@ -31,42 +32,49 @@ class ProviderScores extends ChangeNotifier {
     studentsNameList.clear();
     if (snapshotData.containsKey(currentGroup)) {
       final groupdata = snapshotData[currentGroup] as Map;
-      final studentsdata = groupdata['allStudents'] as Map;
-      final result = studentsdata.keys.toSet().toList();
-      studentsNameList.addAll(result);
+      if (groupdata['allStudents'] is Map) {
+        final studentsdata = groupdata['allStudents'] as Map;
+        final result = studentsdata.keys.toSet().toList();
+        studentsNameList.addAll(result);
+      }
     } else {
       print('Ошибка обновления списка List студентов');
     }
   }
 
   /// Обновляем мапу данных по предмету
-  void updateDataMap() {
+  void updateMapData() {
     mapData.clear();
-    final way =
-        snapshotData[currentGroup]['allSubject'][currentSubject]['Students'];
-
-    way.forEach((key, value) {
-      if (key != null && value != null) {
-        mapData[key] = value;
-      }
-    });
-    for (String name in studentsNameList) {
-      if (!mapData.containsKey(name)) {
-        mapData[name] = null;
+    if (snapshotData[currentGroup]['allSubject'][currentSubject] is Map) {
+      final way = snapshotData[currentGroup]['allSubject'][currentSubject]
+          ['Students'] as Map;
+      way.forEach((key, value) {
+        if (key != null && value != null) {
+          mapData[key] = value;
+        }
+      });
+      for (String name in studentsNameList) {
+        if (!mapData.containsKey(name)) {
+          mapData[name] = null;
+        }
       }
     }
   }
 
+  /// обновляем snapshotShedule мапу с расписанием всех групп
+  Map updateSnapshotShedule({required Map<Object?, Object?> snapshotData}) {
+    snapshotSchedule.clear();
+    snapshotSchedule.addAll(snapshotData);
+    return snapshotSchedule;
+  }
+
   /// Обновляем мапу данных по урокам, формируем мапу дней со значениями группы и предмета.
-  void updateLessonsMap({
-    required Map<Object?, Object?> lessonData,
-    required String? subject,
-  }) {
-    print('++++++++$lessonData');
+  void updateLessonsMap() {
+    updateMapData();
     listLessons.clear();
-    final listDate = lessonData.keys.toList();
+    final listDate = snapshotSchedule.keys.toList();
     for (var data in listDate) {
-      final m1 = lessonData[data];
+      final m1 = snapshotSchedule[data];
       final Map map = m1 as Map;
       for (final value in map.values) {
         if (value is Map) {
@@ -81,7 +89,6 @@ class ProviderScores extends ChangeNotifier {
 
     extendedMapData = jsonDecode(jsonEncode(mapData));
     final setDateLessons = listLessons.toSet().cast<String>();
-
     for (final entry in extendedMapData.entries) {
       var dateMap = entry.value as Map<dynamic, dynamic>;
       final newObjects = setDateLessons.difference(dateMap.keys.toSet()).map(

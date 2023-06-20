@@ -15,7 +15,7 @@ class ScoresPageBloc extends Bloc<ScoresPageEvent, ScoresPageState> {
   ScoresPageBloc({required this.repository}) : super(ScoresPageInitial()) {
     on<AddNewStudentEvent>(
       (event, emit) async {
-        repository.addStudent(
+        await repository.addStudent(
           request: EntityStudentScores(
             fullName: event.studentName,
             groupName: event.groupName,

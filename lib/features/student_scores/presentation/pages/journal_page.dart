@@ -25,9 +25,19 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
+  // void _getSnapshotData(context) {
+  //   BlocProvider.of<ScoresPageBloc>(context).add(GetSnapshotEvent());
+  // }
+
   @override
   void initState() {
     super.initState();
+    _getInfoSchedule(context);
+  }
+
+  @override
+  void didUpdateWidget(covariant JournalPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
     _getInfoSchedule(context);
   }
 
@@ -41,185 +51,193 @@ class _JournalPageState extends State<JournalPage> {
     final db = FirebaseDatabase.instance.ref().child(
         'Users/$userId/Groups/${providerScores.currentGroup}/allSubject');
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () => context.pop(),
-          child: const Image(
-            image: AssetImage('assets/images/arrow_left.png'),
+    /// TODO(Sanya) Часто будет вызываться?!
+    return BlocListener<ScoresPageBloc, ScoresPageState>(
+      listener: (context, state) {
+        if (state is GetInfoScheduleState) {
+          providerScores.updateSnapshotShedule(snapshotData: state.data);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () => context.goNamed('TeacherGroup'),
+            child: const Image(
+              image: AssetImage('assets/images/arrow_left.png'),
+            ),
           ),
+          title: Text(
+            'Группа  ${providerScores.currentGroup}',
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: heightScreen * 0.022,
+                color: AppColors.black212525),
+          ),
+          automaticallyImplyLeading: false,
         ),
-        title: Text(
-          'Группа  ${providerScores.currentGroup}',
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: heightScreen * 0.022,
-              color: AppColors.black212525),
-        ),
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: widthScreen * 0.06),
-          child: Column(
-            children: [
-              SizedBox(height: heightScreen * 0.015),
-              Row(
-                children: [
-                  Text(
-                    'Ученики',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: heightScreen * 0.024,
-                        color: AppColors.black212525),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: heightScreen * 0.01,
-              ),
-              Container(
-                height: heightScreen * 0.08,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColors.purple,
-                    borderRadius: BorderRadius.circular(24)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BlocBuilder<ScoresPageBloc, ScoresPageState>(
-                          builder: (context, state) {
-                        if (state is GetSnapshotState) {
-                          providerScores.updateStudentsNameList();
-                          provider.updateGroupNameList(state.data);
-                        }
-                        return Text(
-                          '${providerScores.studentsNameList.length} учеников',
-                          style: const TextStyle(color: Colors.white),
-                        );
-                      }),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.goNamed('EditStudents');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: widthScreen * 0.06),
+            child: Column(
+              children: [
+                SizedBox(height: heightScreen * 0.015),
+                Row(
+                  children: [
+                    Text(
+                      'Ученики',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: heightScreen * 0.024,
+                          color: AppColors.black212525),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: heightScreen * 0.01,
+                ),
+                Container(
+                  height: heightScreen * 0.08,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: AppColors.purple,
+                      borderRadius: BorderRadius.circular(24)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        /// вызов будет только после вызова метода getSnapshot на этой странице
+                        BlocBuilder<ScoresPageBloc, ScoresPageState>(
+                            builder: (context, state) {
+                          if (state is GetSnapshotState) {
+                            providerScores.updateStudentsNameList();
+                            provider.updateGroupNameList(state.data);
+                          }
+                          return Text(
+                            '${providerScores.studentsNameList.length} учеников',
+                            style: const TextStyle(color: Colors.white),
+                          );
+                        }),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.goNamed('EditStudents');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            'Редактировать',
+                            style: TextStyle(
+                                color: AppColors.black212525,
+                                fontSize: heightScreen * 0.019,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
-                        child: Text(
-                          'Редактировать',
-                          style: TextStyle(
-                              color: AppColors.black212525,
-                              fontSize: heightScreen * 0.019,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: heightScreen * 0.015),
-              Row(
-                children: [
-                  Text(
-                    'Предметы',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: heightScreen * 0.024,
-                        color: AppColors.black212525),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: heightScreen * 0.01,
-              ),
-              Container(
-                height: heightScreen * 0.08,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColors.purple,
-                    borderRadius: BorderRadius.circular(24)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Выбор предмета',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          //           providerScores.updateLessonsMap(
-                          // lessonData: state.data,
-                          // subject: Provider.of<ProviderScores>(context, listen: false)
-                          //     .currentSubject);
-                          context.goNamed('StudentScores');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                SizedBox(height: heightScreen * 0.015),
+                Row(
+                  children: [
+                    Text(
+                      'Предметы',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: heightScreen * 0.024,
+                          color: AppColors.black212525),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: heightScreen * 0.01,
+                ),
+                Container(
+                  height: heightScreen * 0.08,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: AppColors.purple,
+                      borderRadius: BorderRadius.circular(24)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Выбор предмета',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {});
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            'Все',
+                            style: TextStyle(
+                                color: AppColors.black212525,
+                                fontSize: heightScreen * 0.019,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
-                        child: Text(
-                          'Все',
-                          style: TextStyle(
-                              color: AppColors.black212525,
-                              fontSize: heightScreen * 0.019,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: heightScreen * 0.01),
-              Expanded(
-                child: SizedBox(
-                  height: heightScreen * 0.02,
-                  child: FirebaseAnimatedList(
-                    query: db,
-                    itemBuilder: (context, DataSnapshot snapshot,
-                        Animation<double> animation, int index) {
-                      final String? dataSubjects = snapshot.key;
+                SizedBox(height: heightScreen * 0.01),
+                Expanded(
+                  child: SizedBox(
+                    height: heightScreen * 0.02,
+                    child: FirebaseAnimatedList(
+                      query: db,
+                      itemBuilder: (context, DataSnapshot snapshot,
+                          Animation<double> animation, int index) {
+                        final String? dataSubjects = snapshot.key;
 
-                      return Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              providerScores.currentSubject = dataSubjects;
-                              context.goNamed('StudentScores');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              minimumSize:
-                                  Size(widthScreen * 0.8, heightScreen * 0.08),
-                              backgroundColor: Colors.yellow,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
+                        return Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                providerScores.currentSubject = dataSubjects;
+                                providerScores.updateLessonsMap();
+                                print(
+                                    '+++++++${providerScores.extendedMapData}');
+                                context.goNamed('StudentScores');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(
+                                    widthScreen * 0.8, heightScreen * 0.08),
+                                backgroundColor: Colors.yellow,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                              ),
+                              child: Text(
+                                '$dataSubjects',
+                                style: TextStyle(
+                                    color: AppColors.black212525,
+                                    fontSize: heightScreen * 0.019,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
-                            child: Text(
-                              '$dataSubjects',
-                              style: TextStyle(
-                                  color: AppColors.black212525,
-                                  fontSize: heightScreen * 0.019,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          SizedBox(height: heightScreen * 0.02)
-                        ],
-                      );
-                    },
+                            SizedBox(height: heightScreen * 0.02),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -35,9 +35,8 @@ class _TeacherGroupPageState extends State<TeacherGroupPage> {
 
   @override
   void initState() {
-    _getSnapshotData();
     super.initState();
-    // _getSnapshotData();
+    _getSnapshotData();
   }
 
   @override

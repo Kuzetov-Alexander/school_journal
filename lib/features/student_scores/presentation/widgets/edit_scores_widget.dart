@@ -213,13 +213,15 @@ class _EditScoresWidgetState extends State<EditScoresWidget> {
               ),
               onPressed: () {
                 // print(widget.studentName);
-                _editScore(context,
-                    subject: '${provider.currentSubject}',
-                    studentName: widget.studentName,
-                    groupName: widget.group,
-                    score: 5,
-                    currentDay: DateFormat('dd-MM-yyyy', 'ru')
-                        .format(providerDate.currentDate));
+                setState(() {
+                  _editScore(context,
+                      subject: '${provider.currentSubject}',
+                      studentName: widget.studentName,
+                      groupName: widget.group,
+                      score: 5,
+                      currentDay: DateFormat('dd-MM-yyyy', 'ru')
+                          .format(providerDate.currentDate));
+                });
                 Navigator.of(context).pop();
               },
               child: Text(

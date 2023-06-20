@@ -54,7 +54,6 @@ class RemoteDataScoresImpl implements RemoteDataScores {
     if (dataSnapshot.exists) {
       final Map<Object?, Object?> data =
           dataSnapshot.value as Map<Object?, Object?>;
-
       return data;
     } else {
       return {};
